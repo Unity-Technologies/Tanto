@@ -1,0 +1,189 @@
+:not(pre)> code[class*="language-"],
+pre[class*="language-"] {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+}
+
+pre[data-line] {
+    position: relative;
+    padding: 1em 0 1em 3em;
+}
+
+.diff-view {
+    border-right: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+}
+
+pre.diff-view> code {
+    position: relative;
+    cursor: pointer;
+}
+
+.diff-raw {
+    border: 1px solid lightgrey;
+    padding: 20px;
+}
+
+.diff-unified> .code-inner {
+    width: 90%;
+}
+
+.diff-view table {
+    table-layout: fixed;
+}
+
+.diff-split> .code-inner {
+    width: 45%;
+}
+
+.code-inner span {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.code-block {
+    width: 100%;
+}
+
+.line-removed {
+    left: 0;
+    right: 0;
+    padding: inherit 0;
+    background: hsla(0, 91%, 91%, 0.35);
+    line-height: inherit;
+    white-space: pre;
+}
+
+.line-added {
+    left: 0;
+    right: 0;
+    padding: inherit 0;
+    background: hsla(133, 55%, 82%, 0.35);
+    line-height: inherit;
+    white-space: pre;
+}
+
+.code-line pre> code> table {
+    width: 100%;
+}
+
+.code-line-comment {
+    margin: 10px 10px;
+    max-width: 1050px;
+}
+
+.code-line-comment {
+    margin-left: -15px;
+}
+
+.code-empty {
+    background-color: #f9f9f9;
+}
+
+.code-comment-icon {
+    font-size: 18px;
+    display: none;
+    position: absolute;
+    margin-left: -9px;
+    color: rgb(159, 191, 204);
+    padding: 2px 1px;
+}
+
+.code-comment-thread {
+    font-size: 18px;
+    color: #418ed6;
+    position: absolute;
+    margin-left: -15px;
+    padding: -2px 1px;
+}
+
+.left-side .code-comment-thread,
+.left-side .code-comment-icon,
+.right-side .code-comment-thread,
+.right-side .code-comment-icon {
+    margin-top: -21px;
+}
+
+.code-comment-thread:hover {
+    font-size: 25px;
+    margin-top: -2px;
+}
+
+.left-side .code-comment-thread:hover,
+.right-side .code-comment-thread:hover {
+    font-size: 25px;
+    margin-top: -22px;
+}
+
+.code-comment-icon:hover {
+    color: rgb(16, 173, 176);
+    font-size: 22px;
+    padding: 0;
+}
+
+.diff-unified .code-line:hover .code-comment-icon {
+    display: inline-block;
+}
+
+.code-break,
+.code-break-line {
+    border: 1px solid #ebebeb;
+    background: #ebebeb;
+    background-image: -moz-linear-gradient(top, #f9f9f9 0, #d9dbdc 100%);
+    background-image: -webkit-linear-gradient(top, #f9f9f9 0, #d9dbdc 100%);
+    background-image: -o-linear-gradient(top, #f9f9f9 0, #d9dbdc 100%);
+    background-image: -ms-linear-gradient(top, #f9f9f9 0, #d9dbdc 100%);
+    background-image: linear-gradient(top, #f9f9f9 0, #d9dbdc 100%);
+    background-image: -webkit-linear-gradient(top, #f9f9f9 0, #d9dbdc 100%);
+}
+
+.line-number-old,
+.line-number-new {
+    width: 55px;
+    color: #a7a5a5;
+    vertical-align: top;
+    text-align: center;
+}
+
+.code-inner {
+    vertical-align: top;
+}
+
+.diff-unified .line-number-new {
+    border-right: 1px solid #e1dddd;
+}
+
+.diff-unified .line-number-old {
+    border-right: 1px solid #e1dddd;
+    border-left: 1px solid #e1dddd;
+}
+
+.diff-split .line-number-new,
+.diff-split .line-number-old {
+    border-right: 1px solid #e1dddd;
+    border-left: 1px solid #e1dddd;
+}
+
+.line-number-old> div,
+.line-number-new> div {
+    padding: 0 10px;
+}
+
+.diff-unified .line-number-old {
+    border-left: 1px solid #e1dddd;
+}
+
+.diff-operation {
+    text-align: center;
+    color: #a7a5a5;
+    width: 2%;
+    vertical-align: top;
+}
+
+.line-icon {
+    text-align: left;
+    width: 0px;
+    vertical-align: top;
+}

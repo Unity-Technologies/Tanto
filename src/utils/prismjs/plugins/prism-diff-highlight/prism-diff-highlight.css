@@ -1,0 +1,157 @@
+pre[data-line] {
+    position: relative;
+    padding: 1em 0 1em 3em;
+}
+
+.diff-view {
+    border-right: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+}
+
+pre.diff-view> code {
+    position: relative;
+}
+
+.diff-raw {
+    border: 1px solid lightgrey;
+    padding: 20px;
+}
+
+.diff-unified> .code-inner {
+    width: 90%;
+}
+
+.diff-split {
+    table-layout: fixed;
+}
+
+.diff-split> .code-inner {
+    width: 45%;
+}
+
+.diff-split .code-inner span {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.code-block {
+    width: 100%;
+}
+
+
+/*.code-break.line-number-old {
+    counter-reset: oldlinenumber 23;
+}
+
+.code-break.line-number-new {
+    counter-reset: newlinenumber 24;
+}*/
+
+.line-removed {
+    left: 0;
+    right: 0;
+    padding: inherit 0;
+    margin-top: 1em;
+    /* Same as .prism’s padding-top */
+    background: hsla(3, 89%, 85%, 0.37);
+    pointer-events: none;
+    line-height: inherit;
+    white-space: pre;
+}
+
+.line-added {
+    left: 0;
+    right: 0;
+    padding: inherit 0;
+    margin-top: 1em;
+    /* Same as .prism’s padding-top */
+    background: hsla(133, 77%, 55%, 0.24);
+    pointer-events: none;
+    line-height: inherit;
+    white-space: pre;
+}
+
+.code-line pre> code> table {
+    width: 100%;
+}
+
+.code-line {
+    height: 19px;
+}
+
+.code-break,
+.code-break-line {
+    background-color: whitesmoke;
+}
+
+.line-number-old {
+    text-align: center;
+    padding: 0 10px;
+    border-left: 1px solid #e1dddd;
+    border-right: 1px solid #e1dddd;
+}
+
+.line-number-new {
+    text-align: center;
+    padding: 0 10px;
+    border-right: 1px solid #e1dddd;
+}
+
+.diff-split .line-number-new {
+    text-align: center;
+    padding: 0 10px;
+    border-left: 1px solid #e1dddd;
+    border-right: 1px solid #e1dddd;
+}
+
+.diff-operation {
+    text-align: center;
+    color: #a7a5a5;
+}
+
+
+/*.line-removed.line-number-old::before {
+    content: counter(oldlinenumber);
+    color: #a7a5a5;
+}
+
+.line-added.line-number-new::before {
+    content: counter(newlinenumber);
+    color: #a7a5a5;
+}
+
+.line-common.line-number-old::before {
+    content: counter(oldlinenumber);
+    color: #a7a5a5;
+}
+
+.line-common.line-number-new::before {
+    content: counter(newlinenumber);
+    color: #a7a5a5;
+}
+
+.line-added.line-number-new {
+    counter-increment: newlinenumber;
+    color: #a7a5a5;
+}
+
+.line-removed.line-number-old {
+    counter-increment: oldlinenumber;
+}
+
+.line-common.line-number-old {
+    counter-increment: oldlinenumber;
+}
+
+.line-common.line-number-new {
+    counter-increment: newlinenumber;
+}*/
+
+.line-number-old,
+.line-number-new {
+    width: 55px;
+}
+
+.diff-operation {
+    width: 2%;
+}

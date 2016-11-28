@@ -1,0 +1,13 @@
+.Select-control {
+    border-radius: 0;
+    font-family: 'Poppins';
+    font-size: 13px;
+}
+
+.Select-clear {
+    padding-top: 5px;
+}
+
+.Select-menu {
+    font-family: 'Poppins';
+}

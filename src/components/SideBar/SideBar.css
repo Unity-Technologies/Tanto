@@ -1,0 +1,23 @@
+.badge {
+    background-color: rgb(199, 166, 174);
+    border-radius: 50%;
+    color: white;
+    font-size: 12px;
+    width: 20px;
+    height: 18px;
+    padding: 3px;
+    position: absolute;
+    text-align: center;
+}
+
+.badge-small {
+    margin: -10px -5px;
+}
+
+.badge-main-menu-open {
+    margin: 3px 15px;
+}
+
+.badge-main-menu-closed {
+    margin: -25px 20px;
+}

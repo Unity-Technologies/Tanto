@@ -1,0 +1,8 @@
+.CodeMirror pre {
+    z-index: 0
+}
+
+.CodeMirror {
+    font-size: 14px;
+    font-family: Menlo;
+}

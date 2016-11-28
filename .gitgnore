@@ -1,0 +1,9 @@
+node_modules/
+webpack-assets.json
+jsconfig.json
+.orig
+.vscode/
+.tmp
+static/dist/
+
+.env

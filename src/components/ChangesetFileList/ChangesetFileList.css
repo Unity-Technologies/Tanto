@@ -1,0 +1,8 @@
+.search-input {
+    width: 100%;
+    border: none;
+}
+
+.search-input:focus {
+    border: none;
+}
