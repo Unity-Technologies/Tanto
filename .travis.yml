@@ -1,0 +1,15 @@
+language: node_js
+
+node_js:
+  - '4'
+
+script:
+  - yarn run check
+
+cache:
+  directories:
+    - node_modules
+    - $HOME/.yarn-cache
+
+install:
+  - yarn install

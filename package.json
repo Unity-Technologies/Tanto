@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "clean": "rm -rf static/dist",
+    "check": "yarn run lint && yarn run test",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "start": "concurrently --kill-others \"npm run start-prod\"",
     "start-prod": "better-npm-run start-prod",
