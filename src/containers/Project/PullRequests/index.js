@@ -130,7 +130,7 @@ class PullRequests extends Component {
           <PullRequestList data={PullRequestsDataList} />
         </StickyContainer>
       </div>
-)
+    )
   }
 }
 

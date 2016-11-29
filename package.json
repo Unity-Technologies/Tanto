@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "clean": "rm -rf static/dist",
-    "check": "yarn run lint && yarn run test",
+    "check": "yarn run lint && yarn run test && yarn run build",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "start": "concurrently --kill-others \"npm run start-prod\"",
     "start-prod": "better-npm-run start-prod",
@@ -51,13 +51,13 @@
       }
     },
     "test": {
-      "command": "./node_modules/mocha-webpack/bin/mocha-webpack --webpack-config webpack/config.test.js --recursive src/**/__tests__/*.js --full-trace --require source-map-support/register --colors",
+      "command": "mocha-webpack --webpack-config webpack/config.test.js --recursive src/**/__tests__/*.js --full-trace --require source-map-support/register --colors",
       "env": {
         "NODE_ENV": "test"
       }
     },
     "test-watch": {
-      "command": "./node_modules/mocha-webpack/bin/mocha-webpack --webpack-config webpack/config.test.js --recursive src/**/__tests__/*.js --full-trace --require source-map-support/register --colors --watch",
+      "command": "mocha-webpack --webpack-config webpack/config.test.js --recursive src/**/__tests__/*.js --full-trace --require source-map-support/register --colors --watch",
       "env": {
         "NODE_ENV": "test"
       }
@@ -79,7 +79,7 @@
     "css-loader": "^0.23.1",
     "enzyme": "^2.5.1",
     "esformatter-jsx": "^7.0.1",
-    "eslint": "^2.11.1",
+    "eslint": "^3.11.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-import-resolver-babel-module-alias": "^1.2.0",
     "eslint-loader": "^1.3.0",
@@ -220,6 +220,6 @@
     "whatwg-fetch": "^2.0.0"
   },
   "engines": {
-    "node": "5.6.0"
+    "node": "7.2.0"
   }
 }
