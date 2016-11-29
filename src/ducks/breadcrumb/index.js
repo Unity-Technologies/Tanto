@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 export const BREADCRUMB_PUSH_LINK = 'BREADCRUMB_PUSH_LINK'
 export const BREADCRUMB_UPDATE = 'BREADCRUMB_UPDATE'

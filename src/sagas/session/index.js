@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations, see https://github.com/flowtype/flow-typed
 
 import { call, put } from 'redux-saga/effects'
 import { actions } from 'ducks/session'

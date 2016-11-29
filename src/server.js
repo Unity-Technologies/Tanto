@@ -1,4 +1,3 @@
-/* @flow */
 /* eslint-disable no-param-reassign, no-console */
 
 import Express from 'express'

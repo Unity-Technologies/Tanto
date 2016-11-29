@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 import { createSelector } from 'reselect'
 import _ from 'lodash'
