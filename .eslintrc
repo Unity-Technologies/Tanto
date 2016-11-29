@@ -41,7 +41,8 @@
     "import/no-extraneous-dependencies": ["error", {"devDependencies": false, "optionalDependencies": false, "peerDependencies": false}],
     "react/forbid-prop-types": "off",
     "no-unused-vars": ["error", { "args": "none" }],
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "max-len": ["error", 100]
   },
   "globals": {
     "__DEVELOPMENT__": true,
