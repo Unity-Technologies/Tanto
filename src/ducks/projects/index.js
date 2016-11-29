@@ -1,6 +1,5 @@
 /* @flow */
 
-
 import projectQuery from 'graphql-queries/project'
 import _ from 'lodash'
 
@@ -23,6 +22,27 @@ export const PROJECT_FILES_FAILURE = 'PROJECT_FILES_FAILURE'
 export const PROJECT_PULLREQUESTS_REQUEST = 'PROJECT_PULLREQUESTS_REQUEST'
 export const PROJECT_PULLREQUESTS_SUCCESS = 'PROJECT_PULLREQUESTS_SUCCESS'
 export const PROJECT_PULLREQUESTS_FAILURE = 'PROJECT_PULLREQUESTS_FAILURE'
+
+export const PROJECTS_FETCHING = 'PROJECT_FETCHING'
+
+export const types = {
+  PROJECTS_REQUEST,
+  PROJECTS_SUCCESS,
+  PROJECTS_FAILURE,
+  PROJECTS_FETCHING,
+  PROJECT_BRANCHES_REQUEST,
+  PROJECT_BRANCHES_SUCCESS,
+  PROJECT_BRANCHES_FAILURE,
+  PROJECT_CHANGELOG_REQUEST,
+  PROJECT_CHANGELOG_SUCCESS,
+  PROJECT_CHANGELOG_FAILURE,
+  PROJECT_FILES_REQUEST,
+  PROJECT_FILES_SUCCESS,
+  PROJECT_FILES_FAILURE,
+  PROJECT_PULLREQUESTS_REQUEST,
+  PROJECT_PULLREQUESTS_SUCCESS,
+  PROJECT_PULLREQUESTS_FAILURE,
+}
 
 /**
  * Update project field with the action result
@@ -79,8 +99,25 @@ const expand = (result) => {
   if (result.repositories) {
     projects = result.repositories
   }
-
-  return { tree: [...groups, ...projects], projects: [...flatProjects, ...projects] }
+  const testgroup = { name: 'testgroup',
+                      id: 22,
+                      description: 'tresting',
+                      projects: [...projects],
+                      groups: {} }
+  const emptygroup = { name: 'Empty Group',
+                       id: 'asGDTJU34',
+                       description: 'tresting',
+                       projects: [],
+                       groups: { 22: testgroup } }
+  testgroup.groups[22] = testgroup
+  testgroup.groups[emptygroup.id] = emptygroup
+  return {
+    tree: {
+      groups: { 22: testgroup, asGDTJU34: emptygroup, other: groups },
+      projects: [...projects],
+    },
+    projects: [...flatProjects, ...projects],
+  }
 }
 
 /**
@@ -89,7 +126,7 @@ const expand = (result) => {
  */
 const initialState = {
   isFetching: false,
-  tree: [],
+  tree: { groups: [], projects: [] },
   projects: [],
 }
 
@@ -104,7 +141,6 @@ export default function project(state = initialState, action) {
     case PROJECTS_REQUEST:
       return {
         ...state,
-        isFetching: true,
       }
     case PROJECTS_FAILURE:
       return {
@@ -115,7 +151,6 @@ export default function project(state = initialState, action) {
     case PROJECTS_SUCCESS:
       return {
         ...state,
-        isFetching: false,
         ...expand(action.result),
       }
     case PROJECT_BRANCHES_REQUEST:
@@ -166,6 +201,12 @@ export default function project(state = initialState, action) {
           fetching: false,
         }),
       }
+    case PROJECTS_FETCHING:
+      return {
+        ...state,
+        isFetching: action.fetching,
+      }
+
     default:
       return state
   }
@@ -176,9 +217,28 @@ export default function project(state = initialState, action) {
  * @type {[type]}
  */
 export const fetchProjects = () => ({
-  types: [PROJECTS_REQUEST, PROJECTS_SUCCESS, PROJECTS_FAILURE],
-  promise: api => api(projectQuery.projectsAndGroupsDeep),
+  type: PROJECTS_REQUEST,
 })
+
+
+export const fetchProjectsFailure = errors => ({
+  type: PROJECTS_FAILURE,
+  errors,
+})
+
+export const fetchProjectsSuccess = result => ({
+  type: PROJECTS_SUCCESS,
+  result,
+})
+
+/**
+ * Sets the isFetching status
+ */
+export const fetchingStatus = status => ({
+  type: PROJECTS_FETCHING,
+  fetching: status,
+})
+
 
 /**
  * Fetch gproject branches
@@ -215,3 +275,10 @@ export const fetchProjectPullRequests = id => ({
   types: [PROJECT_PULLREQUESTS_REQUEST, PROJECT_PULLREQUESTS_SUCCESS, PROJECT_PULLREQUESTS_FAILURE],
   promise: api => api(projectQuery.projectPullRequests(id)),
 })
+
+export const actions = {
+  fetchProjects,
+  fetchProjectsSuccess,
+  fetchProjectsFailure,
+  fetchingStatus,
+}

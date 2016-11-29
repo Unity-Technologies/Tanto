@@ -47,6 +47,8 @@ class ProjectItem extends Component {
       secondaryTextProp,
       valueProp,
       clickHandler,
+      updated,
+      owner,
       inset,
     } = this.props
 
@@ -54,7 +56,12 @@ class ProjectItem extends Component {
     const secondaryText = secondaryTextProp ? item[secondaryTextProp] : ''
     const value = item[valueProp]
     const children = item[childrenProp]
+    const owner_name = item[owner].first_name + ' ' + item.owner.last_name
+    const updated_time = item[updated]
+    const diff = Date.now() - new Date(updated_time)
 
+
+      
     const listItemWithNestedStyle = {
       fontSize: '13px',
     }
@@ -81,10 +88,6 @@ class ProjectItem extends Component {
           leftIcon={children && !!children.length ?
             <i style={{ fontSize: '20px' }} className={`fa ${this.state.open ? 'fa-folder-open-o' : 'fa-folder-o'}`} aria-hidden="true" /> : null}
           primaryText={
-            children && !!children.length ?
-              <div style={{ display: 'inline-block', width: '100%' }}>
-                <div style={{ fontWeight: 700, float: 'left' }}>{primaryText}</div>
-                <div style={{ marginRight: '50px', fontStyle: 'italic', fontSize: '12px', color: '#8a8a88', float: 'right' }}>{this.state.open ? '' : 'Project folder description goes here ...'}</div></div> :
                   <Row>
                     <Col md={5}>
                       <div>
@@ -94,11 +97,11 @@ class ProjectItem extends Component {
                     </Col>
                     <Col md={3}>
                       {subHeader('Owner:')}
-                      <div style={{ color: '#4e4a4a' }}>John Doe</div>
+                      <div style={{ color: '#4e4a4a' }}>{owner_name}</div>
                     </Col>
                     <Col md={3}>
                       {subHeader('Last update:')}
-                      <div style={{ color: '#4e4a4a' }}>2 hours ago, by <strong>John Doe</strong></div>
+                      <div style={{ color: '#4e4a4a' }}>{diff} hours ago, by <strong>John Doe</strong></div>
                     </Col>
                     <Col md={1}>
                       <div
@@ -117,23 +120,6 @@ class ProjectItem extends Component {
                     </Col>
                   </Row>
       }
-          primaryTogglesNestedList={!!(children && children.length)}
-          insetChildren
-          nestedItems={
-            children && !!children.length &&
-            children.map(child =>
-              <ProjectItem
-                key={_.uniqueId('_project_item')}
-                item={child}
-                clickHandler={clickHandler}
-                childrenProp={childrenProp}
-                primaryTextProp={primaryTextProp}
-                secondaryTextProp={secondaryTextProp}
-                valueProp={valueProp}
-                inset={inset + 30}
-              />
-            )
-          }
         />
         <Divider />
       </div>)
@@ -146,8 +132,8 @@ ProjectItem.propTypes = {
   childrenProp: PropTypes.string.isRequired,
   primaryTextProp: PropTypes.string.isRequired,
   secondaryTextProp: PropTypes.string,
-  // updated: PropTypes.string,
-  // owner: PropTypes.string,
+  updated: PropTypes.string,
+  owner: PropTypes.string,
   inset: PropTypes.number,
   valueProp: PropTypes.string.isRequired,
 }
