@@ -1,22 +1,12 @@
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
-// import CircularProgress from 'material-ui/CircularProgress'
-import { PullRequestList, Filter, BranchSelect } from 'components'
 import { connect } from 'react-redux'
-import { actions } from 'ducks/pullrequests'
-import { selectors as sessionSelectors } from 'ducks/session'
-import { Tabs, Tab, Col, Row, Button, ButtonGroup, Badge } from 'react-bootstrap'
-import { Sticky, StickyContainer } from 'react-sticky'
-
-import { sort } from '../../api/testData'
-
-const approveButtonStyle = {
-  backgroundColor: '#1fb5ad',
-  borderColor: '#1fb5ad',
-  color: 'white',
-}
+import { Tabs, Tab, Badge } from 'react-bootstrap'
+import UserPullRequestList from './UserPullRequestList'
+import AssignedPullRequestList from './AssignedPullRequestList'
+import './styles.css'
 
 const tabTitle = (text, badge) => (
   <div style={{ display: 'inline-flex' }}>
@@ -25,172 +15,44 @@ const tabTitle = (text, badge) => (
   </div>
 )
 
-
-class PullRequests extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props
-    this.toggleReviewers = this.toggleReviewers.bind(this)
-    dispatch(actions.fetchUserAssignedPullRequests())
-    dispatch(actions.fetchUserPullRequests())
-    // dispatch(actions.fatchUserWatchingPullRequests())
-  }
-
-  toggleReviewers() {
-    const toggled = this.state.toggleReviewers
-    this.setState({ toggleReviewers: !toggled })
-  }
-
-
-  render() {
-    const {
-      // isSending,
-      pullrequests,
-      pullrequestsAssigned,
-      pullrequestsWatching,
-      // errors,
-    } = this.props
-
-    return (
-      <StickyContainer>
-        <Helmet title="Pull Requests" />
-
-        <Sticky
-          style={{
-            zIndex: 1030,
-            backgroundColor: '#f8f8f8',
-            marginBottom: '20px',
-            border: '1px solid rgb(226, 226, 226)',
-            borderRadius: '4px',
-          }}
-        >
-          <div style={{ padding: '10px' }}>
-            <Row>
-              <Col md={3}>
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    border: '1px solid lightgrey',
-                    borderRadius: '5px',
-                    padding: '7px',
-                    width: '100%',
-                    backgroundColor: 'white' }}
-                >
-                  <span
-                    style={{ pagging: '10px', color: 'grey' }}
-                  >
-                    <i className="fa fa-search" aria-hidden="true" />
-                  </span>
-                  <input
-                    type="text"
-                    style={{
-                      outline: 'none',
-                      border: 'none',
-                      marginLeft: '10px',
-                      fontSize: '14px',
-                      width: '100%' }}
-                  />
-
-                </div>
-              </Col>
-
-              <Col md={3}>
-                <BranchSelect placeholder="Select branch ..." />
-              </Col>
-
-              <Col md={4}>
-                <div style={{ float: 'left', marginRight: '5px' }}><Filter data={sort} placeholder="Order by..." /></div>
-                <div style={{ float: 'left', marginRight: '5px' }}>
-                  <a
-                    className="btn"
-                    style={{
-                      color: 'white',
-                      backgroundColor: '#b9ebae' }} aria-label="Sort ascending"
-                  >
-                    <i className="fa fa-sort-amount-asc" aria-hidden="true" />
-                  </a>
-                </div>
-                <div style={{ float: 'left' }}>
-                  <a
-                    className="btn"
-                    style={{
-                      color: 'white',
-                      backgroundColor: 'lightgrey' }} aria-label="Sort descending"
-                  >
-                    <i className="fa fa-sort-amount-desc" aria-hidden="true" />
-                  </a>
-                </div>
-              </Col>
-
-              <Col md={2}>
-                <ButtonGroup style={{ float: 'right' }}>
-                  <Button style={approveButtonStyle}>
-                    New Pull Request
-                  </Button>
-                </ButtonGroup>
-              </Col>
-            </Row>
-          </div>
-
-        </Sticky>
-        <div >
-          <Tabs animation={false} defaultActiveKey={1}>
-            <Tab
-              eventKey={1}
-              title={tabTitle('Pull request on review', 4)}
-              style={{ padding: '20px 0' }}
-            >
-              <div
-                style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }}
-              >
-              156 in total, 100 are in progress, 30 are just opened
-              </div>
-              <PullRequestList data={pullrequestsAssigned} />
-            </Tab>
-            <Tab
-              eventKey={2}
-              title={tabTitle('My pull request', 14)}
-              style={{ padding: '20px 0' }}
-            >
-              <div
-                style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }}
-              >
-              15 in total, 10 are in progress, 3 are just opened
-              </div>
-              <PullRequestList data={pullrequests} showRemoveIcon />
-            </Tab>
-            <Tab
-              eventKey={3}
-              title={tabTitle('Followed pull request', 5)}
-              style={{ padding: '20px 0' }}
-            >
-              <div
-                style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }}
-              >
-              156 in total, 100 are in progress, 30 are just opened
-              </div>
-              <PullRequestList data={pullrequestsWatching} showFollowIcon />
-            </Tab>
-          </Tabs>
-        </div>
-      </StickyContainer>)
-  }
+function PullRequests(props) {
+  const { totalUserPRs, totalUserAssignedPRs } = props
+  return (
+    <div>
+      <Helmet title="Pull Requests" />
+      <div >
+        <Tabs animation={false} defaultActiveKey={1}>
+          <Tab
+            eventKey={1}
+            className="tab"
+            title={tabTitle('Pull request on review', totalUserPRs)}
+          >
+            <AssignedPullRequestList />
+          </Tab>
+          <Tab
+            eventKey={2}
+            className="tab"
+            title={tabTitle('My pull request', totalUserAssignedPRs)}
+          >
+            <UserPullRequestList />
+          </Tab>
+        </Tabs>
+      </div>
+    </div>
+  )
 }
 
 PullRequests.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  error: PropTypes.array,
-  dispatch: PropTypes.func.isRequired,
-  pullrequests: PropTypes.array.isRequired,
-  pullrequestsAssigned: PropTypes.array.isRequired,
-  pullrequestsWatching: PropTypes.array.isRequired,
+  totalUserPRs: PropTypes.number.isRequired,
+  totalUserAssignedPRs: PropTypes.number.isRequired,
 }
 
 export default connect(
   state => ({
-    isFetching: state.pullrequests.isFetching,
-    errors: state.pullrequests.error || [],
-    pullrequests: sessionSelectors.getPullRequests(state) || [],
-    pullrequestsAssigned: sessionSelectors.getPullRequestsAssigned(state) || [],
-    pullrequestsWatching: sessionSelectors.getPullRequestsWatching(state) || [],
+    // should come from state
+    totalUserPRs: 10,
+     // should come from state
+    totalUserAssignedPRs: 100,
   })
 )(PullRequests)
+

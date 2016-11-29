@@ -1,0 +1,27 @@
+.new-status {
+    border-left: 4px solid lightgrey;
+}
+
+.approved-status {
+    border-left: 4px solid #d1fad1;
+}
+
+.under-review-status {
+    border-left: 4px solid lightyellow;
+}
+
+.rejected-status {
+    border-left: 4px solid lightcoral;
+}
+
+.remove-icon {
+    font-size: 20px;
+    float: right;
+    cursor: pointer;
+    color: #aebac0;
+}
+
+.sub-header {
+    color: #8c8c8c;
+    font-size: 13px;
+}

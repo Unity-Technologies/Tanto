@@ -10,17 +10,17 @@ export const userPullRequestsQuery = name => `
           description
           title
           created
+          updated
           status
           origin_branch
           dest_branch
           origin_repository {
-            id
             name
-          },
+          }
+          origin_rev
           dest_repository {
-            id
             name
-          },
+          }
           metadata_etag
         }
       }

@@ -1,0 +1,5 @@
+.list-group {
+  font-size: 13px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
