@@ -1,5 +1,3 @@
-/* @flow */
-
 /**
  * Check HTTP response status
  */
@@ -12,4 +10,3 @@ export default function checkHttpStatus(response) {
   error.response = response
   throw error
 }
-

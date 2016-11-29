@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 /* eslint-disable */
 
@@ -107,4 +107,3 @@ export const actions = {
   fetchUserAssignedPullRequests: () => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS }),
   fatchUserWatchingPullRequests: () => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS }),
 }
-

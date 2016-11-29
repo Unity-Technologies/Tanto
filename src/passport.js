@@ -2,10 +2,10 @@
 
 import 'isomorphic-fetch'
 import { routes } from 'universal/constants'
+import type { $Request, $Response, NextFunction } from 'express'
 
 import env from './config'
 import { checkHttpStatus } from './universal/requests'
-
 
 const passport = require('passport')
 const OAuth2Strategy = require('passport-oauth2')
@@ -56,7 +56,11 @@ passport.use('ono', new OAuth2Strategy({
   }
 ))
 
-exports.isAuthenticated = (req, res, next) => {
+type PassportRequest = {
+  isAuthenticated: () => boolean,
+} & $Request;
+
+exports.isAuthenticated = (req: PassportRequest, res: $Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     return next()
   }

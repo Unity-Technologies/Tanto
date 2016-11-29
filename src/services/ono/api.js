@@ -1,5 +1,3 @@
-/* @flow */
-
 /* eslint-disable */
 
 //  NOTE: isomophic fetch replaced with browser fetch, because isomorphic doesn't
@@ -42,11 +40,10 @@ export function parseJSON(response) {
  * @param  {[type]} query - accepts the FormData object
  * @return {[type]}      [description]
  */
-export function get(query) {
+export function get(query: any) {
   const encodedQuery = encodeURIComponent(query)
   const url = `${routes.ONO_API_ROUTE}?query=${encodedQuery}`
   return fetch(url, { credentials: 'same-origin' })
     .then(checkHttpStatus)
     .then(parseJSON)
 }
-
