@@ -2,6 +2,7 @@
   "presets": ["react", "es2015", "stage-0"],
 
   "plugins": [
+    "transform-flow-strip-types",
     "transform-runtime",
     "add-module-exports",
     "transform-decorators-legacy",
@@ -11,7 +12,6 @@
   "env": {
     "development": {
       "plugins": [
-        "typecheck",
         ["react-transform", {
             "transforms": [{
                 "transform": "react-transform-catch-errors",
