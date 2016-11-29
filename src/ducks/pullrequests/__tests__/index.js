@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import reducer, { actions, types } from '../index'
 
 const expect = require('chai').expect

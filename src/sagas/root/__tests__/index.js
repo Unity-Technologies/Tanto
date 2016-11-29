@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { takeLatest } from 'redux-saga'
 import { fork } from 'redux-saga/effects'
 import fetchCurrentUserProfile from 'sagas/session'

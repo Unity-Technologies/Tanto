@@ -9,14 +9,17 @@ import _ from 'lodash'
 function ReduxBreadcrumb(props) {
   const { items, style } = props
   return (
-    <div>{items.length > 0 &&
-    <Breadcrumb style={style}>
-      {items.map(item => (
-        <Breadcrumb.Item active key={_.uniqueId('breadcrumb_item')}>
-          <Link to={item.link}>{item.label}</Link>
-        </Breadcrumb.Item>
-      ))}
-    </Breadcrumb>}</div>
+    <div>
+    {items.length > 0 &&
+      <Breadcrumb style={style}>
+        {items.map(item => (
+          <Breadcrumb.Item active key={_.uniqueId('breadcrumb_item')}>
+            <Link to={item.link}>{item.label}</Link>
+          </Breadcrumb.Item>
+        ))}
+      </Breadcrumb>
+    }
+    </div>
   )
 }
 

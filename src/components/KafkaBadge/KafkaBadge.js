@@ -13,33 +13,35 @@ import { connect } from 'react-redux'
 import { selectors } from 'ducks/auth'
 
 function KafkaBadge({ count, isAuthenticated, messages }) {
-  return (<div> {
-      isAuthenticated && count > 0 &&
-        <Badge
-          badgeContent={count}
-          secondary
-          badgeStyle={{ top: 7, right: 10 }}
+  return (
+    <div>
+    {isAuthenticated && count > 0 &&
+      <Badge
+        badgeContent={count}
+        secondary
+        badgeStyle={{ top: 7, right: 10 }}
+      >
+        <IconMenu
+          iconButtonElement={<IconButton><NotificationsIcon color={'#d6d6d6'} /></IconButton>}
+          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
-          <IconMenu
-            iconButtonElement={<IconButton><NotificationsIcon color={'#d6d6d6'} /></IconButton>}
-            targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-          >
-            {messages.length > 0 && messages.reverse().map((value, index) =>
-              <MenuItem
-                key={_.uniqueId('_kafka_message_item')}
-                value={index}
-                primaryText={value.message}
-                style={{ fontSize: '12px' }}
-              />
-              )}
-          </IconMenu>
-        </Badge>
-     }
+          {messages.length > 0 && messages.reverse().map((value, index) =>
+            <MenuItem
+              key={_.uniqueId('_kafka_message_item')}
+              value={index}
+              primaryText={value.message}
+              style={{ fontSize: '12px' }}
+            />
+            )}
+        </IconMenu>
+      </Badge>
+    }
     {isAuthenticated && count === 0 &&
-    <NotificationsIconNone style={{ marginTop: '6px' }} color={'#d6d6d6'} />
-     }
-  </div>)
+      <NotificationsIconNone style={{ marginTop: '6px' }} color={'#d6d6d6'} />
+    }
+    </div>
+  )
 }
 
 KafkaBadge.propTypes = {

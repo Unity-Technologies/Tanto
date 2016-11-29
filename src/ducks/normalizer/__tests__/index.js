@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { reduceObjById, reduceArrayToObj, merge } from 'ducks/normalizer'
 
 const expect = require('chai').expect
@@ -88,4 +89,3 @@ describe('merge', () => {
     expect(merge(obj1, obj2)).to.be.eql(expectedMerged)
   })
 })
-

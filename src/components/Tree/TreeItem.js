@@ -38,10 +38,12 @@ function TreeItem({
         leftIcon={children && !!children.length ?
           <FolderClosedIcon style={{ fill: palette.primary1Color }} /> :
             null}
-        primaryText={children && !!children.length ?
-          <div style={{ color: palette.primary1Color, fontWeight: 700 }}>
-            {primaryText}
-          </div> :
+        primaryText={
+          children && !!children.length ?
+            <div style={{ color: palette.primary1Color, fontWeight: 700 }}>
+              {primaryText}
+            </div>
+          :
             <div style={{ paddingBottom: '15px' }}>
               <div style={{ float: 'left' }}>{primaryText}</div>
               <div style={{ float: 'right', fontSize: '12px', color: '#a2a2a2' }}>

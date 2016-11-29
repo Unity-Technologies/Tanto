@@ -86,7 +86,14 @@ function NotificationList() {
         <Divider inset />
         <ListItem
           rightIconButton={rightIconMenu}
-          leftAvatar={<Avatar size={40} backgroundColor={'#d8e7f0'} style={{ borderRadius: '20%' }} icon={<ActionInfo />} />}
+          leftAvatar={
+            <Avatar
+              size={40}
+              backgroundColor={'#d8e7f0'}
+              style={{ borderRadius: '20%' }}
+              icon={<ActionInfo />}
+            />
+          }
           primaryText={
             <p style={primaryTextStyle}>You are added as reviewer to:
               <Link
@@ -122,7 +129,14 @@ function NotificationList() {
         <Divider inset />
         <ListItem
           rightIconButton={rightIconMenu}
-          leftAvatar={<Avatar size={40} backgroundColor={'#f2dede'} style={{ borderRadius: '20%' }} icon={<Update />} />}
+          leftAvatar={
+            <Avatar
+              size={40}
+              backgroundColor={'#f2dede'}
+              style={{ borderRadius: '20%' }}
+              icon={<Update />}
+            />
+          }
           primaryText={<p style={primaryTextStyle}>New pull request version:
             <Link
               style={{
@@ -196,7 +210,14 @@ function NotificationList() {
         <Divider inset />
         <ListItem
           rightIconButton={rightIconMenu}
-          leftAvatar={<Avatar size={40} backgroundColor={'#d8e7f0'} style={{ borderRadius: '20%' }} icon={<ActionInfo />} />}
+          leftAvatar={
+            <Avatar
+              size={40}
+              backgroundColor={'#d8e7f0'}
+              style={{ borderRadius: '20%' }}
+              icon={<ActionInfo />}
+            />
+          }
           primaryText={<p style={primaryTextStyle}>You are added as reviewer to:
             <Link
               style={{

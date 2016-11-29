@@ -48,14 +48,14 @@ class PullRequest extends Component {
         <StickyActionBar />
         <div>
           {persona === DEVELOPER_PERSONA &&
-          <LayoutDeveloper />
-        }
+            <LayoutDeveloper />
+          }
           {persona === MANAGER_PERSONA &&
-          <LayoutManager />
-        }
+            <LayoutManager />
+          }
           {persona === GUARDIAN_PERSONA &&
-          <LayoutGuardian />
-        }
+            <LayoutGuardian />
+          }
         </div>
       </StickyContainer>
     )

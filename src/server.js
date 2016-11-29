@@ -60,10 +60,13 @@ app.use(lusca.xssProtection(true))
 app.use(lusca.nosniff())
 
 app.get(routes.ONO_AUTH_ROUTE, passport.authenticate('ono'))
-app.get(routes.ONO_AUTH_CALLBACK_ROUTE, passport.authenticate('ono', { failureRedirect: routes.LOGIN_ROUTE }), (req, res) => {
-  req.session.user = req.user
-  res.redirect(req.session.returnTo || '/')
-})
+app.get(
+  routes.ONO_AUTH_CALLBACK_ROUTE,
+  passport.authenticate('ono', { failureRedirect: routes.LOGIN_ROUTE }),
+  (req, res) => {
+    req.session.user = req.user
+    res.redirect(req.session.returnTo || '/')
+  })
 
 app.use(routes.ONO_AUTH_LOGOUT_ROUTE, (req, res) => {
   if (req.isAuthenticated()) {
@@ -118,5 +121,10 @@ app.use('/', passportConfig.isAuthenticated, (req, res) => {
 app.use(errorHandler())
 
 app.listen(app.get('port'), () => {
-  console.log('%s Express server listening on port %d in %s mode.', chalk.green('✓'), app.get('port'), app.get('env'))
+  console.log(
+    '%s Express server listening on port %d in %s mode.',
+    chalk.green('✓'),
+    app.get('port'),
+    app.get('env')
+  )
 })

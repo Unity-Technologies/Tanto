@@ -16,8 +16,18 @@ class CommentsList extends Component {
       <div>
         <Row>
           <Col md={12}>
-            <div style={{ display: 'inline-flex', border: '1px solid lightgrey', borderRadius: '5px', padding: '7px', width: '100%' }}>
-              <span style={{ pagging: '10px', color: 'grey' }}><i className="fa fa-search" aria-hidden="true" /></span>
+            <div
+              style={{
+                display: 'inline-flex',
+                border: '1px solid lightgrey',
+                borderRadius: '5px',
+                padding: '7px',
+                width: '100%',
+              }}
+            >
+              <span style={{ pagging: '10px', color: 'grey' }}>
+                <i className="fa fa-search" aria-hidden="true" />
+              </span>
               <input
                 type="text"
                 style={{
@@ -41,8 +51,13 @@ class CommentsList extends Component {
                 <ListGroupItem style={{ padding: '10px 10px' }} >
                   <div style={{ display: 'inline-block' }}>
                     <TestAvatar />
-                    <div style={{ padding: '0 10px', display: 'table' }}><div style={{ fontSize: '13px', color: '#aaa7a7' }}>
-                      <strong><a href="#line">line 23</a></strong> <span style={{ fontStyle: 'italic', float: 'right' }}>3 minutes ago</span></div>
+                    <div style={{ padding: '0 10px', display: 'table' }}>
+                      <div style={{ fontSize: '13px', color: '#aaa7a7' }}>
+                        <strong>
+                          <a href="#line">line 23</a>
+                        </strong>
+                        <span style={{ fontStyle: 'italic', float: 'right' }}>3 minutes ago</span>
+                      </div>
                       <span style={{ fontSize: '13px' }}>{comment.date}</span>
                       <div className="comment">{comment.message}</div>
                     </div>

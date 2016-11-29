@@ -41,8 +41,13 @@ export const queries = {
 }
 
 export const parsers = {
-  parseCurrentUserPullRequests: response => (_.get(response, ['data', 'me', constants.pull_requests_owned, 'edges']).map(x => x.node)),
-  parseCurrentUserAssignedPullRequests: response => (_.get(response, ['data', 'me', constants.pull_requests_under_review, 'edges']).map(x => x.node)),
-  parseCurrentUserWatchingPullRequests: response => (_.get(response, ['data', 'me', constants.pull_requests_participating, 'edges']).map(x => x.node)),
+  parseCurrentUserPullRequests: response => (
+    _.get(response, ['data', 'me', constants.pull_requests_owned, 'edges']).map(x => x.node)
+  ),
+  parseCurrentUserAssignedPullRequests: response => (
+    _.get(response, ['data', 'me', constants.pull_requests_under_review, 'edges']).map(x => x.node)
+  ),
+  parseCurrentUserWatchingPullRequests: response => (
+    _.get(response, ['data', 'me', constants.pull_requests_participating, 'edges']).map(x => x.node)
+  ),
 }
-

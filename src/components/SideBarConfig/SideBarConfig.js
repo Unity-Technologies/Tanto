@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint-disable max-len */
 
 import {
   SIDE_BAR_ITEMS,

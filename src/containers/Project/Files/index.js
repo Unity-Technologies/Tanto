@@ -143,7 +143,9 @@ class Files extends Component {
 
                 <Col md={7}>
                   <div style={{ display: 'inline-flex' }}>
-                    <div style={{ width: '270px', marginRight: '5px' }}><BranchSelect project={id} placeholder="Select branch ..." /></div>
+                    <div style={{ width: '270px', marginRight: '5px' }}>
+                      <BranchSelect project={id} placeholder="Select branch ..." />
+                    </div>
                     <Filter data={changesets} placeholder="Select changeset..." />
                   </div>
                 </Col>

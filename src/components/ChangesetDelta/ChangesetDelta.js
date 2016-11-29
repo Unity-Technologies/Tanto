@@ -13,15 +13,24 @@ function ChangesetDelta(props) {
   return (
     <div className="changeset-delta">
       {deletedWidth > 0 &&
-        <div className="changeset-chunk changeset-deleted" style={{ width: `${Math.round(deletedWidth)}%` }}>
+        <div
+          className="changeset-chunk changeset-deleted"
+          style={{ width: `${Math.round(deletedWidth)}%` }}
+        >
           {showText && <span style={{ color: 'black' }}>{props.deleted}</span>}
         </div>}
       {addedWidth > 0 &&
-        <div className="changeset-chunk changeset-added" style={{ width: `${Math.round(addedWidth)}%` }} >
+        <div
+          className="changeset-chunk changeset-added"
+          style={{ width: `${Math.round(addedWidth)}%` }}
+        >
           {showText && <span style={{ color: 'black' }}>{props.added}</span>}
         </div>}
       {changedWidth > 0 &&
-        <div className="changeset-chunk changeset-changed" style={{ width: `${Math.round(changedWidth)}%` }}>
+        <div
+          className="changeset-chunk changeset-changed"
+          style={{ width: `${Math.round(changedWidth)}%` }}
+        >
           {showText && <span style={{ color: 'black' }}>{props.changed}</span>}
         </div>}
     </div>

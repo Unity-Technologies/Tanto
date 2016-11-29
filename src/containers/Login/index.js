@@ -76,7 +76,10 @@ function ServerLogin() {
           <div style={titleStyle}>
             <span> Welcome to Tanto</span>
           </div>
-          <a style={buttonStyle} href={routes.ONO_AUTH_ROUTE}><span style={{ verticalAlign: 'middle' }}>SIGN IN WITH ONO</span></a></div>
+          <a style={buttonStyle} href={routes.ONO_AUTH_ROUTE}>
+            <span style={{ verticalAlign: 'middle' }}>SIGN IN WITH ONO</span>
+          </a>
+        </div>
       </body>
     </html>
   )

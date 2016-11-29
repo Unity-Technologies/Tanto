@@ -122,7 +122,9 @@ class File extends Component {
 
                 <Col md={7} >
                   <div style={{ display: 'inline-flex' }}>
-                    <div style={{ width: '270px', marginRight: '5px' }}><BranchSelect project={id} placeholder="Select branch ..." /></div>
+                    <div style={{ width: '270px', marginRight: '5px' }}>
+                      <BranchSelect project={id} placeholder="Select branch ..." />
+                    </div>
                     <Filter data={changesets} placeholder="Select changeset..." />
                   </div>
                 </Col>
@@ -150,8 +152,17 @@ class File extends Component {
             header={
               <div style={{ display: 'inline-block', width: '100%', textDecoration: 'none' }}>
                 <div style={{ fontSize: '14px' }}><strong>{metadata.name}</strong>
-                  <span style={{ color: 'rgb(122, 123, 123)', fontSize: '13px', padding: '10px', float: 'right' }}>size: {metadata.size}</span></div>
-                <div style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', fontStyle: 'italic' }}><strong>{metadata.author}</strong> modified 3 days ago
+                  <span
+                    style={{
+                      color: 'rgb(122, 123, 123)',
+                      fontSize: '13px',
+                      padding: '10px',
+                      float: 'right',
+                    }}
+                  >size: {metadata.size}</span>
+                </div>
+                <div style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', fontStyle: 'italic' }}>
+                  <strong>{metadata.author}</strong> modified 3 days ago
                 </div>
               </div>
         }

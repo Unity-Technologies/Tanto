@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import { call, put } from 'redux-saga/effects'
 import { actions } from 'ducks/pullrequests'
 import { get } from 'services/ono/api'
@@ -73,4 +75,3 @@ describe('pullrequests saga', () => {
             sessionActions.setUserWatchingPRsIds))
   })
 })
-

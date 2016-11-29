@@ -94,7 +94,7 @@ const StyleControls = (props) => {
 StyleControls.propTypes = {
   editorState: PropTypes.object.isRequired,
   // onToogleInlineStyle: PropTypes.func.isRequired,
-  // onToogleBlockType: PropTypes.func.isRequired,
+  onToogleBlockType: PropTypes.func.isRequired,
   activeColor: PropTypes.string,
   style: PropTypes.object,
 }

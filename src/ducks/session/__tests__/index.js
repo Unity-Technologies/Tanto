@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint-disable max-len */
 
 import reducer, { actions, types, selectors, DEVELOPER_PERSONA } from '../index'
 
@@ -201,4 +202,3 @@ describe('selectors', () => {
     expect(selectors.getPullRequestsWatching(state)).to.eql([pr5])
   })
 })
-

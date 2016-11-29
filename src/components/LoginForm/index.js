@@ -60,9 +60,10 @@ function LoginForm(props) {
       <div>
         <Field name="password" type="password" component={renderTextField} />
       </div>
-      {isSendingRequest ? (
-        <LoadingIcon />
-        ) : (
+      {
+        isSendingRequest ?
+          <LoadingIcon />
+        :
           <RaisedButton
             fullWidth
             className="btn-submit"
@@ -70,7 +71,8 @@ function LoginForm(props) {
             label="Login"
             primary
             disabled={isSendingRequest}
-          />)}
+          />
+      }
     </form>
   )
 }

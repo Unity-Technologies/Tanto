@@ -12,5 +12,11 @@ exports.findById = (id, done) => {
 }
 
 exports.save = (user, done) => {
-  client.hmset(user.id, ['name', user.name, 'token', user.token, 'id', user.id, 'username', user.username, 'email', user.email], done)
+  client.hmset(user.id, [
+    'name', user.name,
+    'token', user.token,
+    'id', user.id,
+    'username', user.username,
+    'email', user.email,
+  ], done)
 }

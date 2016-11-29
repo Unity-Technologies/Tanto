@@ -23,8 +23,18 @@ class ChangesetFileList extends Component {
       <div>
         <Row>
           <Col md={12}>
-            <div style={{ display: 'inline-flex', border: '1px solid lightgrey', borderRadius: '5px', padding: '7px', width: '100%' }}>
-              <span style={{ pagging: '10px', color: 'grey' }}><i className="fa fa-search" aria-hidden="true" /></span>
+            <div
+              style={{
+                display: 'inline-flex',
+                border: '1px solid lightgrey',
+                borderRadius: '5px',
+                padding: '7px',
+                width: '100%',
+              }}
+            >
+              <span style={{ pagging: '10px', color: 'grey' }}>
+                <i className="fa fa-search" aria-hidden="true" />
+              </span>
               <input
                 type="text"
                 style={{
@@ -48,17 +58,26 @@ class ChangesetFileList extends Component {
                 <ListGroupItem key={_.uniqueId('listItem')} style={{ padding: '10px 10px' }} >
                   <Row>
                     {!this.props.compact &&
-                    <Col lg={2} md={2} xsHidden smHidden>
-                      <ChangesetDelta
-                        deleted={Math.floor((Math.random() * 10) + 1)}
-                        added={Math.floor((Math.random() * 10) + 1)}
-                        changed={Math.floor((Math.random() * 10) + 1)}
-                      />
+                      <Col lg={2} md={2} xsHidden smHidden>
+                        <ChangesetDelta
+                          deleted={Math.floor((Math.random() * 10) + 1)}
+                          added={Math.floor((Math.random() * 10) + 1)}
+                          changed={Math.floor((Math.random() * 10) + 1)}
+                        />
 
-                    </Col>}
+                      </Col>
+                    }
                     <Col lg={8} md={8} sm={8} xs={8}>
                       <div>
-                        <Link style={{ cursor: 'pointer' }} containerId={containerId} activeClass="active" to={file.name.replace(/[/.]/g, '')} spy smooth duration={100} >
+                        <Link
+                          style={{ cursor: 'pointer' }}
+                          containerId={containerId}
+                          activeClass="active"
+                          to={file.name.replace(/[/.]/g, '')}
+                          spy
+                          smooth
+                          duration={100}
+                        >
                           {file.name}
                         </Link>
                       </div>
@@ -69,14 +88,14 @@ class ChangesetFileList extends Component {
                       sm={this.props.compact ? 4 : 2}
                       xs={this.props.compact ? 4 : 2}
                     >
-                      {file.comments.length > 0 &&
+                    {file.comments.length > 0 &&
                       <div style={{ color: 'lightblue', cursor: 'pointer', float: 'right' }}>
                         <span style={{ marginRight: '5px' }}>
                           <i className="fa fa-comment" aria-hidden="true" />
                         </span>
                         {file.comments.length}
                       </div>
-                  }
+                    }
                     </Col>
                   </Row>
                 </ListGroupItem>))}

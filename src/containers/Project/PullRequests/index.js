@@ -92,7 +92,9 @@ class PullRequests extends Component {
                 </Col>
 
                 <Col md={4}>
-                  <div style={{ float: 'left', marginRight: '5px' }}><Filter data={sort} placeholder="Order by..." /></div>
+                  <div style={{ float: 'left', marginRight: '5px' }}>
+                    <Filter data={sort} placeholder="Order by..." />
+                  </div>
                   <div style={{ float: 'left', marginRight: '5px' }}>
                     <a
                       className="btn"

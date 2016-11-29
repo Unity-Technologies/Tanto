@@ -45,7 +45,8 @@ function Logout(props) {
           <div style={{ display: 'inline-block' }}>
             <div style={{ margin: '5px -9px', float: 'left' }}>
               {persona === DEVELOPER_PERSONA &&
-              <i className="fa fa-check" aria-hidden="true" />}
+                <i className="fa fa-check" aria-hidden="true" />
+              }
             </div>
             <div style={{ margin: '5px 15px' }}>Developer persona</div>
           </div>
@@ -54,7 +55,8 @@ function Logout(props) {
           <div style={{ display: 'inline-block' }}>
             <div style={{ margin: '5px -9px', float: 'left' }}>
               {persona === GUARDIAN_PERSONA &&
-              <i className="fa fa-check" aria-hidden="true" />}
+                <i className="fa fa-check" aria-hidden="true" />
+              }
             </div>
             <div style={{ margin: '5px 15px' }}>Guardian persona</div>
           </div>
@@ -63,7 +65,8 @@ function Logout(props) {
           <div style={{ display: 'inline-block' }}>
             <div style={{ margin: '5px -9px', float: 'left' }}>
               {persona === MANAGER_PERSONA &&
-              <i className="fa fa-check" aria-hidden="true" />}
+                <i className="fa fa-check" aria-hidden="true" />
+              }
             </div>
             <div style={{ margin: '5px 15px' }}>Manager persona</div>
           </div>

@@ -1,6 +1,5 @@
 /* @flow */
 
-
 import SocketIo from 'socket.io'
 import env from '../config'
 import kafkaClient from '../utils/kafkaClient'
