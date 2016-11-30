@@ -9,7 +9,8 @@ import ListNumbered from 'material-ui/svg-icons/editor/format-list-numbered'
 import Quote from 'material-ui/svg-icons/editor/format-quote'
 import Code from 'material-ui/svg-icons/action/code'
 import IconButton from 'material-ui/IconButton'
-import { Icon } from 'components'
+
+import Icon from '../Icon'
 
 const INLINE_STYLES = [
   { label: 'Bold', style: 'BOLD', icon: Bold },

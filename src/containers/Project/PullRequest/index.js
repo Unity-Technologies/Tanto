@@ -13,7 +13,6 @@ import {
 
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
-import LayoutManager from './Layouts/LayoutManager'
 import { prDescription } from '../../../api/testData'
 import StickyActionBar from './StickyActionBar'
 
@@ -51,7 +50,7 @@ class PullRequest extends Component {
             <LayoutDeveloper />
           }
           {persona === MANAGER_PERSONA &&
-            <LayoutManager />
+            <LayoutGuardian />
           }
           {persona === GUARDIAN_PERSONA &&
             <LayoutGuardian />
@@ -68,7 +67,7 @@ PullRequest.propTypes = {
   // params: PropTypes.object.isRequired,
   // theme: PropTypes.object.isRequired,
   // user: PropTypes.string,
-  persona: PropTypes.string.isRequired,
+  persona: PropTypes.oneOf([DEVELOPER_PERSONA, MANAGER_PERSONA, GUARDIAN_PERSONA]).isRequired,
 }
 
 export default connect(
