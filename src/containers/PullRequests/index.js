@@ -133,7 +133,7 @@ class PullRequests extends Component {
 
         </Sticky>
         <div >
-          <Tabs animation={false} defaultActiveKey={1}>
+          <Tabs animation={false} defaultActiveKey={1} id="pull-requests-tabs">
             <Tab
               eventKey={1}
               title={tabTitle('Pull request on review', 4)}

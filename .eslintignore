@@ -1,4 +1,5 @@
 flow-typed/*
+static/*
 webpack/*
 
 server.babel.js
