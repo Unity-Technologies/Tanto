@@ -1,8 +1,9 @@
 /* @flow */
 
 import React, { Component, PropTypes } from 'react'
-import { TextEditorBox } from 'components'
 import RaisedButton from 'material-ui/RaisedButton'
+
+import TextEditorBox from '../TextEditorBox'
 
 class NewComment extends Component {
   constructor(props) {
