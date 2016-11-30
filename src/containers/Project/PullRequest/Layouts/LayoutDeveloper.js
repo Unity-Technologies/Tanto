@@ -129,7 +129,7 @@ class LayoutDeveloper extends Component {
         <div style={{ padding: '0 20px' }}>
 
 
-          <Tabs defaultActiveKey={0}>
+          <Tabs defaultActiveKey={0} id="layout-developer-tabs">
             <Tab style={{ margin: '20px 0' }} eventKey={0} title="Summary">
                <div name="summary" id="summary" >
                <div style={{ display: 'inline-block' }}>

@@ -1,3 +1,6 @@
+// FIXME: this should not be read from client side, but passed down to client
+// in a script tag or similar
+
 const envalid = require('envalid')
 
 const { str, num, url } = envalid

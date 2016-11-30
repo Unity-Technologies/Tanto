@@ -72,4 +72,5 @@ module.exports = {
     utilities: true,
     'responsive-utilities': true,
   },
+  styleLoader: null,
 }

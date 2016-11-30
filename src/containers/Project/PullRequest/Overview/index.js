@@ -96,8 +96,8 @@ class Overview extends Component {
                 <div style={{ marginTop: '10px' }}>
                   <Comment
                     style={{ border: '1px solid lightgrey',
-                            borderRadius: '0px',
-                            marginBottom: '10px' }}
+                      borderRadius: '0px',
+                      marginBottom: '10px' }}
                     simpleText={false}
                     hideSettings
                     key={_.uniqueId('_code_comment')}
@@ -110,8 +110,8 @@ class Overview extends Component {
               <NewComment
                 headerStyle={{ borderRadius: '0px' }}
                 style={{ border: '1px solid lightgrey',
-                        borderRadius: '0px',
-                        marginBottom: '10px' }}
+                  borderRadius: '0px',
+                  marginBottom: '10px' }}
                 ref={tb => (this.newTextEditorBox = tb)}
                 placeholder="Write comment here..."
                 onComment={message => this.onSaveComment(message)}

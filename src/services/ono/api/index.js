@@ -1,5 +1,3 @@
-/* @flow */
-
 import 'isomorphic-fetch'
 import { routes } from 'universal/constants'
 import { checkHttpStatus, parseJSON } from 'universal/requests'

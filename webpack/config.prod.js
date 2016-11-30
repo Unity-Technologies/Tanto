@@ -11,10 +11,10 @@ var assetsPath = path.resolve(projectRootPath, './static/dist')
 
 var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin')
 var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./isomorphic-tools'))
+var baseConfig = require('./config.base')
 
-module.exports = {
+module.exports = Object.assign({}, baseConfig, {
   devtool: 'source-map',
-  context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
       'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
@@ -27,9 +27,6 @@ module.exports = {
     filename: '[name]-[chunkhash].js',
     chunkFilename: '[name]-[chunkhash].js',
     publicPath: '/dist/'
-  },
-  node: {
-    fs: "empty"
   },
   module: {
     loaders: [{
@@ -75,24 +72,6 @@ module.exports = {
       },
     ]
   },
-  progress: true,
-  resolve: {
-    root: path.resolve(__dirname),
-    modulesDirectories: [
-      'src',
-      'node_modules'
-    ],
-    extensions: ['', '.json', '.js', '.jsx'],
-    alias: {
-      'containers': 'containers',
-      'components': 'components',
-      'ducks': 'ducks',
-      'sagas': 'sagas',
-      'services': 'services',
-      'graphql-queries': 'api/graphql/queries',
-      'universal': 'universal'
-    }
-  },
   plugins: [
     new CleanPlugin([assetsPath], {
       root: projectRootPath
@@ -122,4 +101,4 @@ module.exports = {
 
     webpackIsomorphicToolsPlugin
   ]
-}
+})

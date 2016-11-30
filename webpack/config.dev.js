@@ -12,10 +12,10 @@ var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./i
 
 var babelLoader = require('./dev.babel')
 var config = babelLoader('./.babelrc')
+var baseConfig = require('./config.base')
 
-module.exports = {
+module.exports = Object.assign({}, baseConfig, {
   devtool: 'inline-source-map',
-  context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
       'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
@@ -29,9 +29,6 @@ module.exports = {
     filename: '[name]-[hash].js',
     chunkFilename: '[name]-[chunkhash].js',
     publicPath: 'http://' + host + ':' + port + '/dist/'
-  },
-  node: {
-    fs: "empty"
   },
   module: {
     loaders: [{
@@ -77,24 +74,6 @@ module.exports = {
       },
     ]
   },
-  progress: true,
-  resolve: {
-    root: path.resolve(__dirname),
-    modulesDirectories: [
-      'src',
-      'node_modules'
-    ],
-    extensions: ['', '.json', '.js', '.jsx'],
-    alias: {
-      'containers': 'containers',
-      'components': 'components',
-      'ducks': 'ducks',
-      'sagas': 'sagas',
-      'services': 'services',
-      'graphql-queries': 'api/graphql/queries',
-      'universal': 'universal'
-    }
-  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/webpack-stats\.json$/),
@@ -106,4 +85,4 @@ module.exports = {
     }),
     webpackIsomorphicToolsPlugin.development()
   ]
-}
+})

@@ -1,5 +1,3 @@
-/* @flow */
-
 /**
  * Check HTTP response status
  */

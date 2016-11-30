@@ -1,5 +1,4 @@
-/* @flow */
-
+// TODO: add flow annotations
 
 import projectQuery from 'graphql-queries/project'
 import _ from 'lodash'

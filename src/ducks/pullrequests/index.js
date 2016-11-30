@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 import _ from 'lodash'
 import { reduceArrayToObj } from 'ducks/normalizer'
@@ -106,4 +106,3 @@ export const actions = {
   fetchUserAssignedPullRequests: (): Object => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS }),
   fatchUserWatchingPullRequests: (): Object => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS }),
 }
-

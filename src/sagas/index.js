@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations, see https://github.com/flowtype/flow-typed
 
 import { fork } from 'redux-saga/effects'
 import { takeLatest } from 'redux-saga'

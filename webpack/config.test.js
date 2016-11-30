@@ -10,7 +10,9 @@ require('source-map-support').install({
   environment: 'node',
 })
 
-module.exports = {
+var baseConfig = require('./config.base')
+
+module.exports = Object.assign({}, baseConfig, {
   target: 'node',
   externals: [nodeExternals()],
   module: {
@@ -52,23 +54,5 @@ module.exports = {
         loader: 'url?limit=10000&mimetype=image/svg+xml'
       },
     ]
-  },
-  resolve: {
-    root: path.resolve(__dirname),
-    modulesDirectories: [
-      'src',
-      'node_modules'
-    ],
-    extensions: ['', '.json', '.js', '.jsx'],
-    alias: {
-      'containers': 'containers',
-      'components': 'components',
-      'ducks': 'ducks',
-      'sagas': 'sagas',
-      'services': 'services',
-      'graphql-queries': 'api/graphql/queries',
-      'universal': 'universal',
-      'routes': 'routes'
-    }
   }
-}
+})

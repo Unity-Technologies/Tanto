@@ -1,8 +1,25 @@
 [ignore]
-.*/node_modules/.*
+<PROJECT_ROOT>/node_modules/fbjs/*
+<PROJECT_ROOT>/node_modules/react-event-listener/*
+<PROJECT_ROOT>/node_modules/react-motion/*
+<PROJECT_ROOT>/node_modules/react-side-effect/node_modules/fbjs/*
+<PROJECT_ROOT>/node_modules/config-chain/*
+
+<PROJECT_ROOT>/src/components/*
+<PROJECT_ROOT>/src/containers/*
+
 
 [include]
+
 
 [libs]
 
 
+[options]
+module.name_mapper='^\(.*\)\.css$' -> '<PROJECT_ROOT>/flow-typed/CSSModule.js.flow'
+
+module.name_mapper='^containers\/\(.*\)$' -> '<PROJECT_ROOT>/src/containers/\1'
+module.name_mapper='^ducks\/\(.*\)$' -> '<PROJECT_ROOT>/src/ducks/\1'
+module.name_mapper='^universal\/\(.*\)$' -> '<PROJECT_ROOT>/src/universal/\1'
+module.name_mapper='^services\/\(.*\)$' -> '<PROJECT_ROOT>/src/services/\1'
+module.name_mapper='^graphql-queries\/\(.*\)$' -> '<PROJECT_ROOT>/src/api/graphql/queries/\1'
