@@ -37,7 +37,7 @@ export default connect(
      // should come from state
     totalNew: 14,
      // should come from state
-    activePage: 0,
+    activePage: 1,
     isFetching: state.pullrequests.isFetching,
     error: state.pullrequests.error,
     items: sessionSelectors.getComputedPullRequestsAssigned(state) || [],
