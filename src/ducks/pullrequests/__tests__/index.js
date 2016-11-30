@@ -10,7 +10,7 @@ describe('actions', () => {
   const pr3 = { id: 'id3', title: 'PR title 3', description: 'PR description 3', author: 'testauthor1' }
 
   it('request error', () => {
-    const error = { message: 'test error' }
+    const error = 'test error'
     const action = {
       type: types.REQUEST_ERROR,
       error,
@@ -65,7 +65,7 @@ describe('actions', () => {
 })
 
 
-describe('reducer', () => {
+describe('pullrequests reducer', () => {
   const pr1 = { id: 'id1', title: 'PR title 1', description: 'PR description 1', author: 'testauthor2' }
   const pr2 = { id: 'id2', title: 'PR title 2', description: 'PR description 2', author: 'testauthor1' }
   const pr3 = { id: 'id3', title: 'PR title 3', description: 'PR description 3', author: 'testauthor1' }
@@ -99,7 +99,7 @@ describe('reducer', () => {
   })
 
   it('should handle REQUEST_ERROR', () => {
-    const error = { message: 'test error message' }
+    const error = 'test error message'
     expect(reducer({}, actions.requestError(error))).to.eql({ error })
   })
 
@@ -110,7 +110,7 @@ describe('reducer', () => {
   })
 
   it('should handle CLEAR_ERROR', () => {
-    const error = { message: 'test error message' }
+    const error = 'test error message'
     expect(reducer({ error }, actions.clearError(error))).to.eql({ error: null })
   })
 })

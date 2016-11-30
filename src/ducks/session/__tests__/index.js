@@ -19,7 +19,7 @@ describe('actions', () => {
   })
 
   it('request error', () => {
-    const error = { message: 'test error' }
+    const error = 'test error'
     const action = {
       type: types.REQUEST_ERROR,
       error,
@@ -80,7 +80,7 @@ describe('actions', () => {
   })
 })
 
-describe('reducer', () => {
+describe('session reducer', () => {
   const initialState = {
     error: null,
     isFetching: false,
@@ -129,7 +129,7 @@ describe('reducer', () => {
   })
 
   it('should handle REQUEST_ERROR', () => {
-    const error = { message: 'test error message' }
+    const error = 'test error message'
     expect(reducer({}, actions.requestError(error))).to.eql({ error })
   })
 

@@ -173,6 +173,7 @@
     "lusca": "^1.4.1",
     "material-ui": "^0.16.4",
     "moment": "^2.13.0",
+    "momentjs": "^2.0.0",
     "morgan": "^1.7.0",
     "normalizr": "^2.2.1",
     "passport": "^0.3.2",

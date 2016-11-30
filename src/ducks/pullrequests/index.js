@@ -1,7 +1,5 @@
 /* @flow */
 
-/* eslint-disable */
-
 import _ from 'lodash'
 import { reduceArrayToObj } from 'ducks/normalizer'
 
@@ -36,38 +34,38 @@ const initialState = {
  */
 const entities = (state = {}, action) => {
   switch (action.type) {
-  // case 'UPDATE_PULLREQUEST':
-  //   return {
-  //     ...state,
-  //     [action.id]: {
-  //       ...action.pullrequests
-  //     }
-  //   }
-  default:
-    if (action.pullrequests) {
-      return _.merge({}, state, action.pullrequests);
-    }
-    return state;
+    // case 'UPDATE_PULLREQUEST':
+    //   return {
+    //     ...state,
+    //     [action.id]: {
+    //       ...action.pullrequests
+    //     }
+    //   }
+    default:
+      if (action.pullrequests) {
+        return _.merge({}, state, action.pullrequests)
+      }
+      return state
   }
 }
 
 /**
  * Pull request `allIds` state reducer
  */
-const ids = (state = [], action) => {
+const ids = (state: Array<Number> = [], action: Object) => {
   switch (action.type) {
-  default:
-    if (action.ids) {
-      return state.concat(action.ids)
-    }
-    return state
+    default:
+      if (action.ids) {
+        return state.concat(action.ids)
+      }
+      return state
   }
 }
 
 /**
  * Pullrequests reducer
  */
-export default (state = initialState, action) => {
+export default (state: Object = initialState, action: Object): Object => {
   switch (action.type) {
     case types.SET_PULL_REQUESTS:
       return {
@@ -99,12 +97,13 @@ export default (state = initialState, action) => {
  * Actions
  */
 export const actions = {
-  sendingRequest: sending => ({ type: types.SENDING_REQUEST, sending }),
-  requestError: error => ({ type: types.REQUEST_ERROR, error }),
-  clearError: () => ({ type: types.CLEAR_ERROR }),
-  setPullRequests: pullrequests => ({ type: types.SET_PULL_REQUESTS, pullrequests }),
-  fetchUserPullRequests: () => ({ type: types.FETCH_USER_PULL_REQUESTS }),
-  fetchUserAssignedPullRequests: () => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS }),
-  fatchUserWatchingPullRequests: () => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS }),
+  sendingRequest: (sending: boolean): Object => ({ type: types.SENDING_REQUEST, sending }),
+  requestError: (error: string): Object => ({ type: types.REQUEST_ERROR, error }),
+  clearError: (): Object => ({ type: types.CLEAR_ERROR }),
+  setPullRequests:
+  (pullrequests: Array<Object>): Object => ({ type: types.SET_PULL_REQUESTS, pullrequests }),
+  fetchUserPullRequests: (): Object => ({ type: types.FETCH_USER_PULL_REQUESTS }),
+  fetchUserAssignedPullRequests: (): Object => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS }),
+  fatchUserWatchingPullRequests: (): Object => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS }),
 }
 

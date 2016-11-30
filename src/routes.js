@@ -26,15 +26,16 @@ import {
 import { app, project, pullrequest, changeset } from './components/SideBarConfig/SideBarConfig'
 
 export const helpers = {
-  buildPullRequestRoute:
+  buildPullRequestLink:
     (projectName: string, id: string): string => (`/${projectName}/pullrequests/${id}`),
+  buildProjectLink:
+    (projectName: string, branch:string): string => (`/${projectName}?branch=${branch}`),
 }
 
-export default (store) => {
+export default (store: Object): Object => {
   const onAppEnter = () => {
     app(store)
     store.dispatch(actions.fetchProfile())
-    // /store.dispatch({ type: types.FETCH_USER_PROFILE })
   }
   const onProjectEnter = (nextState) => {
     project(store, nextState.params.id)

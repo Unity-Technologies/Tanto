@@ -30,9 +30,9 @@ class PullRequestListItem extends Component {
       username,
       updated,
       link,
-      origin,
+      originBranch,
       originLink,
-      target,
+      targetBranch,
       targetLink,
       buildName,
       buildStatus,
@@ -63,7 +63,7 @@ class PullRequestListItem extends Component {
                   style={{ textDecoration: 'none', color: '#5a6082' }}
                   to={originLink}
                 >
-                  {origin}
+                  {originBranch}
                 </Link>
               </div>
             </div>
@@ -76,7 +76,7 @@ class PullRequestListItem extends Component {
                   style={{ textDecoration: 'none', color: '#5a6082' }}
                   to={targetLink}
                 >
-                  {target}
+                  {targetBranch}
                 </Link>
               </div>
             </div>
@@ -118,9 +118,11 @@ PullRequestListItem.propTypes = {
   username: PropTypes.string.isRequired,
   updated: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
-  origin: PropTypes.string.isRequired,
+  originRepository: PropTypes.string.isRequired,
+  originBranch: PropTypes.string.isRequired,
   originLink: PropTypes.string.isRequired,
-  target: PropTypes.string.isRequired,
+  targetRepository: PropTypes.string.isRequired,
+  targetBranch: PropTypes.string.isRequired,
   targetLink: PropTypes.string.isRequired,
   buildName: PropTypes.string,
   buildStatus: PropTypes.string,

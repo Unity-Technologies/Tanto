@@ -16,6 +16,11 @@ export const userPullRequestsQuery = name => `
           status
           origin_branch
           dest_branch
+          owner {
+            username
+            email
+            full_name
+          }
           origin_repository {
             name
           }
