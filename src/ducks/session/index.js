@@ -115,9 +115,7 @@ export const actions = {
 const pullRequestsOwnedIdsSelector = state => state.session.pr_ids
 const pullRequestsAssignedIdsSelector = state => state.session.pr_assigned_ids
 const pullRequestsWatchingIdsSelector = state => state.session.pr_watching_ids
-
 const pullRequestsSelector = state => state.pullrequests.byId
-
 
 const pullRequestsOwned = createSelector(
   pullRequestsSelector, pullRequestsOwnedIdsSelector,

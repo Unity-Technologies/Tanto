@@ -29,18 +29,21 @@ class List extends Component {
         </ListGroup>
 
         {this.props.totalPagesCount > 0 &&
-          <Pagination
-            prev
-            next
-            first
-            last
-            ellipsis
-            boundaryLinks
-            items={this.props.totalPagesCount}
-            maxButtons={5}
-            activePage={this.state.activePage}
-            onSelect={this.handleSelect}
-          />
+          <div className="pagination-parent">
+            <Pagination
+              prev
+              next
+              first
+              last
+              ellipsis
+              boundaryLinks
+              items={this.props.totalPagesCount}
+              maxButtons={5}
+              activePage={this.state.activePage}
+              onSelect={this.handleSelect}
+              className="pagination"
+            />
+          </div>
         }
       </div>
     )

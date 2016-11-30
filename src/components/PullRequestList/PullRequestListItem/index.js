@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import { Col, Row, ListGroupItem } from 'react-bootstrap'
-import { ChangesetDelta, TestAvatar } from 'components'
+import { TestAvatar } from 'components'
 import { Link } from 'react-router'
 
 import './styles.css'
@@ -95,15 +95,6 @@ class PullRequestListItem extends Component {
               </div>
             }
           </Col>
-          <Col md={2}>
-            {subHeader('Changes impact: HIGH')}
-            <ChangesetDelta
-              deleted={Math.floor((Math.random() * 100) + 20)}
-              added={Math.floor((Math.random() * 100) + 20)}
-              changed={Math.floor((Math.random() * 100) + 20)}
-            />
-          </Col>
-
           <Col md={1} style={{ float: 'right' }}>
             {showRemoveIcon &&
               <div

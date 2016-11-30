@@ -8,15 +8,23 @@ import PullRequestList from 'components/PullRequestList'
 import Toolbar from '../Toolbar'
 
 class UserPullRequestList extends Component {
+  constructor(props) {
+    super(props)
+    this.handleRemove = this.handleRemove.bind(this)
+  }
   componentDidMount() {
     this.props.dispatch(actions.fetchUserPullRequests())
+  }
+
+  handleRemove = (id) => {
+
   }
 
   render() {
     return (
       <div>
         <Toolbar />
-        <PullRequestList {...this.props} />
+        <PullRequestList showRemoveButton onRemoveClick={this.handleRemove} {...this.props} />
       </div>
     )
   }
@@ -31,7 +39,7 @@ export default connect(
     // should come from state
     totalPagesCount: 10,
      // should come from state
-    total: 100,
+    total: 5,
      // should come from state
     totalInProgress: 20,
      // should come from state

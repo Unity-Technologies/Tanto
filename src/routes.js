@@ -8,7 +8,7 @@ import {
   Projects,
   PullRequests,
 } from 'containers'
-import { types } from 'ducks/session'
+import { actions } from 'ducks/session'
 import {
   File,
   Files,
@@ -25,11 +25,16 @@ import {
 
 import { app, project, pullrequest, changeset } from './components/SideBarConfig/SideBarConfig'
 
+export const helpers = {
+  buildPullRequestRoute:
+    (projectName: string, id: string): string => (`/${projectName}/pullrequests/${id}`),
+}
+
 export default (store) => {
   const onAppEnter = () => {
     app(store)
-    // store.dispatch(actions.fetchProfile())
-    store.dispatch({ type: types.FETCH_USER_PROFILE })
+    store.dispatch(actions.fetchProfile())
+    // /store.dispatch({ type: types.FETCH_USER_PROFILE })
   }
   const onProjectEnter = (nextState) => {
     project(store, nextState.params.id)

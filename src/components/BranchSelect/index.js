@@ -1,11 +1,7 @@
-/* @flow */
-
 import Select from 'react-select'
 import React, { Component, PropTypes } from 'react'
 import 'react-select/dist/react-select.css'
-import { branches } from '../../api/testData'
-import './BranchSelect.css'
-
+import './styles.css'
 
 class BranchSelect extends Component {
   constructor(props) {
@@ -30,7 +26,7 @@ class BranchSelect extends Component {
   }
 
   render() {
-    const { disabled, placeholder } = this.props
+    const { disabled, placeholder, branches } = this.props
     return (
       <div>
         <Select
@@ -54,6 +50,7 @@ BranchSelect.propTypes = {
   prefix: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
+  branches: PropTypes.array.isRequired,
 }
 
 export default BranchSelect

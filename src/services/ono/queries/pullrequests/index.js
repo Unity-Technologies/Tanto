@@ -1,3 +1,5 @@
+/* flow */
+
 import _ from 'lodash'
 
 export const userPullRequestsQuery = name => `

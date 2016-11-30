@@ -1,8 +1,8 @@
 import React from 'react'
 import { Filter, BranchSelect } from 'components'
-import { Col, Row, Button, ButtonGroup } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 
-export const sort = [
+const sort = [
   { value: 1, label: 'Creation date' },
   { value: 2, label: 'Last update date' },
   { value: 3, label: 'Changes size' },
@@ -12,25 +12,26 @@ export const sort = [
   { value: 7, label: 'Versions count' },
 ]
 
-const approveButtonStyle = {
-  backgroundColor: '#1fb5ad',
-  borderColor: '#1fb5ad',
-  color: 'white',
-}
+export const branches = [
+  { value: 1, label: 'default' },
+  { value: 2, label: '5.3/devs/default' },
+  { value: 3, label: '5.3/devs/feature1/feature' },
+  { value: 4, label: '5.3/devs/feature2' },
+  { value: 5, label: '5.3/devs/feature3' },
+  { value: 6, label: '5.3/devs/feature4' },
+]
+
 
 function Toolbar(props) {
   return (
     <div
       style={{
         backgroundColor: '#f8f8f8',
-        marginBottom: '20px',
-        border: '1px solid rgb(226, 226, 226)',
-        borderRadius: '4px',
         padding: '10px',
       }}
     >
       <Row>
-        <Col md={3}>
+        <Col md={4}>
           <div
             style={{
               display: 'inline-flex',
@@ -60,8 +61,8 @@ function Toolbar(props) {
           </div>
         </Col>
 
-        <Col md={3}>
-          <BranchSelect placeholder="Select branch ..." />
+        <Col md={4}>
+          <BranchSelect branches={branches} placeholder="Select branch ..." />
         </Col>
 
         <Col md={4}>
@@ -90,14 +91,6 @@ function Toolbar(props) {
               <i className="fa fa-sort-amount-desc" aria-hidden="true" />
             </a>
           </div>
-        </Col>
-
-        <Col md={2}>
-          <ButtonGroup style={{ float: 'right' }}>
-            <Button style={approveButtonStyle}>
-              New Pull Request
-            </Button>
-          </ButtonGroup>
         </Col>
       </Row>
     </div>

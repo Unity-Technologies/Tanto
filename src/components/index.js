@@ -1,5 +1,5 @@
 
-export { default as BranchSelect } from './BranchSelect/BranchSelect'
+export { default as BranchSelect } from './BranchSelect'
 export { default as DropDown } from './DropDown/DropDown'
 export { default as ErrorMessage } from './ErrorMessage'
 // export { default as KafkaBadge } from './KafkaBadge/KafkaBadge'
