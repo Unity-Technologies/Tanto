@@ -3828,7 +3828,7 @@ ini@^1.3.4, ini@~1.3.0:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.4.tgz#0537cb79daf59b59a1a517dff706c86ec039162e"
 
-inline-style-prefixer@^2.0.1:
+inline-style-prefixer@^2.0.1, inline-style-prefixer@^2.0.4:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/inline-style-prefixer/-/inline-style-prefixer-2.0.5.tgz#c153c7e88fd84fef5c602e95a8168b2770671fe7"
   dependencies:
@@ -6256,6 +6256,12 @@ react-komposer@^2.0.0:
     react-stubber "^1.0.0"
     shallowequal "^0.2.2"
 
+react-material-color-picker@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-material-color-picker/-/react-material-color-picker-1.1.0.tgz#5d75a84439c94e98761fb73c1cf1d54a5d2a3895"
+  dependencies:
+    babel-runtime "^6.5.0"
+
 react-modal@^1.2.0, react-modal@^1.2.1:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-1.5.2.tgz#acd60f19ed93ebbc7b09ea51624c7566fc615245"
@@ -6353,6 +6359,13 @@ react-simple-di@^1.2.0:
     babel-runtime "6.x.x"
     hoist-non-react-statics "1.x.x"
 
+react-split-pane@^0.1.50:
+  version "0.1.56"
+  resolved "https://registry.yarnpkg.com/react-split-pane/-/react-split-pane-0.1.56.tgz#0cc4c8cc32eacb94b170cf22a986750f8287364e"
+  dependencies:
+    inline-style-prefixer "^2.0.4"
+    react-style-proptype "^1.4.0"
+
 react-sticky@^5.0.4:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/react-sticky/-/react-sticky-5.0.5.tgz#995871273f8a001fa4d462d3b96f381ee54b2649"
@@ -6362,6 +6375,10 @@ react-stubber@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-stubber/-/react-stubber-1.0.0.tgz#41ee2cac72d4d4fd70a63896da98e13739b84628"
   dependencies:
     babel-runtime "^6.5.0"
+
+react-style-proptype@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-style-proptype/-/react-style-proptype-1.4.0.tgz#d82c4093b73767e3efaacba013cea22a50e7b5ee"
 
 react-tap-event-plugin@^2.0.1:
   version "2.0.1"
@@ -7072,6 +7089,15 @@ stackframe@^0.3.1:
 "statuses@>= 1.3.1 < 2", statuses@~1.3.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
+
+storybook-addon-material-ui@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/storybook-addon-material-ui/-/storybook-addon-material-ui-0.7.4.tgz#4a68aca12f45e24343c8fd4fc925d461d7763634"
+  dependencies:
+    "@kadira/storybook-addons" "^1.5.0"
+    react-material-color-picker "^1.1.0"
+    react-split-pane "^0.1.50"
+    react-tap-event-plugin "^2.0.1"
 
 stream-browserify@^1.0.0:
   version "1.0.0"

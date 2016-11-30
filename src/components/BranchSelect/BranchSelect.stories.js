@@ -2,8 +2,7 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 
-import BranchSelect from '../src/components/BranchSelect/BranchSelect'
-import ChangesetDelta from '../src/components/ChangesetDelta/ChangesetDelta'
+import BranchSelect from './BranchSelect'
 
 storiesOf('BranchSelect', module)
   .add('enabled', () => (
@@ -33,22 +32,5 @@ storiesOf('BranchSelect', module)
       placeholder="im a placeholder"
       prefix="x-"
       project="foo"
-    />
-  ))
-
-storiesOf('ChangesetDelta', module)
-  .add('deleted details', () => (
-    <ChangesetDelta
-      deleted={10}
-      changed={20}
-      added={30}
-      showDetails
-    />
-  ))
-  .add('without details', () => (
-    <ChangesetDelta
-      deleted={10}
-      changed={20}
-      added={30}
     />
   ))

@@ -14,8 +14,13 @@ module.exports = {
     loaders: [
       {
         test: /\.css$/,
-        loader: 'style!css?localIdentName=[local]___[hash:base64:5]'
+        loader: 'style!css?localIdentName=[local]___[hash:base64:5]',
+      },
+      {
+        test: /\.png$/,
+        loader: 'url-loader',
+        query: { mimetype: 'image/png' },
       },
     ],
   },
-};
+}
