@@ -13,8 +13,9 @@ import {
 
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
-import { prDescription } from '../../../api/testData'
 import StickyActionBar from './StickyActionBar'
+
+import { prDescription } from '../../../api/testData'
 
 class PullRequest extends Component {
   constructor(props) {
