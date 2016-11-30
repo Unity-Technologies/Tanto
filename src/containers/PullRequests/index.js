@@ -23,6 +23,7 @@ function PullRequests(props) {
       <div >
         <Tabs animation={false} defaultActiveKey={1}>
           <Tab
+            id="userPullRequestsTab"
             eventKey={1}
             className="tab"
             title={tabTitle('Pull request on review', totalUserPRs)}
@@ -30,6 +31,7 @@ function PullRequests(props) {
             <AssignedPullRequestList />
           </Tab>
           <Tab
+            id="userAssignedPullRequestsTab"
             eventKey={2}
             className="tab"
             title={tabTitle('My pull request', totalUserAssignedPRs)}

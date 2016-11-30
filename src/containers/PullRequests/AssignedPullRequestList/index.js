@@ -40,7 +40,7 @@ export default connect(
     activePage: 1,
     isFetching: state.pullrequests.isFetching,
     error: state.pullrequests.error,
-    items: sessionSelectors.getComputedPullRequestsAssigned(state) || [],
+    items: sessionSelectors.getPullRequestsAssigned(state) || [],
   })
 )(AssignedPullRequestList)
 

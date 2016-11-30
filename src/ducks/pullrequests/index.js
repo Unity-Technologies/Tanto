@@ -1,6 +1,7 @@
 // TODO: add flow annotations
 
 import _ from 'lodash'
+import { helpers } from 'routes/helpers'
 import { reduceArrayToObj } from 'ducks/normalizer'
 
 /**
@@ -18,6 +19,47 @@ export const types = {
   FETCH_USER_ASSIGNED_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_ASSIGNED_PULL_REQUESTS',
   FETCH_USER_WATCHING_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_WATCHING_PULL_REQUESTS',
 }
+
+export const computePullRequestBuilds = (pullrequest: Object): Object => (
+  { ...pullrequest,
+    buildStatus: 'success',
+    buildName: 'ABV-2333',
+    buildDate: '3 hours ago',
+    buildLink: '#',
+  }
+)
+
+export const computePullRequestLink = (pullrequest: Object, fn: any): Object => (
+  { ...pullrequest, link: fn(pullrequest.originRepository.name, pullrequest.id) }
+)
+
+export const computePullRequestOriginLink = (pullrequest: Object, fn: any): Object => (
+  { ...pullrequest,
+    originLink: fn(pullrequest.originRepository.name, pullrequest.originBranch || ''),
+  }
+)
+
+export const computePullRequestTargetLink = (pullrequest: Object, fn: any): Object => (
+  { ...pullrequest, destLink: fn(pullrequest.destRepository.name, pullrequest.destBranch || '') }
+)
+
+export const flattenPullRequestUsername = (pullrequest: Object): Object => (
+  { ...pullrequest, username: pullrequest.owner.username }
+)
+
+export const computePullRequest = (pullrequest: Object): any => (
+  fn1 => (
+    fn2 => (
+        computePullRequestBuilds(
+          flattenPullRequestUsername(
+            flattenPullRequestUsername(
+              computePullRequestTargetLink(
+                computePullRequestOriginLink(
+                  computePullRequestLink(pullrequest, fn2), fn1), fn1))))
+    )
+  )
+)
+
 
 /**
  * Initial state
@@ -70,7 +112,10 @@ export default (state: Object = initialState, action: Object): Object => {
     case types.SET_PULL_REQUESTS:
       return {
         ...state,
-        byId: entities(state.byId, { pullrequests: reduceArrayToObj(action.pullrequests) }),
+        byId:
+          entities(state.byId, { pullrequests: reduceArrayToObj(action.pullrequests
+            .map(x =>
+              computePullRequest(x)(helpers.buildPullRequestLink)(helpers.buildProjectLink))) }),
         allIds: ids(state.allIds, { ids: action.pullrequests.map(x => x.id) }),
       }
     case types.SENDING_REQUEST:

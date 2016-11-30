@@ -48,7 +48,7 @@ export default connect(
     activePage: 1,
     isFetching: state.pullrequests.isFetching,
     error: state.pullrequests.error,
-    items: sessionSelectors.getComputedPullRequests(state) || [],
+    items: sessionSelectors.getPullRequests(state) || [],
   })
 )(UserPullRequestList)
 
