@@ -36,33 +36,6 @@ const tabTitle = (text, badge) => (
 
 const downloadIcon = <i className="fa fa-download" aria-hidden="true" />
 
-export const hashes = [
-  {
-    value: 1,
-    label: 'default',
-  },
-  {
-    value: 2,
-    label: '5.3/devs/default',
-  },
-  {
-    value: 3,
-    label: '5.3/devs/feature1/feature',
-  },
-  {
-    value: 4,
-    label: '5.3/devs/feature2',
-  },
-  {
-    value: 5,
-    label: '5.3/devs/feature3',
-  },
-  {
-    value: 6,
-    label: '5.3/devs/feature4',
-  },
-]
-
 class LayoutDeveloper extends Component {
   constructor(props) {
     super(props)
