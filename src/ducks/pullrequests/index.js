@@ -52,7 +52,7 @@ const entities = (state = {}, action) => {
 /**
  * Pull request `allIds` state reducer
  */
-const ids = (state: Array<Number> = [], action: Object) => {
+const ids = (state: Array<string> = [], action: Object) => {
   switch (action.type) {
     default:
       if (action.ids) {
