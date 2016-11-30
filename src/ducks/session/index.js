@@ -1,10 +1,5 @@
 /* @flow */
 
-import { createSelector } from 'reselect'
-import { helpers } from 'routes'
-import { fromNow } from 'utils/datetime'
-import _ from 'lodash'
-
 /**
  * Action types
  */
@@ -109,62 +104,4 @@ export const actions = {
   setUserAssignedPRIds: (ids: Array<string>): Object => ({ type: types.SET_ASSIGNED_PRS_IDS, ids }),
   setUserWatchingPRsIds:
   (ids: Array<string>): Object => ({ type: types.SET_WATCHING_PRS_IDS, ids }),
-}
-
-/**
- * Selectors
- */
-
-const pullRequestsOwnedIdsSelector = state => state.session.pr_ids
-const pullRequestsAssignedIdsSelector = state => state.session.pr_assigned_ids
-const pullRequestsWatchingIdsSelector = state => state.session.pr_watching_ids
-const pullRequestsSelector = state => state.pullrequests.byId
-
-const transformPullRequest = (pullrequest) => {
-  const newPullRequest = pullrequest
-  newPullRequest.fullName = pullrequest.owner.full_name
-  newPullRequest.fromNow = fromNow(pullrequest.updated)
-  newPullRequest.link =
-    helpers.buildPullRequestLink(pullrequest.originRepository.name, pullrequest.id)
-  newPullRequest.username = pullrequest.owner.username
-  newPullRequest.originLink =
-    helpers.buildProjectLink(pullrequest.originRepository.name, pullrequest.originBranch || '')
-  newPullRequest.destLink =
-    helpers.buildProjectLink(pullrequest.originRepository.name, pullrequest.destBranch || '')
-
-
-  /**
-   * TODO: test data, shold be replaces with real build data
-   */
-  newPullRequest.buildStatus = Math.round(Math.random()) === 0 ? 'success' : 'failed'
-  newPullRequest.buildName = 'ABV-2333'
-  newPullRequest.buildDate = '3 hours ago'
-  newPullRequest.buildLink = '#'
-  return newPullRequest
-}
-
-const pullRequestsOwned = createSelector(
-  pullRequestsSelector, pullRequestsOwnedIdsSelector,
-  (pullRequests, pullRequestsOwnedIds) =>
-    _.values(_.pick(pullRequests, pullRequestsOwnedIds)).map(x => transformPullRequest(x))
-)
-
-const pullRequestsAssigned = createSelector(
-  pullRequestsSelector, pullRequestsAssignedIdsSelector,
-  (pullRequests, pullRequestsAssignedIds) =>
-    _.values(_.pick(pullRequests, pullRequestsAssignedIds)).map(x => transformPullRequest(x))
-)
-
-const pullRequestsWatching = createSelector(
-  pullRequestsSelector, pullRequestsWatchingIdsSelector,
-  (pullRequests, pullRequestsWatchingIds) =>
-    _.values(_.pick(pullRequests, pullRequestsWatchingIds)).map(x => transformPullRequest(x))
-)
-
-export const selectors = {
-  getPersona: (state: Object): string => state.session.persona,
-  getProfile: (state: Object): Object => state.session.profile,
-  getPullRequests: (state: Object): Array<Object> => pullRequestsOwned(state),
-  getPullRequestsAssigned: (state: Object): Array<Object> => pullRequestsAssigned(state),
-  getPullRequestsWatching: (state: Object): Array<Object> => pullRequestsWatching(state),
 }

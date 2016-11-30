@@ -67,7 +67,8 @@ module.exports = {
       'sagas': 'sagas',
       'services': 'services',
       'graphql-queries': 'api/graphql/queries',
-      'universal': 'universal'
+      'universal': 'universal',
+      'routes': 'routes'
     }
   }
 }

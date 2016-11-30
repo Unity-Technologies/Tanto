@@ -88,13 +88,13 @@ describe('services pullrequests query parsers', () => {
       .to.be.eql([node1Transformed, node2Transformed])
   })
 
-  it('parseCurrentUserPullRequests', () => {
+  it('parseCurrentUserAssignedPullRequests', () => {
     const response = testResponse(constants.pull_requests_under_review, testnodes)
     expect(parsers.parseCurrentUserAssignedPullRequests(response))
       .to.be.eql([node1Transformed, node2Transformed])
   })
 
-  it('parseCurrentUserPullRequests', () => {
+  it('parseCurrentUserWatchingPullRequests', () => {
     const response = testResponse(constants.pull_requests_participating, testnodes)
     expect(parsers.parseCurrentUserWatchingPullRequests(response))
       .to.be.eql([node1Transformed, node2Transformed])

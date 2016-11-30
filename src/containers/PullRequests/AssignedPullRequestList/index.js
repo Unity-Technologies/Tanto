@@ -3,7 +3,7 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import { actions } from 'ducks/pullrequests'
-import { selectors as sessionSelectors } from 'ducks/session'
+import { selectors as sessionSelectors } from 'ducks/session/selectors'
 import PullRequestList from 'components/PullRequestList'
 import Toolbar from '../Toolbar'
 
@@ -40,7 +40,7 @@ export default connect(
     activePage: 0,
     isFetching: state.pullrequests.isFetching,
     error: state.pullrequests.error,
-    items: sessionSelectors.getPullRequestsAssigned(state) || [],
+    items: sessionSelectors.getComputedPullRequestsAssigned(state) || [],
   })
 )(AssignedPullRequestList)
 

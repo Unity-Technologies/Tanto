@@ -23,14 +23,7 @@ import {
   NewPullRequest,
 } from 'containers/Project'
 
-import { app, project, pullrequest, changeset } from './components/SideBarConfig/SideBarConfig'
-
-export const helpers = {
-  buildPullRequestLink:
-    (projectName: string, id: string): string => (`/${projectName}/pullrequests/${id}`),
-  buildProjectLink:
-    (projectName: string, branch:string): string => (`/${projectName}?branch=${branch}`),
-}
+import { app, project, pullrequest, changeset } from 'components/SideBarConfig/SideBarConfig'
 
 export default (store: Object): Object => {
   const onAppEnter = () => {
