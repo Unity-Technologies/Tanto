@@ -121,22 +121,24 @@ const pullRequestsWatchingIdsSelector = state => state.session.pr_watching_ids
 const pullRequestsSelector = state => state.pullrequests.byId
 
 const transformPullRequest = (pullrequest) => {
-  const newPullRequest = Object.assign({}, ...pullrequest)
+  const newPullRequest = pullrequest
+  newPullRequest.fullName = pullrequest.owner.full_name
   newPullRequest.fromNow = fromNow(pullrequest.updated)
   newPullRequest.link =
     helpers.buildPullRequestLink(pullrequest.originRepository.name, pullrequest.id)
   newPullRequest.username = pullrequest.owner.username
   newPullRequest.originLink =
-    helpers.buildProjectLink(pullrequest.originRepository.name, pullrequest.originBranch)
-  newPullRequest.targetLink =
-    helpers.buildProjectLink(pullrequest.originRepository.name, pullrequest.destBranch)
+    helpers.buildProjectLink(pullrequest.originRepository.name, pullrequest.originBranch || '')
+  newPullRequest.destLink =
+    helpers.buildProjectLink(pullrequest.originRepository.name, pullrequest.destBranch || '')
+
 
   /**
    * TODO: test data, shold be replaces with real build data
    */
-  newPullRequest.buildStatus = 'success'
+  newPullRequest.buildStatus = Math.round(Math.random()) === 0 ? 'success' : 'failed'
   newPullRequest.buildName = 'ABV-2333'
-  newPullRequest.buildData = '3 hours ago'
+  newPullRequest.buildDate = '3 hours ago'
   newPullRequest.buildLink = '#'
   return newPullRequest
 }

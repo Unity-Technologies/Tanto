@@ -25,3 +25,11 @@
     color: #8c8c8c;
     font-size: 13px;
 }
+
+.build-success {
+    color: mediumseagreen;
+}
+
+.build-failed {
+    color: mediumvioletred
+}

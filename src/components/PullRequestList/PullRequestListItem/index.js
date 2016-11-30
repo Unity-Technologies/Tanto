@@ -28,12 +28,12 @@ class PullRequestListItem extends Component {
       title,
       status,
       username,
-      updated,
+      fromNow,
       link,
       originBranch,
       originLink,
-      targetBranch,
-      targetLink,
+      destBranch,
+      destLink,
       buildName,
       buildStatus,
       buildDate,
@@ -50,13 +50,13 @@ class PullRequestListItem extends Component {
               <div style={{ paddingLeft: '10px', display: 'table' }}>
                 <Link to={link}>{title}</Link>
                 <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
-                  <strong>{username}</strong>, last updated {updated}
+                  <strong>{username}</strong>, last updated {fromNow}
                 </div>
               </div>
             </div>
           </Col>
           <Col md={2} >
-            <div>
+            <div style={{ overflowWrap: 'break-word' }}>
               {subHeader('Origin:')}
               <div>
                 <Link
@@ -71,25 +71,26 @@ class PullRequestListItem extends Component {
           <Col md={2} >
             <div>
               {subHeader('Target:')}
-              <div>
+              <div style={{ overflowWrap: 'break-word' }}>
                 <Link
                   style={{ textDecoration: 'none', color: '#5a6082' }}
-                  to={targetLink}
+                  to={destLink}
                 >
-                  {targetBranch}
+                  {destBranch}
                 </Link>
               </div>
             </div>
           </Col>
           <Col md={2}>
             {buildName &&
-              <div>
+              <div style={{ overflowWrap: 'break-word' }}>
                 {subHeader('Latest build:')}
                 <Link
-                  style={{ textDecoration: 'none', color: buildStatus, textTransform: 'uppercase' }}
+                  className={`build-${buildStatus}`}
+                  style={{ textDecoration: 'none', textTransform: 'uppercase' }}
                   to={buildLink}
                 >
-                  {buildName}
+                  {buildName}-{buildStatus}
                 </Link>
                 <div style={{ color: '#8c8c8c', fontSize: '12px' }}>{buildDate}</div>
               </div>
@@ -116,14 +117,14 @@ PullRequestListItem.propTypes = {
   title: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-  updated: PropTypes.string.isRequired,
+  fromNow: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   originRepository: PropTypes.string.isRequired,
   originBranch: PropTypes.string.isRequired,
   originLink: PropTypes.string.isRequired,
-  targetRepository: PropTypes.string.isRequired,
-  targetBranch: PropTypes.string.isRequired,
-  targetLink: PropTypes.string.isRequired,
+  destRepository: PropTypes.string.isRequired,
+  destBranch: PropTypes.string.isRequired,
+  destLink: PropTypes.string.isRequired,
   buildName: PropTypes.string,
   buildStatus: PropTypes.string,
   buildDate: PropTypes.string,
