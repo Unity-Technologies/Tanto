@@ -1,5 +1,6 @@
 /* @flow */
-
+// FIXME: stop maintaining this file and use standard MyComponent/index.js file
+// to expose the component. This level of indirection is error prone.
 
 export { default as BranchSelect } from './BranchSelect/BranchSelect'
 export { default as DropDown } from './DropDown/DropDown'
@@ -46,4 +47,3 @@ export { default as Reviewers } from './Reviewers/Reviewers'
 export { default as CommentsList } from './CommentsList/CommentsList'
 export { default as PullRequestList } from './PullRequestList/PullRequestList'
 export { default as LoadingIcon } from './LoadingIcon'
-

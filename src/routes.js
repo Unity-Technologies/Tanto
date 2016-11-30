@@ -7,19 +7,18 @@ import {
   PullRequests,
 } from 'containers'
 import { types } from 'ducks/session'
-import {
-  File,
-  Files,
-  Project,
-  Changelog,
-  Overview,
-  Changeset,
-  PullRequests as ProjectPullRequests,
-  Issues,
-  Statistics,
-  PullRequest,
-  NewPullRequest,
-} from 'containers/Project'
+
+import File from 'containers/Project/File'
+import Files from 'containers/Project/Files'
+import Project from 'containers/Project/Project'
+import Changelog from 'containers/Project/Changelog'
+import Overview from 'containers/Project/Overview'
+import Changeset from 'containers/Project/Changeset'
+import ProjectPullRequests from 'containers/Project/PullRequests'
+import Issues from 'containers/Project/Issues'
+import Statistics from 'containers/Project/Statistics'
+import PullRequest from 'containers/Project/PullRequest'
+import NewPullRequest from 'containers/Project/NewPullRequest'
 
 import { app, project, pullrequest, changeset } from './components/SideBarConfig/SideBarConfig'
 
