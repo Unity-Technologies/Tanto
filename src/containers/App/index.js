@@ -1,6 +1,4 @@
-/* @flow */
-
-/* eslint-disable */
+// TODO: add flow annotations
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
@@ -10,7 +8,7 @@ import { SideBar, Header } from '../../components'
 
 // TODO: these should be configurable:
 const APP_NAME = 'Tanto'
-const APP_THEME ='cyan'
+const APP_THEME = 'cyan'
 
 
 const theme = require(`../../theme/ui/${APP_THEME}`)
@@ -31,7 +29,7 @@ class App extends Component {
         theme,
       })
     )
-    const { isAuthenticated, open } = this.props
+    const { open } = this.props
 
     const openStyle = {
       marginLeft: this.state.sideBarWidth,
@@ -50,7 +48,7 @@ class App extends Component {
               width={this.state.sideBarWidth}
               hiddenWidth={this.state.hiddenSideBarWidth}
               {...theme.componentStyles}
-             />
+            />
             <div style={open ? openStyle : closeStyle} >
               <Header title={APP_NAME} />
               <div style={{ padding: '0px 20px' }}>

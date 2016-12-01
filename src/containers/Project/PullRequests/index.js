@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'

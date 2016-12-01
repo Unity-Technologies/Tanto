@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { PropTypes } from 'react'
 import Bold from 'material-ui/svg-icons/editor/format-bold'
 import Italic from 'material-ui/svg-icons/editor/format-italic'

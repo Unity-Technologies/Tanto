@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { PropTypes } from 'react'
 import Avatar from 'material-ui/Avatar'
 

@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { Component } from 'react'
 import TextField from 'material-ui/TextField'
 import Search from 'material-ui/svg-icons/action/search'

@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { PropTypes } from 'react'
 import { reduxForm, Field } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'

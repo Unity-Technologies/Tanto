@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 import React, { PropTypes, Component } from 'react'
 import { Button, ButtonGroup, DropdownButton, MenuItem, Row, Col } from 'react-bootstrap'
