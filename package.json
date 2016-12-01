@@ -90,7 +90,6 @@
     "extract-text-webpack-plugin": "^0.9.1",
     "flow-bin": "^0.36.0",
     "font-awesome-webpack": "0.0.4",
-    "graphql-client": "^1.0.3",
     "json-loader": "^0.5.4",
     "lodash-webpack-plugin": "^0.10.6",
     "mocha": "^2.5.3",
