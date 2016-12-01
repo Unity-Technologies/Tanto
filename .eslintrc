@@ -42,6 +42,7 @@
     "react/forbid-prop-types": "off",
     "no-unused-vars": ["error", { "args": "none" }],
     "import/extensions": "off",
+    "no-duplicate-imports": "off",
     "max-len": ["error", 100]
   },
   "globals": {
@@ -52,6 +53,7 @@
     "__DEVTOOLS__": false,
     "Promise": true,
     "socket": true,
-    "webpackIsomorphicTools": true
+    "webpackIsomorphicTools": true,
+    "Generator": true
   }
 }

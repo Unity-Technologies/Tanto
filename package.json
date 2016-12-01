@@ -152,7 +152,7 @@
     "envalid": "^2.4.1",
     "errorhandler": "^1.4.3",
     "eslint-import-resolver-webpack": "^0.6.0",
-    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-import": "^2.2.0",
     "express": "^4.14.0",
     "express-promise": "^0.4.0",
     "express-promise-router": "^1.1.1",
