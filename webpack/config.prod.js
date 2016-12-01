@@ -1,10 +1,9 @@
-require('babel-polyfill')
-
 var path = require('path')
 var webpack = require('webpack')
 var CleanPlugin = require('clean-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var strip = require('strip-loader')
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 var projectRootPath = path.resolve(__dirname, '../')
 var assetsPath = path.resolve(projectRootPath, './static/dist')
@@ -73,6 +72,7 @@ module.exports = Object.assign({}, baseConfig, {
     ]
   },
   plugins: [
+    new LodashModuleReplacementPlugin(),
     new CleanPlugin([assetsPath], {
       root: projectRootPath
     }),

@@ -1,5 +1,3 @@
-require('babel-polyfill')
-
 var path = require('path')
 var webpack = require('webpack')
 var assetsPath = path.resolve(__dirname, '../static/dist')
