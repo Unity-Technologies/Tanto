@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react'
 import { Col, Row, ListGroupItem } from 'react-bootstrap'
 import { TestAvatar } from 'components'
 import { Link } from 'react-router'
+import { fromNow } from 'utils/datetime'
 
 import './styles.css'
 
@@ -28,7 +29,7 @@ class PullRequestListItem extends Component {
       title,
       status,
       username,
-      fromNow,
+      updated,
       link,
       originBranch,
       originLink,
@@ -50,7 +51,7 @@ class PullRequestListItem extends Component {
               <div style={{ paddingLeft: '10px', display: 'table' }}>
                 <Link to={link}>{title}</Link>
                 <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
-                  <strong>{username}</strong>, last updated {fromNow}
+                  <strong>{username}</strong>, last updated {fromNow(updated)}
                 </div>
               </div>
             </div>
@@ -92,7 +93,7 @@ class PullRequestListItem extends Component {
                 >
                   {buildName}-{buildStatus}
                 </Link>
-                <div style={{ color: '#8c8c8c', fontSize: '12px' }}>{buildDate}</div>
+                <div style={{ color: '#8c8c8c', fontSize: '12px' }}>{fromNow(buildDate)}</div>
               </div>
             }
           </Col>
@@ -117,7 +118,7 @@ PullRequestListItem.propTypes = {
   title: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-  fromNow: PropTypes.string.isRequired,
+  updated: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   originRepository: PropTypes.string.isRequired,
   originBranch: PropTypes.string.isRequired,

@@ -24,7 +24,7 @@ export const computePullRequestBuilds = (pullrequest: Object): Object => (
   { ...pullrequest,
     buildStatus: 'success',
     buildName: 'ABV-2333',
-    buildDate: '3 hours ago',
+    buildDate: '2016-11-14 16:18:36.628916',
     buildLink: '#',
   }
 )
@@ -146,7 +146,7 @@ export const actions = {
   requestError: (error: string): Object => ({ type: types.REQUEST_ERROR, error }),
   clearError: (): Object => ({ type: types.CLEAR_ERROR }),
   setPullRequests:
-  (pullrequests: Array<Object>): Object => ({ type: types.SET_PULL_REQUESTS, pullrequests }),
+    (pullrequests: Array<Object>): Object => ({ type: types.SET_PULL_REQUESTS, pullrequests }),
   fetchUserPullRequests: (): Object => ({ type: types.FETCH_USER_PULL_REQUESTS }),
   fetchUserAssignedPullRequests: (): Object => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS }),
   fatchUserWatchingPullRequests: (): Object => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS }),

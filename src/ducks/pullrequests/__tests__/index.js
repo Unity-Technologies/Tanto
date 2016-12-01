@@ -303,7 +303,7 @@ describe('session selectors computations', () => {
 
       buildStatus: 'success',
       buildName: 'ABV-2333',
-      buildDate: '3 hours ago',
+      buildDate: '2016-11-14 16:18:36.628916',
       buildLink: '#',
     })
   })
