@@ -1,22 +1,6 @@
-/* eslint-disable */
-
-//  NOTE: isomophic fetch replaced with browser fetch, because isomorphic doesn't
-//  work - investigate why later'
-
-import {
-  queries,
-} from 'services/ono/queries/pullrequests'
-
-
-import 'whatwg-fetch'
+import 'isomorphic-fetch'
 import { routes } from 'universal/constants'
-import { checkHttpStatus } from 'universal/requests'
-/**
- * Parse JSON response
- */
-export function parseJSON(response) {
-  return response.json()
-}
+import { checkHttpStatus, parseJSON } from 'universal/requests'
 
 // /**
 //  * Posts the data. Data object has the same format as 'fetch' accepts
@@ -40,10 +24,12 @@ export function parseJSON(response) {
  * @param  {[type]} query - accepts the FormData object
  * @return {[type]}      [description]
  */
-export function get(query: any) {
+export function get(query: string): Object {
   const encodedQuery = encodeURIComponent(query)
   const url = `${routes.ONO_API_ROUTE}?query=${encodedQuery}`
+
   return fetch(url, { credentials: 'same-origin' })
     .then(checkHttpStatus)
     .then(parseJSON)
 }
+

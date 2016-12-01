@@ -20,7 +20,7 @@ import Statistics from 'containers/Project/Statistics'
 import PullRequest from 'containers/Project/PullRequest'
 import NewPullRequest from 'containers/Project/NewPullRequest'
 
-import { app, project, pullrequest, changeset } from './components/SideBarConfig/SideBarConfig'
+import { app, project, pullrequest, changeset } from 'components/SideBarConfig/SideBarConfig'
 
 export default (store) => {
   const onAppEnter = () => {
