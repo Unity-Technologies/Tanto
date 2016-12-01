@@ -1,5 +1,3 @@
-/* @flow */
-
 import Select from 'react-select'
 import React, { Component, PropTypes } from 'react'
 import 'react-select/dist/react-select.css'

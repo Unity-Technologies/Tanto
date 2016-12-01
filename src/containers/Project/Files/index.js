@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 import React, { Component, PropTypes } from 'react'
 import { FileList, BranchSelect, ReduxBreadcrumb, Filter } from 'components'

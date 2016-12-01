@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { PropTypes } from 'react'
 import Paper from 'material-ui/Paper'
 import ErrorIcon from 'material-ui/svg-icons/alert/error'

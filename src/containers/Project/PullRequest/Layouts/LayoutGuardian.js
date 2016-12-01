@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 /* eslint-disable max-len */
 
 import React, { Component } from 'react'

@@ -1,4 +1,3 @@
-/* @flow */
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React, { PropTypes } from 'react'

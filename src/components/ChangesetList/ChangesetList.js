@@ -1,5 +1,3 @@
-/* @flow */
-
 // todo: remove this after refactoring component
 /* eslint-disable */
 

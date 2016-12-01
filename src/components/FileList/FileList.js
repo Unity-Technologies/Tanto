@@ -1,5 +1,3 @@
-/* @flow */
-
 /* eslint-disable */
 
 import React, { PropTypes } from 'react'

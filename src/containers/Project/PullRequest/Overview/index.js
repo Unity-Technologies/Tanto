@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 import React, { PropTypes, Component } from 'react'
 import { UserFilter, Label, TextEditorBox, Comment, NewComment } from 'components'

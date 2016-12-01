@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { PropTypes } from 'react'
 import AppBar from 'material-ui/AppBar'
 import Open from 'material-ui/svg-icons/navigation/menu'

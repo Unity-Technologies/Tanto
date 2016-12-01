@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { PropTypes } from 'react'
 import { ListItem } from 'material-ui/List'
 import { Link } from 'react-router'
