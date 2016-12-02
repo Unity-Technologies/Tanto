@@ -4,7 +4,7 @@ node_js:
   - '7'
 
 script:
-  - yarn run check
+  - yarn run check-ci
 
 cache:
   yarn: true
