@@ -1,3 +1,5 @@
+/* @flow */
+
 import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
 import { push } from 'react-router-redux'
@@ -39,16 +41,13 @@ export class Projects extends Component {
       const steps = pathname.split('/').slice(2)
       let nextGroup = tree
       for (let i = 0; i < steps.length; i += 1) {
-        // if (nextGroup.groups[steps[i]] == null) {
-        //   break
-        // }
+        if (nextGroup.groups[steps[i]] == null) {
+          break
+        }
         nextGroup = nextGroup.groups[steps[i]]
-        console.warn(steps[i])
-        console.warn(nextGroup) // eslint disable: no-console
-        // check if null?
       }
 
-      const parent = { id: '', name: '..' }
+      const parent = { id: '', name: 'Parent Group' }
 
       groups = [parent, ...Object.keys(nextGroup.groups).map(key => nextGroup.groups[key])]
       projects = [...nextGroup.projects]

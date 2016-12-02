@@ -81,7 +81,7 @@ const expand = (result) => {
   }
 
   let flatProjects = []
-  let groups = []
+  let groups = [] // eslint-disable-line
   if (result.groups) {
     groups = result.groups.map((group) => {
       const groupProjects = group.repositories.edges.map(repo => repo.node)
@@ -99,21 +99,21 @@ const expand = (result) => {
   if (result.repositories) {
     projects = result.repositories
   }
-  const testgroup = { name: 'testgroup',
+  const testgroup = { name: 'Test Group',
                       id: 22,
-                      description: 'tresting',
+                      description: 'A cyclic group.',
                       projects: [...projects],
                       groups: {} }
   const emptygroup = { name: 'Empty Group',
                        id: 'asGDTJU34',
-                       description: 'tresting',
+                       description: 'An empty group.',
                        projects: [],
                        groups: { 22: testgroup } }
   testgroup.groups[22] = testgroup
   testgroup.groups[emptygroup.id] = emptygroup
   return {
     tree: {
-      groups: { 22: testgroup, asGDTJU34: emptygroup, other: groups },
+      groups: { 22: testgroup, asGDTJU34: emptygroup },
       projects: [...projects],
     },
     projects: [...flatProjects, ...projects],
