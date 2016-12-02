@@ -9,6 +9,10 @@ export const routes = {
 
 export const general = {
   TEST: 'test',
+  PR_NEW: 'new',
+  PR_UNDER_REVIEW: 'under_review',
+  PR_APPROVED: 'approved',
+  PR_REJECTED: 'rejected',
 }
 
 export default general

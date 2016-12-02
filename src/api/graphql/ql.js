@@ -1,6 +1,6 @@
 /* @flow */
 
-export default (literals, ...substitutions) => {
+export default (literals: Array<string>, ...substitutions: Array<string>) => {
   let interpolation = ''
 
   for (let i = 0; i < substitutions.length; i += 1) {

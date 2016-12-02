@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 import React, { PropTypes, Component } from 'react'
 import { Button, ButtonGroup, DropdownButton, MenuItem, Row, Col } from 'react-bootstrap'
@@ -76,6 +76,7 @@ class StickyActionBar extends Component {
                     borderColor: 'rgb(188, 193, 195)',
                   }}
                   title={<i className="fa fa-cog" aria-hidden="true" />}
+                  id="dropdown-button-pull-request-actions"
                 >
                   <MenuItem eventKey="1">Close</MenuItem>
                   <MenuItem eventKey="2">Delete</MenuItem>

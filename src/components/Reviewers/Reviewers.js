@@ -1,10 +1,8 @@
-/* @flow */
-
 /* eslint-disable */
 
 import React, { PropTypes, Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
-import { TestAvatar } from 'components'
+import TestAvatar from '../TestAvatar'
 
 class Reviewers extends Component {
   constructor(props) {

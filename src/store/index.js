@@ -1,5 +1,3 @@
-/* @flow */
-
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
 import createSagaMiddleware from 'redux-saga'
@@ -21,24 +19,8 @@ const configureStore = (initialState, history) => {
   const sagaMiddleware = createSagaMiddleware()
 
   const middleware = [reduxRouterMiddleware, sagaMiddleware]
-  let finalCreateStore
-  if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
-    const { persistState } = require('redux-devtools') // eslint-disable-line global-require
-    const DevTools = require('../containers/DevTools') // eslint-disable-line global-require, max-len
-    const createLogger = require('redux-logger') // eslint-disable-line global-require
-
-    const logger = createLogger()
-
-    middleware.push(logger)
-
-    finalCreateStore = compose(
-      applyMiddleware(...middleware),
-      window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument(),
-      persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-    )(createStore)
-  } else {
-    finalCreateStore = compose(applyMiddleware(...middleware))(createStore)
-  }
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose  // eslint-disable-line
+  const finalCreateStore = composeEnhancers(applyMiddleware(...middleware))(createStore)
 
   const store = finalCreateStore(rootReducer, initialState)
 
@@ -47,6 +29,7 @@ const configureStore = (initialState, history) => {
       store.replaceReducer(require('../ducks')) // eslint-disable-line global-require
     )
   }
+
   sagaMiddleware.run(rootSaga)
 
   return store

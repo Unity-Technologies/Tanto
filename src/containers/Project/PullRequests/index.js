@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
@@ -130,7 +130,7 @@ class PullRequests extends Component {
           <PullRequestList data={PullRequestsDataList} />
         </StickyContainer>
       </div>
-)
+    )
   }
 }
 

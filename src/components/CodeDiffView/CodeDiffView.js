@@ -144,7 +144,7 @@ class CodeDiffView extends Component {
         <Row style={{ marginTop: '15px' }}>
           { this.state.showFileList && this.state.showCommentsList &&
             <Col md={3}>
-              <Tabs defaultActiveKey={1} >
+              <Tabs defaultActiveKey={1} id="code-diff-tabs">
                 <Tab style={{ padding: '10px 0' }} eventKey={1} title="Files">
                   <ChangesetFileList
                     files={PullRequestData}

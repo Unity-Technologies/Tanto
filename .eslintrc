@@ -42,16 +42,16 @@
     "react/forbid-prop-types": "off",
     "no-unused-vars": ["error", { "args": "none" }],
     "import/extensions": "off",
+    "no-duplicate-imports": "off",
     "max-len": ["error", 100]
   },
   "globals": {
     "__DEVELOPMENT__": true,
     "__CLIENT__": true,
     "__SERVER__": true,
-    "__DISABLE_SSR__": true,
-    "__DEVTOOLS__": false,
     "Promise": true,
     "socket": true,
-    "webpackIsomorphicTools": true
+    "webpackIsomorphicTools": true,
+    "Generator": true
   }
 }

@@ -15,8 +15,8 @@ import rootSaga from 'sagas'
 const expect = require('chai').expect
 
 
-describe('session sagas', () => {
-  it('fetchUserProfile should fetch user profile', () => {
+describe('root saga', () => {
+  it('flow', () => {
     const generator = rootSaga()
     expect(generator.next().value).to.deep.equal(
       fork(takeLatest, sessionTypes.FETCH_USER_PROFILE, fetchCurrentUserProfile))

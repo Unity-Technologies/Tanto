@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { PropTypes } from 'react'
 import { Logout, SearchBox } from 'components'
 import { routes } from 'universal/constants'

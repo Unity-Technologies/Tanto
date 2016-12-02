@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { PropTypes, Component } from 'react'
 import { ChangesetDelta } from 'components'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'

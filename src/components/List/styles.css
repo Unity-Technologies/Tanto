@@ -1,0 +1,14 @@
+.list-group {
+    font-size: 13px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.pagination-parent {
+    display: flex;
+}
+
+.pagination {
+    margin-left: auto;
+    margin-right: auto;
+}

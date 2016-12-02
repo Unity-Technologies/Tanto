@@ -1,12 +1,9 @@
-/* @flow */
-
 /* eslint-disable */
 
 import React, { Component, PropTypes } from 'react'
 import { fromJS } from 'immutable'
 import { EditorState, RichUtils, ContentState } from 'draft-js'
 import 'draft-js/dist/Draft.css'
-import { TestAvatar } from 'components'
 import Editor from 'draft-js-plugins-editor'
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
@@ -16,8 +13,10 @@ import exporter from 'draft-js-ast-exporter'
 import importer from 'draft-js-ast-importer'
 import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
+
+import TestAvatar from '../TestAvatar'
 import './TextEditorBox.css'
-import StyleControls from './StyleControls/StyleControls'
+import StyleControls from './StyleControls'
 
 import { mentions } from '../../api/testData'
 

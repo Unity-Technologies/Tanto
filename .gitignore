@@ -5,5 +5,7 @@ jsconfig.json
 .vscode/
 .tmp
 static/dist/
+*.log
 
 .env
+.DS_Store

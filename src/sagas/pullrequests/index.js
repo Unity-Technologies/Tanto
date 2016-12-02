@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: add flow annotations
 
 import { call, put } from 'redux-saga/effects'
 import { actions as sessionActions } from 'ducks/session'
@@ -63,4 +63,3 @@ export function* fetchCurrentUserWatchingPullRequests() {
     parsers.parseCurrentUserWatchingPullRequests,
     sessionActions.setUserWatchingPRsIds)
 }
-

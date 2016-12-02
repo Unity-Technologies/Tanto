@@ -1,5 +1,7 @@
+flow-typed/*
+static/*
 webpack/*
-karma.conf.js
+
+server.babel.js
 tests.webpack.js
 tests/setup.js
-server.babel.js

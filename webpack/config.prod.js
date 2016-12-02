@@ -1,20 +1,19 @@
-require('babel-polyfill')
-
 var path = require('path')
 var webpack = require('webpack')
 var CleanPlugin = require('clean-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var strip = require('strip-loader')
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 var projectRootPath = path.resolve(__dirname, '../')
 var assetsPath = path.resolve(projectRootPath, './static/dist')
 
 var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin')
 var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./isomorphic-tools'))
+var baseConfig = require('./config.base')
 
-module.exports = {
+module.exports = Object.assign({}, baseConfig, {
   devtool: 'source-map',
-  context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
       'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
@@ -27,9 +26,6 @@ module.exports = {
     filename: '[name]-[chunkhash].js',
     chunkFilename: '[name]-[chunkhash].js',
     publicPath: '/dist/'
-  },
-  node: {
-    fs: "empty"
   },
   module: {
     loaders: [{
@@ -75,25 +71,8 @@ module.exports = {
       },
     ]
   },
-  progress: true,
-  resolve: {
-    root: path.resolve(__dirname),
-    modulesDirectories: [
-      'src',
-      'node_modules'
-    ],
-    extensions: ['', '.json', '.js', '.jsx'],
-    alias: {
-      'containers': 'containers',
-      'components': 'components',
-      'ducks': 'ducks',
-      'sagas': 'sagas',
-      'services': 'services',
-      'graphql-queries': 'api/graphql/queries',
-      'universal': 'universal'
-    }
-  },
   plugins: [
+    new LodashModuleReplacementPlugin(),
     new CleanPlugin([assetsPath], {
       root: projectRootPath
     }),
@@ -108,7 +87,6 @@ module.exports = {
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: false,
-      __DEVTOOLS__: false
     }),
 
     new webpack.IgnorePlugin(/\.\/config/, /\/dev$/),
@@ -122,4 +100,4 @@ module.exports = {
 
     webpackIsomorphicToolsPlugin
   ]
-}
+})

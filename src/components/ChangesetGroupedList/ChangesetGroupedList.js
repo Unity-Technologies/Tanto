@@ -1,4 +1,3 @@
-/* @flow */
 /* eslint-disable max-len */
 
 import React, { PropTypes, Component } from 'react'
