@@ -1,7 +1,4 @@
-// TODO: add flow annotations
-/* eslint-disable max-len */
-
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Badge, Tabs, Tab } from 'react-bootstrap'
 import Scroll from 'react-scroll'
 
@@ -81,6 +78,7 @@ class LayoutDeveloper extends Component {
   }
 
   render() {
+    const { pullRequest } = this.props
     return (
       <div style={{ padding: '0 20px' }}>
         <Tabs defaultActiveKey={0} id="layout-developer-tabs">
@@ -88,19 +86,25 @@ class LayoutDeveloper extends Component {
             <PullRequestSummary
               onAddReviewer={this.addReviewer}
               onToggleReviewers={this.toggleReviewers}
-              reviewers={this.state.reviewers}
+              pullRequest={pullRequest}
               toggleReviewers={this.state.toggleReviewers}
             />
           </Tab>
           <Tab style={{ margin: '20px 0' }} eventKey={1} title={tabTitle('Discussion', 4)}>
-            <PullRequestDiscussion />
+            <PullRequestDiscussion
+              onSaveComment={() => {}}
+            />
           </Tab>
           <Tab style={{ margin: '20px 0' }} eventKey={2} title="Files">
             <div>
               <ChangesetFileList files={PullRequestData} />
             </div>
           </Tab>
-          <Tab style={{ margin: '20px 0' }} eventKey={3} title={tabTitle('Changesets', downloadIcon)}>
+          <Tab
+            style={{ margin: '20px 0' }}
+            eventKey={3}
+            title={tabTitle('Changesets', downloadIcon)}
+          >
             <div>
               <ChangesetGroupedList accordion={false} data={prChangesetList} />
             </div>
@@ -120,6 +124,10 @@ class LayoutDeveloper extends Component {
       </div>
     )
   }
+}
+
+LayoutDeveloper.propTypes = {
+  pullRequest: PropTypes.object.isRequired,
 }
 
 export default LayoutDeveloper

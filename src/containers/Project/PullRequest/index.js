@@ -1,3 +1,5 @@
+/* @flow */
+
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
@@ -8,51 +10,60 @@ import {
   DEVELOPER_PERSONA,
   MANAGER_PERSONA,
 } from 'ducks/session'
+import { actions } from 'ducks/pullRequest'
+import type { PullRequestGraphType } from 'ducks/pullRequest'
+
+import LoadingIcon from 'components/LoadingIcon'
 
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
 import StickyActionBar from './StickyActionBar'
 
-import { prDescription } from '../../../api/testData'
+type Props = {
+  dispatch: Function,
+  isFetching: boolean,
+  params: {
+    id: string,
+    prid: string,
+  },
+  persona: 'DEVELOPER_PERSONA' | 'MANAGER_PERSONA' | 'GUARDIAN_PERSONA',
+  pullRequest: ?PullRequestGraphType,
+};
 
 class PullRequest extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      pullRequest: {
-        title: 'Some pull request title',
-        description: prDescription,
-        reviewers: ['Alex', 'NaTosha', 'Bob', 'John'],
-        from: 'default',
-        to: '5.3/default',
-        author: 'kate',
-        versions: ['link1', 'link2', 'link3'],
-        votes: {
-          accepted: 2,
-          rejected: 1,
-          pending: 1,
-        },
-      },
-    }
+
+  componentDidMount() {
+    const { dispatch, params } = this.props
+    const pullRequestId = parseInt(params.prid, 10)
+    dispatch(actions.fetchStart(pullRequestId))
   }
 
+  props: Props;
+
   render() {
-    // const { params: { id }, theme, user, persona } = this.props
-    // const notOwner = user !== this.state.pullRequest.author
-    const { persona } = this.props
+    const { isFetching, pullRequest, persona } = this.props
+
+    if (isFetching) {
+      return <LoadingIcon />
+    }
+
+    if (!pullRequest) {
+      return <div>The requested pull request was not found...</div>
+    }
+
     return (
       <StickyContainer style={{ fontSize: '14px' }}>
-        <Helmet title="Pull Request Title" />
+        <Helmet title={`Pull Request: ${pullRequest.title}`} />
         <StickyActionBar />
         <div>
           {persona === DEVELOPER_PERSONA &&
-            <LayoutDeveloper />
+            <LayoutDeveloper pullRequest={pullRequest} />
           }
           {persona === MANAGER_PERSONA &&
-            <LayoutGuardian />
+            <LayoutGuardian pullRequest={pullRequest} />
           }
           {persona === GUARDIAN_PERSONA &&
-            <LayoutGuardian />
+            <LayoutGuardian pullRequest={pullRequest} />
           }
         </div>
       </StickyContainer>
@@ -60,18 +71,20 @@ class PullRequest extends Component {
   }
 }
 
+// TODO: remove .propTypes when parent also uses flow
 PullRequest.propTypes = {
- // isFetching: PropTypes.bool.isRequired,
- // errorMessage: PropTypes.string,
-  // params: PropTypes.object.isRequired,
-  // theme: PropTypes.object.isRequired,
-  // user: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  params: PropTypes.object.isRequired,
   persona: PropTypes.oneOf([DEVELOPER_PERSONA, MANAGER_PERSONA, GUARDIAN_PERSONA]).isRequired,
+  pullRequest: PropTypes.object,
 }
 
 export default connect(
-  state => ({
-    isFetching: state.session.isFetching,
+  (state, ownProps) => ({
+    isFetching: state.pullRequest.isFetching,
+    params: ownProps.params,
     persona: state.session.persona,
+    pullRequest: state.pullRequest.pullRequest,
   })
 )(PullRequest)

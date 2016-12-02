@@ -32,7 +32,7 @@ module.exports = Object.assign({}, baseConfig, {
     loaders: [{
       test: /\.(js|jsx)$/,
       exclude: /node_modules/,
-      loaders: ['babel?' + JSON.stringify(config), 'eslint-loader']
+      loaders: ['babel?' + JSON.stringify(config)]
     },
       {
         test: /\.json$/,

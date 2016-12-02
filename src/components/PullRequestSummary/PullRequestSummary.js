@@ -1,8 +1,11 @@
+/* @flow */
+import moment from 'moment'
 import React, { PropTypes } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 
+import type { PullRequestGraphType } from 'ducks/pullRequest'
 import Reviewers from '../Reviewers'
-import TestAvatar from '../TestAvatar'
+import UserAvatar from '../UserAvatar'
 
 import { prReviewers } from '../../api/testPullRequest'
 
@@ -39,20 +42,42 @@ const headerColumnStyle = {
   paddingTop: '10px',
 }
 
-export const PullRequestHeader = () =>
+type PullRequestHeaderProps = {
+  pullRequest: PullRequestGraphType,
+}
+
+export const PullRequestHeader = ({ pullRequest } : PullRequestHeaderProps) =>
   <div style={{ display: 'inline-block' }}>
-    <TestAvatar />
+    <UserAvatar
+      src={pullRequest.owner.avatar}
+      style={{ float: 'left', display: 'table-column' }}
+    />
     <div style={{ padding: '0 10px', display: 'table' }}>
       <div style={{ fontSize: '16px' }}>
-        <strong>Core: cleanup and sanitize various hash functions we use internally V3</strong>
+        <strong>{pullRequest.title}</strong>
       </div>
-      <span style={{ color: 'grey', fontSize: '13px' }}>created 2 days ago</span>
+      <span style={{ color: 'grey', fontSize: '13px' }}>
+        created {moment(pullRequest.created).fromNow()}
+        by {pullRequest.owner.full_name} ({pullRequest.owner.username})
+      </span>
     </div>
   </div>
 
-const PullRequestSummary = (props) =>
+
+PullRequestHeader.propTypes = {
+  pullRequest: PropTypes.object.isRequired,
+}
+
+type PullRequestSummaryProps = {
+  onAddReviewer: Function,
+  onToggleReviewers: Function,
+  pullRequest: PullRequestGraphType,
+  toggleReviewers: boolean,
+}
+
+const PullRequestSummary = (props: PullRequestSummaryProps) =>
   <div name="summary" id="summary">
-    <PullRequestHeader />
+    <PullRequestHeader pullRequest={props.pullRequest} />
     <Row>
       <Col md={12}>
         <ListGroup style={{ marginTop: '20px', fontSize: '13px' }}>
@@ -201,7 +226,7 @@ const PullRequestSummary = (props) =>
                   </Col>
                   <Col md={11}>
                     <div style={{ fontSize: '13px' }}>
-                      {props.reviewers.join(', ')}
+                      {props.pullRequest.reviewers.map(r => r.user.full_name).join(', ')}
                     </div>
                   </Col>
                 </Row>
@@ -404,7 +429,7 @@ const PullRequestSummary = (props) =>
 PullRequestSummary.propTypes = {
   onAddReviewer: PropTypes.func.isRequired,
   onToggleReviewers: PropTypes.func.isRequired,
-  reviewers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pullRequest: PropTypes.object.isRequired,
   toggleReviewers: PropTypes.bool.isRequired,
 }
 

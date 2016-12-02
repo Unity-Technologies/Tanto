@@ -1,5 +1,4 @@
 // TODO: add flow annotations
-/* eslint-disable max-len */
 
 import React, { Component } from 'react'
 import Scroll from 'react-scroll'
@@ -66,7 +65,6 @@ class LayoutGuardian extends Component {
             <PullRequestSummary
               onAddReviewer={this.addReviewer}
               onToggleReviewers={this.toggleReviewers}
-              reviewers={this.state.reviewers}
               toggleReviewers={this.state.toggleReviewers}
             />
           </div>
@@ -91,7 +89,9 @@ class LayoutGuardian extends Component {
         </Element>
         <Element name="discussion" className="element">
           <Divider text="Discussion" />
-          <PullRequestDiscussion />
+          <PullRequestDiscussion
+            onSaveComment={() => {}}
+          />
         </Element>
         <Element name="diff" className="element">
           <Divider text="Diff" />

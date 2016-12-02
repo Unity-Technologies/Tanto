@@ -1,4 +1,4 @@
-// TODO: add flow annotations
+/* @flow */
 
 /**
  * Action types

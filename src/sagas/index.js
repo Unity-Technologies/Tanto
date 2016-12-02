@@ -1,23 +1,27 @@
-// TODO: add flow annotations, see https://github.com/flowtype/flow-typed
+/* @flow */
 
 import { fork } from 'redux-saga/effects'
 import { takeLatest } from 'redux-saga'
 import { types as sessionTypes } from 'ducks/session'
-import { types as prTypes } from 'ducks/pullrequests'
+import { types as prsTypes } from 'ducks/pullrequests'
+import { types as prTypes } from 'ducks/pullRequest'
 import fetchCurrentUserProfile from './session'
 import {
   fetchCurrentUserPullRequests,
   fetchCurrentUserAssignedPullRequests,
   fetchCurrentUserWatchingPullRequests,
 } from './pullrequests'
+import fetchPullRequest from './pullRequest'
 
-export default function* rootSaga() {
+export default function* rootSaga(): Generator<*, *, *> {
   yield fork(
     takeLatest, sessionTypes.FETCH_USER_PROFILE, fetchCurrentUserProfile)
   yield fork(
-    takeLatest, prTypes.FETCH_USER_PULL_REQUESTS, fetchCurrentUserPullRequests)
+    takeLatest, prsTypes.FETCH_USER_PULL_REQUESTS, fetchCurrentUserPullRequests)
   yield fork(
-    takeLatest, prTypes.FETCH_USER_ASSIGNED_PULL_REQUESTS, fetchCurrentUserAssignedPullRequests)
+    takeLatest, prsTypes.FETCH_USER_ASSIGNED_PULL_REQUESTS, fetchCurrentUserAssignedPullRequests)
   yield fork(
-    takeLatest, prTypes.FETCH_USER_WATCHING_PULL_REQUESTS, fetchCurrentUserWatchingPullRequests)
+    takeLatest, prsTypes.FETCH_USER_WATCHING_PULL_REQUESTS, fetchCurrentUserWatchingPullRequests)
+  yield fork(
+    takeLatest, prTypes.FETCH_START, fetchPullRequest)
 }
