@@ -1,14 +1,15 @@
-var Express = require('express')
-var webpack = require('webpack')
+/* eslint-disable */
+const Express = require('express')
+const webpack = require('webpack')
 
-var env = require('../src/config')
-var webpackConfig = require('./config.dev')
-var compiler = webpack(webpackConfig)
+const env = require('../src/config')
+const webpackConfig = require('./config.dev')
+const compiler = webpack(webpackConfig)
 
-var host = env.HOST || 'localhost'
-var port = (Number(env.PORT) + 1) || 3001
-var serverOptions = {
-  contentBase: 'http://' + host + ':' + port,
+const host = env.HOST || 'localhost'
+const port = (Number(env.PORT) + 1) || 3001
+const serverOptions = {
+  contentBase: `http://${host}:${port}`,
   quiet: true,
   noInfo: true,
   hot: true,
@@ -16,14 +17,14 @@ var serverOptions = {
   lazy: false,
   publicPath: webpackConfig.output.publicPath,
   headers: { 'Access-Control-Allow-Origin': '*' },
-  stats: { colors: true }
+  stats: { colors: true },
 }
-var app = new Express()
+const app = new Express()
 
 app.use(require('webpack-dev-middleware')(compiler, serverOptions))
 app.use(require('webpack-hot-middleware')(compiler))
 
-app.listen(port, function onAppListening(err) {
+app.listen(port, (err) => {
   if (err) {
     console.error(err)
   } else {
