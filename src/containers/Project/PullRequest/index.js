@@ -22,6 +22,10 @@ import StickyActionBar from './StickyActionBar'
 type Props = {
   dispatch: Function,
   isFetching: boolean,
+  params: {
+    id: string,
+    prid: string,
+  },
   persona: DEVELOPER_PERSONA | MANAGER_PERSONA | GUARDIAN_PERSONA,
   pullRequest: ?PullRequestGraphType,
 };
@@ -29,10 +33,8 @@ type Props = {
 class PullRequest extends Component {
 
   componentDidMount() {
-    const { dispatch } = this.props
-    console.log('>>> this props ', this.props);
-    // FIXME: we need to get this from the store, but currently it is not there...
-    const pullRequestId = parseInt(window.location.pathname.split('/').pop(), 10)
+    const { dispatch, params } = this.props
+    const pullRequestId = parseInt(params.prid, 10)
     dispatch(actions.fetchStart(pullRequestId))
   }
 
@@ -79,8 +81,9 @@ PullRequest.propTypes = {
 }
 
 export default connect(
-  state => ({
+  (state, ownProps) => ({
     isFetching: state.pullRequest.isFetching,
+    params: ownProps.params,
     persona: state.session.persona,
     pullRequest: state.pullRequest.pullRequest,
   })
