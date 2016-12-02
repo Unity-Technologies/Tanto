@@ -1,6 +1,5 @@
 flow-typed/*
 static/*
-webpack/*
 
 server.babel.js
 tests.webpack.js
