@@ -9,11 +9,14 @@ import { get } from 'services/ono/api'
 type Action = { type: string, id: number }
 
 export default function* fetchPullRequest(action: Action): Generator<*, *, *> {
+  yield put(actions.fetchStatus(true))
   try {
     const response = yield call(get, PULL_REQUEST_QUERY, { id: action.id })
     const pullRequest = parsers.pullRequestQuery(response)
     yield put(actions.fetchDone(pullRequest))
   } catch (error) {
     yield put(actions.fetchError(error))
+  } finally {
+    yield put(actions.fetchStatus(false))
   }
 }

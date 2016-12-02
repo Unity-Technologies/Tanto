@@ -59,16 +59,26 @@ describe('fetchPullRequest saga', () => {
     const queryResponse = { data: { pull_request: pullRequestResponse } }
 
     expect(generator.next().value)
+      .to.deep.equal(put(actions.fetchStatus(true)))
+    expect(generator.next().value)
       .to.deep.equal(call(get, PULL_REQUEST_QUERY, { id: 10 }))
     expect(generator.next(queryResponse).value)
       .to.deep.equal(put(actions.fetchDone(pullRequestResponseParsed)))
+    expect(generator.next().value)
+        .to.deep.equal(put(actions.fetchStatus(false)))
   })
 
   it('catches exception', () => {
     const generator = fetchPullRequest({ type: 'foo', id: 11 })
     const error = 'TEST ERROR fetchUserProfile'
 
-    expect(generator.next().value).to.deep.equal(call(get, PULL_REQUEST_QUERY, { id: 11 }))
-    expect(generator.throw(error).value).to.deep.equal(put(actions.fetchError(error)))
+    expect(generator.next().value)
+      .to.deep.equal(put(actions.fetchStatus(true)))
+    expect(generator.next().value)
+      .to.deep.equal(call(get, PULL_REQUEST_QUERY, { id: 11 }))
+    expect(generator.throw(error).value)
+      .to.deep.equal(put(actions.fetchError(error)))
+    expect(generator.next().value)
+      .to.deep.equal(put(actions.fetchStatus(false)))
   })
 })

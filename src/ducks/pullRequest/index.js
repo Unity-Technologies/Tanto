@@ -4,6 +4,7 @@ export type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 
 export const types = {
   FETCH_START: 'PULLREQUEST/FETCH_START',
+  FETCH_STATUS: 'PULLREQUEST/FETCH_STATUS',
   FETCH_ERROR: 'PULLREQUEST/FETCH_ERROR',
   FETCH_DONE: 'PULLREQUEST/FETCH_DONE',
 }
@@ -22,6 +23,7 @@ export type PullRequestStateType = {
 
 export type PullRequestActionType =
     { type: 'PULLREQUEST/FETCH_START' }
+  | { type: 'PULLREQUEST/FETCH_STATUS', isFetching: boolean }
   | { type: 'PULLREQUEST/FETCH_ERROR', error: string }
   | { type: 'PULLREQUEST/FETCH_DONE', pullRequest: PullRequestGraphType }
 
@@ -29,22 +31,20 @@ export default (
   state: PullRequestStateType = initialState, action: PullRequestActionType
 ) => {
   switch (action.type) {
-    case types.FETCH_START:
+    case types.FETCH_STATUS:
       return {
-        error: null,
-        isFetching: true,
-        pullRequest: null,
+        ...state,
+        isFetching: action.isFetching,
       }
     case types.FETCH_ERROR:
       return {
+        ...state,
         error: action.error,
-        isFetching: false,
-        pullRequest: null,
       }
     case types.FETCH_DONE:
       return {
+        ...state,
         error: null,
-        isFetching: false,
         pullRequest: action.pullRequest,
       }
     default:
@@ -54,6 +54,7 @@ export default (
 
 export const actions = {
   fetchStart: (id: number) => ({ type: types.FETCH_START, id }),
+  fetchStatus: (isFetching: boolean) => ({ type: types.FETCH_STATUS, isFetching }),
   fetchError: (error: string) => ({ type: types.FETCH_ERROR, error }),
   fetchDone: (pullRequest: PullRequestGraphType) => ({ type: types.FETCH_DONE, pullRequest }),
 }

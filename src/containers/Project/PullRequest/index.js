@@ -26,7 +26,7 @@ type Props = {
     id: string,
     prid: string,
   },
-  persona: DEVELOPER_PERSONA | MANAGER_PERSONA | GUARDIAN_PERSONA,
+  persona: 'DEVELOPER_PERSONA' | 'MANAGER_PERSONA' | 'GUARDIAN_PERSONA',
   pullRequest: ?PullRequestGraphType,
 };
 

@@ -22,6 +22,14 @@ describe('actions', () => {
     expect(actions.fetchStart(10)).to.eql(action)
   })
 
+  it('should handle FETCH_STATUS', () => {
+    const action = {
+      type: types.FETCH_STATUS,
+      isFetching: false,
+    }
+    expect(actions.fetchStatus(false)).to.eql(action)
+  })
+
   it('should handle FETCH_ERROR', () => {
     const error = 'test error'
     const action = {
@@ -51,12 +59,17 @@ describe('reducer', () => {
     expect(reducer(undefined, {})).to.eql(initialState)
   })
 
+  it('should handle FETCH_STATUS', () => {
+    const expectedState = {
+      isFetching: true,
+    }
+    expect(reducer({}, actions.fetchStatus(true))).to.eql(expectedState)
+  })
+
   it('should handle FETCH_ERROR', () => {
     const error = 'error msg'
     const expectedState = {
       error,
-      isFetching: false,
-      pullRequest: null,
     }
     expect(reducer({}, actions.fetchError(error))).to.eql(expectedState)
   })
@@ -64,7 +77,6 @@ describe('reducer', () => {
   it('should handle FETCH_DONE', () => {
     const expectedState = {
       error: null,
-      isFetching: false,
       pullRequest,
     }
     expect(reducer({}, actions.fetchDone(pullRequest))).to.eql(expectedState)
