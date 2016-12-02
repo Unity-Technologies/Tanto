@@ -8,8 +8,6 @@ var port = (+process.env.PORT + 1) || 3001
 var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin')
 var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./isomorphic-tools'))
 
-var babelLoader = require('./dev.babel')
-var config = babelLoader('./.babelrc')
 var baseConfig = require('./config.base')
 
 module.exports = Object.assign({}, baseConfig, {
@@ -31,8 +29,8 @@ module.exports = Object.assign({}, baseConfig, {
   module: {
     loaders: [{
       test: /\.(js|jsx)$/,
+      loader: 'babel',
       exclude: /node_modules/,
-      loaders: ['babel?' + JSON.stringify(config)]
     },
       {
         test: /\.json$/,
@@ -79,7 +77,6 @@ module.exports = Object.assign({}, baseConfig, {
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: true,
-      __DEVTOOLS__: true
     }),
     webpackIsomorphicToolsPlugin.development()
   ]

@@ -27,19 +27,8 @@ openSansObserver.load().then(() => {
 // Temporary material UI event plugin
 injectTapEventPlugin()
 
-const devTools = () => {
-  if (__DEVTOOLS__ && !window.devToolsExtension) {
-    const DevTools = require('containers/DevTools') // eslint-disable-line global-require
-    return <DevTools />
-  }
-  return false
-}
-
 ReactDOM.render(
   <Provider store={store} key="provider">
-    <div>
-      <Router routes={routes(store)} history={history} />
-      {devTools()}
-    </div>
+    <Router routes={routes(store)} history={history} />
   </Provider>, document.getElementById('root')
 )
