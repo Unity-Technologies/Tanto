@@ -9,7 +9,7 @@ const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(isomorphic
 const loaders = [
   {
     test: /\.(js|jsx)$/,
-    loader: 'babel',
+    loader: 'babel?cacheDirectory',
     exclude: /node_modules/,
   },
   {
