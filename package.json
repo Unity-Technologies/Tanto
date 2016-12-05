@@ -168,6 +168,7 @@
     "form-data": "^2.1.1",
     "graphql": "^0.6.0",
     "http-proxy-middleware": "^0.17.2",
+    "ignore-loader": "^0.1.2",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
     "jsdom": "^9.1.0",

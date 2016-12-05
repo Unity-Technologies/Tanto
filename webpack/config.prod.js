@@ -15,7 +15,7 @@ module.exports = Object.assign({}, baseConfig.config, {
   devtool: 'source-map',
   entry: {
     main: [
-      'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
+      'bootstrap-sass-loader!./src/theme/bootstrap.config.prod.js',
       'font-awesome-webpack!./src/theme/font-awesome.config.prod.js',
       './src/app.js',
     ],
@@ -30,11 +30,11 @@ module.exports = Object.assign({}, baseConfig.config, {
     loaders: baseConfig.loaders.concat([
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true'),
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=2&sourceMap!autoprefixer-loader?browsers=last 2 version!sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true'),
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style', 'css!autoprefixer'),
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!autoprefixer-loader'),
       },
     ]),
   },

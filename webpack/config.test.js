@@ -14,11 +14,11 @@ module.exports = Object.assign({}, baseConfig.config, {
     loaders: baseConfig.loaders.concat([
       {
         test: /\.scss$/,
-        loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap',
+        loader: 'ignore-loader',
       },
       {
         test: /\.css$/,
-        loader: 'style!css?localIdentName=[local]___[hash:base64:5]',
+        loader: 'ignore-loader',
       },
     ]),
   },
