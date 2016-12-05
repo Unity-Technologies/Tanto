@@ -14,7 +14,7 @@
     "start-dev": "better-npm-run start-dev",
     "start-prod": "better-npm-run start-prod",
     "start": "concurrently --kill-others \"npm run start-prod\"",
-    "storybook": "start-storybook -p 6006 -c storybook",
+    "storybook": "NODE_PATH=src start-storybook -p 6006 -c storybook",
     "test-watch": "better-npm-run test-watch",
     "test": "better-npm-run test",
     "watch-client": "better-npm-run watch-client"
