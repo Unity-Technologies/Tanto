@@ -1,44 +1,56 @@
+/* @flow */
 import React, { PropTypes } from 'react'
 import './ChangesetDelta.css'
 
-function ChangesetDelta(props) {
-  const sum = props.deleted + props.added + props.changed
+type ChangesetDeltaProps = {
+  deleted: number,
+  added: number,
+  changed: number,
+  showDetails: boolean,
+}
 
-  const deletedWidth = sum > 0 ? (props.deleted / (sum * 100)) : 0
-  const addedWidth = sum > 0 ? (props.added / (sum * 100)) : 0
-  const changedWidth = sum > 0 ? (props.changed / (sum * 100)) : 0
-  const showText = props.showDetails !== undefined ? props.showDetails : true
+function gerPercent(sum: number, value: number) {
+  return sum > 0 ? Math.round((100 * value) / sum) : 0
+}
+
+const ChangesetDelta = ({ added, deleted, changed, showDetails }: ChangesetDeltaProps) => {
+  const sum = deleted + added + changed
+
+  const deletedPercent = gerPercent(sum, deleted)
+  const addedPercent = gerPercent(sum, added)
+  const changedPercent = gerPercent(sum, changed)
+
   return (
     <div className="changeset-delta">
-      {deletedWidth > 0 &&
+      {deletedPercent > 0 &&
         <div
           className="changeset-chunk changeset-deleted"
-          style={{ width: `${Math.round(deletedWidth)}%` }}
+          style={{ width: `${deletedPercent}%` }}
         >
-          {showText && <span style={{ color: 'black' }}>{props.deleted}</span>}
+          {showDetails && <span style={{ color: 'black' }}>{deleted}</span>}
         </div>}
-      {addedWidth > 0 &&
+      {addedPercent > 0 &&
         <div
           className="changeset-chunk changeset-added"
-          style={{ width: `${Math.round(addedWidth)}%` }}
+          style={{ width: `${addedPercent}%` }}
         >
-          {showText && <span style={{ color: 'black' }}>{props.added}</span>}
+          {showDetails && <span style={{ color: 'black' }}>{added}</span>}
         </div>}
-      {changedWidth > 0 &&
+      {changedPercent > 0 &&
         <div
           className="changeset-chunk changeset-changed"
-          style={{ width: `${Math.round(changedWidth)}%` }}
+          style={{ width: `${changedPercent}%` }}
         >
-          {showText && <span style={{ color: 'black' }}>{props.changed}</span>}
+          {showDetails && <span style={{ color: 'black' }}>{changed}</span>}
         </div>}
     </div>
   )
 }
 
 ChangesetDelta.propTypes = {
-  deleted: PropTypes.number,
-  changed: PropTypes.number,
-  added: PropTypes.number,
+  deleted: PropTypes.number.isRequired,
+  changed: PropTypes.number.isRequired,
+  added: PropTypes.number.isRequired,
   showDetails: PropTypes.bool,
 }
 
