@@ -10,6 +10,9 @@ const baseConfig = require('./config.base')
 
 module.exports = Object.assign({}, baseConfig.config, {
   devtool: 'inline-source-map',
+  performance: {
+    hints: false,
+  },
   entry: {
     main: [
       `webpack-hot-middleware/client?path=http://${host}:${port}/__webpack_hmr`,

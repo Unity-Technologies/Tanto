@@ -48,8 +48,11 @@ const config = {
     fs: 'empty',
   },
   resolve: {
-    root: path.resolve(__dirname, '../src'),
-    extensions: ['', '.json', '.js', '.jsx'],
+    modules: [
+      path.resolve(__dirname, '../src'),
+      'node_modules',
+    ],
+    extensions: ['.json', '.js', '.jsx'],
     alias: {
       containers: 'containers',
       components: 'components',
