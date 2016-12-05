@@ -8,7 +8,9 @@ import _ from 'lodash'
 import { Row, Col, Tab, Tabs } from 'react-bootstrap'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
-import { ChangesetFileList, CommentsList } from 'components'
+
+import ChangesetFileList from '../ChangesetFileList'
+import CommentsList from '../CommentsList'
 
 import DiffHeader from './DiffHeader/DiffHeader'
 import { PullRequestData, PullRequestHistory2, PullRequestUnresolvedComments } from '../../api/testPullRequest'
