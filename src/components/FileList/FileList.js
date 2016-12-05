@@ -14,8 +14,8 @@ import {
 import FolderClosedIcon from 'material-ui/svg-icons/file/folder'
 import File from 'material-ui/svg-icons/editor/insert-drive-file'
 
-function FileList({ data, onFileClick }) {
-  return (<Table height={'500px'}>
+const FileList = ({ data, onFileClick }) =>
+  <Table height={'500px'}>
     <TableHeader
       adjustForCheckbox={false}
       enableSelectAll={false}
@@ -65,8 +65,7 @@ function FileList({ data, onFileClick }) {
         </TableRow>
       ))}
     </TableBody>
-  </Table>)
-}
+  </Table>
 
 FileList.propTypes = {
   data: PropTypes.array.isRequired,
