@@ -47,13 +47,8 @@ const config = {
   node: {
     fs: 'empty',
   },
-  progress: true,
   resolve: {
-    root: path.resolve(__dirname),
-    modulesDirectories: [
-      'src',
-      'node_modules',
-    ],
+    root: path.resolve(__dirname, '../src'),
     extensions: ['', '.json', '.js', '.jsx'],
     alias: {
       containers: 'containers',

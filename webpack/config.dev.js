@@ -28,7 +28,7 @@ module.exports = Object.assign({}, baseConfig.config, {
     loaders: baseConfig.loaders.concat([
       {
         test: /\.scss$/,
-        loader: 'style-loader!css-loader?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer-loader?browsers=last 2 version!sass-loader?outputStyle=expanded&sourceMap',
+        loader: 'style-loader!css-loader?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!sass-loader?outputStyle=expanded&sourceMap',
       },
       {
         test: /\.css$/,
