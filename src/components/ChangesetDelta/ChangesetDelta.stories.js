@@ -6,28 +6,6 @@ import { muiTheme } from 'storybook-addon-material-ui'
 
 import ChangesetDelta from './ChangesetDelta'
 
-const fixtureComments = [
-  {
-    id: 'comment1',
-    message: 'foo bar',
-  },
-  {
-    id: 'comment1',
-    message: 'foo bar baz',
-  },
-]
-
-const filesFixture = [
-  {
-    name: 'Editor/Mono/EditorGUI.cs',
-    comments: fixtureComments,
-  },
-  {
-    name: 'Editor/Mono/GUI/GradientEditor.cs',
-    comments: [],
-  },
-]
-
 storiesOf('ChangesetDelta', module)
   .addDecorator(muiTheme())
   .add('details for half deletion/addition', () => (
