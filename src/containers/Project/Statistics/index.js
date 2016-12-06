@@ -1,22 +1,22 @@
-// TODO: add flow annotations
+/* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 
-function Statistics({ params: { prid } }) {
+export type Props = {
+  params: {
+    prid: string
+  }
+}
+
+function Statistics({ params: { prid } }: Props) {
   return (
     <div>
       <Helmet title="Statistics" />
       <h3>Statistics {prid}</h3>
     </div>
   )
-}
-
-Statistics.propTypes = {
-  // isFetching: PropTypes.bool.isRequired,
-  // errorMessage: PropTypes.string,
-  params: PropTypes.object.isRequired,
 }
 
 export default connect(

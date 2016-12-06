@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+/* @flow */
+
+import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -45,8 +47,11 @@ const prComments = [
   },
 ]
 
+export type Props = {
+  onSaveComment?: Function
+}
 
-const PullRequestDiscussion = (props) =>
+const PullRequestDiscussion = (props: Props) =>
   <div>
     <Row>
       <Col md={12}>
@@ -117,9 +122,5 @@ const PullRequestDiscussion = (props) =>
     </Row>
   </div>
 
-
-PullRequestDiscussion.propTypes = {
-  onSaveComment: PropTypes.func.isRequired,
-}
 
 export default PullRequestDiscussion

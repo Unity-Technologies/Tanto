@@ -1,6 +1,7 @@
+// TODO: add flow annotations
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import './Expander.css'
 
 class Expander extends Component {
@@ -27,10 +28,6 @@ class Expander extends Component {
       </div>
     )
   }
-}
-
-Expander.propTypes = {
-  children: PropTypes.node.isRequired,
 }
 
 export default Expander

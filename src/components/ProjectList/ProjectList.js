@@ -1,9 +1,15 @@
-import React, { PropTypes } from 'react'
+/* @flow */
+
+import React from 'react'
 import _ from 'lodash'
 import { List } from 'material-ui/List'
 import ProjectItem from './ProjectItem'
 
-function ProjectList(props) {
+export type Props = {
+  data?: Array<any>
+}
+
+function ProjectList(props: Props) {
   const { data } = props
   return (
     <List
@@ -22,10 +28,6 @@ function ProjectList(props) {
       }
     </List>
   )
-}
-
-ProjectList.propTypes = {
-  data: PropTypes.array.isRequired,
 }
 
 export default ProjectList

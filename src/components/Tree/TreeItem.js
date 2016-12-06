@@ -1,7 +1,22 @@
-import React, { PropTypes } from 'react'
+/* @flow */
+
+import React from 'react'
 import _ from 'lodash'
 import { ListItem } from 'material-ui/List'
 import FolderClosedIcon from 'material-ui/svg-icons/file/folder'
+
+export type Props = {
+  item: Object,
+  clickHandler: Function,
+  childrenProp: string,
+  primaryTextProp: string,
+  secondaryTextProp: string,
+  inset: number,
+  valueProp: string,
+  palette: {
+    primary1Color: string,
+  },
+}
 
 function TreeItem({
   item,
@@ -12,7 +27,7 @@ function TreeItem({
   clickHandler,
   inset,
   palette,
-}) {
+} : Props) {
   const primaryText = item[primaryTextProp]
   const secondaryText = secondaryTextProp ? item[secondaryTextProp] : ''
   const value = item[valueProp]
@@ -64,22 +79,12 @@ function TreeItem({
               secondaryTextProp={secondaryTextProp}
               valueProp={valueProp}
               inset={inset + 30}
+              palette={palette}
             />
         )
       }
       />
     </div>)
-}
-
-TreeItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  clickHandler: PropTypes.func.isRequired,
-  childrenProp: PropTypes.string.isRequired,
-  primaryTextProp: PropTypes.string.isRequired,
-  secondaryTextProp: PropTypes.string,
-  inset: PropTypes.number,
-  valueProp: PropTypes.string.isRequired,
-  palette: PropTypes.object.isRequired,
 }
 
 export default TreeItem

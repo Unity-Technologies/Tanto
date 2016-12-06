@@ -1,6 +1,6 @@
 /* @flow */
 import moment from 'moment'
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 
 import type { PullRequestGraphType } from 'ducks/pullRequest'
@@ -63,10 +63,6 @@ export const PullRequestHeader = ({ pullRequest } : PullRequestHeaderProps) =>
     </div>
   </div>
 
-
-PullRequestHeader.propTypes = {
-  pullRequest: PropTypes.object.isRequired,
-}
 
 type PullRequestSummaryProps = {
   onAddReviewer: Function,
@@ -425,12 +421,5 @@ const PullRequestSummary = (props: PullRequestSummaryProps) =>
     </Row>
   </div>
 
-
-PullRequestSummary.propTypes = {
-  onAddReviewer: PropTypes.func.isRequired,
-  onToggleReviewers: PropTypes.func.isRequired,
-  pullRequest: PropTypes.object.isRequired,
-  toggleReviewers: PropTypes.bool.isRequired,
-}
 
 export default PullRequestSummary

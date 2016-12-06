@@ -1,6 +1,7 @@
+// TODO: add flow annotations
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ChangesetDelta, TestAvatar } from 'components'
 import { Link } from 'react-router'
@@ -15,13 +16,22 @@ const subHeader = text => (
   </div>
 )
 
+export type Props = {
+  data?: any,
+  id: string,
+  projectid: string,
+  showFollowIcon?: boolean,
+  showRemoveIcon?: boolean,
+}
 
 class PullRequestList extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { search: null, activeKey: 3 }
     this.handleSelect = this.handleSelect.bind(this)
   }
+
+  props: Props
 
   handleSelect(activeKey) {
     this.setState({ activeKey })
@@ -130,14 +140,6 @@ class PullRequestList extends Component {
       </div>
     )
   }
-}
-
-PullRequestList.propTypes = {
-  data: PropTypes.any,
-  id: PropTypes.string.isRequired,
-  projectid: PropTypes.string.isRequired,
-  showFollowIcon: PropTypes.bool,
-  showRemoveIcon: PropTypes.bool,
 }
 
 export default PullRequestList

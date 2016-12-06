@@ -4,7 +4,7 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import { muiTheme } from 'storybook-addon-material-ui'
 
-import PullRequestSummary from './PullRequestSummary'
+import PullRequestSummary, { PullRequestHeader } from './PullRequestSummary'
 
 const pullRequestFixture = {
   title: 'New Test Pull requests',
@@ -33,5 +33,13 @@ storiesOf('PullRequestSummary', module)
       onToggleReviewers={action('onToggleReviewers')}
       pullRequest={pullRequestFixture}
       toggleReviewers={false}
+    />
+  ))
+
+storiesOf('PullRequestHeader', module)
+  .addDecorator(muiTheme())
+  .add('default', () => (
+    <PullRequestHeader
+      pullRequest={pullRequestFixture}
     />
   ))

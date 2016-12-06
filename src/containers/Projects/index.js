@@ -1,25 +1,39 @@
 /* @flow */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { push } from 'react-router-redux'
 import CircularProgress from 'material-ui/CircularProgress'
-import { ErrorMessage, ProjectList } from 'components'
-import GroupList from 'components/GroupList/GroupList'
 import { connect } from 'react-redux'
-import { fetchProjects } from 'ducks/projects'
 import { Sticky, StickyContainer } from 'react-sticky'
-import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import urljoin from 'url-join'
+
+import ProjectList from 'components/ProjectList/ProjectList'
+import ErrorMessage from 'components/ErrorMessage'
+import GroupList from 'components/GroupList/GroupList'
+import { fetchProjects } from 'ducks/projects'
+import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
+
+export type Props = {
+  isFetching: boolean,
+  errors: Array<any>,
+  projects: Array<any>,
+  dispatch: Function,
+  theme: Object,
+  pathname: string,
+  tree: any,
+};
 
 export class Projects extends Component {
   componentDidMount() {
-    const { dispatch } = this.props
-    this.clickHandler = this.clickHandler.bind(this)
+    const { dispatch } = this.props;
+    (this:any).clickHandler = this.clickHandler.bind(this)
     dispatch(fetchProjects())
   }
 
-  clickHandler(value) {
+  props: Props
+
+  clickHandler(value: string) {
     const { dispatch, pathname } = this.props
     let path
     if (value === '') {
@@ -163,15 +177,6 @@ export class Projects extends Component {
       </div>
     )
   }
-}
-
-Projects.propTypes = {
-  pathname: PropTypes.string.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  errors: PropTypes.array,
-  tree: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  theme: PropTypes.object.isRequired,
 }
 
 export default connect(

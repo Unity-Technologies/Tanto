@@ -2,7 +2,12 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 
-import BranchSelect from './BranchSelect'
+import BranchSelect from './index'
+
+const branches = [
+  { value: 'one', label: 'One' },
+  { value: 'two', label: 'Two' },
+]
 
 storiesOf('BranchSelect', module)
   .add('enabled', () => (
@@ -11,6 +16,7 @@ storiesOf('BranchSelect', module)
       disabled={false}
       onChange={action('onChange')}
       placeholder="im a placeholder"
+      branches={branches}
       prefix="x-"
       project="foo"
     />
@@ -20,6 +26,7 @@ storiesOf('BranchSelect', module)
       defaultValue="bar"
       disabled={false}
       onChange={action('onChange')}
+      branches={branches}
       prefix="x-"
       project="foo"
     />
@@ -30,6 +37,7 @@ storiesOf('BranchSelect', module)
       disabled
       onChange={action('onChange')}
       placeholder="im a placeholder"
+      branches={branches}
       prefix="x-"
       project="foo"
     />

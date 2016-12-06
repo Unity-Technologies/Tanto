@@ -1,14 +1,15 @@
-/* @flow */
-
+// TODO: finish flow annotations
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import Scroll from 'react-scroll'
 import _ from 'lodash'
 import { Row, Col, Tab, Tabs } from 'react-bootstrap'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
-import { ChangesetFileList, CommentsList } from 'components'
+
+import ChangesetFileList from '../ChangesetFileList'
+import CommentsList from '../CommentsList'
 
 import DiffHeader from './DiffHeader/DiffHeader'
 import { PullRequestData, PullRequestHistory2, PullRequestUnresolvedComments } from '../../api/testPullRequest'
@@ -17,12 +18,17 @@ import './CodeDiffView.css'
 
 const Element = Scroll.Element
 
+export type Props = {
+  files: Array<any>,
+  viewType?: number,
+}
+
 class CodeDiffView extends Component {
   static renderValue(option) {
     return <span>{option.value}</span>
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       viewType: props.viewType || '0',
@@ -43,6 +49,8 @@ class CodeDiffView extends Component {
     this.changeDiffViewType = this.changeDiffViewType.bind(this)
     this.renderFileDiff = this.renderFileDiff.bind(this)
   }
+
+  props: Props
 
   onCollapseComments(collapsed) {
     // NOTE: slow operation, the whole component will be rerendered
@@ -188,11 +196,6 @@ class CodeDiffView extends Component {
       </div>
     )
   }
-}
-
-CodeDiffView.propTypes = {
-  files: PropTypes.array.isRequired,
-  viewType: PropTypes.number,
 }
 
 export default CodeDiffView

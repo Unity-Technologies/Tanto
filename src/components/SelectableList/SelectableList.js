@@ -1,6 +1,7 @@
+// TODO: add flow annotations
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { List, makeSelectable } from 'material-ui/List'
 
 function wrapState(ComposedComponent) {
@@ -34,12 +35,7 @@ function wrapState(ComposedComponent) {
     }
   }
 
-  selectableList.propTypes = {
-      children: PropTypes.node.isRequired,
-      defaultValue: PropTypes.number,
-    }
-
-    return selectableList
+  return selectableList
 }
 
 const SelectableList = wrapState(makeSelectable(List))  // eslint-disable-line new-cap

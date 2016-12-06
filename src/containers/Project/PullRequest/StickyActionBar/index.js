@@ -1,6 +1,6 @@
-// TODO: add flow annotations
+/* @flow */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { Button, ButtonGroup, DropdownButton, MenuItem, Row, Col } from 'react-bootstrap'
 import { Sticky } from 'react-sticky'
 import { connect } from 'react-redux'
@@ -11,7 +11,13 @@ import {
   USER_PERSONA,
 } from 'ducks/session'
 
+export type Props = {
+  persona: string,
+  dispatch: Function,
+};
+
 class StickyActionBar extends Component {
+  props: Props
 
   changePersona(persona) {
     this.props.dispatch({ type: USER_PERSONA, persona })
@@ -120,11 +126,6 @@ class StickyActionBar extends Component {
       </Sticky>
     )
   }
-}
-
-StickyActionBar.propTypes = {
-  persona: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect(state => ({

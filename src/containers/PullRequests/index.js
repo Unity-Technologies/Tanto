@@ -1,6 +1,13 @@
+/* @flow */
+
+export type Props = {
+  totalUserPRs?: number,
+  totalUserAssignedPRs?: number,
+};
+
 /* eslint-disable */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import { Tabs, Tab, Badge } from 'react-bootstrap'
@@ -42,11 +49,6 @@ function PullRequests(props) {
       </div>
     </div>
   )
-}
-
-PullRequests.propTypes = {
-  totalUserPRs: PropTypes.number.isRequired,
-  totalUserAssignedPRs: PropTypes.number.isRequired,
 }
 
 export default connect(

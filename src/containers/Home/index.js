@@ -2,18 +2,22 @@
 
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import { NotificationList } from 'components'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 
+export type Props = { profile?: Object };
+
 class Home extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { open: true }
   }
+
+  props: Props
 
   render() {
     return (
@@ -30,10 +34,6 @@ class Home extends Component {
       </div>
     )
   }
-}
-
-Home.propTypes = {
-  profile: PropTypes.object,
 }
 
 export default connect(state => ({

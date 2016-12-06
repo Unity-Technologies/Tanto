@@ -1,9 +1,17 @@
-// TODO: add flow annotations
+/* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
 
-function Project(props) {
+export type Props = {
+  params: {
+    id: string,
+  },
+  children?: Object,
+  theme?: Object,
+};
+
+function Project(props: Props) {
   const { theme } = props
   const childrenWithProps = React.Children.map(props.children,
     child => React.cloneElement(child, {
@@ -17,12 +25,6 @@ function Project(props) {
       {childrenWithProps}
     </div>
   )
-}
-
-Project.propTypes = {
-  params: PropTypes.object.isRequired,
-  children: PropTypes.object,
-  theme: PropTypes.object,
 }
 
 export default Project

@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+// TODO: add flow annotations
+
+import React, { Component } from 'react'
 import _ from 'lodash'
 import {
   Step,
@@ -7,13 +9,17 @@ import {
   StepLabel,
 } from 'material-ui/Stepper'
 
+export type Props = { items?: Array<any> };
+
 class StepperExtended extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       stepIndex: this.props.items.length - 1,
     }
   }
+
+  props: Props
 
   render() {
     return (
@@ -37,9 +43,5 @@ class StepperExtended extends Component {
   }
 }
 
-
-StepperExtended.propTypes = {
-  items: PropTypes.array,
-}
 
 export default StepperExtended

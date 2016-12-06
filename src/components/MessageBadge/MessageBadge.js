@@ -1,14 +1,18 @@
+/* @flow */
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import IconButton from 'material-ui/IconButton'
 import Badge from 'material-ui/Badge'
 import Message from 'material-ui/svg-icons/communication/message'
 import { connect } from 'react-redux'
-import { selectors } from 'ducks/auth'
 
+export type Props = {
+  count: number,
+  isAuthenticated: boolean,
+}
 
-function MessageBadge({ count, isAuthenticated }) {
+function MessageBadge({ count, isAuthenticated }: Props) {
   return (
     <div> {
       isAuthenticated &&
@@ -25,14 +29,8 @@ function MessageBadge({ count, isAuthenticated }) {
     </div>)
 }
 
-MessageBadge.propTypes = {
-  count: PropTypes.number.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  //messages: PropTypes.array.isRequired,
-}
-
 export default connect(state => ({
-  isAuthenticated: selectors.isAuthenticated(state),
+  isAuthenticated: true,  // FIXME
   count: state.chat.count || 0,
   messages: [],
 }))(MessageBadge)

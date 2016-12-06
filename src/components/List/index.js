@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+// TODO: add flow annotations
+
+import React, { Component } from 'react'
 import { ListGroup, Pagination } from 'react-bootstrap'
 import './styles.css'
 
@@ -9,7 +11,7 @@ class List extends Component {
     this.handleSelect = this.handleSelect.bind(this)
   }
 
-  handleSelect(eventKey) {
+  handleSelect(eventKey: number) {
     this.setState({
       activePage: eventKey,
     })
@@ -48,13 +50,6 @@ class List extends Component {
       </div>
     )
   }
-}
-
-List.propTypes = {
-  activePage: PropTypes.number,
-  totalPagesCount: PropTypes.number,
-  onPageSelect: PropTypes.func,
-  children: PropTypes.any.isRequired,
 }
 
 export default List

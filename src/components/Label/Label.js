@@ -1,6 +1,14 @@
-import React, { PropTypes } from 'react'
+/* @flow */
 
-function Label(props) {
+import React from 'react'
+
+export type Props = {
+  text: string,
+  prefix?: string,
+  color?: string,
+}
+
+function Label(props: Props) {
   const { text, color, prefix } = props
   const style = {
     backgroundColor: color || '#ffffff',
@@ -17,12 +25,6 @@ function Label(props) {
       <strong>{text}</strong>
     </span>
   )
-}
-
-Label.propTypes = {
-  text: PropTypes.string.isRequired,
-  prefix: PropTypes.string.isRequired,
-  color: PropTypes.string,
 }
 
 export default Label

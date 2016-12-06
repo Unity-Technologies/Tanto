@@ -68,8 +68,4 @@ function FollowedProjectsList() {
   )
 }
 
-FollowedProjectsList.propTypes = {
-  // data: PropTypes.array,
-}
-
 export default FollowedProjectsList

@@ -1,13 +1,20 @@
-import React, { PropTypes, Component } from 'react'
-import { TestAvatar } from 'components'
+// TODO: add flow annotations
+
+import React, { Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
+
+import TestAvatar from '../TestAvatar'
 import './CommentsList.css'
 
+export type Props = { comments?: any };
+
 class CommentsList extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { search: null }
   }
+
+  props: Props
 
   render() {
     return (
@@ -67,10 +74,6 @@ class CommentsList extends Component {
       </div>
     )
   }
-}
-
-CommentsList.propTypes = {
-  comments: PropTypes.any,
 }
 
 export default CommentsList

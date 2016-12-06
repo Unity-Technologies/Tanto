@@ -1,16 +1,15 @@
-// TODO: add flow annotations
+/* @flow */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
-import {
-  Filter,
-  BranchSelect,
-  PullRequestList,
-} from 'components'
+
 import { Col, Row, Button, ButtonGroup } from 'react-bootstrap'
 import { connect } from 'react-redux'
-// import { fetchUserPRs, fetchUserReviewPRs } from 'redux-modules/user'
 import { Sticky, StickyContainer } from 'react-sticky'
+
+import Filter from 'components/Filter'
+import BranchSelect from 'components/BranchSelect'
+import PullRequestList from 'components/PullRequestList'
 import { PullRequestsDataList } from '../../../api/testPullRequest'
 import { sort } from '../../../api/testData'
 
@@ -21,6 +20,15 @@ const approveButtonStyle = {
 }
 
 
+export type Props = {
+  project_pullrequests: Array<any>,
+  params: {
+    id: string,
+  },
+  items: Array<any>,
+}
+
+
 class PullRequests extends Component {
   componentDidMount() {
   //  const { dispatch } = this.props
@@ -28,6 +36,8 @@ class PullRequests extends Component {
     // dispatch(fetchUserPRs())
     // dispatch(fetchUserReviewPRs())
   }
+
+  props: Props
 
   render() {
     const {
@@ -127,20 +137,11 @@ class PullRequests extends Component {
             </div>
 
           </Sticky>
-          <PullRequestList data={PullRequestsDataList} />
+          <PullRequestList items={PullRequestsDataList} />
         </StickyContainer>
       </div>
     )
   }
-}
-
-PullRequests.propTypes = {
-  // isFetching: PropTypes.bool.isRequired,
-  // errors: PropTypes.array,
-  // dispatch: PropTypes.func.isRequired,
-  project_pullrequests: PropTypes.array,
-  // theme: PropTypes.object,
-  params: PropTypes.object,
 }
 
 export default connect(

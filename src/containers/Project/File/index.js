@@ -1,6 +1,6 @@
 // TODO: add flow annotations
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import _ from 'lodash'
 import moment from 'moment'
@@ -18,8 +18,14 @@ import {
 import { changesets } from '../../../api/testData'
 
 
+export type Props = {
+  params: Object,
+  file: Object,
+  author: string,
+};
+
 class File extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { code: props.file, comments: [] }
     this.onSaveComment = this.onSaveComment.bind(this)
@@ -37,6 +43,8 @@ class File extends Component {
       comments,
     })
   }
+
+  props: Props
 
   // on(newCode) {
   //   this.setState({
@@ -194,15 +202,6 @@ class File extends Component {
       </div>
     )
   }
-}
-
-File.propTypes = {
-  params: PropTypes.object.isRequired,
-  // location: PropTypes.object.isRequired,
-  file: PropTypes.object.isRequired,
- // dispatch: PropTypes.func,
-  author: PropTypes.string.isRequired,
- // theme: PropTypes.object,
 }
 
 export default connect(state => ({

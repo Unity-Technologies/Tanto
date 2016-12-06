@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+// TODO: add flow annotations
+
+import React from 'react'
 import _ from 'lodash'
 import { List } from 'material-ui/List'
 
@@ -23,16 +25,6 @@ function Tree(props) {
       }
     </List>
   )
-}
-
-Tree.propTypes = {
-  data: PropTypes.array.isRequired,
-  //clickHandler: PropTypes.func.isRequired,
-  //childrenProp: PropTypes.string.isRequired,
- // primaryTextProp: PropTypes.string.isRequired,
-  //secondaryTextProp: PropTypes.string,
-  //inset: PropTypes.number,
-  //valueProp: PropTypes.string.isRequired,
 }
 
 export default Tree

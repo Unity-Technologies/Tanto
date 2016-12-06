@@ -1,8 +1,16 @@
-import React, { PropTypes } from 'react'
+/* @flow */
+
+import React from 'react'
 import { Link } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
 
-function LinkButton(props) {
+export type Props = {
+  style?: Object,
+  label: string,
+  to: string,
+};
+
+function LinkButton(props: Props) {
   const { style, to, label } = props
   return (
     <Link to={to}>
@@ -13,12 +21,6 @@ function LinkButton(props) {
       />
     </Link>
   )
-}
-
-LinkButton.propTypes = {
-  style: PropTypes.object,
-  label: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
 }
 
 export default LinkButton

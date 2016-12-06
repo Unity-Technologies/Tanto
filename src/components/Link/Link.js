@@ -1,7 +1,15 @@
-import React, { PropTypes } from 'react'
+/* @flow */
+
+import React from 'react'
 import { Link as RouterLink } from 'react-router'
 
-function Link(props) {
+export type Props = {
+  style?: Object,
+  label?: string,
+  to?: string,
+};
+
+function Link(props: Props) {
   const defaultStyle = {
     fontSize: '14px',
     color: 'rgb(92, 92, 92)',
@@ -13,12 +21,6 @@ function Link(props) {
   return (
     <RouterLink style={style || defaultStyle} to={to}>{label}</RouterLink>
   )
-}
-
-Link.propTypes = {
-  style: PropTypes.object,
-  label: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
 }
 
 export default Link

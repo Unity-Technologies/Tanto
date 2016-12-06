@@ -1,7 +1,9 @@
 /* @flow */
+/* eslint-disable */
 
+import React, { Component } from 'react'
 import moment from 'moment'
-import React, { PropTypes, Component } from 'react'
+import _ from 'lodash'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Divider from 'material-ui/Divider'
@@ -15,16 +17,45 @@ const subHeader = text => (
   </div>
 )
 
+export type Props = {
+  item: Object,
+  clickHandler: Function,
+  primaryTextProp: string,
+  secondaryTextProp?: string,
+  inset: number,
+  valueProp: string,
+  updated: string,
+  owner: string,
+}
+
 class ProjectItem extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
       open: false,
       followed: false,
-    }
-    this.toggleOpen = this.toggleOpen.bind(this)
-    this.toggleFollow = this.toggleFollow.bind(this)
+    };
+
+    (this:any).toggleOpen = this.toggleOpen.bind(this);
+    (this:any).toggleFollow = this.toggleFollow.bind(this)
+  }
+
+  props: Props
+
+  state: {
+    open: boolean,
+    followed: boolean,
+  }
+
+  toggleOpen() {
+    const value = this.state.open
+    this.setState({ open: !value })
+  }
+
+  toggleFollow() {
+    const value = this.state.followed
+    this.setState({ followed: !value })
   }
 
   render() {
@@ -100,20 +131,6 @@ class ProjectItem extends Component {
         <Divider />
       </div>)
   }
-}
-
-types = 
-
-ProjectItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  clickHandler: PropTypes.func.isRequired,
-  childrenProp: PropTypes.string.isRequired,
-  primaryTextProp: PropTypes.string.isRequired,
-  secondaryTextProp: PropTypes.string,
-  updated: PropTypes.string,
-  owner: PropTypes.string,
-  inset: PropTypes.number,
-  valueProp: PropTypes.string.isRequired,
 }
 
 export default ProjectItem
