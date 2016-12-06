@@ -1,3 +1,4 @@
+export type Props = { error?: string };
 import React, { PropTypes } from 'react'
 import Paper from 'material-ui/Paper'
 import ErrorIcon from 'material-ui/svg-icons/alert/error'
@@ -14,10 +15,6 @@ function ErrorMessage({ error }) {
       </div>
     </Paper>
   )
-}
-
-ErrorMessage.propTypes = {
-  error: PropTypes.string.isRequired,
 }
 
 export default ErrorMessage

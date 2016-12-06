@@ -1,3 +1,4 @@
+export type Props = { text?: number | string | React.Element | Array<any> };
 import React, { PropTypes } from 'react'
 import './Divider.css'
 
@@ -9,10 +10,6 @@ function Divider(props) {
       </span>
     </div>
   )
-}
-
-Divider.propTypes = {
-  text: PropTypes.node.isRequired,
 }
 
 export default Divider

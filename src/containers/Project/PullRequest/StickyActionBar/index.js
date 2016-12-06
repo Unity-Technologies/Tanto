@@ -11,7 +11,13 @@ import {
   USER_PERSONA,
 } from 'ducks/session'
 
+export type Props = {
+  persona: string,
+  dispatch: Function,
+};
+
 class StickyActionBar extends Component {
+  props: Props;
 
   changePersona(persona) {
     this.props.dispatch({ type: USER_PERSONA, persona })
@@ -120,11 +126,6 @@ class StickyActionBar extends Component {
       </Sticky>
     )
   }
-}
-
-StickyActionBar.propTypes = {
-  persona: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect(state => ({

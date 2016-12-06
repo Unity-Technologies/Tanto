@@ -1,3 +1,7 @@
+export type Props = { // isFetching: PropTypes.bool.isRequired,
+// errorMessage: PropTypes.string,
+params?: Object };
+
 // TODO: add flow annotations
 
 import React, { PropTypes } from 'react'
@@ -11,12 +15,6 @@ function Statistics({ params: { prid } }) {
       <h3>Statistics {prid}</h3>
     </div>
   )
-}
-
-Statistics.propTypes = {
-  // isFetching: PropTypes.bool.isRequired,
-  // errorMessage: PropTypes.string,
-  params: PropTypes.object.isRequired,
 }
 
 export default connect(

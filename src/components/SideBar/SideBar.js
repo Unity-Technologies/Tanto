@@ -69,7 +69,22 @@ const subItem = (icon, title, color, badge, iconbadge, open) => (
   </div>
 )
 
+export type Props = {
+  width: number,
+  hiddenWidth: number,
+  items: Array<any>,
+  subitems?: Array<any>,
+  open: boolean,
+  sideBarMenuItemStyle?: Object,
+  sideBarMenuItemSelectedStyle?: Object,
+  dispatch: Function,
+  defaultValue: number,
+  title: string,
+  persona: string,
+};
+
 class SideBar extends Component {
+  props: Props;
   redirect(to) {
     this.props.dispatch(push(to))
   }
@@ -185,20 +200,6 @@ class SideBar extends Component {
   }
 }
 
-
-SideBar.propTypes = {
-  width: PropTypes.number.isRequired,
-  hiddenWidth: PropTypes.number.isRequired,
-  items: PropTypes.array.isRequired,
-  subitems: PropTypes.array,
-  open: PropTypes.bool.isRequired,
-  sideBarMenuItemStyle: PropTypes.object,
-  sideBarMenuItemSelectedStyle: PropTypes.object,
-  dispatch: PropTypes.func.isRequired,
-  defaultValue: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  persona: PropTypes.string.isRequired,
-}
 
 export default connect(state => ({
   open: state.sidebar.open,

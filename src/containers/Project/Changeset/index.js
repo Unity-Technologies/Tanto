@@ -1,3 +1,4 @@
+export type Props = { params?: Object };
 // TODO: add flow annotations
 
 import React, { PropTypes } from 'react'
@@ -47,10 +48,6 @@ function Changeset({ params: { hash } }) {
       <Element name="page-bottom" />
     </div>
   )
-}
-
-Changeset.propTypes = {
-  params: PropTypes.object.isRequired,
 }
 
 export default Changeset

@@ -1,3 +1,9 @@
+export type Props = {
+  persona?: string,
+  username?: string,
+  logoutRoute?: string,
+};
+
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import MenuItem from 'material-ui/MenuItem'
@@ -76,12 +82,6 @@ function Logout(props) {
       </IconMenu>
     </div>
   )
-}
-
-Logout.propTypes = {
-  persona: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  logoutRoute: PropTypes.string.isRequired,
 }
 
 export default connect(

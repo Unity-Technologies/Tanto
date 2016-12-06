@@ -4,12 +4,19 @@ import React, { PropTypes, Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import TestAvatar from '../TestAvatar'
 
+export type Props = {
+  reviewers?: any,
+  onAdded?: Function,
+};
+
 class Reviewers extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { search: null, reviewers: this.props.reviewers }
     this.addReviewer = this.addReviewer.bind(this)
   }
+
+  props: Props;
 
   addReviewer(value) {
     const list = this.state.reviewers
@@ -78,11 +85,6 @@ class Reviewers extends Component {
       </div>
     )
   }
-}
-
-Reviewers.propTypes = {
-  reviewers: PropTypes.any,
-  onAdded: PropTypes.func,
 }
 
 export default Reviewers

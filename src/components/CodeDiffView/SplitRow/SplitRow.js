@@ -7,8 +7,24 @@ import { NewComment, Comment } from 'components'
 import _ from 'lodash'
 import RaisedButton from 'material-ui/RaisedButton'
 
+export type Props = {
+  leftLine: string,
+  rightLine: string,
+  isBreak?: boolean,
+  leftLineNumber?: any,
+  rightLineNumber?: any,
+  leftOperation?: string,
+  rightOperation?: string,
+  leftCssClass: string,
+  rightCssClass: string,
+  leftComments?: Array<any>,
+  rightComments?: Array<any>,
+  onComment?: Function,
+  collapseComments?: boolean,
+};
+
 class SplitRow extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       leftCommentState: false,
@@ -29,6 +45,8 @@ class SplitRow extends Component {
     this.collapseRightComments = this.collapseRightComments.bind(this)
     this.handleCommentSave = this.handleCommentSave.bind(this)
   }
+
+  props: Props;
 
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -267,22 +285,6 @@ class SplitRow extends Component {
       </tr>
     )
   }
-}
-
-SplitRow.propTypes = {
-  leftLine: PropTypes.string.isRequired,
-  rightLine: PropTypes.string.isRequired,
-  isBreak: PropTypes.bool,
-  leftLineNumber: PropTypes.any,
-  rightLineNumber: PropTypes.any,
-  leftOperation: PropTypes.string,
-  rightOperation: PropTypes.string,
-  leftCssClass: PropTypes.string.isRequired,
-  rightCssClass: PropTypes.string.isRequired,
-  leftComments: PropTypes.array,
-  rightComments: PropTypes.array,
-  onComment: PropTypes.func,
-  collapseComments: PropTypes.bool,
 }
 
 export default SplitRow

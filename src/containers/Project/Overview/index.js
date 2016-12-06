@@ -1,3 +1,4 @@
+export type Props = { params?: Object };
 // TODO: add flow annotations
 
 import React, { PropTypes } from 'react'
@@ -32,10 +33,6 @@ function Overview({ params: { id } }) {
       </div>
     </div>
   )
-}
-
-Overview.propTypes = {
-  params: PropTypes.object.isRequired,
 }
 
 export default Overview

@@ -7,8 +7,20 @@ import { NewComment, Comment } from 'components'
 import _ from 'lodash'
 import RaisedButton from 'material-ui/RaisedButton'
 
+export type Props = {
+  line: string,
+  isBreak: boolean,
+  oldLineNumber: any,
+  newLineNumber: any,
+  operation: string,
+  cssClass: string,
+  comments?: Array<any>,
+  collapseComments?: boolean,
+  onComment?: Function,
+};
+
 class UnifiedRow extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       commentState: false,
@@ -21,6 +33,8 @@ class UnifiedRow extends Component {
     this.handleCommentSave = this.handleCommentSave.bind(this)
 
   }
+
+  props: Props;
 
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -133,18 +147,6 @@ class UnifiedRow extends Component {
       </tr>
     )
   }
-}
-
-UnifiedRow.propTypes = {
-  line: PropTypes.string.isRequired,
-  isBreak: PropTypes.bool.isRequired,
-  oldLineNumber: PropTypes.any.isRequired,
-  newLineNumber: PropTypes.any.isRequired,
-  operation: PropTypes.string.isRequired,
-  cssClass: PropTypes.string.isRequired,
-  comments: PropTypes.array,
-  collapseComments: PropTypes.bool,
-  onComment: PropTypes.func,
 }
 
 export default UnifiedRow

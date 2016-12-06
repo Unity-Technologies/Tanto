@@ -1,3 +1,9 @@
+export type Props = {
+  text?: string,
+  prefix?: string,
+  color?: string,
+};
+
 import React, { PropTypes } from 'react'
 
 function Label(props) {
@@ -17,12 +23,6 @@ function Label(props) {
       <strong>{text}</strong>
     </span>
   )
-}
-
-Label.propTypes = {
-  text: PropTypes.string.isRequired,
-  prefix: PropTypes.string.isRequired,
-  color: PropTypes.string,
 }
 
 export default Label

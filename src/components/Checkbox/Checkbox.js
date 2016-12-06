@@ -2,8 +2,16 @@ import React, { Component, PropTypes } from 'react'
 
 import './Checkbox.css'
 
+export type Props = {
+  value: string,
+  onCheck?: Function,
+  name: string,
+  checked?: boolean,
+  disabled?: boolean,
+};
+
 class Checkbox extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       value: this.props.value,
@@ -13,6 +21,8 @@ class Checkbox extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
+  props: Props;
+
   handleClick(e) {
     this.setState({ checked: e.target.checked })
     if (this.props.onCheck) {
@@ -20,7 +30,7 @@ class Checkbox extends Component {
     }
   }
 
-// TODO: apply material-ui  styling here
+  // TODO: apply material-ui  styling here
   render() {
     const { value, checked, disabled } = this.state
     const { name } = this.props
@@ -39,14 +49,6 @@ class Checkbox extends Component {
       </div>
     )
   }
-}
-
-Checkbox.propTypes = {
-  value: PropTypes.string.isRequired,
-  onCheck: PropTypes.func,
-  name: PropTypes.string.isRequired,
-  checked: PropTypes.bool,
-  disabled: PropTypes.bool,
 }
 
 export default Checkbox

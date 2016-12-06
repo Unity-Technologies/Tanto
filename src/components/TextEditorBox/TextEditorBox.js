@@ -31,8 +31,24 @@ const hashtagPlugin = createHashtagPlugin()
 
 const plugins = [emojiPlugin, mentionPlugin, linkifyPlugin, hashtagPlugin]
 
+export type Props = {
+  mentions?: Array<any>,
+  onTextChanged?: Function,
+  readOnly?: boolean,
+  text?: any,
+  placeholder?: // height: PropTypes.string,
+  string,
+  hideStyleControls?: boolean,
+  simpleText?: boolean,
+  children?: number | string | React.Element | Array<any>,
+  header?: number | string | React.Element | Array<any>,
+  style?: Object,
+  editorStyle?: Object,
+  styleControlsStyle?: Object,
+};
+
 class TextEditorBox extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -54,6 +70,8 @@ class TextEditorBox extends Component {
     this.focus = this.focus.bind(this)
 
   }
+
+  props: Props;
 
   onChange(editorState) {
     this.setState({
@@ -162,22 +180,6 @@ class TextEditorBox extends Component {
       </div>
     )
   }
-}
-
-TextEditorBox.propTypes = {
-  mentions: PropTypes.array,
-  onTextChanged: PropTypes.func,
-  readOnly: PropTypes.bool,
-  text: PropTypes.any,
-  // height: PropTypes.string,
-  placeholder: PropTypes.string,
-  hideStyleControls: PropTypes.bool,
-  simpleText: PropTypes.bool,
-  children: PropTypes.node,
-  header: PropTypes.node,
-  style: PropTypes.object,
-  editorStyle: PropTypes.object,
-  styleControlsStyle: PropTypes.object,
 }
 
 export default TextEditorBox

@@ -1,3 +1,10 @@
+export type Props = {
+  deleted?: number,
+  changed?: number,
+  added?: number,
+  showDetails?: boolean,
+};
+
 /* @flow */
 import React, { PropTypes } from 'react'
 import './ChangesetDelta.css'
@@ -47,11 +54,6 @@ const ChangesetDelta = ({ added, deleted, changed, showDetails }: ChangesetDelta
   )
 }
 
-ChangesetDelta.propTypes = {
-  deleted: PropTypes.number.isRequired,
-  changed: PropTypes.number.isRequired,
-  added: PropTypes.number.isRequired,
-  showDetails: PropTypes.bool,
-}
+;
 
 export default ChangesetDelta

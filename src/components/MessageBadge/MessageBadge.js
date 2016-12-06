@@ -1,3 +1,9 @@
+export type Props = {
+  count?: number,
+  //messages: PropTypes.array.isRequired,
+  isAuthenticated?: boolean,
+};
+
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React, { PropTypes } from 'react'
@@ -23,12 +29,6 @@ function MessageBadge({ count, isAuthenticated }) {
           </IconButton>
         </Badge>}
     </div>)
-}
-
-MessageBadge.propTypes = {
-  count: PropTypes.number.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  //messages: PropTypes.array.isRequired,
 }
 
 export default connect(state => ({

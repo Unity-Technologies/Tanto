@@ -1,3 +1,10 @@
+export type Props = {
+  // title: PropTypes.string.isRequired,
+  showMenuIconButton?: boolean,
+  appBarStyle?: Object,
+  dispatch?: Function,
+};
+
 import React, { PropTypes } from 'react'
 import AppBar from 'material-ui/AppBar'
 import Open from 'material-ui/svg-icons/navigation/menu'
@@ -47,13 +54,6 @@ function NavBar({ appBarStyle, showMenuIconButton, dispatch }) {
       <KafkaBadge />
       <Logout />
     </AppBar>)
-}
-
-NavBar.propTypes = {
-  // title: PropTypes.string.isRequired,
-  showMenuIconButton: PropTypes.bool.isRequired,
-  appBarStyle: PropTypes.object,
-  dispatch: PropTypes.func,
 }
 
 export default connect(state => ({

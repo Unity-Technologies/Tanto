@@ -1,3 +1,4 @@
+export type Props = { assets?: Object };
 // TODO: add flow annotations
 
 import React, { PropTypes } from 'react'
@@ -62,10 +63,6 @@ function Html({ assets }) {
       </body>
     </html>
   )
-}
-
-Html.propTypes = {
-  assets: PropTypes.object,
 }
 
 export default Html

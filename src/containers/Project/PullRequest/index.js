@@ -30,7 +30,16 @@ type Props = {
   pullRequest: ?PullRequestGraphType,
 };
 
+export type Props = {
+  dispatch: Function,
+  isFetching: boolean,
+  params: Object,
+  persona: DEVELOPER_PERSONA | MANAGER_PERSONA | GUARDIAN_PERSONA,
+  pullRequest?: Object,
+};
+
 class PullRequest extends Component {
+  props: Props;
 
   componentDidMount() {
     const { dispatch, params } = this.props
@@ -69,15 +78,6 @@ class PullRequest extends Component {
       </StickyContainer>
     )
   }
-}
-
-// TODO: remove .propTypes when parent also uses flow
-PullRequest.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  params: PropTypes.object.isRequired,
-  persona: PropTypes.oneOf([DEVELOPER_PERSONA, MANAGER_PERSONA, GUARDIAN_PERSONA]).isRequired,
-  pullRequest: PropTypes.object,
 }
 
 export default connect(

@@ -1,3 +1,9 @@
+export type Props = {
+  style?: Object,
+  label?: string,
+  to?: string,
+};
+
 import React, { PropTypes } from 'react'
 import { Link as RouterLink } from 'react-router'
 
@@ -13,12 +19,6 @@ function Link(props) {
   return (
     <RouterLink style={style || defaultStyle} to={to}>{label}</RouterLink>
   )
-}
-
-Link.propTypes = {
-  style: PropTypes.object,
-  label: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
 }
 
 export default Link

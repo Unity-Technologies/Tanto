@@ -1,3 +1,8 @@
+export type Props = {
+  data?: Array<any>,
+  onFileClick?: Function,
+};
+
 /* eslint-disable */
 
 import React, { PropTypes } from 'react'
@@ -67,9 +72,6 @@ const FileList = ({ data, onFileClick }) =>
     </TableBody>
   </Table>
 
-FileList.propTypes = {
-  data: PropTypes.array.isRequired,
-  onFileClick: PropTypes.func.isRequired,
-}
+;
 
 export default FileList

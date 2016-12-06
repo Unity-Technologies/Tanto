@@ -8,11 +8,23 @@ import TextField from 'material-ui/TextField'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 
+export type Props = {
+  id: // params: PropTypes.object,
+  // theme: PropTypes.object,
+  // reviewers: PropTypes.array,
+  string,
+  user?: string,
+  data?: Object,
+  commentAuthor?: string,
+};
+
 class Overview extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { pullRequest: props.data, comments: [], changed: false }
   }
+
+  props: Props;
 
   onSaveComment(message) {
     const comments = this.state.comments
@@ -122,16 +134,6 @@ class Overview extends Component {
       </div>
     )
   }
-}
-
-Overview.propTypes = {
-  // params: PropTypes.object,
-  // theme: PropTypes.object,
-  // reviewers: PropTypes.array,
-  id: PropTypes.string.isRequired,
-  user: PropTypes.string,
-  data: PropTypes.object,
-  commentAuthor: PropTypes.string,
 }
 
 export default connect(state => ({

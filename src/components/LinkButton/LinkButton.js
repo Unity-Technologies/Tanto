@@ -1,3 +1,9 @@
+export type Props = {
+  style?: Object,
+  label?: string,
+  to?: string,
+};
+
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -13,12 +19,6 @@ function LinkButton(props) {
       />
     </Link>
   )
-}
-
-LinkButton.propTypes = {
-  style: PropTypes.object,
-  label: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
 }
 
 export default LinkButton

@@ -15,8 +15,20 @@ const subHeader = text => (
   </div>
 )
 
+export type Props = {
+  item: Object,
+  clickHandler: Function,
+  childrenProp: string,
+  primaryTextProp: string,
+  secondaryTextProp?: string,
+  inset?: // updated: PropTypes.string,
+  // owner: PropTypes.string,
+  number,
+  valueProp: string,
+};
+
 class ProjectItem extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -26,6 +38,8 @@ class ProjectItem extends Component {
     this.toggleOpen = this.toggleOpen.bind(this)
     this.toggleFollow = this.toggleFollow.bind(this)
   }
+
+  props: Props;
 
   toggleOpen() {
     const value = this.state.open
@@ -136,18 +150,6 @@ class ProjectItem extends Component {
         <Divider />
       </div>)
   }
-}
-
-ProjectItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  clickHandler: PropTypes.func.isRequired,
-  childrenProp: PropTypes.string.isRequired,
-  primaryTextProp: PropTypes.string.isRequired,
-  secondaryTextProp: PropTypes.string,
-  // updated: PropTypes.string,
-  // owner: PropTypes.string,
-  inset: PropTypes.number,
-  valueProp: PropTypes.string.isRequired,
 }
 
 export default ProjectItem

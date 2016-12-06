@@ -1,3 +1,9 @@
+export type Props = {
+  params?: Object,
+  children?: Object,
+  theme?: Object,
+};
+
 // TODO: add flow annotations
 
 import React, { PropTypes } from 'react'
@@ -17,12 +23,6 @@ function Project(props) {
       {childrenWithProps}
     </div>
   )
-}
-
-Project.propTypes = {
-  params: PropTypes.object.isRequired,
-  children: PropTypes.object,
-  theme: PropTypes.object,
 }
 
 export default Project

@@ -10,7 +10,16 @@ import { fetchProjects } from 'ducks/projects'
 import { Sticky, StickyContainer } from 'react-sticky'
 import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 
+export type Props = {
+  isFetching: boolean,
+  errors?: Array<any>,
+  projects: Array<any>,
+  dispatch: Function,
+  theme: Object,
+};
+
 export class Projects extends Component {
+  props: Props;
   componentDidMount() {
     const { dispatch } = this.props
     this.clickHandler = this.clickHandler.bind(this)
@@ -122,14 +131,6 @@ export class Projects extends Component {
       </div>
     )
   }
-}
-
-Projects.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  errors: PropTypes.array,
-  projects: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  theme: PropTypes.object.isRequired,
 }
 
 export default connect(

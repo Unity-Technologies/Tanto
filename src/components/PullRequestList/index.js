@@ -1,3 +1,16 @@
+export type Props = {
+  totalPagesCount?: number,
+  activePage?: number,
+  items?: Array<any>,
+  isFetching?: boolean,
+  totalNew?: number,
+  totalInProgress?: number,
+  total?: number,
+  error?: string,
+  showRemoveButton?: boolean,
+  onRemoveClick?: Function,
+};
+
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React, { PropTypes } from 'react'
@@ -42,19 +55,6 @@ function PullRequestList(props) {
       </List>
     </div>
   )
-}
-
-PullRequestList.propTypes = {
-  totalPagesCount: PropTypes.number.isRequired,
-  activePage: PropTypes.number.isRequired,
-  items: PropTypes.array.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  totalNew: PropTypes.number.isRequired,
-  totalInProgress: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
-  error: PropTypes.string,
-  showRemoveButton: PropTypes.bool,
-  onRemoveClick: PropTypes.func,
 }
 
 export default PullRequestList

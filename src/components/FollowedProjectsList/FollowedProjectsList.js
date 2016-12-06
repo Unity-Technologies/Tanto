@@ -1,3 +1,4 @@
+export type Props = {};
 /* eslint-disable max-len */
 
 import React from 'react'
@@ -66,10 +67,6 @@ function FollowedProjectsList() {
 
     </List>
   )
-}
-
-FollowedProjectsList.propTypes = {
-  // data: PropTypes.array,
 }
 
 export default FollowedProjectsList

@@ -1,3 +1,10 @@
+export type Props = {
+  title?: string,
+  showMenuIconButton?: boolean,
+  dispatch?: Function,
+  projectName?: string,
+};
+
 import React, { PropTypes } from 'react'
 import { Logout, SearchBox } from 'components'
 import { routes } from 'universal/constants'
@@ -56,13 +63,6 @@ function Header() {
       </Navbar>
     </div>
   )
-}
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-  showMenuIconButton: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func,
-  projectName: PropTypes.string,
 }
 
 export default connect(state => ({

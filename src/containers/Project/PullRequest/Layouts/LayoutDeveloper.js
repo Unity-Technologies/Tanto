@@ -33,8 +33,10 @@ const tabTitle = (text, badge) => (
 
 const downloadIcon = <i className="fa fa-download" aria-hidden="true" />
 
+export type Props = { pullRequest: Object };
+
 class LayoutDeveloper extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       value: null,
@@ -47,6 +49,8 @@ class LayoutDeveloper extends Component {
     this.toggleReviewers = this.toggleReviewers.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
   }
+
+  props: Props;
 
   handleChange(event, index, value) {
     this.setState({
@@ -124,10 +128,6 @@ class LayoutDeveloper extends Component {
       </div>
     )
   }
-}
-
-LayoutDeveloper.propTypes = {
-  pullRequest: PropTypes.object.isRequired,
 }
 
 export default LayoutDeveloper

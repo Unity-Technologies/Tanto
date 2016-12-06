@@ -18,12 +18,24 @@ import {
 import { changesets } from '../../../api/testData'
 
 
+export type Props = {
+  params: Object,
+  file: // location: PropTypes.object.isRequired,
+  Object,
+  author: // dispatch: PropTypes.func,
+  // theme: PropTypes.object,
+  string,
+};
+
+
 class File extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { code: props.file, comments: [] }
     this.onSaveComment = this.onSaveComment.bind(this)
   }
+
+  props: Props;
 
   onSaveComment(message) {
     const comments = this.state.comments
@@ -194,15 +206,6 @@ class File extends Component {
       </div>
     )
   }
-}
-
-File.propTypes = {
-  params: PropTypes.object.isRequired,
-  // location: PropTypes.object.isRequired,
-  file: PropTypes.object.isRequired,
- // dispatch: PropTypes.func,
-  author: PropTypes.string.isRequired,
- // theme: PropTypes.object,
 }
 
 export default connect(state => ({

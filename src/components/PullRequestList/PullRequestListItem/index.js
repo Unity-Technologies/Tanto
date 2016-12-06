@@ -12,11 +12,34 @@ const subHeader = text => (
   </div>
 )
 
+export type Props = {
+  id: string,
+  title: string,
+  status: string,
+  username: string,
+  updated: string,
+  link: string,
+  originRepository: string,
+  originBranch: string,
+  originLink: string,
+  destRepository: string,
+  destBranch: string,
+  destLink: string,
+  buildName?: string,
+  buildStatus?: string,
+  buildDate?: string,
+  buildLink?: string,
+  showRemoveIcon?: boolean,
+  onRemoveClick?: Function,
+};
+
 class PullRequestListItem extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.handleRemoveClick = this.handleRemoveClick.bind(this)
   }
+
+  props: Props;
 
   handleRemoveClick() {
     if (this.onRemoveClick) {
@@ -111,27 +134,6 @@ class PullRequestListItem extends Component {
       </ListGroupItem>
     )
   }
-}
-
-PullRequestListItem.propTypes = {
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  updated: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
-  originRepository: PropTypes.string.isRequired,
-  originBranch: PropTypes.string.isRequired,
-  originLink: PropTypes.string.isRequired,
-  destRepository: PropTypes.string.isRequired,
-  destBranch: PropTypes.string.isRequired,
-  destLink: PropTypes.string.isRequired,
-  buildName: PropTypes.string,
-  buildStatus: PropTypes.string,
-  buildDate: PropTypes.string,
-  buildLink: PropTypes.string,
-  showRemoveIcon: PropTypes.bool,
-  onRemoveClick: PropTypes.func,
 }
 
 export default PullRequestListItem

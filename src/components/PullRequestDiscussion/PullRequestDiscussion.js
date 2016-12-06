@@ -1,3 +1,4 @@
+export type Props = { onSaveComment?: Function };
 import React, { PropTypes } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
@@ -118,8 +119,6 @@ const PullRequestDiscussion = (props) =>
   </div>
 
 
-PullRequestDiscussion.propTypes = {
-  onSaveComment: PropTypes.func.isRequired,
-}
+;
 
 export default PullRequestDiscussion

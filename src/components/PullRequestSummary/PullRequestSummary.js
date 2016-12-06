@@ -1,3 +1,10 @@
+export type Props = {
+  onAddReviewer?: Function,
+  onToggleReviewers?: Function,
+  pullRequest?: Object,
+  toggleReviewers?: boolean,
+};
+
 /* @flow */
 import moment from 'moment'
 import React, { PropTypes } from 'react'
@@ -64,9 +71,7 @@ export const PullRequestHeader = ({ pullRequest } : PullRequestHeaderProps) =>
   </div>
 
 
-PullRequestHeader.propTypes = {
-  pullRequest: PropTypes.object.isRequired,
-}
+;
 
 type PullRequestSummaryProps = {
   onAddReviewer: Function,
@@ -426,11 +431,6 @@ const PullRequestSummary = (props: PullRequestSummaryProps) =>
   </div>
 
 
-PullRequestSummary.propTypes = {
-  onAddReviewer: PropTypes.func.isRequired,
-  onToggleReviewers: PropTypes.func.isRequired,
-  pullRequest: PropTypes.object.isRequired,
-  toggleReviewers: PropTypes.bool.isRequired,
-}
+;
 
 export default PullRequestSummary

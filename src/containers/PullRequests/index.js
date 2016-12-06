@@ -1,3 +1,8 @@
+export type Props = {
+  totalUserPRs?: number,
+  totalUserAssignedPRs?: number,
+};
+
 /* eslint-disable */
 
 import React, { PropTypes } from 'react'
@@ -42,11 +47,6 @@ function PullRequests(props) {
       </div>
     </div>
   )
-}
-
-PullRequests.propTypes = {
-  totalUserPRs: PropTypes.number.isRequired,
-  totalUserAssignedPRs: PropTypes.number.isRequired,
 }
 
 export default connect(

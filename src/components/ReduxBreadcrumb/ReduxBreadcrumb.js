@@ -1,3 +1,8 @@
+export type Props = {
+  items?: Array<any>,
+  style?: Object,
+};
+
 /* @flow */
 
 import React, { PropTypes } from 'react'
@@ -21,11 +26,6 @@ function ReduxBreadcrumb(props) {
     }
     </div>
   )
-}
-
-ReduxBreadcrumb.propTypes = {
-  items: PropTypes.array,
-  style: PropTypes.object,
 }
 
 export default connect(state => ({

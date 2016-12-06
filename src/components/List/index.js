@@ -2,12 +2,21 @@ import React, { Component, PropTypes } from 'react'
 import { ListGroup, Pagination } from 'react-bootstrap'
 import './styles.css'
 
+export type Props = {
+  activePage?: number,
+  totalPagesCount?: number,
+  onPageSelect?: Function,
+  children: any,
+};
+
 class List extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { activePage: this.props.activePage }
     this.handleSelect = this.handleSelect.bind(this)
   }
+
+  props: Props;
 
   handleSelect(eventKey) {
     this.setState({
@@ -48,13 +57,6 @@ class List extends Component {
       </div>
     )
   }
-}
-
-List.propTypes = {
-  activePage: PropTypes.number,
-  totalPagesCount: PropTypes.number,
-  onPageSelect: PropTypes.func,
-  children: PropTypes.any.isRequired,
 }
 
 export default List

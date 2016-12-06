@@ -14,11 +14,15 @@ const subHeader = text => (
   </div>
 )
 
+export type Props = { issues?: any };
+
 class IssuesList extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { search: null }
   }
+
+  props: Props;
 
   render() {
     const greenStatus = { borderLeft: '4px solid #d1fad1' }
@@ -100,10 +104,6 @@ class IssuesList extends Component {
       </div>
     )
   }
-}
-
-IssuesList.propTypes = {
-  issues: PropTypes.any,
 }
 
 export default IssuesList

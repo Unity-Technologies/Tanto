@@ -11,8 +11,14 @@ import { Sticky, StickyContainer } from 'react-sticky'
 import { prChangesetList3, prChangesetList1, prChangesetList2 } from '../../../api/testPullRequest'
 
 
+export type Props = {
+  params: Object,
+  data: Array<any>,
+};
+
+
 class Changelog extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -28,6 +34,8 @@ class Changelog extends Component {
     this.handleRequestClose = this.handleRequestClose.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
+
+  props: Props;
 
   handleTouchTap() {
     this.setState({
@@ -159,11 +167,6 @@ class Changelog extends Component {
   }
 }
 
-
-Changelog.propTypes = {
-  params: PropTypes.object.isRequired,
-  data: PropTypes.array.isRequired,
-}
 
 export default connect(state => ({ // eslint-disable-line no-unused-vars
   data: [...prChangesetList1, ...prChangesetList2, ...prChangesetList3],

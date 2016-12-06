@@ -14,14 +14,21 @@ const APP_THEME = 'cyan'
 const theme = require(`../../theme/ui/${APP_THEME}`)
 const muiTheme = getMuiTheme(theme)
 
+export type Props = {
+  children: Object,
+  open: boolean,
+};
+
 class App extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       sideBarWidth: 280,
       hiddenSideBarWidth: 60,
     }
   }
+
+  props: Props;
 
   render() {
     const childrenWithProps = React.Children.map(this.props.children,
@@ -60,11 +67,6 @@ class App extends Component {
       </MuiThemeProvider>
     )
   }
-}
-
-App.propTypes = {
-  children: PropTypes.object.isRequired,
-  open: PropTypes.bool.isRequired,
 }
 
 export default connect(state => ({

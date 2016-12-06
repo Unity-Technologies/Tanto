@@ -1,3 +1,10 @@
+export type Props = {
+  title?: string,
+  author?: string,
+  primaryTextStyle?: string,
+  secondaryTextStyle?: string,
+};
+
 import React, { PropTypes } from 'react'
 import { ListItem } from 'material-ui/List'
 import { Link } from 'react-router'
@@ -37,13 +44,6 @@ function PullRequestComment(props) {
       secondaryTextLines={2}
     />
   )
-}
-
-PullRequestComment.propTypes = {
-  title: PropTypes.string,
-  author: PropTypes.string,
-  primaryTextStyle: PropTypes.string,
-  secondaryTextStyle: PropTypes.string,
 }
 
 export default PullRequestComment

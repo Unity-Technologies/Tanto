@@ -1,3 +1,9 @@
+export type Props = {
+  count?: number,
+  isAuthenticated?: boolean,
+  messages?: Array<any>,
+};
+
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React, { PropTypes } from 'react'
@@ -41,12 +47,6 @@ function KafkaBadge({ count, isAuthenticated, messages }) {
     }
     </div>
   )
-}
-
-KafkaBadge.propTypes = {
-  count: PropTypes.number.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  messages: PropTypes.array.isRequired,
 }
 
 export default connect(state => ({

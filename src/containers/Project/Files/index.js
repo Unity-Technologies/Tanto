@@ -18,14 +18,25 @@ import { Sticky, StickyContainer } from 'react-sticky'
 import { projectFilesTestData, changesets } from '../../../api/testData'
 
 
+export type Props = {
+  pathname: string,
+  data: Array<any>,
+  dispatch: Function,
+  location: Object,
+  params: Object,
+};
+
+
 class Files extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.clickHandler = this.clickHandler.bind(this)
     this.findChild = this.findChild.bind(this)
     this.updateCurrentNode = this.updateCurrentNode.bind(this)
     this.state = { currentNode: this.props.data }
   }
+
+  props: Props;
 
   componentDidMount() {
     if (this.props.pathname.endsWith('/files')) {
@@ -175,14 +186,6 @@ class Files extends Component {
       </div>
     )
   }
-}
-
-Files.propTypes = {
-  pathname: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
 }
 
 export default connect(state => ({

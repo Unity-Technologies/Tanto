@@ -2,12 +2,23 @@ import Select from 'react-select'
 import React, { Component, PropTypes } from 'react'
 import 'react-select/dist/react-select.css'
 
+export type Props = {
+  placeholder?: // project: PropTypes.string.isRequired,
+  // defaultValue: PropTypes.string,
+  string,
+  data: // style: PropTypes.object,
+  Array<any>,
+  onChange?: Function,
+};
+
 class Filter extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { value: null }
     this.handleChange = this.handleChange.bind(this)
   }
+
+  props: Props;
 
   handleChange(r) {
     this.setState({
@@ -31,15 +42,6 @@ class Filter extends Component {
       </div>
     )
   }
-}
-
-Filter.propTypes = {
-  // project: PropTypes.string.isRequired,
-  // defaultValue: PropTypes.string,
-  placeholder: PropTypes.string,
-  // style: PropTypes.object,
-  data: PropTypes.array.isRequired,
-  onChange: PropTypes.func,
 }
 
 export default Filter

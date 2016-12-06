@@ -3,8 +3,18 @@ import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import { reviewers } from '../../api/testData'
 
+export type Props = {
+  defaultValue?: // project: PropTypes.string.isRequired,
+  Array<any>,
+  placeholder?: // style: PropTypes.object,
+  // onChange: PropTypes.func,
+  // width: PropTypes.string,
+  string,
+  disabled?: boolean,
+};
+
 class UserFilter extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       options: reviewers,
@@ -12,6 +22,8 @@ class UserFilter extends Component {
     }
     this.handleSelectChange = this.handleSelectChange.bind(this)
   }
+
+  props: Props;
 
   handleSelectChange(value) {
     this.setState({ value })
@@ -33,16 +45,6 @@ class UserFilter extends Component {
       </div>
     )
   }
-}
-
-UserFilter.propTypes = {
-  // project: PropTypes.string.isRequired,
-  defaultValue: PropTypes.array,
-  // style: PropTypes.object,
-  // onChange: PropTypes.func,
-  // width: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
 }
 
 export default UserFilter

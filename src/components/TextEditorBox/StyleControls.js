@@ -1,3 +1,11 @@
+export type Props = {
+  editorState?: Object,
+  // onToogleInlineStyle: PropTypes.func.isRequired,
+  onToogleBlockType?: Function,
+  activeColor?: string,
+  style?: Object,
+};
+
 import React, { PropTypes } from 'react'
 import Bold from 'material-ui/svg-icons/editor/format-bold'
 import Italic from 'material-ui/svg-icons/editor/format-italic'
@@ -90,12 +98,6 @@ const StyleControls = (props) => {
   )
 }
 
-StyleControls.propTypes = {
-  editorState: PropTypes.object.isRequired,
-  // onToogleInlineStyle: PropTypes.func.isRequired,
-  onToogleBlockType: PropTypes.func.isRequired,
-  activeColor: PropTypes.string,
-  style: PropTypes.object,
-}
+;
 
 export default StyleControls

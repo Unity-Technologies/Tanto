@@ -5,11 +5,13 @@ import IconButton from 'material-ui/IconButton'
 
 
 class SearchBox extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { visible: false }
     this.handleClick = this.handleClick.bind(this)
   }
+
+  props: Props;
 
   handleClick() {
     const toggle = this.state.visible

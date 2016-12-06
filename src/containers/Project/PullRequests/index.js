@@ -21,7 +21,18 @@ const approveButtonStyle = {
 }
 
 
+export type Props = {
+  project_pullrequests?: // isFetching: PropTypes.bool.isRequired,
+  // errors: PropTypes.array,
+  // dispatch: PropTypes.func.isRequired,
+  Array<any>,
+  params?: // theme: PropTypes.object,
+  Object,
+};
+
+
 class PullRequests extends Component {
+  props: Props;
   componentDidMount() {
   //  const { dispatch } = this.props
       // TODO: should not be users PR fetch - should be replaced with the project pull requests
@@ -132,15 +143,6 @@ class PullRequests extends Component {
       </div>
     )
   }
-}
-
-PullRequests.propTypes = {
-  // isFetching: PropTypes.bool.isRequired,
-  // errors: PropTypes.array,
-  // dispatch: PropTypes.func.isRequired,
-  project_pullrequests: PropTypes.array,
-  // theme: PropTypes.object,
-  params: PropTypes.object,
 }
 
 export default connect(

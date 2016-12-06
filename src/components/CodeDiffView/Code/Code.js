@@ -16,6 +16,15 @@ import {
 } from '../PrismCodeParser/PrismCodeParser'
 
 
+export type Props = {
+  type: string,
+  diff: string,
+  comments?: Array<any>,
+  collapseComments?: boolean,
+  viewType?: string,
+};
+
+
 class Code extends Component {
   asyncProcessCode({ type, viewType, diff }) {
     const promise = new Promise((resolve) => {
@@ -48,7 +57,7 @@ class Code extends Component {
     return []
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       ready: false,
@@ -62,6 +71,8 @@ class Code extends Component {
     this.getFileComments = this.getFileComments.bind(this)
     this.updateCode = this.updateCode.bind(this)
   }
+
+  props: Props;
 
   componentWillMount() {
     this.asyncProcessCode(this.props).then(this.updateCode)
@@ -143,14 +154,6 @@ class Code extends Component {
       </div>
     )
   }
-}
-
-Code.propTypes = {
-  type: PropTypes.string.isRequired,
-  diff: PropTypes.string.isRequired,
-  comments: PropTypes.array,
-  collapseComments: PropTypes.bool,
-  viewType: PropTypes.string,
 }
 
 export default Code

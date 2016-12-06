@@ -10,8 +10,14 @@ import { connect } from 'react-redux'
 import { reviewers as reviewersTestData } from '../../../api/testData'
 import { NewPullRequestData } from '../../../api/testPullRequest'
 
+export type Props = {
+  params?: Object,
+  theme?: // reviewers: PropTypes.array,
+  Object,
+};
+
 class NewPullRequest extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       from: 'default',
@@ -25,6 +31,8 @@ class NewPullRequest extends Component {
     this.handleToChange = this.handleToChange.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this)
   }
+
+  props: Props;
 
   handleFromChange(value) {
     this.setState({ from: value })
@@ -118,12 +126,6 @@ class NewPullRequest extends Component {
       </div>
     )
   }
-}
-
-NewPullRequest.propTypes = {
-  params: PropTypes.object,
-  theme: PropTypes.object,
-  // reviewers: PropTypes.array,
 }
 
 export default connect(state => ({ // eslint-disable-line no-unused-vars

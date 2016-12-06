@@ -1,3 +1,4 @@
+export type Props = { assets?: Object };
 /* @flow */
 
 import React, { PropTypes } from 'react'
@@ -83,10 +84,6 @@ function ServerLogin() {
       </body>
     </html>
   )
-}
-
-ServerLogin.propTypes = {
-  assets: PropTypes.object,
 }
 
 export default ServerLogin

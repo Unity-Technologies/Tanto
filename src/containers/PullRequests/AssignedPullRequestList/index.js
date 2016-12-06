@@ -7,7 +7,10 @@ import { selectors as sessionSelectors } from 'ducks/session/selectors'
 import PullRequestList from 'components/PullRequestList'
 import Toolbar from '../Toolbar'
 
+export type Props = { dispatch: Function };
+
 class AssignedPullRequestList extends Component {
+  props: Props;
   componentDidMount() {
     this.props.dispatch(actions.fetchUserAssignedPullRequests())
   }
@@ -20,10 +23,6 @@ class AssignedPullRequestList extends Component {
       </div>
     )
   }
-}
-
-AssignedPullRequestList.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect(

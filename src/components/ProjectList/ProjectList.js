@@ -1,3 +1,4 @@
+export type Props = { data?: Array<any> };
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import { List } from 'material-ui/List'
@@ -22,10 +23,6 @@ function ProjectList(props) {
       }
     </List>
   )
-}
-
-ProjectList.propTypes = {
-  data: PropTypes.array.isRequired,
 }
 
 export default ProjectList

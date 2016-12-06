@@ -1,3 +1,11 @@
+export type Props = {
+  icon?: number | string | React.Element | Array<any>,
+  size?: number,
+  color?: string,
+  backgroundColor?: string,
+  style?: Object,
+};
+
 /* eslint-disable */
 
 import React, { PropTypes } from 'react'
@@ -15,14 +23,6 @@ function Icon(props) {
       style={style || defaultStyle}
     />
   )
-}
-
-Icon.propTypes = {
-  icon: PropTypes.node.isRequired,
-  size: PropTypes.number,
-  color: PropTypes.string,
-  backgroundColor: PropTypes.string,
-  style: PropTypes.object,
 }
 
 export default Icon

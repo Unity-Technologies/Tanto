@@ -9,11 +9,13 @@ const styles = {
 }
 
 export default class SelectFieldExampleSimple extends React.Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { value: 1 }
     this.handleChange = this.handleChange.bind(this)
   }
+
+  props: Props;
 
   handleChange(event, index, value) { return this.setState({ value }) }
 

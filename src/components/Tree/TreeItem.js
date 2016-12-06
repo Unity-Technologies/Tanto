@@ -1,3 +1,14 @@
+export type Props = {
+  item?: Object,
+  clickHandler?: Function,
+  childrenProp?: string,
+  primaryTextProp?: string,
+  secondaryTextProp?: string,
+  inset?: number,
+  valueProp?: string,
+  palette?: Object,
+};
+
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import { ListItem } from 'material-ui/List'
@@ -69,17 +80,6 @@ function TreeItem({
       }
       />
     </div>)
-}
-
-TreeItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  clickHandler: PropTypes.func.isRequired,
-  childrenProp: PropTypes.string.isRequired,
-  primaryTextProp: PropTypes.string.isRequired,
-  secondaryTextProp: PropTypes.string,
-  inset: PropTypes.number,
-  valueProp: PropTypes.string.isRequired,
-  palette: PropTypes.object.isRequired,
 }
 
 export default TreeItem

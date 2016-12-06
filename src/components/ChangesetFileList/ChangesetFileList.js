@@ -1,3 +1,12 @@
+export type Props = {
+  compact?: boolean,
+  containerId?: string,
+  files?: Array<{
+    comments?: Array<any>,
+    name?: string,
+  }>,
+};
+
 /* @flow */
 import React, { PropTypes } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
@@ -115,13 +124,6 @@ const ChangesetFileList = ({ containerId, compact, files }: Props) =>
     </Row>
   </div>
 
-ChangesetFileList.propTypes = {
-  compact: PropTypes.bool.isRequired,
-  containerId: PropTypes.string.isRequired,
-  files: PropTypes.arrayOf(React.PropTypes.shape({
-    comments: PropTypes.array.isRequired,
-    name: PropTypes.string.isRequired,
-  })).isRequired,
-}
+;
 
 export default ChangesetFileList

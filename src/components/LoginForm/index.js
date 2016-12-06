@@ -1,3 +1,10 @@
+export type Props = {
+  isSendingRequest?: boolean,
+  onSubmitClick?: Function,
+  //fields: PropTypes.object,
+  error?: string,
+};
+
 import React, { PropTypes } from 'react'
 import { reduxForm, Field } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -35,11 +42,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
   />
 )
 
-renderTextField.propTypes = {
-  input: PropTypes.bool,
-  label: PropTypes.func,
-  meta: PropTypes.object,
-}
+;
 
 function LoginForm(props) {
   const { isSendingRequest, error, onSubmitClick } = props
@@ -73,13 +76,6 @@ function LoginForm(props) {
       }
     </form>
   )
-}
-
-LoginForm.propTypes = {
-  isSendingRequest: PropTypes.bool,
-  onSubmitClick: PropTypes.func,
-  error: PropTypes.string,
-  //fields: PropTypes.object,
 }
 
 export default reduxForm({

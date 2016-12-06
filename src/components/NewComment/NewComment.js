@@ -3,8 +3,15 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 import TextEditorBox from '../TextEditorBox'
 
+export type Props = {
+  onCancel?: Function,
+  onComment?: Function,
+  style?: Object,
+  headerStyle?: Object,
+};
+
 class NewComment extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       commentText: '',
@@ -12,6 +19,8 @@ class NewComment extends Component {
     this.handleCommentCancel = this.handleCommentCancel.bind(this)
     this.handleCommentSave = this.handleCommentSave.bind(this)
   }
+
+  props: Props;
 
   handleCommentCancel() {
     this.setState({ commentText: '' })
@@ -61,13 +70,6 @@ class NewComment extends Component {
       </div>
     )
   }
-}
-
-NewComment.propTypes = {
-  onCancel: PropTypes.func,
-  onComment: PropTypes.func,
-  style: PropTypes.object,
-  headerStyle: PropTypes.object,
 }
 
 export default NewComment

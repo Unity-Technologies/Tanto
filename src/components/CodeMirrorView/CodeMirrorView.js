@@ -9,7 +9,13 @@ import 'codemirror/addon/edit/matchtags'
 import 'codemirror/lib/codemirror.css'
 import './CodeMirrorView.css'
 
+export type Props = {
+  value?: string,
+  options?: Object,
+};
+
 class CodeMirrorView extends Component {
+  props: Props;
 
   componentDidMount() {
     const textarea = this.codeMirrorTextArea
@@ -39,11 +45,6 @@ class CodeMirrorView extends Component {
       />
     )
   }
-}
-
-CodeMirrorView.propTypes = {
-  value: PropTypes.string,
-  options: PropTypes.object,
 }
 
 export default CodeMirrorView

@@ -19,12 +19,17 @@ import './CodeDiffView.css'
 
 const Element = Scroll.Element
 
+export type Props = {
+  files: Array<any>,
+  viewType?: number,
+};
+
 class CodeDiffView extends Component {
   static renderValue(option) {
     return <span>{option.value}</span>
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       viewType: props.viewType || '0',
@@ -45,6 +50,8 @@ class CodeDiffView extends Component {
     this.changeDiffViewType = this.changeDiffViewType.bind(this)
     this.renderFileDiff = this.renderFileDiff.bind(this)
   }
+
+  props: Props;
 
   onCollapseComments(collapsed) {
     // NOTE: slow operation, the whole component will be rerendered
@@ -190,11 +197,6 @@ class CodeDiffView extends Component {
       </div>
     )
   }
-}
-
-CodeDiffView.propTypes = {
-  files: PropTypes.array.isRequired,
-  viewType: PropTypes.number,
 }
 
 export default CodeDiffView

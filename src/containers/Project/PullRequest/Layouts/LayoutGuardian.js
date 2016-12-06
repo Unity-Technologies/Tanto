@@ -19,7 +19,7 @@ import {
 const Element = Scroll.Element
 
 class LayoutGuardian extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       value: null,
@@ -31,6 +31,8 @@ class LayoutGuardian extends Component {
     this.addReviewer = this.addReviewer.bind(this)
     this.toggleReviewers = this.toggleReviewers.bind(this)
   }
+
+  props: Props;
 
   handleChange(event, index, value) {
     this.setState({

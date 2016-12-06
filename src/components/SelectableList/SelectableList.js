@@ -5,10 +5,12 @@ import { List, makeSelectable } from 'material-ui/List'
 
 function wrapState(ComposedComponent) {
   class selectableList extends Component {
-    constructor(props){
+    constructor(props: Props){
       super(props)
       this.handleRequestChange = this.handleRequestChange.bind(this)
     }
+
+    props: Props;
 
     componentWillMount() {
       this.setState({
@@ -34,12 +36,7 @@ function wrapState(ComposedComponent) {
     }
   }
 
-  selectableList.propTypes = {
-      children: PropTypes.node.isRequired,
-      defaultValue: PropTypes.number,
-    }
-
-    return selectableList
+  return selectableList
 }
 
 const SelectableList = wrapState(makeSelectable(List))  // eslint-disable-line new-cap
