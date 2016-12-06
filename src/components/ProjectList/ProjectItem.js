@@ -1,5 +1,6 @@
 /* @flow */
 
+import moment from 'moment'
 import React, { PropTypes, Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
@@ -26,35 +27,6 @@ class ProjectItem extends Component {
     this.toggleFollow = this.toggleFollow.bind(this)
   }
 
-  getTimeAgo(then) {
-    const now = Date.now()
-    let diff = Math.floor((now - then) / 1000)
-
-    if (Math.floor(diff / 60) === 0) {
-      return `${diff} seconds ago`
-    }
-    diff = Math.floor(diff / 60)
-    if (Math.floor(diff / 60) === 0) {
-      return '${diff} minutes ago'
-    }
-    diff = Math.floor(diff / 60)
-    if (Math.floor(diff / 24) === 0) {
-      return `${diff} hours ago`
-    }
-    diff = Math.floor(diff / 24)
-    return `${diff} days ago`
-  }
-
-  toggleOpen() {
-    const value = this.state.open
-    this.setState({ open: !value })
-  }
-
-  toggleFollow() {
-    const value = this.state.followed
-    this.setState({ followed: !value })
-  }
-
   render() {
     const {
       item,
@@ -72,8 +44,7 @@ class ProjectItem extends Component {
     const value = item[valueProp]
     const ownerName = item[owner].first_name + ' ' + item.owner.last_name // eslint-disable-line
     const updatedTime = item[updated]
-    // TODO: something else
-    const diff = this.getTimeAgo(new Date(updatedTime))
+    const diff = moment(updatedTime).fromNow()
 
     const listItemWithoutNestedStyle = {
       paddingLeft: `${inset}px`,
@@ -130,6 +101,8 @@ class ProjectItem extends Component {
       </div>)
   }
 }
+
+types = 
 
 ProjectItem.propTypes = {
   item: PropTypes.object.isRequired,
