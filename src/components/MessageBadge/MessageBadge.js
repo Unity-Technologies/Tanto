@@ -1,4 +1,4 @@
-// TODO: add flow annotations
+/* @flow */
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React from 'react'
@@ -6,7 +6,6 @@ import IconButton from 'material-ui/IconButton'
 import Badge from 'material-ui/Badge'
 import Message from 'material-ui/svg-icons/communication/message'
 import { connect } from 'react-redux'
-import { selectors } from 'ducks/auth'  // FIXME: not existing...
 
 export type Props = {
   count: number,
@@ -31,7 +30,7 @@ function MessageBadge({ count, isAuthenticated }: Props) {
 }
 
 export default connect(state => ({
-  isAuthenticated: selectors.isAuthenticated(state),
+  isAuthenticated: true,  // FIXME
   count: state.chat.count || 0,
   messages: [],
 }))(MessageBadge)

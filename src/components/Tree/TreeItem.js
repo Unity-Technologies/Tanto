@@ -79,6 +79,7 @@ function TreeItem({
               secondaryTextProp={secondaryTextProp}
               valueProp={valueProp}
               inset={inset + 30}
+              palette={palette}
             />
         )
       }

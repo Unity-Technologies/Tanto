@@ -137,7 +137,7 @@ class PullRequests extends Component {
             </div>
 
           </Sticky>
-          <PullRequestList data={PullRequestsDataList} />
+          <PullRequestList items={PullRequestsDataList} />
         </StickyContainer>
       </div>
     )

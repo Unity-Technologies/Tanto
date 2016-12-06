@@ -1,4 +1,4 @@
-// TODO: add flow annotations
+/* @flow */
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React from 'react'
@@ -10,7 +10,6 @@ import Badge from 'material-ui/Badge'
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications'
 import NotificationsIconNone from 'material-ui/svg-icons/social/notifications-none'
 import { connect } from 'react-redux'
-import { selectors } from 'ducks/auth'  // FIXME: not existing...
 
 export type Props = {
   count: number,
@@ -53,7 +52,7 @@ function KafkaBadge({ count, isAuthenticated, messages }: Props) {
 }
 
 export default connect(state => ({
-  isAuthenticated: selectors.isAuthenticated(state),
+  isAuthenticated: true,  // FIXME
   count: state.kafka.count || 0,
   messages: state.kafka.messages || [],
 }))(KafkaBadge)
