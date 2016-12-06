@@ -1,6 +1,6 @@
+// TODO: add flow annotations
 
-
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { push } from 'react-router-redux'
 import CircularProgress from 'material-ui/CircularProgress'
@@ -19,13 +19,14 @@ export type Props = {
 };
 
 export class Projects extends Component {
-  props: Props;
   componentDidMount() {
     const { dispatch } = this.props
     this.clickHandler = this.clickHandler.bind(this)
     // todo: remove this from constructor
     dispatch(fetchProjects())
   }
+
+  props: Props
 
   clickHandler(value) {
     const { dispatch } = this.props

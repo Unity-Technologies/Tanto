@@ -1,14 +1,16 @@
-export type Props = { // isFetching: PropTypes.bool.isRequired,
-// errorMessage: PropTypes.string,
-params?: Object };
+/* @flow */
 
-// TODO: add flow annotations
-
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 
-function Issues({ params: { prid } }) {
+export type Props = {
+  params: {
+    prid: string
+  }
+};
+
+function Issues({ params: { prid } }: Props) {
   return (
     <div>
       <Helmet title="Issues" />

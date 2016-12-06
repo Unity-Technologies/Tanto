@@ -1,8 +1,7 @@
-/* @flow */
-
+// TODO: finish flow annotations
 /*eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { NewComment, Comment } from 'components'
 import _ from 'lodash'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -21,7 +20,7 @@ export type Props = {
   rightComments?: Array<any>,
   onComment?: Function,
   collapseComments?: boolean,
-};
+}
 
 class SplitRow extends Component {
   constructor(props: Props) {
@@ -46,7 +45,7 @@ class SplitRow extends Component {
     this.handleCommentSave = this.handleCommentSave.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   componentWillReceiveProps(nextProps) {
     this.setState({

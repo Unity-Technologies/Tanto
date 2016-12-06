@@ -1,6 +1,6 @@
 // TODO: add flow annotations
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -28,7 +28,7 @@ class App extends Component {
     }
   }
 
-  props: Props;
+  props: Props
 
   render() {
     const childrenWithProps = React.Children.map(this.props.children,

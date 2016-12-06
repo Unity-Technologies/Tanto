@@ -1,17 +1,13 @@
-export type Props = {
-  title?: string,
-  showMenuIconButton?: boolean,
-  dispatch?: Function,
-  projectName?: string,
-};
+/* @flow */
 
-import React, { PropTypes } from 'react'
-import { Logout, SearchBox } from 'components'
+import React from 'react'
 import { routes } from 'universal/constants'
 import { connect } from 'react-redux'
 import { Navbar, Nav } from 'react-bootstrap'
 import Badge from 'material-ui/Badge'
 
+import Logout from '../Logout'
+import SearchBox from '../SearchBox'
 import './styles.css'
 
 const badgeStyle = {
@@ -21,7 +17,14 @@ const badgeStyle = {
   color: '#878a9f',
 }
 
-function Header() {
+export type Props = {
+  title?: string,
+  showMenuIconButton?: boolean,
+  dispatch?: Function,
+  projectName?: string,
+}
+
+function Header(props: Props) {
   return (
     <div>
       <Navbar

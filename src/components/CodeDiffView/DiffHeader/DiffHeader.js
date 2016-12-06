@@ -1,6 +1,6 @@
-/* @flow */
+// TODO: finish flow annotations
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import IconButton from 'material-ui/IconButton'
 import View from 'material-ui/svg-icons/action/view-module'
 import { Nav, NavItem, Navbar } from 'react-bootstrap'
@@ -17,10 +17,9 @@ const navbarStyle = {
 
 export type Props = {
   title: string,
-  onViewChangeClick?: Function,
-  selectedValue?: string,
-  onCollapse?: // comments: PropTypes.bool,
-  Function,
+  onViewChangeClick: Function,
+  selectedValue: string,
+  onCollapse?: Function,
 };
 
 class DiffHeader extends Component {
@@ -37,7 +36,7 @@ class DiffHeader extends Component {
     this.handleExpandClick = this.handleExpandClick.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleChangeSingle(event, value) {
     this.setState({

@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+// TODO: add flow annotation
+
+import React, { Component } from 'react'
 
 import './Checkbox.css'
 
@@ -8,7 +10,7 @@ export type Props = {
   name: string,
   checked?: boolean,
   disabled?: boolean,
-};
+}
 
 class Checkbox extends Component {
   constructor(props: Props) {
@@ -21,7 +23,7 @@ class Checkbox extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleClick(e) {
     this.setState({ checked: e.target.checked })

@@ -1,23 +1,11 @@
-export type Props = {
-  compact?: boolean,
-  containerId?: string,
-  files?: Array<{
-    comments?: Array<any>,
-    name?: string,
-  }>,
-};
-
 /* @flow */
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
-import Scroll from 'react-scroll'
 import _ from 'lodash'
 
 import ChangesetDelta from '../ChangesetDelta'
 
 import './ChangesetFileList.css'
-
-const Link = Scroll.Link
 
 type ChangeSetFileCommentType = {
   id: string,
@@ -30,12 +18,11 @@ type ChangeSetFileType = {
 }
 
 type Props = {
-  containerId: string,
   files: Array<ChangeSetFileType>,
-  compact: boolean,
+  compact?: boolean,
 }
 
-const ChangesetFileList = ({ containerId, compact, files }: Props) =>
+const ChangesetFileList = ({ compact, files }: Props) =>
   <div>
     <Row>
       <Col md={12}>
@@ -124,6 +111,5 @@ const ChangesetFileList = ({ containerId, compact, files }: Props) =>
     </Row>
   </div>
 
-;
 
 export default ChangesetFileList

@@ -1,6 +1,8 @@
+// TODO: add flow annotations
+
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import CodeMirror from 'codemirror'
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/addon/edit/matchbrackets'
@@ -15,7 +17,7 @@ export type Props = {
 };
 
 class CodeMirrorView extends Component {
-  props: Props;
+  props: Props
 
   componentDidMount() {
     const textarea = this.codeMirrorTextArea

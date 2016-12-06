@@ -1,20 +1,19 @@
-export type Props = {
-  count?: number,
-  //messages: PropTypes.array.isRequired,
-  isAuthenticated?: boolean,
-};
-
+// TODO: add flow annotations
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import IconButton from 'material-ui/IconButton'
 import Badge from 'material-ui/Badge'
 import Message from 'material-ui/svg-icons/communication/message'
 import { connect } from 'react-redux'
-import { selectors } from 'ducks/auth'
+import { selectors } from 'ducks/auth'  // FIXME: not existing...
 
+export type Props = {
+  count: number,
+  isAuthenticated: boolean,
+}
 
-function MessageBadge({ count, isAuthenticated }) {
+function MessageBadge({ count, isAuthenticated }: Props) {
   return (
     <div> {
       isAuthenticated &&

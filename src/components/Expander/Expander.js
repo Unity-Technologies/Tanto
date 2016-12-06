@@ -1,18 +1,15 @@
+// TODO: add flow annotations
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import './Expander.css'
 
-export type Props = { children: number | string | React.Element | Array<any> };
-
 class Expander extends Component {
-  constructor(props: Props) {
+  constructor(props) {
     super(props)
     this.state = { collapsed: true }
     this.expandHandler = this.expandHandler.bind(this)
   }
-
-  props: Props;
 
   expandHandler() {
     const state = this.state.collapsed

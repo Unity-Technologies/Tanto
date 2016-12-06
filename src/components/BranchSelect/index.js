@@ -1,5 +1,7 @@
+// TODO: finish flow annotation
+
 import Select from 'react-select'
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import 'react-select/dist/react-select.css'
 import './styles.css'
 
@@ -11,7 +13,7 @@ export type Props = {
   disabled?: boolean,
   placeholder?: string,
   branches: Array<any>,
-};
+}
 
 class BranchSelect extends Component {
   constructor(props: Props) {
@@ -21,7 +23,7 @@ class BranchSelect extends Component {
     this.renderValue = this.renderValue.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleChange(value) {
     this.setState({

@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+// TODO: add flow annotations
+
+import React, { Component } from 'react'
 import { Badge, Tabs, Tab } from 'react-bootstrap'
 import Scroll from 'react-scroll'
 
@@ -50,7 +52,7 @@ class LayoutDeveloper extends Component {
     this.handleSelect = this.handleSelect.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleChange(event, index, value) {
     this.setState({

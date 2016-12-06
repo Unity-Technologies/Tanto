@@ -1,6 +1,7 @@
+// TODO: add flow annotations
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import _ from 'lodash'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
@@ -25,7 +26,7 @@ export type Props = {
   // owner: PropTypes.string,
   number,
   valueProp: string,
-};
+}
 
 class ProjectItem extends Component {
   constructor(props: Props) {
@@ -39,7 +40,7 @@ class ProjectItem extends Component {
     this.toggleFollow = this.toggleFollow.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   toggleOpen() {
     const value = this.state.open

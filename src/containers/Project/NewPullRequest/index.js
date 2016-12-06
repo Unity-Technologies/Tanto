@@ -1,6 +1,6 @@
 // TODO: add flow annotations
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { BranchSelect, TextEditorBox, UserFilter, CodeDiffView } from 'components'
 import FlatButton from 'material-ui/FlatButton'
@@ -32,7 +32,7 @@ class NewPullRequest extends Component {
     this.handleTitleChange = this.handleTitleChange.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleFromChange(value) {
     this.setState({ from: value })

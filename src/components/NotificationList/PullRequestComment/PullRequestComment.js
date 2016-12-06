@@ -1,17 +1,20 @@
+/* @flow */
+
+import React from 'react'
+import { ListItem } from 'material-ui/List'
+import { Link } from 'react-router'
+import { darkBlack } from 'material-ui/styles/colors'
+
+import TestAvatar from '../../TestAvatar'
+
 export type Props = {
   title?: string,
   author?: string,
   primaryTextStyle?: string,
   secondaryTextStyle?: string,
-};
+}
 
-import React, { PropTypes } from 'react'
-import { ListItem } from 'material-ui/List'
-import { Link } from 'react-router'
-import { darkBlack } from 'material-ui/styles/colors'
-import { TestAvatar } from 'components'
-
-function PullRequestComment(props) {
+function PullRequestComment(props: Props) {
   return (
     <ListItem
       leftAvatar={

@@ -1,21 +1,25 @@
-export type Props = {
-  // title: PropTypes.string.isRequired,
-  showMenuIconButton?: boolean,
-  appBarStyle?: Object,
-  dispatch?: Function,
-};
+/* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import AppBar from 'material-ui/AppBar'
 import Open from 'material-ui/svg-icons/navigation/menu'
 import TextField from 'material-ui/TextField'
 import Search from 'material-ui/svg-icons/action/search'
-import { KafkaBadge, MessageBadge, Logout } from 'components'
 import IconButton from 'material-ui/IconButton'
 import { connect } from 'react-redux'
+
+import KafkaBadge from '../KafkaBadge/KafkaBadge'
+import MessageBadge from '../MessageBadge/MessageBadge'
+import Logout from '../Logout'
 import { OPEN_SIDE_BAR } from 'ducks/sidebar'
 
-function NavBar({ appBarStyle, showMenuIconButton, dispatch }) {
+export type Props = {
+  showMenuIconButton: boolean,
+  appBarStyle?: Object,
+  dispatch: Function,
+}
+
+function NavBar({ appBarStyle, showMenuIconButton, dispatch }: Props) {
   const searchStyle = {
     width: '40px',
     margin: '0 10px',

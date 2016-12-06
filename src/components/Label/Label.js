@@ -1,12 +1,14 @@
+/* @flow */
+
+import React from 'react'
+
 export type Props = {
-  text?: string,
+  text: string,
   prefix?: string,
   color?: string,
-};
+}
 
-import React, { PropTypes } from 'react'
-
-function Label(props) {
+function Label(props: Props) {
   const { text, color, prefix } = props
   const style = {
     backgroundColor: color || '#ffffff',

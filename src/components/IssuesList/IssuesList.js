@@ -1,8 +1,11 @@
+/* @flow */
+
 /* eslint-disable */
-import React, { PropTypes, Component } from 'react'
-import { TestAvatar } from 'components'
+import React, { Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import _ from 'lodash'
+
+import TestAvatar from '../TestAvatar'
 import './IssuesList.css'
 
 
@@ -14,7 +17,7 @@ const subHeader = text => (
   </div>
 )
 
-export type Props = { issues?: any };
+export type Props = { issues: any };
 
 class IssuesList extends Component {
   constructor(props: Props) {
@@ -22,7 +25,11 @@ class IssuesList extends Component {
     this.state = { search: null }
   }
 
-  props: Props;
+  state: {
+    search: ?string,
+  };
+
+  props: Props
 
   render() {
     const greenStatus = { borderLeft: '4px solid #d1fad1' }

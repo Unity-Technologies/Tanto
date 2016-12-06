@@ -1,6 +1,7 @@
+// TODO: add flow annotations
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { fromJS } from 'immutable'
 import { EditorState, RichUtils, ContentState } from 'draft-js'
 import 'draft-js/dist/Draft.css'
@@ -71,7 +72,7 @@ class TextEditorBox extends Component {
 
   }
 
-  props: Props;
+  props: Props
 
   onChange(editorState) {
     this.setState({

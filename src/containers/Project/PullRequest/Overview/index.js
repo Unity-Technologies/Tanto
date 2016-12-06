@@ -1,6 +1,6 @@
 // TODO: add flow annotations
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { UserFilter, Label, TextEditorBox, Comment, NewComment } from 'components'
 import { Row, Col } from 'react-bootstrap'
 import moment from 'moment'
@@ -9,22 +9,17 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 
 export type Props = {
-  id: // params: PropTypes.object,
-  // theme: PropTypes.object,
-  // reviewers: PropTypes.array,
-  string,
+  id: string,
   user?: string,
   data?: Object,
   commentAuthor?: string,
-};
+}
 
 class Overview extends Component {
   constructor(props: Props) {
     super(props)
     this.state = { pullRequest: props.data, comments: [], changed: false }
   }
-
-  props: Props;
 
   onSaveComment(message) {
     const comments = this.state.comments
@@ -42,6 +37,8 @@ class Overview extends Component {
 
     this.handleTitleChange = this.handleTitleChange.bind(this)
   }
+
+  props: Props
 
   handleTitleChange(event) {
     const pullRequest = this.state.pullRequest

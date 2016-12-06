@@ -1,8 +1,7 @@
-/* @flow */
-
+// TODO: finish flow annotations
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import Prism from 'prismjs'
 import { ErrorMessage } from 'components'
 import _ from 'lodash'
@@ -72,7 +71,7 @@ class Code extends Component {
     this.updateCode = this.updateCode.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   componentWillMount() {
     this.asyncProcessCode(this.props).then(this.updateCode)

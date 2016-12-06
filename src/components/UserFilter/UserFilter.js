@@ -1,4 +1,6 @@
-import React, { PropTypes, Component } from 'react'
+// TODO: add flow annotations
+
+import React, { Component } from 'react'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import { reviewers } from '../../api/testData'
@@ -23,7 +25,7 @@ class UserFilter extends Component {
     this.handleSelectChange = this.handleSelectChange.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleSelectChange(value) {
     this.setState({ value })

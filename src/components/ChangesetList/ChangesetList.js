@@ -1,7 +1,7 @@
 // todo: remove this after refactoring component
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ChangesetDelta, TestAvatar } from 'components'
 import { Link } from 'react-router'
@@ -20,7 +20,7 @@ export type Props = {
   data?: any,
   compact?: boolean,
   showCheckboxes?: boolean,
-};
+}
 
 class ChangesetList extends Component {
   constructor(props: Props) {
@@ -30,7 +30,7 @@ class ChangesetList extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleSelect(activeKey) {
     this.setState({ activeKey })

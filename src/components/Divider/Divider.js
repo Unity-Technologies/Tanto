@@ -1,12 +1,15 @@
-export type Props = { text?: number | string | React.Element | Array<any> };
-import React, { PropTypes } from 'react'
+/* @flow */
+
+import React from 'react'
 import './Divider.css'
 
-function Divider(props) {
+export type Props = { text: number | string };
+
+function Divider({ text }: Props) {
   return (
     <div className="divider">
       <span className="divider-text">
-        {props.text}
+        {text}
       </span>
     </div>
   )

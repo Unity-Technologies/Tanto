@@ -1,8 +1,7 @@
-/* @flow */
-
+// TODO: finish flow annotations
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import Scroll from 'react-scroll'
 import _ from 'lodash'
 import { Row, Col, Tab, Tabs } from 'react-bootstrap'
@@ -22,7 +21,7 @@ const Element = Scroll.Element
 export type Props = {
   files: Array<any>,
   viewType?: number,
-};
+}
 
 class CodeDiffView extends Component {
   static renderValue(option) {
@@ -51,7 +50,7 @@ class CodeDiffView extends Component {
     this.renderFileDiff = this.renderFileDiff.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   onCollapseComments(collapsed) {
     // NOTE: slow operation, the whole component will be rerendered

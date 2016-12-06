@@ -1,16 +1,15 @@
+// TODO: add flow annotations
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { List, makeSelectable } from 'material-ui/List'
 
 function wrapState(ComposedComponent) {
   class selectableList extends Component {
-    constructor(props: Props){
+    constructor(props){
       super(props)
       this.handleRequestChange = this.handleRequestChange.bind(this)
     }
-
-    props: Props;
 
     componentWillMount() {
       this.setState({

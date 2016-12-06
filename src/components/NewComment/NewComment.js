@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+// TODO: add flow annotations
+
+import React, { Component } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 
 import TextEditorBox from '../TextEditorBox'
@@ -8,7 +10,7 @@ export type Props = {
   onComment?: Function,
   style?: Object,
   headerStyle?: Object,
-};
+}
 
 class NewComment extends Component {
   constructor(props: Props) {
@@ -20,7 +22,7 @@ class NewComment extends Component {
     this.handleCommentSave = this.handleCommentSave.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleCommentCancel() {
     this.setState({ commentText: '' })

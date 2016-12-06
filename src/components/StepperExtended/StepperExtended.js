@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+// TODO: add flow annotations
+
+import React, { Component } from 'react'
 import _ from 'lodash'
 import {
   Step,
@@ -17,7 +19,7 @@ class StepperExtended extends Component {
     }
   }
 
-  props: Props;
+  props: Props
 
   render() {
     return (

@@ -1,12 +1,6 @@
-export type Props = { //clickHandler: PropTypes.func.isRequired,
-//childrenProp: PropTypes.string.isRequired,
-// primaryTextProp: PropTypes.string.isRequired,
-//secondaryTextProp: PropTypes.string,
-//inset: PropTypes.number,
-//valueProp: PropTypes.string.isRequired,
-data?: Array<any> };
+// TODO: add flow annotations
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import { List } from 'material-ui/List'
 

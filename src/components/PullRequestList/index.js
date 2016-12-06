@@ -1,19 +1,7 @@
-export type Props = {
-  totalPagesCount?: number,
-  activePage?: number,
-  items?: Array<any>,
-  isFetching?: boolean,
-  totalNew?: number,
-  totalInProgress?: number,
-  total?: number,
-  error?: string,
-  showRemoveButton?: boolean,
-  onRemoveClick?: Function,
-};
-
+/* @flow */
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import LinearProgress from 'material-ui/LinearProgress'
 import ErrorMessage from 'components/ErrorMessage'
 import List from 'components/List'
@@ -21,7 +9,22 @@ import PullRequestListItem from './PullRequestListItem'
 
 import './styles.css'
 
-function PullRequestList(props) {
+export type Props = {
+  totalPagesCount?: number,
+  activePage?: number,
+  items: Array<{
+    id: string,
+  }>,
+  isFetching?: boolean,
+  totalNew?: number,
+  totalInProgress?: number,
+  total?: number,
+  error?: string,
+  showRemoveButton?: boolean,
+  onRemoveClick?: Function,
+}
+
+function PullRequestList(props: Props) {
   const {
     items,
     activePage,
@@ -58,4 +61,3 @@ function PullRequestList(props) {
 }
 
 export default PullRequestList
-

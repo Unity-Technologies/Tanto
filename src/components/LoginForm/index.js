@@ -1,18 +1,12 @@
-export type Props = {
-  isSendingRequest?: boolean,
-  onSubmitClick?: Function,
-  //fields: PropTypes.object,
-  error?: string,
-};
+// TODO: add flow annotations
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { reduxForm, Field } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import ErrorMessage from 'components/ErrorMessage'
 import LoadingIcon from 'components/LoadingIcon'
 import './styles.css'
-
 
 const validate = (values) => {
   const errors = {}
@@ -29,7 +23,6 @@ const validate = (values) => {
   return errors
 }
 
-
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField
     hintText={label}
@@ -42,9 +35,14 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
   />
 )
 
-;
+export type Props = {
+  isSendingRequest: boolean,
+  onSubmitClick: Function,
+  // fields: PropTypes.object,
+  error?: string,
+}
 
-function LoginForm(props) {
+function LoginForm(props: Props) {
   const { isSendingRequest, error, onSubmitClick } = props
   const handleSubmit = (event) => {
     event.preventDefault()

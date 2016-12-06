@@ -1,3 +1,5 @@
+// TODO: add flow annotations
+
 import React from 'react'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
@@ -9,13 +11,11 @@ const styles = {
 }
 
 export default class SelectFieldExampleSimple extends React.Component {
-  constructor(props: Props) {
+  constructor(props) {
     super(props)
     this.state = { value: 1 }
     this.handleChange = this.handleChange.bind(this)
   }
-
-  props: Props;
 
   handleChange(event, index, value) { return this.setState({ value }) }
 

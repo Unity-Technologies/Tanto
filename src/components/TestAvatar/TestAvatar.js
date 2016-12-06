@@ -1,6 +1,7 @@
+// TODO: add flow annotations
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import Avatar from 'material-ui/Avatar'
 
 const randomNumber = (minA, maxA) => {
@@ -17,7 +18,7 @@ class TestAvatar extends Component {
     this.state = { image: require(`../../media/images/avatars/Avatar${randomNumber(1, 3)}.png`) }
   }
 
-  props: Props;
+  props: Props
 
   render() {
     const { style } = this.props

@@ -1,4 +1,6 @@
-import React, { PropTypes, Component } from 'react'
+// TODO: add flow annotations
+
+import React, { Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 
 import TestAvatar from '../TestAvatar'
@@ -12,7 +14,7 @@ class CommentsList extends Component {
     this.state = { search: null }
   }
 
-  props: Props;
+  props: Props
 
   render() {
     return (

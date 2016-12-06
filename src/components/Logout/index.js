@@ -1,26 +1,32 @@
-export type Props = {
-  persona?: string,
-  username?: string,
-  logoutRoute?: string,
-};
+/* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
 import Divider from 'material-ui/Divider'
 import IconButton from 'material-ui/IconButton'
-import { TestAvatar } from 'components'
+
+import TestAvatar from '../TestAvatar'
 
 import {
   GUARDIAN_PERSONA,
   DEVELOPER_PERSONA,
   MANAGER_PERSONA,
-  changePersona,
 } from 'ducks/session'
 import More from 'material-ui/svg-icons/navigation/more-vert'
 
-function Logout(props) {
+export type Props = {
+  persona: string,
+  username: string,
+  logoutRoute: string,
+};
+
+const changePersona = () => {
+  // FIXME
+}
+
+function Logout(props: Props) {
   const { username, persona, logoutRoute } = props
   return (
     <div>
@@ -88,5 +94,5 @@ export default connect(
   state => ({
     persona: state.session.persona,
     username: state.session.profile.username || '',
-  }), { changePersona }
+  })
 )(Logout)

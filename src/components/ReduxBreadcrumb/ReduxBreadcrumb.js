@@ -1,17 +1,17 @@
-export type Props = {
-  items?: Array<any>,
-  style?: Object,
-};
-
 /* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Breadcrumb } from 'react-bootstrap'
 import _ from 'lodash'
 
-function ReduxBreadcrumb(props) {
+export type Props = {
+  items: Array<any>,
+  style: Object,
+}
+
+function ReduxBreadcrumb(props: Props) {
   const { items, style } = props
   return (
     <div>

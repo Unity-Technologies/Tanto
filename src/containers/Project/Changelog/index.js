@@ -2,7 +2,7 @@
 
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { BranchSelect, ChangesetList } from 'components'
 import { connect } from 'react-redux'
 import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
@@ -15,7 +15,6 @@ export type Props = {
   params: Object,
   data: Array<any>,
 };
-
 
 class Changelog extends Component {
   constructor(props: Props) {
@@ -35,7 +34,7 @@ class Changelog extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleTouchTap() {
     this.setState({

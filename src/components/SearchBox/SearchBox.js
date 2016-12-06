@@ -1,17 +1,16 @@
+// TODO: add flow annotations
+
 import React, { Component } from 'react'
 import TextField from 'material-ui/TextField'
 import Search from 'material-ui/svg-icons/action/search'
 import IconButton from 'material-ui/IconButton'
 
-
 class SearchBox extends Component {
-  constructor(props: Props) {
+  constructor(props) {
     super(props)
     this.state = { visible: false }
     this.handleClick = this.handleClick.bind(this)
   }
-
-  props: Props;
 
   handleClick() {
     const toggle = this.state.visible

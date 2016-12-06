@@ -1,6 +1,6 @@
 // TODO: add flow annotations
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { FileList, BranchSelect, ReduxBreadcrumb, Filter } from 'components'
 import urljoin from 'url-join'
 import _ from 'lodash'
@@ -26,7 +26,6 @@ export type Props = {
   params: Object,
 };
 
-
 class Files extends Component {
   constructor(props: Props) {
     super(props)
@@ -35,8 +34,6 @@ class Files extends Component {
     this.updateCurrentNode = this.updateCurrentNode.bind(this)
     this.state = { currentNode: this.props.data }
   }
-
-  props: Props;
 
   componentDidMount() {
     if (this.props.pathname.endsWith('/files')) {
@@ -74,6 +71,8 @@ class Files extends Component {
       result: items.length > 1 ? items.length - 1 : 0,
     })
   }
+
+  props: Props
 
   findChild(nodes, path) {
     if (!nodes.length || !path.length) {

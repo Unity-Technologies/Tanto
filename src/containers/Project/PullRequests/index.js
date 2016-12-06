@@ -1,16 +1,15 @@
-// TODO: add flow annotations
+/* @flow */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
-import {
-  Filter,
-  BranchSelect,
-  PullRequestList,
-} from 'components'
+
 import { Col, Row, Button, ButtonGroup } from 'react-bootstrap'
 import { connect } from 'react-redux'
-// import { fetchUserPRs, fetchUserReviewPRs } from 'redux-modules/user'
 import { Sticky, StickyContainer } from 'react-sticky'
+
+import Filter from 'components/Filter'
+import BranchSelect from 'components/BranchSelect'
+import PullRequestList from 'components/PullRequestList'
 import { PullRequestsDataList } from '../../../api/testPullRequest'
 import { sort } from '../../../api/testData'
 
@@ -22,23 +21,23 @@ const approveButtonStyle = {
 
 
 export type Props = {
-  project_pullrequests?: // isFetching: PropTypes.bool.isRequired,
-  // errors: PropTypes.array,
-  // dispatch: PropTypes.func.isRequired,
-  Array<any>,
-  params?: // theme: PropTypes.object,
-  Object,
-};
+  project_pullrequests: Array<any>,
+  params: {
+    id: string,
+  },
+  items: Array<any>,
+}
 
 
 class PullRequests extends Component {
-  props: Props;
   componentDidMount() {
   //  const { dispatch } = this.props
       // TODO: should not be users PR fetch - should be replaced with the project pull requests
     // dispatch(fetchUserPRs())
     // dispatch(fetchUserReviewPRs())
   }
+
+  props: Props
 
   render() {
     const {

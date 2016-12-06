@@ -1,12 +1,17 @@
-export type Props = { params?: Object };
-// TODO: add flow annotations
+/* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
 import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { prDescription } from '../../../api/testData'
 
-function Overview({ params: { id } }) {
+export type Props = {
+  params: {
+    id: string,
+  }
+}
+
+function Overview({ params: { id } }: Props) {
   return (
     <div>
       <Helmet title={`Project ${id}`} />

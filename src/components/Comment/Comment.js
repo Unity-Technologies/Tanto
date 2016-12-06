@@ -1,6 +1,8 @@
+// TODO: finish flow annotations
+
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { TextEditorBox, Icon, TestAvatar } from 'components'
 import { connect } from 'react-redux'
 import IconButton from 'material-ui/IconButton'
@@ -26,7 +28,7 @@ export type Props = {
   niceToHave?: boolean,
   codeStyle?: boolean,
   hideSettings?: boolean,
-};
+}
 
 class Comment extends Component {
   constructor(props: Props) {
@@ -48,7 +50,7 @@ class Comment extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   onCommentEdit() {
     this.setState({ editMode: true })

@@ -6,7 +6,6 @@
 <PROJECT_ROOT>/node_modules/config-chain/*
 <PROJECT_ROOT>/node_modules/draft-js/*
 
-<PROJECT_ROOT>/src/components/CodeDiffView
 
 
 [include]

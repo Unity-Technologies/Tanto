@@ -1,6 +1,8 @@
+// TODO: add flow annotation
+
 /* eslint-disable max-len */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { Col, Row, PanelGroup, Panel } from 'react-bootstrap'
 import { ChangesetList } from 'components'
 import _ from 'lodash'
@@ -8,9 +10,9 @@ import _ from 'lodash'
 import './ChangesetGroupedList.css'
 
 export type Props = {
-  data?: any,
-  accordion?: boolean,
-};
+  data: any,
+  accordion: boolean,
+}
 
 class ChangesetGroupedList extends Component {
   constructor(props: Props) {
@@ -19,7 +21,7 @@ class ChangesetGroupedList extends Component {
     this.handleSelect = this.handleSelect.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleSelect(activeKey) {
     this.setState({ activeKey })

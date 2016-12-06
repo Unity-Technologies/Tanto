@@ -1,13 +1,6 @@
-export type Props = {
-  onAddReviewer?: Function,
-  onToggleReviewers?: Function,
-  pullRequest?: Object,
-  toggleReviewers?: boolean,
-};
-
 /* @flow */
 import moment from 'moment'
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 
 import type { PullRequestGraphType } from 'ducks/pullRequest'
@@ -70,8 +63,6 @@ export const PullRequestHeader = ({ pullRequest } : PullRequestHeaderProps) =>
     </div>
   </div>
 
-
-;
 
 type PullRequestSummaryProps = {
   onAddReviewer: Function,
@@ -430,7 +421,5 @@ const PullRequestSummary = (props: PullRequestSummaryProps) =>
     </Row>
   </div>
 
-
-;
 
 export default PullRequestSummary

@@ -1,29 +1,33 @@
+/* @flow */
+
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { actions } from 'ducks/pullrequests'
 import { selectors as sessionSelectors } from 'ducks/session/selectors'
 import PullRequestList from 'components/PullRequestList'
 import Toolbar from '../Toolbar'
 
-export type Props = { dispatch: Function };
+export type Props = {
+  dispatch: Function,
+  items: Array<any>,
+}
 
 class UserPullRequestList extends Component {
   constructor(props: Props) {
     super(props)
     this.handleRemove = this.handleRemove.bind(this)
   }
-  props: Props;
   componentDidMount() {
     this.props.dispatch(actions.fetchUserPullRequests())
   }
 
+  props: Props
+
   handleRemove = (id) => {
 
   }
-
-  render
 
   render() {
     return (
@@ -52,4 +56,3 @@ export default connect(
     items: sessionSelectors.getPullRequests(state) || [],
   })
 )(UserPullRequestList)
-

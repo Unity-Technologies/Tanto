@@ -1,17 +1,25 @@
-export type Props = { params?: Object };
-// TODO: add flow annotations
+/* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
-import { ChangesetFileList, CodeDiffView, ChangesetGroupedList, Divider } from 'components'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import Scroll from 'react-scroll'
+
+import ChangesetFileList from 'components/ChangesetFileList'
+import CodeDiffView from 'components/CodeDiffView'
+import ChangesetGroupedList from 'components/ChangesetGroupedList'
+import Divider from 'components/Divider'
 import { PullRequestData, prChangesetList } from '../../../api/testPullRequest'
 
 const Element = Scroll.Element
 
+export type Props = {
+  params: {
+    hash: string,
+  }
+};
 
-function Changeset({ params: { hash } }) {
+function Changeset({ params: { hash } }: Props) {
   const openPrButtonStyle = {
     backgroundColor: '#1fb5ad',
     borderColor: '#1fb5ad',

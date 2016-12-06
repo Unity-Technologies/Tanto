@@ -1,4 +1,6 @@
-import React, { PropTypes, Component } from 'react'
+// TODO: add flow annotations
+
+import React, { Component } from 'react'
 import { Col, Row, ListGroupItem } from 'react-bootstrap'
 import { TestAvatar } from 'components'
 import { Link } from 'react-router'
@@ -39,7 +41,7 @@ class PullRequestListItem extends Component {
     this.handleRemoveClick = this.handleRemoveClick.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   handleRemoveClick() {
     if (this.onRemoveClick) {

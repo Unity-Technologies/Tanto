@@ -1,11 +1,12 @@
+/* @flow */
+
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Drawer from 'material-ui/Drawer'
 import _ from 'lodash'
 import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
-import { SelectableList } from 'components'
 import { ListItem } from 'material-ui/List'
 import { TOGGLE_SIDE_BAR } from 'ducks/sidebar'
 import IconButton from 'material-ui/IconButton'
@@ -13,6 +14,8 @@ import Open from 'material-ui/svg-icons/navigation/menu'
 import { IndexLink } from 'react-router'
 import { Col, Row } from 'react-bootstrap'
 import Scroll from 'react-scroll'
+
+import SelectableList from '../SelectableList'
 import './SideBar.css'
 
 import { DEVELOPER_PERSONA } from 'ducks/session'
@@ -73,7 +76,7 @@ export type Props = {
   width: number,
   hiddenWidth: number,
   items: Array<any>,
-  subitems?: Array<any>,
+  subitems: Array<any>,
   open: boolean,
   sideBarMenuItemStyle?: Object,
   sideBarMenuItemSelectedStyle?: Object,
@@ -84,7 +87,7 @@ export type Props = {
 };
 
 class SideBar extends Component {
-  props: Props;
+  props: Props
   redirect(to) {
     this.props.dispatch(push(to))
   }

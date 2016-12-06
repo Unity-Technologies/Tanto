@@ -1,18 +1,22 @@
-export type Props = {
-  item?: Object,
-  clickHandler?: Function,
-  childrenProp?: string,
-  primaryTextProp?: string,
-  secondaryTextProp?: string,
-  inset?: number,
-  valueProp?: string,
-  palette?: Object,
-};
+/* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import { ListItem } from 'material-ui/List'
 import FolderClosedIcon from 'material-ui/svg-icons/file/folder'
+
+export type Props = {
+  item: Object,
+  clickHandler: Function,
+  childrenProp: string,
+  primaryTextProp: string,
+  secondaryTextProp: string,
+  inset: number,
+  valueProp: string,
+  palette: {
+    primary1Color: string,
+  },
+}
 
 function TreeItem({
   item,
@@ -23,7 +27,7 @@ function TreeItem({
   clickHandler,
   inset,
   palette,
-}) {
+} : Props) {
   const primaryText = item[primaryTextProp]
   const secondaryText = secondaryTextProp ? item[secondaryTextProp] : ''
   const value = item[valueProp]

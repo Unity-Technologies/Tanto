@@ -2,7 +2,7 @@
 
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import { NotificationList } from 'components'
@@ -17,7 +17,7 @@ class Home extends Component {
     this.state = { open: true }
   }
 
-  props: Props;
+  props: Props
 
   render() {
     return (

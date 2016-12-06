@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { StickyContainer } from 'react-sticky'
@@ -30,16 +30,7 @@ type Props = {
   pullRequest: ?PullRequestGraphType,
 };
 
-export type Props = {
-  dispatch: Function,
-  isFetching: boolean,
-  params: Object,
-  persona: DEVELOPER_PERSONA | MANAGER_PERSONA | GUARDIAN_PERSONA,
-  pullRequest?: Object,
-};
-
 class PullRequest extends Component {
-  props: Props;
 
   componentDidMount() {
     const { dispatch, params } = this.props
@@ -47,7 +38,7 @@ class PullRequest extends Component {
     dispatch(actions.fetchStart(pullRequestId))
   }
 
-  props: Props;
+  props: Props
 
   render() {
     const { isFetching, pullRequest, persona } = this.props

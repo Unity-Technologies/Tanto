@@ -1,6 +1,8 @@
+// TODO: add flow annotations
+
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import TestAvatar from '../TestAvatar'
 
@@ -16,7 +18,7 @@ class Reviewers extends Component {
     this.addReviewer = this.addReviewer.bind(this)
   }
 
-  props: Props;
+  props: Props
 
   addReviewer(value) {
     const list = this.state.reviewers

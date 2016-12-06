@@ -1,3 +1,5 @@
+/* @flow */
+
 export type Props = {
   totalUserPRs?: number,
   totalUserAssignedPRs?: number,
@@ -5,7 +7,7 @@ export type Props = {
 
 /* eslint-disable */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import { Tabs, Tab, Badge } from 'react-bootstrap'

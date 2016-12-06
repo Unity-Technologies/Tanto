@@ -1,10 +1,5 @@
-export type Props = {
-  src?: string,
-  style?: Object,
-};
-
 /* @flow */
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Avatar from 'material-ui/Avatar'
 
 type Props = {
