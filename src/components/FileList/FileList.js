@@ -1,6 +1,7 @@
+/* @flow */
 /* eslint-disable */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Link } from 'react-router'
 import _ from 'lodash'
 import {
@@ -14,8 +15,13 @@ import {
 import FolderClosedIcon from 'material-ui/svg-icons/file/folder'
 import File from 'material-ui/svg-icons/editor/insert-drive-file'
 
-function FileList({ data, onFileClick }) {
-  return (<Table height={'500px'}>
+export type Props = {
+  data: Array<any>,
+  onFileClick: Function,
+};
+
+const FileList = ({ data, onFileClick }: Props) =>
+  <Table height={'500px'}>
     <TableHeader
       adjustForCheckbox={false}
       enableSelectAll={false}
@@ -65,12 +71,8 @@ function FileList({ data, onFileClick }) {
         </TableRow>
       ))}
     </TableBody>
-  </Table>)
-}
+  </Table>
 
-FileList.propTypes = {
-  data: PropTypes.array.isRequired,
-  onFileClick: PropTypes.func.isRequired,
-}
+;
 
 export default FileList

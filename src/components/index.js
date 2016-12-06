@@ -1,3 +1,4 @@
+/* @flow */
 // FIXME: stop maintaining this file and use standard MyComponent/index.js file
 // to expose the component. This level of indirection is error prone.
 

@@ -1,11 +1,12 @@
+/* @flow */
+
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Drawer from 'material-ui/Drawer'
 import _ from 'lodash'
 import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
-import { SelectableList } from 'components'
 import { ListItem } from 'material-ui/List'
 import { TOGGLE_SIDE_BAR } from 'ducks/sidebar'
 import IconButton from 'material-ui/IconButton'
@@ -13,6 +14,8 @@ import Open from 'material-ui/svg-icons/navigation/menu'
 import { IndexLink } from 'react-router'
 import { Col, Row } from 'react-bootstrap'
 import Scroll from 'react-scroll'
+
+import SelectableList from '../SelectableList'
 import './SideBar.css'
 
 import { DEVELOPER_PERSONA } from 'ducks/session'
@@ -69,7 +72,22 @@ const subItem = (icon, title, color, badge, iconbadge, open) => (
   </div>
 )
 
+export type Props = {
+  width: number,
+  hiddenWidth: number,
+  items: Array<any>,
+  subitems: Array<any>,
+  open: boolean,
+  sideBarMenuItemStyle?: Object,
+  sideBarMenuItemSelectedStyle?: Object,
+  dispatch: Function,
+  defaultValue: number,
+  title: string,
+  persona: string,
+};
+
 class SideBar extends Component {
+  props: Props
   redirect(to) {
     this.props.dispatch(push(to))
   }
@@ -185,20 +203,6 @@ class SideBar extends Component {
   }
 }
 
-
-SideBar.propTypes = {
-  width: PropTypes.number.isRequired,
-  hiddenWidth: PropTypes.number.isRequired,
-  items: PropTypes.array.isRequired,
-  subitems: PropTypes.array,
-  open: PropTypes.bool.isRequired,
-  sideBarMenuItemStyle: PropTypes.object,
-  sideBarMenuItemSelectedStyle: PropTypes.object,
-  dispatch: PropTypes.func.isRequired,
-  defaultValue: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  persona: PropTypes.string.isRequired,
-}
 
 export default connect(state => ({
   open: state.sidebar.open,

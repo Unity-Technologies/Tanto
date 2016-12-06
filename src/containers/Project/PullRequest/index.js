@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { StickyContainer } from 'react-sticky'
@@ -38,7 +38,7 @@ class PullRequest extends Component {
     dispatch(actions.fetchStart(pullRequestId))
   }
 
-  props: Props;
+  props: Props
 
   render() {
     const { isFetching, pullRequest, persona } = this.props
@@ -69,15 +69,6 @@ class PullRequest extends Component {
       </StickyContainer>
     )
   }
-}
-
-// TODO: remove .propTypes when parent also uses flow
-PullRequest.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  params: PropTypes.object.isRequired,
-  persona: PropTypes.oneOf([DEVELOPER_PERSONA, MANAGER_PERSONA, GUARDIAN_PERSONA]).isRequired,
-  pullRequest: PropTypes.object,
 }
 
 export default connect(

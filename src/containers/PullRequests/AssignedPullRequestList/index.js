@@ -1,16 +1,25 @@
+/* @flow */
+
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { actions } from 'ducks/pullrequests'
 import { selectors as sessionSelectors } from 'ducks/session/selectors'
 import PullRequestList from 'components/PullRequestList'
 import Toolbar from '../Toolbar'
 
+export type Props = {
+  dispatch: Function,
+  items: Array<any>
+};
+
 class AssignedPullRequestList extends Component {
   componentDidMount() {
     this.props.dispatch(actions.fetchUserAssignedPullRequests())
   }
+
+  props: Props
 
   render() {
     return (
@@ -20,10 +29,6 @@ class AssignedPullRequestList extends Component {
       </div>
     )
   }
-}
-
-AssignedPullRequestList.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -43,4 +48,3 @@ export default connect(
     items: sessionSelectors.getPullRequestsAssigned(state) || [],
   })
 )(AssignedPullRequestList)
-

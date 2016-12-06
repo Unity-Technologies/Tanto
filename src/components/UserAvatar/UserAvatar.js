@@ -1,5 +1,5 @@
 /* @flow */
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Avatar from 'material-ui/Avatar'
 
 type Props = {
@@ -15,11 +15,6 @@ function UserAvatar(props: Props) {
       style={{ borderRadius: '20%', ...props.style }}
     />
   )
-}
-
-UserAvatar.propTypes = {
-  src: PropTypes.string,
-  style: PropTypes.object,
 }
 
 export default UserAvatar

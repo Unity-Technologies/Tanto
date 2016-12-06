@@ -1,15 +1,29 @@
+/* @flow */
+
 import Select from 'react-select'
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import 'react-select/dist/react-select.css'
 
+export type Props = {
+  placeholder?: string,
+  data: Array<any>,
+  onChange?: Function,
+};
+
 class Filter extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
-    this.state = { value: null }
-    this.handleChange = this.handleChange.bind(this)
+    this.state = { value: null };
+    (this:any).handleChange = this.handleChange.bind(this)
   }
 
-  handleChange(r) {
+  state: {
+    value: ?string,
+  };
+
+  props: Props
+
+  handleChange(r: string) {
     this.setState({
       value: r,
     })
@@ -31,15 +45,6 @@ class Filter extends Component {
       </div>
     )
   }
-}
-
-Filter.propTypes = {
-  // project: PropTypes.string.isRequired,
-  // defaultValue: PropTypes.string,
-  placeholder: PropTypes.string,
-  // style: PropTypes.object,
-  data: PropTypes.array.isRequired,
-  onChange: PropTypes.func,
 }
 
 export default Filter

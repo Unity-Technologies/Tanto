@@ -1,8 +1,9 @@
+// TODO: add flow annotations
+
 import React, { Component } from 'react'
 import TextField from 'material-ui/TextField'
 import Search from 'material-ui/svg-icons/action/search'
 import IconButton from 'material-ui/IconButton'
-
 
 class SearchBox extends Component {
   constructor(props) {

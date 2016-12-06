@@ -1,7 +1,7 @@
 // todo: remove this after refactoring component
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ChangesetDelta, TestAvatar } from 'components'
 import { Link } from 'react-router'
@@ -16,13 +16,21 @@ const subHeader = text => (
   </div>
 )
 
+export type Props = {
+  data?: any,
+  compact?: boolean,
+  showCheckboxes?: boolean,
+}
+
 class ChangesetList extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { search: null, activeKey: 3, changesets: [] }
     this.handleSelect = this.handleSelect.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
+
+  props: Props
 
   handleSelect(activeKey) {
     this.setState({ activeKey })
@@ -153,12 +161,6 @@ class ChangesetList extends Component {
       </ListGroup>
     )
   }
-}
-
-ChangesetList.propTypes = {
-  data: PropTypes.any,
-  compact: PropTypes.bool,
-  showCheckboxes: PropTypes.bool,
 }
 
 export default ChangesetList

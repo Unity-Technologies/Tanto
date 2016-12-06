@@ -1,5 +1,3 @@
-/* @flow */
-
 const REMOVE_MARK = '-'
 const ADDED_MARK = '+'
 

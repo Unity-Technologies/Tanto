@@ -1,24 +1,24 @@
 /* @flow */
-import React, { PropTypes } from 'react'
+import React from 'react'
 import './ChangesetDelta.css'
 
 type ChangesetDeltaProps = {
   deleted: number,
   added: number,
   changed: number,
-  showDetails: boolean,
+  showDetails?: boolean,
 }
 
-function gerPercent(sum: number, value: number) {
+function getPercent(sum: number, value: number) {
   return sum > 0 ? Math.round((100 * value) / sum) : 0
 }
 
 const ChangesetDelta = ({ added, deleted, changed, showDetails }: ChangesetDeltaProps) => {
   const sum = deleted + added + changed
 
-  const deletedPercent = gerPercent(sum, deleted)
-  const addedPercent = gerPercent(sum, added)
-  const changedPercent = gerPercent(sum, changed)
+  const deletedPercent = getPercent(sum, deleted)
+  const addedPercent = getPercent(sum, added)
+  const changedPercent = getPercent(sum, changed)
 
   return (
     <div className="changeset-delta">
@@ -47,11 +47,5 @@ const ChangesetDelta = ({ added, deleted, changed, showDetails }: ChangesetDelta
   )
 }
 
-ChangesetDelta.propTypes = {
-  deleted: PropTypes.number.isRequired,
-  changed: PropTypes.number.isRequired,
-  added: PropTypes.number.isRequired,
-  showDetails: PropTypes.bool,
-}
 
 export default ChangesetDelta

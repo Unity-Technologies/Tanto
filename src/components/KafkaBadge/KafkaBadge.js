@@ -1,6 +1,7 @@
+/* @flow */
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import IconButton from 'material-ui/IconButton'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
@@ -9,9 +10,16 @@ import Badge from 'material-ui/Badge'
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications'
 import NotificationsIconNone from 'material-ui/svg-icons/social/notifications-none'
 import { connect } from 'react-redux'
-import { selectors } from 'ducks/auth'
 
-function KafkaBadge({ count, isAuthenticated, messages }) {
+export type Props = {
+  count: number,
+  isAuthenticated: boolean,
+  messages: Array<{
+    message: string,
+  }>,
+};
+
+function KafkaBadge({ count, isAuthenticated, messages }: Props) {
   return (
     <div>
     {isAuthenticated && count > 0 &&
@@ -43,14 +51,8 @@ function KafkaBadge({ count, isAuthenticated, messages }) {
   )
 }
 
-KafkaBadge.propTypes = {
-  count: PropTypes.number.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  messages: PropTypes.array.isRequired,
-}
-
 export default connect(state => ({
-  isAuthenticated: selectors.isAuthenticated(state),
+  isAuthenticated: true,  // FIXME
   count: state.kafka.count || 0,
   messages: state.kafka.messages || [],
 }))(KafkaBadge)

@@ -1,8 +1,7 @@
-/* @flow */
-
+// TODO: finish flow annotations
 /* eslint-disable */
 
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import Prism from 'prismjs'
 import { ErrorMessage } from 'components'
 import _ from 'lodash'
@@ -14,6 +13,15 @@ import {
   getUnifiedDiff,
   getSideBySideDiff,
 } from '../PrismCodeParser/PrismCodeParser'
+
+
+export type Props = {
+  type: string,
+  diff: string,
+  comments?: Array<any>,
+  collapseComments?: boolean,
+  viewType?: string,
+};
 
 
 class Code extends Component {
@@ -48,7 +56,7 @@ class Code extends Component {
     return []
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       ready: false,
@@ -62,6 +70,8 @@ class Code extends Component {
     this.getFileComments = this.getFileComments.bind(this)
     this.updateCode = this.updateCode.bind(this)
   }
+
+  props: Props
 
   componentWillMount() {
     this.asyncProcessCode(this.props).then(this.updateCode)
@@ -143,14 +153,6 @@ class Code extends Component {
       </div>
     )
   }
-}
-
-Code.propTypes = {
-  type: PropTypes.string.isRequired,
-  diff: PropTypes.string.isRequired,
-  comments: PropTypes.array,
-  collapseComments: PropTypes.bool,
-  viewType: PropTypes.string,
 }
 
 export default Code

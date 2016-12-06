@@ -1,6 +1,6 @@
 // TODO: add flow annotations
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { FileList, BranchSelect, ReduxBreadcrumb, Filter } from 'components'
 import urljoin from 'url-join'
 import _ from 'lodash'
@@ -18,8 +18,16 @@ import { Sticky, StickyContainer } from 'react-sticky'
 import { projectFilesTestData, changesets } from '../../../api/testData'
 
 
+export type Props = {
+  pathname: string,
+  data: Array<any>,
+  dispatch: Function,
+  location: Object,
+  params: Object,
+};
+
 class Files extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.clickHandler = this.clickHandler.bind(this)
     this.findChild = this.findChild.bind(this)
@@ -63,6 +71,8 @@ class Files extends Component {
       result: items.length > 1 ? items.length - 1 : 0,
     })
   }
+
+  props: Props
 
   findChild(nodes, path) {
     if (!nodes.length || !path.length) {
@@ -175,14 +185,6 @@ class Files extends Component {
       </div>
     )
   }
-}
-
-Files.propTypes = {
-  pathname: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
 }
 
 export default connect(state => ({

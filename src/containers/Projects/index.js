@@ -1,6 +1,6 @@
+// TODO: add flow annotations
 
-
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { push } from 'react-router-redux'
 import CircularProgress from 'material-ui/CircularProgress'
@@ -10,6 +10,14 @@ import { fetchProjects } from 'ducks/projects'
 import { Sticky, StickyContainer } from 'react-sticky'
 import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 
+export type Props = {
+  isFetching: boolean,
+  errors?: Array<any>,
+  projects: Array<any>,
+  dispatch: Function,
+  theme: Object,
+};
+
 export class Projects extends Component {
   componentDidMount() {
     const { dispatch } = this.props
@@ -17,6 +25,8 @@ export class Projects extends Component {
     // todo: remove this from constructor
     dispatch(fetchProjects())
   }
+
+  props: Props
 
   clickHandler(value) {
     const { dispatch } = this.props
@@ -122,14 +132,6 @@ export class Projects extends Component {
       </div>
     )
   }
-}
-
-Projects.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  errors: PropTypes.array,
-  projects: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  theme: PropTypes.object.isRequired,
 }
 
 export default connect(

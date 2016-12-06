@@ -1,9 +1,18 @@
+/* @flow */
 /* eslint-disable */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Avatar from 'material-ui/Avatar'
 
-function Icon(props) {
+export type Props = {
+  icon?: number | string | React.Element<any> | Array<any>,
+  size?: number,
+  color?: string,
+  backgroundColor?: string,
+  style?: Object,
+};
+
+function Icon(props: Props) {
   const { icon, size, color, backgroundColor, style } = props
   const defaultStyle = { borderRadius: 0 }
   return (
@@ -15,14 +24,6 @@ function Icon(props) {
       style={style || defaultStyle}
     />
   )
-}
-
-Icon.propTypes = {
-  icon: PropTypes.node.isRequired,
-  size: PropTypes.number,
-  color: PropTypes.string,
-  backgroundColor: PropTypes.string,
-  style: PropTypes.object,
 }
 
 export default Icon

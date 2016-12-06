@@ -1,6 +1,8 @@
+// TODO: finish flow annotations
+
 /* eslint-disable */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { TextEditorBox, Icon, TestAvatar } from 'components'
 import { connect } from 'react-redux'
 import IconButton from 'material-ui/IconButton'
@@ -12,8 +14,24 @@ import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import { Button, ButtonGroup } from 'react-bootstrap'
 
+export type Props = {
+  id?: string,
+  user?: string,
+  author?: string,
+  message?: any,
+  postDate?: string,
+  simpleText?: boolean,
+  style?: Object,
+  headerStyle?: Object,
+  buttonGroupStyle?: Object,
+  issue?: boolean,
+  niceToHave?: boolean,
+  codeStyle?: boolean,
+  hideSettings?: boolean,
+}
+
 class Comment extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       editMode: false,
@@ -31,6 +49,8 @@ class Comment extends Component {
     this.onCommentSave = this.onCommentSave.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
+
+  props: Props
 
   onCommentEdit() {
     this.setState({ editMode: true })
@@ -225,22 +245,6 @@ class Comment extends Component {
       </div>
     )
   }
-}
-
-Comment.propTypes = {
-  id: PropTypes.string,
-  user: PropTypes.string,
-  author: PropTypes.string,
-  message: PropTypes.any,
-  postDate: PropTypes.string,
-  simpleText: PropTypes.bool,
-  style: PropTypes.object,
-  headerStyle: PropTypes.object,
-  buttonGroupStyle: PropTypes.object,
-  issue: PropTypes.bool,
-  niceToHave: PropTypes.bool,
-  codeStyle: PropTypes.bool,
-  hideSettings: PropTypes.bool,
 }
 
 export default Comment

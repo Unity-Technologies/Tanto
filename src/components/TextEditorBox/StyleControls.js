@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+/* @flow */
+
+import React from 'react'
 import Bold from 'material-ui/svg-icons/editor/format-bold'
 import Italic from 'material-ui/svg-icons/editor/format-italic'
 import Underline from 'material-ui/svg-icons/editor/format-underlined'
@@ -32,8 +34,19 @@ const BLOCK_TYPES = [
 //   { value: 6, style: 'header-six' },
 // ]
 
+export type Props = {
+  editorState: {
+    getCurrentInlineStyle: Function,
+    getSelection: Function,
+    getCurrentContent: Function,
+  },
+  onToogleBlockType: Function,
+  onToogleInlineStyle: Function,
+  activeColor?: string,
+  style?: Object,
+}
 
-const StyleControls = (props) => {
+const StyleControls = (props: Props) => {
   const currentStyle = props.editorState.getCurrentInlineStyle()
   const { editorState, style } = props
   const selection = editorState.getSelection()
@@ -90,12 +103,5 @@ const StyleControls = (props) => {
   )
 }
 
-StyleControls.propTypes = {
-  editorState: PropTypes.object.isRequired,
-  // onToogleInlineStyle: PropTypes.func.isRequired,
-  onToogleBlockType: PropTypes.func.isRequired,
-  activeColor: PropTypes.string,
-  style: PropTypes.object,
-}
 
 export default StyleControls

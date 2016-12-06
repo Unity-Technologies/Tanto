@@ -1,9 +1,18 @@
-// TODO: add flow annotations
+/* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
 
-function Html({ assets }) {
+export type Props = {
+  assets: {
+    styles: Object,
+    javascript: {
+      main: string,
+    },
+  },
+}
+
+function Html({ assets }: Props) {
   const head = Helmet.rewind()
 
   const htmlStyle = {
@@ -62,10 +71,6 @@ function Html({ assets }) {
       </body>
     </html>
   )
-}
-
-Html.propTypes = {
-  assets: PropTypes.object,
 }
 
 export default Html
