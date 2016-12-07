@@ -11,18 +11,17 @@ const pullRequestFixture = {
   status: 'new',
   created: '2016-11-28 14:08:40.578150',
   owner: {
-    avatar: null,
-    full_name: 'Kateryna Musina',
+    fullName: 'Kateryna Musina',
     username: 'kateryna',
   },
   reviewers: [{
-    review_status: null,
+    status: null,
     user: {
-      avatar: null,
-      full_name: 'Sharron Bronson',
+      fullName: 'Sharron Bronson',
       username: 'sharron',
     },
   }],
+  files: [],
 }
 
 storiesOf('PullRequestSummary', module)

@@ -1,6 +1,7 @@
 /* @flow */
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 export type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
+export type { File } from 'services/ono/queries/pullRequest'
 
 export const types = {
   FETCH_START: 'PULLREQUEST/FETCH_START',

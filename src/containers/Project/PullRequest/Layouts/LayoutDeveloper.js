@@ -1,17 +1,17 @@
-// TODO: add flow annotations
-
+/* @flow */
 import React, { Component } from 'react'
 import { Badge, Tabs, Tab } from 'react-bootstrap'
 import Scroll from 'react-scroll'
 
-import {
-  ChangesetFileList,
-  ChangesetGroupedList,
-  CodeDiffView,
-  IssuesList,
-} from 'components'
+import ChangesetFileList from 'components/ChangesetFileList'
+import ChangesetGroupedList from 'components/ChangesetGroupedList'
+import CodeDiffView from 'components/CodeDiffView'
+import IssuesList from 'components/IssuesList'
 import PullRequestDiscussion from 'components/PullRequestDiscussion'
 import PullRequestSummary from 'components/PullRequestSummary'
+
+import type { PullRequestGraphType } from 'ducks/pullRequest'
+
 import {
   PullRequestData, prChangesetList, prIssues,
 } from '../../../../api/testPullRequest'
@@ -35,51 +35,41 @@ const tabTitle = (text, badge) => (
 
 const downloadIcon = <i className="fa fa-download" aria-hidden="true" />
 
-export type Props = { pullRequest: Object };
+export type Props = {
+  pullRequest: PullRequestGraphType,
+};
 
 class LayoutDeveloper extends Component {
   constructor(props: Props) {
     super(props)
     this.state = {
       value: null,
-      reviewers: ['Jesper Mortensen'],
       toggleReviewers: false,
       key: 1,
-    }
-    this.handleChange = this.handleChange.bind(this)
-    this.addReviewer = this.addReviewer.bind(this)
-    this.toggleReviewers = this.toggleReviewers.bind(this)
-    this.handleSelect = this.handleSelect.bind(this)
+    };
+
+    // semi colons are needed for this flow workaround
+    (this:any).addReviewer = this.addReviewer.bind(this);
+    (this:any).toggleReviewers = this.toggleReviewers.bind(this)
+  }
+
+  state: {
+    value: ?string,
+    reviewers?: Array<any>,
+    toggleReviewers: boolean,
+    key: number,
   }
 
   props: Props
 
-  handleChange(event, index, value) {
-    this.setState({
-      value,
-    })
-  }
-
-  addReviewer(value) {
-    const r = this.state.reviewers
-    if (!r.includes(value.name)) {
-      r.push(value.name)
-      this.setState({
-        reviewers: r,
-      })
-    }
+  addReviewer(value: { name: string }) {
+    window.alert('not implemted')
   }
 
   toggleReviewers() {
     const toggled = this.state.toggleReviewers
     this.setState({
       toggleReviewers: !toggled,
-    })
-  }
-
-  handleSelect(key) {
-    this.setState({
-      key,
     })
   }
 
@@ -103,7 +93,7 @@ class LayoutDeveloper extends Component {
           </Tab>
           <Tab style={{ margin: '20px 0' }} eventKey={2} title="Files">
             <div>
-              <ChangesetFileList files={PullRequestData} />
+              <ChangesetFileList files={pullRequest.files} />
             </div>
           </Tab>
           <Tab

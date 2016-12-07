@@ -3,22 +3,13 @@ import React from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import _ from 'lodash'
 
+import type { File } from 'services/ono/queries/pullRequest'
 import ChangesetDelta from '../ChangesetDelta'
 
 import './ChangesetFileList.css'
 
-type ChangeSetFileCommentType = {
-  id: string,
-  message: string,
-}
-
-type ChangeSetFileType = {
-  comments: Array<ChangeSetFileCommentType>,
-  name: string,
-}
-
 type Props = {
-  files: Array<ChangeSetFileType>,
+  files: Array<File>,
   compact?: boolean,
 }
 
@@ -63,9 +54,9 @@ const ChangesetFileList = ({ compact, files }: Props) =>
                 {!compact &&
                   <Col lg={2} md={2} xsHidden smHidden>
                     <ChangesetDelta
-                      deleted={Math.floor((Math.random() * 10) + 1)}
-                      added={Math.floor((Math.random() * 10) + 1)}
-                      changed={Math.floor((Math.random() * 10) + 1)}
+                      deleted={file.stats.deleted}
+                      added={file.stats.added}
+                      changed={0}  // FIXME
                     />
 
                   </Col>

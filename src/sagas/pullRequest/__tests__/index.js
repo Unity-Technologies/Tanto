@@ -13,24 +13,19 @@ const pullRequestResponse = {
   status: 'new',
   created: '2016-11-28 14:08:40.578150',
   owner: {
-    avatar: null,
-    full_name: 'Kateryna Musina',
+    fullName: 'Kateryna Musina',
     username: 'kateryna',
   },
-  reviewers: {
-    edges: [
-      {
-        node: {
-          review_status: null,
-          user: {
-            avatar: null,
-            full_name: 'Sharron Bronson',
-            username: 'sharron',
-          },
-        },
+  reviewers: [
+    {
+      status: null,
+      user: {
+        fullName: 'Sharron Bronson',
+        username: 'sharron',
       },
-    ],
-  },
+    },
+  ],
+  files: [],
 }
 
 const pullRequestResponseParsed = {
@@ -38,25 +33,24 @@ const pullRequestResponseParsed = {
   status: 'new',
   created: '2016-11-28 14:08:40.578150',
   owner: {
-    avatar: null,
-    full_name: 'Kateryna Musina',
+    fullName: 'Kateryna Musina',
     username: 'kateryna',
   },
   reviewers: [{
-    review_status: null,
+    status: null,
     user: {
-      avatar: null,
-      full_name: 'Sharron Bronson',
+      fullName: 'Sharron Bronson',
       username: 'sharron',
     },
   }],
+  files: [],
 }
 
 
 describe('fetchPullRequest saga', () => {
   it('fetches', () => {
     const generator = fetchPullRequest({ type: 'foo', id: 10 })
-    const queryResponse = { data: { pull_request: pullRequestResponse } }
+    const queryResponse = { data: { pullRequest: pullRequestResponse } }
 
     expect(generator.next().value)
       .to.deep.equal(put(actions.fetchStatus(true)))

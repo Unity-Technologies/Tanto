@@ -49,7 +49,7 @@ type PullRequestHeaderProps = {
 export const PullRequestHeader = ({ pullRequest } : PullRequestHeaderProps) =>
   <div style={{ display: 'inline-block' }}>
     <UserAvatar
-      src={pullRequest.owner.avatar}
+      src={null}  // FIXME
       style={{ float: 'left', display: 'table-column' }}
     />
     <div style={{ padding: '0 10px', display: 'table' }}>
@@ -58,7 +58,7 @@ export const PullRequestHeader = ({ pullRequest } : PullRequestHeaderProps) =>
       </div>
       <span style={{ color: 'grey', fontSize: '13px' }}>
         created {moment(pullRequest.created).fromNow()}
-        by {pullRequest.owner.full_name} ({pullRequest.owner.username})
+        by {pullRequest.owner.fullName} ({pullRequest.owner.username})
       </span>
     </div>
   </div>
@@ -222,7 +222,7 @@ const PullRequestSummary = (props: PullRequestSummaryProps) =>
                   </Col>
                   <Col md={11}>
                     <div style={{ fontSize: '13px' }}>
-                      {props.pullRequest.reviewers.map(r => r.user.full_name).join(', ')}
+                      {props.pullRequest.reviewers.map(r => r.user.fullName).join(', ')}
                     </div>
                   </Col>
                 </Row>
