@@ -1,16 +1,26 @@
 /* @flow */
 import React from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
-import _ from 'lodash'
 
 import type { File } from 'services/ono/queries/pullRequest'
 import ChangesetDelta from '../ChangesetDelta'
+import { pluralizedText } from 'utils/text'
 
 import './ChangesetFileList.css'
 
 type Props = {
   files: Array<File>,
   compact?: boolean,
+}
+
+const statusText = files => {
+  const additions = files.reduce((sum, f) => sum + f.stats.added, 0)
+  const deletions = files.reduce((sum, f) => sum + f.stats.deleted, 0)
+  return `
+    ${pluralizedText('file', 'files', files.length)}
+    changed with ${pluralizedText('addition', 'additions', additions)}
+    and ${pluralizedText('deletion', 'deletions', deletions)}
+  `
 }
 
 const ChangesetFileList = ({ compact, files }: Props) =>
@@ -40,7 +50,7 @@ const ChangesetFileList = ({ compact, files }: Props) =>
           />
         </div>
         <div style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }} active>
-        225 files changed with 1871 insertions and 8737 deletions
+          {statusText(files)}
         </div>
       </Col>
     </Row>
@@ -49,7 +59,7 @@ const ChangesetFileList = ({ compact, files }: Props) =>
       <Col md={12}>
         <ListGroup style={{ fontSize: '13px', overflowY: 'auto', overflowX: 'hidden' }}>
           {files.map(file => (
-            <ListGroupItem key={_.uniqueId('listItem')} style={{ padding: '10px 10px' }} >
+            <ListGroupItem key={file.id} style={{ padding: '10px 10px' }} >
               <Row>
                 {!compact &&
                   <Col lg={2} md={2} xsHidden smHidden>
