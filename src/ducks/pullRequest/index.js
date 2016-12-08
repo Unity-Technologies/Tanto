@@ -1,4 +1,6 @@
 /* @flow */
+import { GraphQlError, HttpStatusError } from 'universal/requests'
+
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 export type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 export type { File } from 'services/ono/queries/pullRequest'
@@ -37,11 +39,18 @@ export default (
         ...state,
         isFetching: action.isFetching,
       }
-    case types.FETCH_ERROR:
+    case types.FETCH_ERROR: {
+      let error = action.error
+      if (error instanceof HttpStatusError) {
+        error = `${error.message} (${error.status})`
+      } else if (error instanceof GraphQlError) {
+        error = `${error.message}`
+      }
       return {
         ...state,
-        error: action.error,
+        error,
       }
+    }
     case types.FETCH_DONE:
       return {
         ...state,

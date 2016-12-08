@@ -21,6 +21,7 @@ import StickyActionBar from './StickyActionBar'
 
 type Props = {
   dispatch: Function,
+  error: ?string,
   isFetching: boolean,
   params: {
     id: string,
@@ -41,10 +42,21 @@ class PullRequest extends Component {
   props: Props
 
   render() {
-    const { isFetching, pullRequest, persona } = this.props
+    const { isFetching, error, pullRequest, persona } = this.props
 
     if (isFetching) {
       return <LoadingIcon />
+    }
+
+    if (error) {
+      return (
+        <div>
+          <h3>
+            Fetching the pull request failed!
+          </h3>
+          <h4>{`${error}`}</h4>
+        </div>
+      )
     }
 
     if (!pullRequest) {
@@ -73,6 +85,7 @@ class PullRequest extends Component {
 
 export default connect(
   (state, ownProps) => ({
+    error: state.pullRequest.error,
     isFetching: state.pullRequest.isFetching,
     params: ownProps.params,
     persona: state.session.persona,
