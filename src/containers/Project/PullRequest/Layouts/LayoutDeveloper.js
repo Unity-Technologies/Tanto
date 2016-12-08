@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from 'react'
+import React from 'react'
 import { Badge, Tabs, Tab } from 'react-bootstrap'
 import Scroll from 'react-scroll'
 
@@ -35,91 +35,55 @@ const tabTitle = (text, badge) => (
 
 const downloadIcon = <i className="fa fa-download" aria-hidden="true" />
 
+const noop = () => {}
+
 export type Props = {
   pullRequest: PullRequestGraphType,
-};
-
-class LayoutDeveloper extends Component {
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      value: null,
-      toggleReviewers: false,
-      key: 1,
-    };
-
-    // semi colons are needed for this flow workaround
-    (this:any).addReviewer = this.addReviewer.bind(this);
-    (this:any).toggleReviewers = this.toggleReviewers.bind(this)
-  }
-
-  state: {
-    value: ?string,
-    reviewers?: Array<any>,
-    toggleReviewers: boolean,
-    key: number,
-  }
-
-  props: Props
-
-  addReviewer(value: { name: string }) {
-    window.alert('not implemted')
-  }
-
-  toggleReviewers() {
-    const toggled = this.state.toggleReviewers
-    this.setState({
-      toggleReviewers: !toggled,
-    })
-  }
-
-  render() {
-    const { pullRequest } = this.props
-    return (
-      <div style={{ padding: '0 20px' }}>
-        <Tabs defaultActiveKey={0} id="layout-developer-tabs">
-          <Tab style={{ margin: '20px 0' }} eventKey={0} title="Summary">
-            <PullRequestSummary
-              onAddReviewer={this.addReviewer}
-              onToggleReviewers={this.toggleReviewers}
-              pullRequest={pullRequest}
-              toggleReviewers={this.state.toggleReviewers}
-            />
-          </Tab>
-          <Tab style={{ margin: '20px 0' }} eventKey={1} title={tabTitle('Discussion', 4)}>
-            <PullRequestDiscussion
-              onSaveComment={() => {}}
-            />
-          </Tab>
-          <Tab style={{ margin: '20px 0' }} eventKey={2} title="Files">
-            <div>
-              <ChangesetFileList files={pullRequest.files} />
-            </div>
-          </Tab>
-          <Tab
-            style={{ margin: '20px 0' }}
-            eventKey={3}
-            title={tabTitle('Changesets', downloadIcon)}
-          >
-            <div>
-              <ChangesetGroupedList accordion={false} data={prChangesetList} />
-            </div>
-          </Tab>
-          <Tab style={{ margin: '20px 0' }} eventKey={4} title={tabTitle('Issues', 2)}>
-            <div>
-              <IssuesList issues={prIssues} />
-            </div>
-          </Tab>
-          <Tab style={{ margin: '20px 0' }} eventKey={5} title="Diff">
-            <div>
-              <CodeDiffView files={PullRequestData} />
-            </div>
-          </Tab>
-        </Tabs>
-        <Element name="page-bottom" />
-      </div>
-    )
-  }
 }
+
+// TODO: instead of tabs all of these should have their own URL
+const LayoutDeveloper = ({ pullRequest } : Props) =>
+  <div style={{ padding: '0 20px' }}>
+    <Tabs defaultActiveKey={0} id="layout-developer-tabs">
+      <Tab style={{ margin: '20px 0' }} eventKey={0} title="Summary">
+        <PullRequestSummary
+          onAddReviewer={noop}
+          onToggleReviewers={noop}
+          pullRequest={pullRequest}
+          toggleReviewers={false}
+        />
+      </Tab>
+      <Tab style={{ margin: '20px 0' }} eventKey={1} title={tabTitle('Discussion', 4)}>
+        <PullRequestDiscussion
+          onSaveComment={noop}
+        />
+      </Tab>
+      <Tab style={{ margin: '20px 0' }} eventKey={2} title="Files">
+        <div>
+          <ChangesetFileList files={pullRequest.files} />
+        </div>
+      </Tab>
+      <Tab
+        style={{ margin: '20px 0' }}
+        eventKey={3}
+        title={tabTitle('Changesets', downloadIcon)}
+      >
+        <div>
+          <ChangesetGroupedList accordion={false} data={prChangesetList} />
+        </div>
+      </Tab>
+      <Tab style={{ margin: '20px 0' }} eventKey={4} title={tabTitle('Issues', 2)}>
+        <div>
+          <IssuesList issues={prIssues} />
+        </div>
+      </Tab>
+      <Tab style={{ margin: '20px 0' }} eventKey={5} title="Diff">
+        <div>
+          <CodeDiffView files={PullRequestData} />
+        </div>
+      </Tab>
+    </Tabs>
+    <Element name="page-bottom" />
+  </div>
 
 export default LayoutDeveloper

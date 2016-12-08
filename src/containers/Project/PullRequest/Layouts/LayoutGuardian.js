@@ -1,108 +1,74 @@
-// TODO: add flow annotations
+/* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import Scroll from 'react-scroll'
 
-import {
-  ChangesetFileList,
-  ChangesetGroupedList,
-  CodeDiffView,
-  Divider,
-  IssuesList,
-} from 'components'
+import ChangesetFileList from 'components/ChangesetFileList'
+import ChangesetGroupedList from 'components/ChangesetGroupedList'
+import CodeDiffView from 'components/CodeDiffView'
+import Divider from 'components/Divider'
+import IssuesList from 'components/IssuesList'
 import PullRequestDiscussion from 'components/PullRequestDiscussion'
 import PullRequestSummary from 'components/PullRequestSummary'
+
+import type { PullRequestGraphType } from 'ducks/pullRequest'
 import {
   PullRequestData, prChangesetList, prIssues,
 } from '../../../../api/testPullRequest'
 
 const Element = Scroll.Element
 
-class LayoutGuardian extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: null,
-      reviewers: ['Jesper Mortensen'],
-      toggleReviewers: false,
-    }
+const noop = () => {}
 
-    this.handleChange = this.handleChange.bind(this)
-    this.addReviewer = this.addReviewer.bind(this)
-    this.toggleReviewers = this.toggleReviewers.bind(this)
-  }
-
-  handleChange(event, index, value) {
-    this.setState({
-      value,
-    })
-  }
-
-  addReviewer(value) {
-    const r = this.state.reviewers
-    if (!r.includes(value.name)) {
-      r.push(value.name)
-      this.setState({
-        reviewers: r,
-      })
-    }
-  }
-
-  toggleReviewers() {
-    const toggled = this.state.toggleReviewers
-    this.setState({
-      toggleReviewers: !toggled,
-    })
-  }
-
-
-  render() {
-    return (
-      <div style={{ padding: '0 20px' }}>
-        <Element name="page-top" className="element" />
-        <Element name="summary" className="element">
-          <div>
-            <PullRequestSummary
-              onAddReviewer={this.addReviewer}
-              onToggleReviewers={this.toggleReviewers}
-              toggleReviewers={this.state.toggleReviewers}
-            />
-          </div>
-        </Element>
-        <Element name="files" className="element">
-          <Divider text="Files" />
-          <div>
-            <ChangesetFileList files={PullRequestData} />
-          </div>
-        </Element>
-        <Element name="changesets" className="element">
-          <Divider text="Changesets" />
-          <div>
-            <ChangesetGroupedList accordion data={prChangesetList} />
-          </div>
-        </Element>
-        <Element name="issues" className="element">
-          <Divider text="Issues" />
-          <div>
-            <IssuesList issues={prIssues} />
-          </div>
-        </Element>
-        <Element name="discussion" className="element">
-          <Divider text="Discussion" />
-          <PullRequestDiscussion
-            onSaveComment={() => {}}
-          />
-        </Element>
-        <Element name="diff" className="element">
-          <Divider text="Diff" />
-          <div>
-            <CodeDiffView files={PullRequestData} />
-          </div>
-        </Element>
-        <Element name="page-bottom" />
-      </div>
-    )
-  }
+export type Props = {
+  pullRequest: PullRequestGraphType,
 }
+
+// TODO: should be seperate URL from developer (simpel redirect if guardian)
+const LayoutGuardian = ({ pullRequest }: Props) =>
+  <div style={{ padding: '0 20px' }}>
+    <Element name="page-top" className="element" />
+    <Element name="summary" className="element">
+      <div>
+        <PullRequestSummary
+          onAddReviewer={noop}
+          onToggleReviewers={noop}
+          toggleReviewers={false}
+          pullRequest={pullRequest}
+        />
+      </div>
+    </Element>
+    <Element name="files" className="element">
+      <Divider text="Files" />
+      <div>
+        <ChangesetFileList files={pullRequest.files} />
+      </div>
+    </Element>
+    <Element name="changesets" className="element">
+      <Divider text="Changesets" />
+      <div>
+        <ChangesetGroupedList accordion data={prChangesetList} />
+      </div>
+    </Element>
+    <Element name="issues" className="element">
+      <Divider text="Issues" />
+      <div>
+        <IssuesList issues={prIssues} />
+      </div>
+    </Element>
+    <Element name="discussion" className="element">
+      <Divider text="Discussion" />
+      <PullRequestDiscussion
+        onSaveComment={noop}
+      />
+    </Element>
+    <Element name="diff" className="element">
+      <Divider text="Diff" />
+      <div>
+        <CodeDiffView files={PullRequestData} />
+      </div>
+    </Element>
+    <Element name="page-bottom" />
+  </div>
 
 export default LayoutGuardian
