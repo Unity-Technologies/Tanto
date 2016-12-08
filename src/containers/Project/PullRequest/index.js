@@ -5,11 +5,7 @@ import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { StickyContainer } from 'react-sticky'
 
-import {
-  GUARDIAN_PERSONA,
-  DEVELOPER_PERSONA,
-  MANAGER_PERSONA,
-} from 'ducks/session'
+import { DEVELOPER_PERSONA } from 'ducks/session'
 import { actions } from 'ducks/pullRequest'
 import type { PullRequestGraphType } from 'ducks/pullRequest'
 
@@ -26,6 +22,11 @@ type Props = {
   params: {
     id: string,
     prid: string,
+    category: ?string,
+  },
+  location: {
+    pathname: string,
+    query: Object,
   },
   persona: 'DEVELOPER_PERSONA' | 'MANAGER_PERSONA' | 'GUARDIAN_PERSONA',
   pullRequest: ?PullRequestGraphType,
@@ -42,7 +43,7 @@ class PullRequest extends Component {
   props: Props
 
   render() {
-    const { isFetching, error, pullRequest, persona } = this.props
+    const { isFetching, error, pullRequest, persona, params, location } = this.props
 
     if (isFetching) {
       return <LoadingIcon />
@@ -63,21 +64,30 @@ class PullRequest extends Component {
       return <div>The requested pull request was not found...</div>
     }
 
+    let rootPath = location.pathname
+    if (params.category) {
+      // TODO: I don't like this, but react-router is not handling
+      // relative URLs, so we need to strip the category part of the url...
+      // There might be a better way. Or just using query params?
+      rootPath = rootPath.replace(new RegExp(`/${params.category}$`), '')
+    }
+
+    const defaultCategory = persona === DEVELOPER_PERSONA ? 'summary' : 'guardian'
+    const currentCategory = params.category || defaultCategory
+
     return (
       <StickyContainer style={{ fontSize: '14px' }}>
         <Helmet title={`Pull Request: ${pullRequest.title}`} />
         <StickyActionBar />
-        <div>
-          {persona === DEVELOPER_PERSONA &&
-            <LayoutDeveloper pullRequest={pullRequest} />
-          }
-          {persona === MANAGER_PERSONA &&
-            <LayoutGuardian pullRequest={pullRequest} />
-          }
-          {persona === GUARDIAN_PERSONA &&
-            <LayoutGuardian pullRequest={pullRequest} />
-          }
-        </div>
+        {currentCategory === 'guardian' || currentCategory === 'manager' ?
+          <LayoutGuardian pullRequest={pullRequest} />
+        :
+          <LayoutDeveloper
+            currentCategory={currentCategory}
+            pullRequest={pullRequest}
+            rootPath={rootPath}
+          />
+        }
       </StickyContainer>
     )
   }

@@ -57,7 +57,7 @@ export default (store) => {
           <Route path="changelog" component={Changelog} />
           <Route path="pullrequests" component={ProjectPullRequests} />
           <Route onEnter={onPullRequestEnter}>
-            <Route path="pullrequest/:prid" component={PullRequest} />
+            <Route path="pullrequest/:prid(/:category)" component={PullRequest} />
           </Route>
           <Route onEnter={onChangesetEnter}>
             <Route path="changeset/:hash" component={Changeset} />

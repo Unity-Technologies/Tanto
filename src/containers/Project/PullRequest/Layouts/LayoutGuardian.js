@@ -3,22 +3,12 @@
 import React from 'react'
 import Scroll from 'react-scroll'
 
-import ChangesetFileList from 'components/ChangesetFileList'
-import ChangesetGroupedList from 'components/ChangesetGroupedList'
-import CodeDiffView from 'components/CodeDiffView'
 import Divider from 'components/Divider'
-import IssuesList from 'components/IssuesList'
-import PullRequestDiscussion from 'components/PullRequestDiscussion'
-import PullRequestSummary from 'components/PullRequestSummary'
-
 import type { PullRequestGraphType } from 'ducks/pullRequest'
-import {
-  PullRequestData, prChangesetList, prIssues,
-} from '../../../../api/testPullRequest'
+import CategoryModule from './common'
+
 
 const Element = Scroll.Element
-
-const noop = () => {}
 
 export type Props = {
   pullRequest: PullRequestGraphType,
@@ -29,44 +19,27 @@ const LayoutGuardian = ({ pullRequest }: Props) =>
   <div style={{ padding: '0 20px' }}>
     <Element name="page-top" className="element" />
     <Element name="summary" className="element">
-      <div>
-        <PullRequestSummary
-          onAddReviewer={noop}
-          onToggleReviewers={noop}
-          toggleReviewers={false}
-          pullRequest={pullRequest}
-        />
-      </div>
+      <CategoryModule pullRequest={pullRequest} type={'summary'} />
     </Element>
     <Element name="files" className="element">
       <Divider text="Files" />
-      <div>
-        <ChangesetFileList files={pullRequest.files} />
-      </div>
+      <CategoryModule pullRequest={pullRequest} type={'files'} />
     </Element>
     <Element name="changesets" className="element">
       <Divider text="Changesets" />
-      <div>
-        <ChangesetGroupedList accordion data={prChangesetList} />
-      </div>
+      <CategoryModule pullRequest={pullRequest} type={'changesets'} />
     </Element>
     <Element name="issues" className="element">
       <Divider text="Issues" />
-      <div>
-        <IssuesList issues={prIssues} />
-      </div>
+      <CategoryModule pullRequest={pullRequest} type={'issues'} />
     </Element>
     <Element name="discussion" className="element">
       <Divider text="Discussion" />
-      <PullRequestDiscussion
-        onSaveComment={noop}
-      />
+      <CategoryModule pullRequest={pullRequest} type={'discussion'} />
     </Element>
     <Element name="diff" className="element">
       <Divider text="Diff" />
-      <div>
-        <CodeDiffView files={PullRequestData} />
-      </div>
+      <CategoryModule pullRequest={pullRequest} type={'diff'} />
     </Element>
     <Element name="page-bottom" />
   </div>
