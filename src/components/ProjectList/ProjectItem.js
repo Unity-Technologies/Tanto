@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Divider from 'material-ui/Divider'
 import { ListItem } from 'material-ui/List'
+import type { ProjectType } from 'ducks/projects'
 
 const subHeader = text => (
   <div
@@ -17,28 +18,20 @@ const subHeader = text => (
   </div>
 )
 
-export type Props = {
-  item: Object,
+type Props = {
   clickHandler: Function,
-  primaryTextProp: string,
-  secondaryTextProp?: string,
   inset: number,
-  valueProp: string,
-  updated: string,
-  owner: string,
+  project: ProjectType,
 }
 
 class ProjectItem extends Component {
   constructor(props: Props) {
     super(props)
-
     this.state = {
       open: false,
       followed: false,
-    };
-
-    (this:any).toggleOpen = this.toggleOpen.bind(this);
-    (this:any).toggleFollow = this.toggleFollow.bind(this)
+    }
+    this.touchTapEventHandler = this.touchTapEventHandler.bind(this)
   }
 
   props: Props
@@ -58,23 +51,30 @@ class ProjectItem extends Component {
     this.setState({ followed: !value })
   }
 
+  touchTapEventHandler() {
+    if (this.props.clickHandler) {
+      this.props.clickHandler(this.props.project.id)
+    }
+  } 
+
   render() {
     const {
-      item,
-      primaryTextProp,
-      secondaryTextProp,
-      valueProp,
-      clickHandler,
-      updated,
-      owner,
+      project,
       inset,
+      clickHandler,
     } = this.props
 
-    const primaryText = item[primaryTextProp]
-    const secondaryText = secondaryTextProp ? item[secondaryTextProp] : ''
-    const value = item[valueProp]
-    const ownerName = item[owner].first_name + ' ' + item.owner.last_name // eslint-disable-line
-    const updatedTime = item[updated]
+    const {
+      owner,
+      name,
+      description,
+      id,
+      updatedTime,
+    } = project
+
+    const ownerName = owner.fullName
+    const primaryText = name
+    const secondaryText = description || ''
     const diff = moment(updatedTime).fromNow()
 
     const listItemWithoutNestedStyle = {
@@ -85,10 +85,11 @@ class ProjectItem extends Component {
     return (
       <div>
         <ListItem
+          key={id}
           disableTouchRipple
           style={listItemWithoutNestedStyle}
-          onTouchTap={() => clickHandler(value)}
-          value={value}
+          onTouchTap={this.touchTapEventHandler}
+          value={id}
           rightIconButton={
             <div
               style={{
@@ -108,7 +109,7 @@ class ProjectItem extends Component {
           primaryText={
             <Row>
               <Col md={4}>
-                <div style={{ fontStyle: 'bold', fontSize: '18px', color: '#666666' }}>
+                <div style={{ fontStyle: 'bold', fontSize: '16px', color: '#666666' }}>
                            {primaryText}
                 </div>
                 <span style={{ fontStyle: 'italic', fontSize: '13px', color: '#8a8a88' }}>

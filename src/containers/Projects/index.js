@@ -11,8 +11,10 @@ import urljoin from 'url-join'
 import ProjectList from 'components/ProjectList/ProjectList'
 import ErrorMessage from 'components/ErrorMessage'
 import GroupList from 'components/GroupList/GroupList'
-import { fetchProjects } from 'ducks/projects'
+import { fetchProjects, clearProjects } from 'ducks/projects'
 import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
+import { helpers, groupPathFromPath } from 'routes/helpers'
+
 
 export type Props = {
   isFetching: boolean,
@@ -25,47 +27,48 @@ export type Props = {
 };
 
 export class Projects extends Component {
+
   componentDidMount() {
-    const { dispatch } = this.props;
-    (this:any).clickHandler = this.clickHandler.bind(this)
-    dispatch(fetchProjects())
+    const { dispatch, pathname } = this.props
+    this.projectClickHandler = this.projectClickHandler.bind(this)
+    this.groupClickHandler = this.groupClickHandler.bind(this)
+    this.props.dispatch(clearProjects())
+    this.updateNode(dispatch, pathname)
+  }
+
+  componentWillReceiveProps(nextProp, nextState) {
+    if (this.props.pathname !== nextProp.pathname) {
+      this.props.dispatch(clearProjects())
+      this.updateNode(this.props.dispatch, nextProp.pathname)
+    }
+  }
+
+  updateNode(dispatch, pathname) {
+    dispatch(fetchProjects(groupPathFromPath(pathname)))
   }
 
   props: Props
-
-  clickHandler(value: string) {
+  groupClickHandler(value: string) {
     const { dispatch, pathname } = this.props
+    const base = urljoin(pathname.split('/').slice(0, -1))
     let path
-    if (value === '') {
-      path = urljoin(pathname.split('/').slice(0, -1))
+    if (value === 'Parent Group') {
+      path = base
     } else {
       path = urljoin(pathname, value)
     }
     dispatch(push(path))
   }
 
+  projectClickHandler(projectName: string) {
+    const { dispatch } = this.props
+    const path = helpers.buildProjectLinkNoBranch(projectName)
+    dispatch(push(path))
+  }
+
   render() {
-    const { isFetching, errors, tree, theme, dispatch, pathname } = this.props
-    let groups
-    let projects
-    if (pathname === '/projects' || pathname === '/projects/') {
-      groups = Object.keys(tree.groups).map(key => tree.groups[key])
-      projects = tree.projects
-    } else {
-      const steps = pathname.split('/').slice(2)
-      let nextGroup = tree
-      for (let i = 0; i < steps.length; i += 1) {
-        if (nextGroup.groups[steps[i]] == null) {
-          break
-        }
-        nextGroup = nextGroup.groups[steps[i]]
-      }
+    const { isFetching, errors, projects, groups, theme } = this.props
 
-      const parent = { id: '', name: 'Parent Group' }
-
-      groups = [parent, ...Object.keys(nextGroup.groups).map(key => nextGroup.groups[key])]
-      projects = [...nextGroup.projects]
-    }
     const buttonStyle = {
       backgroundColor: '#1fb5ad',
       borderColor: '#1fb5ad',
@@ -74,10 +77,11 @@ export class Projects extends Component {
     return (
       <div>
         <Helmet title="Projects" />
-        {!isFetching && !projects.length && !groups.length && !errors.length &&
-          <div style={{ textAlign: 'center', padding: '10%' }} >
-            <h4>NO PROJECTS</h4>
-          </div>
+      {!isFetching && (!projects || !projects.length) &&
+       (!groups || !groups.length) && !errors.length &&
+        <div style={{ textAlign: 'center', padding: '10%' }} >
+          <h4>NO PROJECTS</h4>
+        </div>
         }
 
         {isFetching && !projects.length &&
@@ -137,7 +141,7 @@ export class Projects extends Component {
               </div>
 
             </Sticky>
-            {!!groups.length &&
+            {!!groups &&
               <div>
                 <GroupList
                   data={groups}
@@ -145,12 +149,12 @@ export class Projects extends Component {
                   childrenProp="projects"
                   primaryTextProp="name"
                   secondaryTextProp="description"
-                  clickHandler={value => this.clickHandler(value)}
+                  clickHandler={this.groupClickHandler}
                   {...theme}
                 />
               </div>
             }
-            {!!projects.length &&
+            {!!projects &&
               <div>
                 <ProjectList
                   data={projects}
@@ -158,7 +162,7 @@ export class Projects extends Component {
                   childrenProp="projects"
                   primaryTextProp="name"
                   secondaryTextProp="description"
-                  clickHandler={value => dispatch(push(`/project/${value}`))}
+                  clickHandler={this.projectClickHandler}
                   updated="updated"
                   owner="owner"
                   {...theme}
@@ -184,6 +188,7 @@ export default connect(
     pathname: state.routing.locationBeforeTransitions.pathname,
     isFetching: state.projects.isFetching,
     errors: state.projects.errors || [],
-    tree: state.projects.tree || { groups: [], projects: [] },
+    projects: state.projects.projects,
+    groups: state.projects.groups,
   })
 )(Projects)

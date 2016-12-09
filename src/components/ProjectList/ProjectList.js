@@ -4,25 +4,27 @@ import React from 'react'
 import _ from 'lodash'
 import { List } from 'material-ui/List'
 import ProjectItem from './ProjectItem'
+import type { ProjectType } from 'ducks/projects'
 
 export type Props = {
-  data?: Array<any>
+  data?: Array<ProjectType>,
+  clickHandler: Function,
 }
 
 function ProjectList(props: Props) {
-  const { data } = props
+  const { data, clickHandler } = props
   return (
     <List
       style={{ paddingTop: 0, paddingBottom: 0 }}
       primaryTogglesNestedList
     >
-      {data && data.length &&
+      {data &&
         data.map(item =>
           <ProjectItem
-            key={_.uniqueId('_project_item')}
-            item={item}
+            key={item.id}
             inset={0}
-            {...props}
+            project={item}
+            clickHandler={clickHandler}
           />
         )
       }

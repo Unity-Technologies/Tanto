@@ -31,9 +31,10 @@ describe('Projects Actions', function () {
     expect(actions.fetchProjectsSuccess(result)).to.eql(successAction)
   })
 
-  it('Should return an action of type PROJECTS_REQUEST with nothing', function () {
-    const reqAction = { type: types.PROJECTS_REQUEST }
-    expect(actions.fetchProjects()).to.eql(reqAction)
+  it('Should return an action of type PROJECTS_REQUEST with a path', function () {
+    const path = 'example/path'
+    const reqAction = { type: types.PROJECTS_REQUEST, path }
+    expect(actions.fetchProjects(path)).to.eql(reqAction)
   })
 
   it('Should return an action of type PROJECTS_FETCHING with the correct boolean', function () {
@@ -61,12 +62,12 @@ describe('Projects Reducers', function () {
     expect(thirdState).to.eql(initialState)
   })
 
-  it('Should get errors from error object with PROJECT_FAILURE', function () {
+  it('Should set an error object with PROJECT_FAILURE', function () {
     const errors = [{ message: 'error 1', location: null },
                     { message: 'error 2', location: null }]
     const nextState = project(initialState, actions.fetchProjectsFailure(errors))
     const errorState = Object.assign({}, initialState)
-    errorState.errors = ['error 1', 'error 2']
+    errorState.errors = errors
 
     expect(errorState).to.eql(nextState)
   })

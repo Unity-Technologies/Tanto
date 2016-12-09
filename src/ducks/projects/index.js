@@ -3,7 +3,11 @@
 import projectQuery from 'graphql-queries/project'
 import _ from 'lodash'
 
+import type { ProjectType, GroupType } from 'services/ono/queries/projects'
+export type { ProjectType, GroupType } from 'services/ono/queries/projects'
+
 export const PROJECTS_REQUEST = 'PROJECTS_REQUEST'
+export const PROJECTS_CLEAR = 'PROJECTS_CLEAR'
 export const PROJECTS_SUCCESS = 'PROJECTS_SUCCESS'
 export const PROJECTS_FAILURE = 'PROJECTS_FAILURE'
 
@@ -68,57 +72,6 @@ export const updateProject = (projects, projectId, field, result) => {
   return projects
 }
 
-/**
- * Adds repositories to group if it was already fetched. Do not expand here
- * more than two levels in deep
- * @param  {[type]} groups [description]
- * @param  {[type]} result [description]
- * @return {[type]}        [description]
- */
-const expand = (result) => {
-  if (!result) {
-    return []
-  }
-
-  let flatProjects = []
-  let groups = [] // eslint-disable-line
-  if (result.groups) {
-    groups = result.groups.map((group) => {
-      const groupProjects = group.repositories.edges.map(repo => repo.node)
-
-      flatProjects = [...flatProjects, ...groupProjects]
-
-      return {
-        id: group.id,
-        name: group.name,
-        projects: groupProjects,
-      }
-    })
-  }
-  let projects = []
-  if (result.repositories) {
-    projects = result.repositories
-  }
-  const testgroup = { name: 'Test Group',
-                      id: 22,
-                      description: 'A cyclic group.',
-                      projects: [...projects],
-                      groups: {} }
-  const emptygroup = { name: 'Empty Group',
-                       id: 'asGDTJU34',
-                       description: 'An empty group.',
-                       projects: [],
-                       groups: { 22: testgroup } }
-  testgroup.groups[22] = testgroup
-  testgroup.groups[emptygroup.id] = emptygroup
-  return {
-    tree: {
-      groups: { 22: testgroup, asGDTJU34: emptygroup },
-      projects: [...projects],
-    },
-    projects: [...flatProjects, ...projects],
-  }
-}
 
 /**
  * PROJECTS initial state
@@ -142,16 +95,22 @@ export default function project(state = initialState, action) {
       return {
         ...state,
       }
+    case PROJECTS_CLEAR:
+      return {
+        ...state,
+        projects: [],
+        groups: [],
+      }
     case PROJECTS_FAILURE:
       return {
         ...state,
         isFetching: false,
-        errors: action.errors.map(item => item.message),
+        errors: action.errors,
       }
     case PROJECTS_SUCCESS:
       return {
         ...state,
-        ...expand(action.result),
+        ...action.result,
       }
     case PROJECT_BRANCHES_REQUEST:
     case PROJECT_FILES_REQUEST:
@@ -216,8 +175,13 @@ export default function project(state = initialState, action) {
  * Fetch groups and projects the first level action
  * @type {[type]}
  */
-export const fetchProjects = () => ({
+export const fetchProjects = (path: String) => ({
   type: PROJECTS_REQUEST,
+  path,
+})
+
+export const clearProjects = (path: String) => ({
+  type: PROJECTS_CLEAR,
 })
 
 

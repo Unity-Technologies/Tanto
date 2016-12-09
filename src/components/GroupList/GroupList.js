@@ -1,33 +1,35 @@
 /* @flow */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import { List } from 'material-ui/List'
 import GroupItem from './GroupItem'
+import type { GroupType } from 'ducks/projects'
 
-function GroupList(props) {
-  const { data } = props
+export type Props = {
+  data?: Array<GroupType>,
+  clickHandler: Function,
+}
+
+const GroupList = (props : Props) => {
+  const { data, clickHandler } = props
   return (
     <List
       style={{ paddingTop: 0, paddingBottom: 0 }}
       primaryTogglesNestedList
     >
       {data && data.length &&
-        data.map(item =>
+        data.map(group =>
           <GroupItem
-            key={_.uniqueId('_group_item')}
-            item={item}
+            key={group.id}
             inset={0}
-            {...props}
+            group={group}
+            clickHandler={clickHandler}
           />
         )
       }
     </List>
   )
-}
-
-GroupList.propTypes = {
-  data: PropTypes.array.isRequired,
 }
 
 export default GroupList
