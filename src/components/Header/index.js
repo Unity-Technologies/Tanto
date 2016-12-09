@@ -35,7 +35,6 @@ function Header(props: Props) {
           marginBottom: '20px' }}
       >
         <Nav>
-          {/* <KafkaBadge /> */}
           <Badge
             badgeContent={1}
             secondary
