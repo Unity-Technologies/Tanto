@@ -6,7 +6,9 @@ import { muiTheme } from 'storybook-addon-material-ui'
 
 import ChangesetFileList from './ChangesetFileList'
 
-const fixtureComments = [
+const randInt = (max) => Math.floor((Math.random() * max))
+
+const fixtureComment = () => (
   {
     id: '2',
     text: 'hi im a line comment',
@@ -17,44 +19,46 @@ const fixtureComments = [
       username: 'admin',
       fullName: 'Kallithea Admin',
     },
-  },
-]
+  }
+)
+
+const fixtureFile = (name) => (
+  {
+    name,
+    comments: Array(randInt(100)).map(fixtureComment),
+    stats: {
+      added: randInt(10),
+      deleted: randInt(10),
+      binary: randInt(10) > 8,
+    },
+    id: `C--${randInt(100000000000)}`,
+    diff: 'diff ...',
+    oldName: name,
+    operation: 'M',
+  }
+)
 
 const filesFixture = [
-  {
-    name: 'Editor/Mono/EditorGUI.cs',
-    comments: fixtureComments,
-    stats: {
-      added: 10,
-      deleted: 0,
-      binary: false,
-    },
-    id: 'C--04c6e90faac2',
-    diff: 'diff ...',
-    oldName: 'README.md',
-    operation: 'M',
-  },
-  {
-    name: 'Editor/Mono/GUI/GradientEditor.cs',
-    comments: [],
-    stats: {
-      added: 10,
-      deleted: 0,
-      binary: true,
-    },
-    id: 'C--04c6e90faac3',
-    diff: 'diff ...',
-    oldName: 'README.md',
-    operation: 'M',
-  },
-]
+  'Editor/Mono/EditorGUI.cs',
+  'Editor/Mono/GUI/GradientEditor.cs',
+  'core/data/readme.rst',
+  'core/data/list/list.cs',
+  'database/tests/list_test.cs',
+  'test/core/list/paper.cs',
+  'test/database/list/paper.cs',
+].map(fixtureFile)
 
 storiesOf('ChangesetFileList', module)
   .addDecorator(muiTheme())
+  .add('default', () => (
+    <ChangesetFileList
+      compact={false}
+      files={filesFixture}
+    />
+  ))
   .add('compact', () => (
     <ChangesetFileList
       compact
-      containerId={'foo'}
       files={filesFixture}
     />
   ))
