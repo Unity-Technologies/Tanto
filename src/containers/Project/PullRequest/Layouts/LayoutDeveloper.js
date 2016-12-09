@@ -1,24 +1,23 @@
 /* @flow */
 import React from 'react'
-import { Badge, Tabs, Tab } from 'react-bootstrap'
-import Scroll from 'react-scroll'
-
-import ChangesetFileList from 'components/ChangesetFileList'
-import ChangesetGroupedList from 'components/ChangesetGroupedList'
-import CodeDiffView from 'components/CodeDiffView'
-import IssuesList from 'components/IssuesList'
-import PullRequestDiscussion from 'components/PullRequestDiscussion'
-import PullRequestSummary from 'components/PullRequestSummary'
+import { Badge } from 'react-bootstrap'
+import { Link } from 'react-router'
 
 import type { PullRequestGraphType } from 'ducks/pullRequest'
 
-import {
-  PullRequestData, prChangesetList, prIssues,
-} from '../../../../api/testPullRequest'
+import CategoryModule from './common'
 
-const Element = Scroll.Element
 
-const tabTitle = (text, badge) => (
+const CATEGORIES = [
+  { url: 'summary', name: 'Summary' },
+  { url: 'discussion', name: 'Discussion' },
+  { url: 'files', name: 'Files' },
+  { url: 'changesets', name: 'Changesets' },
+  { url: 'issues', name: 'Issues' },
+  { url: 'diff', name: 'Diff' },
+]
+
+const TabTitle = ({ text, badge }) =>
   <div style={{ display: 'inline-flex' }}>
     <div style={{ float: 'left', marginRight: '5px' }}>
       {text}
@@ -31,59 +30,32 @@ const tabTitle = (text, badge) => (
       </div>
     }
   </div>
-)
 
+// FIXME: badge for changesets
 const downloadIcon = <i className="fa fa-download" aria-hidden="true" />
 
-const noop = () => {}
+// FIXME: badge for categories
+const Header = ({ currentCategory, rootPath }) =>
+  <ul className="nav nav-tabs" style={{ marginBottom: '24px' }}>
+    {CATEGORIES.map(c =>
+      <li className={c.url === currentCategory ? 'active' : ''} key={c.url}>
+        <Link to={`${rootPath}/${c.url}`}>
+          <TabTitle text={c.name} badge={c.url === 'changesets' ? downloadIcon : 1} />
+        </Link>
+      </li>
+    )}
+  </ul>
 
 export type Props = {
+  currentCategory: string,
   pullRequest: PullRequestGraphType,
+  rootPath: string,
 }
 
-// TODO: instead of tabs all of these should have their own URL
-const LayoutDeveloper = ({ pullRequest } : Props) =>
+const LayoutDeveloper = ({ currentCategory, pullRequest, rootPath } : Props) =>
   <div style={{ padding: '0 20px' }}>
-    <Tabs defaultActiveKey={0} id="layout-developer-tabs">
-      <Tab style={{ margin: '20px 0' }} eventKey={0} title="Summary">
-        <PullRequestSummary
-          onAddReviewer={noop}
-          onToggleReviewers={noop}
-          pullRequest={pullRequest}
-          toggleReviewers={false}
-        />
-      </Tab>
-      <Tab style={{ margin: '20px 0' }} eventKey={1} title={tabTitle('Discussion', 4)}>
-        <PullRequestDiscussion
-          onSaveComment={noop}
-        />
-      </Tab>
-      <Tab style={{ margin: '20px 0' }} eventKey={2} title="Files">
-        <div>
-          <ChangesetFileList files={pullRequest.files} />
-        </div>
-      </Tab>
-      <Tab
-        style={{ margin: '20px 0' }}
-        eventKey={3}
-        title={tabTitle('Changesets', downloadIcon)}
-      >
-        <div>
-          <ChangesetGroupedList accordion={false} data={prChangesetList} />
-        </div>
-      </Tab>
-      <Tab style={{ margin: '20px 0' }} eventKey={4} title={tabTitle('Issues', 2)}>
-        <div>
-          <IssuesList issues={prIssues} />
-        </div>
-      </Tab>
-      <Tab style={{ margin: '20px 0' }} eventKey={5} title="Diff">
-        <div>
-          <CodeDiffView files={PullRequestData} />
-        </div>
-      </Tab>
-    </Tabs>
-    <Element name="page-bottom" />
+    <Header currentCategory={currentCategory} rootPath={rootPath} />
+    <CategoryModule pullRequest={pullRequest} type={currentCategory} />
   </div>
 
 export default LayoutDeveloper
