@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable */
 
 import React from 'react'
 import { Link } from 'react-router'
@@ -49,8 +48,9 @@ const FileList = ({ data, onFileClick }: Props) =>
         >
           <TableRowColumn style={{ width: '20px' }}>
             {item.children ?
-              <FolderClosedIcon style={{ fill: 'rgba(212, 213, 214, 0.721569)' }} /> :
-                <File style={{ fill: 'rgba(167, 236, 232, 0.6)' }} />
+              <FolderClosedIcon style={{ fill: 'rgba(212, 213, 214, 0.721569)' }} />
+              :
+              <File style={{ fill: 'rgba(167, 236, 232, 0.6)' }} />
         }
           </TableRowColumn>
           <TableRowColumn>
@@ -73,6 +73,5 @@ const FileList = ({ data, onFileClick }: Props) =>
     </TableBody>
   </Table>
 
-;
 
 export default FileList

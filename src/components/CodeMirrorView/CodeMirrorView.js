@@ -1,7 +1,5 @@
 // TODO: add flow annotations
 
-/* eslint-disable */
-
 import React, { Component } from 'react'
 import CodeMirror from 'codemirror'
 import 'codemirror/mode/javascript/javascript'
@@ -17,6 +15,8 @@ export type Props = {
 };
 
 class CodeMirrorView extends Component {
+  /* eslint-disable react/sort-comp */
+
   props: Props
 
   componentDidMount() {

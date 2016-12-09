@@ -1,7 +1,5 @@
 /* @flow */
 
-/* eslint-disable */
-
 import React, { Component } from 'react'
 import Drawer from 'material-ui/Drawer'
 import _ from 'lodash'
@@ -30,11 +28,22 @@ const listItem = (title, icon, badge, open) => (
       <i className={`fa fa-${icon}`} aria-hidden="true" />
     </div>
     {open &&
-      <span style={{ fontSize: '13px', color: textColor, textTransform: 'uppercase', marginLeft: '10px' }}>
+      <span
+        style={{
+          fontSize: '13px',
+          color: textColor,
+          textTransform: 'uppercase',
+          marginLeft: '10px',
+        }}
+      >
         {title}
       </span>
     }
-    {badge && <div className={`badge ${open ? 'badge-main-menu-open' : 'badge-main-menu-closed'}`}>{badge}</div>}
+    {badge &&
+      <div
+        className={`badge ${open ? 'badge-main-menu-open' : 'badge-main-menu-closed'}`}
+      >{badge}</div>
+    }
   </div>
 )
 
@@ -44,14 +53,25 @@ const subItem = (icon, title, color, badge, iconbadge, open) => (
       <div style={{ display: 'inline-table', width: '100%', textAlign: 'center', color }}>
         <i className={`fa fa-${icon}`} aria-hidden="true" />
         {!!badge && <div className="badge badge-small">{badge}</div>}
-        {!!iconbadge && <div className="badge badge-small"><i className={`fa fa-${iconbadge}`} aria-hidden="true" /></div>}
+        {!!iconbadge &&
+          <div className="badge badge-small">
+            <i className={`fa fa-${iconbadge}`} aria-hidden="true" />
+          </div>
+        }
       </div>
     }
 
     {open &&
       <Row>
         <Col xs={10}>
-          <span style={{ fontSize: '13px', color: color || textColor, textTransform: 'uppercase', marginLeft: '20px' }}>
+          <span
+            style={{
+              fontSize: '13px',
+              color: color || textColor,
+              textTransform: 'uppercase',
+              marginLeft: '20px',
+            }}
+          >
             {title}
           </span>
         </Col>
@@ -123,7 +143,7 @@ class SideBar extends Component {
       backgroundColor: '#f2f2f2',
       boxShadow: 'none',
       overflow: 'hidden',
-      borderRight: '1px solid rgba(60, 95, 144, 0.168627)'
+      borderRight: '1px solid rgba(60, 95, 144, 0.168627)',
     }
 
     return (
@@ -183,7 +203,15 @@ class SideBar extends Component {
             }
             <SelectableList defaultValue={defaultValue}>
               {subitems.map((item, index) => (
-                <Link key={_.uniqueId('_sidebar_item')} activeClass="active" to={item.link} offset={-70} spy smooth duration={100} >
+                <Link
+                  key={_.uniqueId('_sidebar_item')}
+                  activeClass="active"
+                  to={item.link}
+                  offset={-70}
+                  spy
+                  smooth
+                  duration={100}
+                >
                   <ListItem
                     value={index + 1}
                     style={{ color: 'black' }}

@@ -5,8 +5,6 @@ export type Props = {
   totalUserAssignedPRs?: number,
 };
 
-/* eslint-disable */
-
 import React from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
@@ -59,4 +57,3 @@ export default connect(
     totalUserAssignedPRs: 100,
   })
 )(PullRequests)
-

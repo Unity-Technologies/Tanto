@@ -1,23 +1,28 @@
-// TODO: add flow annotations
-
-/* eslint-disable */
+/* @flow */
 
 import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
-import { NotificationList } from 'components'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
+
+import NotificationList from 'components/NotificationList'
 
 export type Props = { profile?: Object };
 
 class Home extends Component {
+  /* eslint-disable react/sort-comp */
+
   constructor(props: Props) {
     super(props)
     this.state = { open: true }
   }
 
   props: Props
+
+  state: {
+    open: boolean,
+  }
 
   render() {
     return (

@@ -1,5 +1,4 @@
 // TODO: finish flow annotations
-/* eslint-disable */
 
 import React, { Component } from 'react'
 import Scroll from 'react-scroll'
@@ -12,7 +11,9 @@ import ChangesetFileList from '../ChangesetFileList'
 import CommentsList from '../CommentsList'
 
 import DiffHeader from './DiffHeader/DiffHeader'
-import { PullRequestData, PullRequestHistory2, PullRequestUnresolvedComments } from '../../api/testPullRequest'
+import {
+  PullRequestData, PullRequestHistory2, PullRequestUnresolvedComments,
+} from '../../api/testPullRequest'
 import Code from './Code/Code'
 import './CodeDiffView.css'
 
@@ -24,6 +25,7 @@ export type Props = {
 }
 
 class CodeDiffView extends Component {
+  /* eslint-disable react/sort-comp */
   static renderValue(option) {
     return <span>{option.value}</span>
   }
@@ -116,7 +118,9 @@ class CodeDiffView extends Component {
               style={{
                 marginRight: '5px',
                 color: 'white',
-                backgroundColor: this.state.showFileList ? '#b9ebae' : 'lightgrey' }} aria-label="Show files list"
+                backgroundColor: this.state.showFileList ? '#b9ebae' : 'lightgrey',
+              }}
+              aria-label="Show files list"
             >
               <i className="fa fa-th-list" aria-hidden="true" />
             </a>
@@ -150,7 +154,7 @@ class CodeDiffView extends Component {
           </Col>
         </Row>
         <Row style={{ marginTop: '15px' }}>
-          { this.state.showFileList && this.state.showCommentsList &&
+          {this.state.showFileList && this.state.showCommentsList &&
             <Col md={3}>
               <Tabs defaultActiveKey={1} id="code-diff-tabs">
                 <Tab style={{ padding: '10px 0' }} eventKey={1} title="Files">
@@ -175,14 +179,14 @@ class CodeDiffView extends Component {
                 compact
                 containerId="codeDiffContainerElement"
               />
-            </Col> }
+            </Col>}
           {this.state.showCommentsList && !this.state.showFileList &&
             <Col md={3} style={{ height: this.state.height }}>
               <CommentsList
                 comments={PullRequestUnresolvedComments}
                 containerId="codeDiffContainerElement"
               />
-            </Col> }
+            </Col>}
           <Col md={(this.state.showFileList || this.state.showCommentsList) ? 9 : 12}>
             <div
               id="codeDiffContainerElement"

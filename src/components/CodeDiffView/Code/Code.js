@@ -1,5 +1,4 @@
 // TODO: finish flow annotations
-/* eslint-disable */
 
 import React, { Component } from 'react'
 import Prism from 'prismjs'
@@ -25,6 +24,7 @@ export type Props = {
 
 
 class Code extends Component {
+  /* eslint-disable react/sort-comp */
   asyncProcessCode({ type, viewType, diff }) {
     const promise = new Promise((resolve) => {
       const html = Prism.highlight(diff, Prism.languages[type] || Prism.languages.clike)
@@ -134,10 +134,10 @@ class Code extends Component {
   render() {
     return (
       <div>
-        {!this.state.ready &&
+      {!this.state.ready &&
         <LinearProgress mode="indeterminate" />
       }
-        {this.state.ready &&
+      {this.state.ready &&
         <pre
           key={_.uniqueId('_code_')}
           className="diff-view"
@@ -147,7 +147,7 @@ class Code extends Component {
           </code>
         </pre>
       }
-        {!!this.state.error &&
+      {!!this.state.error &&
         <ErrorMessage message={this.state.error} />
       }
       </div>

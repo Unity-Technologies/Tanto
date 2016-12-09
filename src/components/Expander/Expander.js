@@ -1,14 +1,25 @@
-// TODO: add flow annotations
-/* eslint-disable */
-
+/* @flow */
 import React, { Component } from 'react'
 import './Expander.css'
 
+type Props = {
+  children: number | string | React.Element<*> | Array<any>
+}
+
 class Expander extends Component {
-  constructor(props) {
+  /* eslint-disable react/sort-comp */
+
+  constructor(props: Props) {
     super(props)
-    this.state = { collapsed: true }
-    this.expandHandler = this.expandHandler.bind(this)
+    this.state = { collapsed: true };
+
+    (this:any).expandHandler = this.expandHandler.bind(this)
+  }
+
+  props : Props
+
+  state : {
+    collapsed: boolean,
   }
 
   expandHandler() {

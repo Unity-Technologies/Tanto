@@ -1,10 +1,7 @@
 // TODO: finish flow annotations
 
-/* eslint-disable */
-
 import React, { Component } from 'react'
 import { TextEditorBox, Icon, TestAvatar } from 'components'
-import { connect } from 'react-redux'
 import IconButton from 'material-ui/IconButton'
 import Edit from 'material-ui/svg-icons/editor/mode-edit'
 import Settings from 'material-ui/svg-icons/action/settings'
@@ -31,6 +28,8 @@ export type Props = {
 }
 
 class Comment extends Component {
+  /* eslint-disable react/sort-comp */
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -146,7 +145,7 @@ class Comment extends Component {
                   <strong style={{ color: '#31708f' }}>{author}</strong> commented {postDate}
                 </div>
               </div>
-              {isAuthor &&
+            {isAuthor &&
               <div style={{ float: 'right', padding: '10px' }}>
                 {!this.props.hideSettings &&
                   <IconMenu
@@ -209,8 +208,8 @@ class Comment extends Component {
             simpleText={simpleText}
             styleControlsStyle={{ borderRadius: '10px 10px 0 0' }}
           />
-          {!this.props.hideSettings &&
-          (this.state.issue || this.state.niceToHave || this.state.codeStyle) &&
+        {!this.props.hideSettings &&
+         (this.state.issue || this.state.niceToHave || this.state.codeStyle) &&
           <div style={buttonGroupStyle || { overflow: 'auto' }}>
             <ButtonGroup style={{ float: 'right', padding: '5px' }}>
               {this.state.issue &&
