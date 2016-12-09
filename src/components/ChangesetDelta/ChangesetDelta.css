@@ -4,12 +4,10 @@
 
 .changeset-deleted {
     background-color: #f2a3b4;
-    border-radius: 10px 0 0 10px;
 }
 
 .changeset-renamed {
     background-color: #838dca;
-    border-radius: 10px;
 }
 
 .changeset-chunk {
@@ -19,12 +17,10 @@
 
 .changeset-changed {
     background-color: #ede2a0;
-    border-radius: 0 10px 10px 0;
 }
 
 .changeset-delta {
     width: 100%;
     height: 12px;
-    border-radius: 5px;
     display: inline-flex;
 }
