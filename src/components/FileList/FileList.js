@@ -15,7 +15,16 @@ import FolderClosedIcon from 'material-ui/svg-icons/file/folder'
 import File from 'material-ui/svg-icons/editor/insert-drive-file'
 
 export type Props = {
-  data: Array<any>,
+  data: Array<{
+    // FIXME: make this reflect graphql
+    children: boolean,
+    name: string,
+    size: number,
+    revision: string,
+    commitmessage: string,
+    updated:string,
+    author: string,
+  }>,
   onFileClick: Function,
 };
 

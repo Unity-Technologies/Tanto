@@ -6,7 +6,7 @@ import 'react-select/dist/react-select.css'
 
 export type Props = {
   placeholder?: string,
-  data: Array<any>,
+  data: Array<{ value: string, label: string }>,
   onChange?: Function,
 };
 

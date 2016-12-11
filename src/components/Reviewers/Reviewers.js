@@ -1,30 +1,42 @@
-// TODO: add flow annotations
-
+/* @flow */
 import React, { Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import TestAvatar from '../TestAvatar'
 
+type Reviewer = {
+  name: string,
+  type: string,
+}
+
 export type Props = {
-  reviewers?: any,
-  onAdded?: Function,
-};
+  reviewers: Array<Reviewer>,
+  onAdded: null | Function,
+}
 
 class Reviewers extends Component {
+  /* eslint-disable react/sort-comp */
+
   constructor(props: Props) {
     super(props)
-    this.state = { search: null, reviewers: this.props.reviewers }
-    this.addReviewer = this.addReviewer.bind(this)
+    this.state = { search: null, reviewers: this.props.reviewers };
+
+    (this:any).addReviewer = this.addReviewer.bind(this)
   }
 
   props: Props
 
-  addReviewer(value) {
+  state: {
+    search: ?string,
+    reviewers: Array<Reviewer>
+  }
+
+  addReviewer(value: Reviewer) {
     const list = this.state.reviewers
 
     if (this.props.onAdded) {
+      this.props.onAdded(value)
       list.splice(list.indexOf(value), 1)
       this.setState({ reviewers: list })
-      this.props.onAdded(value)
     }
   }
 

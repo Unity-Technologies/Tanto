@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { ListItem } from 'material-ui/List'
 import FolderClosedIcon from 'material-ui/svg-icons/file/folder'
 
-export type Props = {
+export type TreeItemProps = {
   item: Object,
   clickHandler: Function,
   childrenProp: string,
@@ -27,7 +27,7 @@ function TreeItem({
   clickHandler,
   inset,
   palette,
-} : Props) {
+} : TreeItemProps) {
   const primaryText = item[primaryTextProp]
   const secondaryText = secondaryTextProp ? item[secondaryTextProp] : ''
   const value = item[valueProp]

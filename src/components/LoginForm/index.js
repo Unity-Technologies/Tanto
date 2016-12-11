@@ -6,7 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import ErrorMessage from 'components/ErrorMessage'
 import LoadingIcon from 'components/LoadingIcon'
-import './styles.css'
 
 const validate = (values) => {
   const errors = {}

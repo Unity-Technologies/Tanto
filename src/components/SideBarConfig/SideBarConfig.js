@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 
+// FIXME: this is not a component...
+
 import {
   SIDE_BAR_ITEMS,
   SIDE_BAR_SELECTED_ITEM,

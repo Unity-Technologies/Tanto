@@ -1,32 +1,27 @@
-// TODO: add flow annotation
+/* @flow */
 
 import React, { Component } from 'react'
 
 import './Checkbox.css'
 
 export type Props = {
-  value: string,
-  onCheck?: Function,
+  checked: boolean,
+  value: any,
+  onCheck?: (e: SyntheticInputEvent, value: boolean) => any,
   name: string,
-  checked?: boolean,
   disabled?: boolean,
 }
 
 class Checkbox extends Component {
+  /* eslint-disable react/sort-comp */
   constructor(props: Props) {
-    super(props)
-    this.state = {
-      value: this.props.value,
-      checked: this.props.checked,
-      disabled: this.props.disabled,
-    }
-    this.handleClick = this.handleClick.bind(this)
+    super(props);
+    (this:any).handleClick = this.handleClick.bind(this)
   }
 
   props: Props
 
-  handleClick(e) {
-    this.setState({ checked: e.target.checked })
+  handleClick(e: SyntheticInputEvent) {
     if (this.props.onCheck) {
       this.props.onCheck(e, e.target.checked)
     }
@@ -34,8 +29,7 @@ class Checkbox extends Component {
 
   // TODO: apply material-ui  styling here
   render() {
-    const { value, checked, disabled } = this.state
-    const { name } = this.props
+    const { value, checked, disabled, name } = this.props
     return (
       <div>
         <input
@@ -44,7 +38,7 @@ class Checkbox extends Component {
           value={value}
           checked={checked}
           disabled={disabled}
-          onClick={this.handleClick}
+          onChange={this.handleClick}
           className="checkbox-box"
         />
         <label htmlFor={name} />
