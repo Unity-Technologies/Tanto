@@ -1,12 +1,24 @@
-// TODO: add flow annotations
-
+/* @flow */
 import React from 'react'
 import _ from 'lodash'
 import { List } from 'material-ui/List'
 
 import TreeItem from './TreeItem'
+import type { TreeItemProps } from './TreeItem'
 
-function Tree(props) {
+type Props = {
+  data: Array<TreeItemProps>,
+  clickHandler: Function,
+  childrenProp: string,
+  primaryTextProp: string,
+  secondaryTextProp: string,
+  valueProp: string,
+  palette: {
+    primary1Color: string,
+  },
+}
+
+const Tree = (props: Props) => {
   const { data } = props
   return (
     <List

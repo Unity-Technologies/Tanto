@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import './Expander.css'
 
 type Props = {
-  children: number | string | React.Element<*> | Array<any>
+  children?: Element<any>
 }
 
 class Expander extends Component {

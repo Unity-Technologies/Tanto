@@ -3,18 +3,18 @@
 
 import React from 'react'
 import LinearProgress from 'material-ui/LinearProgress'
+
 import ErrorMessage from 'components/ErrorMessage'
 import List from 'components/List'
 import PullRequestListItem from './PullRequestListItem'
+import type { PullRequestListItemProps } from './PullRequestListItem'
 
 import './styles.css'
 
 export type Props = {
   totalPagesCount?: number,
   activePage?: number,
-  items: Array<{
-    id: string,
-  }>,
+  items: Array<PullRequestListItemProps>,
   isFetching?: boolean,
   totalNew?: number,
   totalInProgress?: number,

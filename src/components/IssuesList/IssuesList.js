@@ -17,7 +17,16 @@ const subHeader = text => (
   </div>
 )
 
-export type Props = { issues: any };
+export type Props = {
+  issues: Array<{
+    age: string,
+    assignedto: string,
+    file: string,
+    line: number,
+    status: number,
+    title: string,
+  }>
+};
 
 class IssuesList extends Component {
   constructor(props: Props) {

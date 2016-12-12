@@ -7,7 +7,7 @@ import IconMenu from 'material-ui/IconMenu'
 import Divider from 'material-ui/Divider'
 import IconButton from 'material-ui/IconButton'
 
-import TestAvatar from '../TestAvatar'
+import TestAvatar from 'components/TestAvatar'
 
 import {
   GUARDIAN_PERSONA,

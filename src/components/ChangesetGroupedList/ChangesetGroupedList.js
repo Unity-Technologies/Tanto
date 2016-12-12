@@ -1,29 +1,39 @@
-// TODO: add flow annotation
-
-/* eslint-disable max-len */
+/* @flow */
 
 import React, { Component } from 'react'
 import { Col, Row, PanelGroup, Panel } from 'react-bootstrap'
-import { ChangesetList } from 'components'
 import _ from 'lodash'
+
+import ChangesetList from 'components/ChangesetList'
 
 import './ChangesetGroupedList.css'
 
 export type Props = {
-  data: any,
+  data: Array<{
+    data: Array<any>,
+    version: string,
+    date: string,
+  }>,
   accordion: boolean,
 }
 
 class ChangesetGroupedList extends Component {
+  /* eslint-disable react/sort-comp */
   constructor(props: Props) {
     super(props)
-    this.state = { search: null, activeKey: 3 }
-    this.handleSelect = this.handleSelect.bind(this)
+    this.state = { search: null, activeKey: 3 };
+
+    (this:any).handleSelect = this.handleSelect.bind(this)
   }
 
   props: Props
 
-  handleSelect(activeKey) {
+  state: {
+    search: ?string,
+    activeKey: number,
+  }
+
+  handleSelect(activeKey: number) {
     this.setState({ activeKey })
   }
 
@@ -95,7 +105,10 @@ class ChangesetGroupedList extends Component {
                           fontSize: '12px',
                           fontStyle: 'italic',
                         }}
-                      >This iteration is based on another trunk revision and there is no simple diff.</div>
+                      >
+                        This iteration is based on another trunk revision
+                        and there is no simple diff.
+                      </div>
                     </div>
                   }
                   eventKey={chunk.version}

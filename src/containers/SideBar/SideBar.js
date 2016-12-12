@@ -13,7 +13,7 @@ import { IndexLink } from 'react-router'
 import { Col, Row } from 'react-bootstrap'
 import Scroll from 'react-scroll'
 
-import SelectableList from '../SelectableList'
+import SelectableList from 'components/SelectableList'
 import './SideBar.css'
 
 import { DEVELOPER_PERSONA } from 'ducks/session'
