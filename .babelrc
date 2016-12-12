@@ -17,6 +17,11 @@
             "transforms": [{
                 "transform": "react-transform-catch-errors",
                 "imports": ["react", "redbox-react"]
+              },
+              {
+                "transform": "react-transform-hmr",
+                "imports": ["react"],
+                "locals": ["module"]
               }
             ]
         }]

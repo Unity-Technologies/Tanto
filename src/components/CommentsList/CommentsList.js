@@ -1,4 +1,4 @@
-// TODO: add flow annotations
+/* @flow */
 
 import React, { Component } from 'react'
 import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
@@ -6,15 +6,25 @@ import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import TestAvatar from '../TestAvatar'
 import './CommentsList.css'
 
-export type Props = { comments?: any };
+export type Props = {
+  comments: Array<{
+    date: string,
+    message: string,
+  }>
+};
 
 class CommentsList extends Component {
+  /* eslint-disable react/sort-comp */
   constructor(props: Props) {
     super(props)
     this.state = { search: null }
   }
 
   props: Props
+
+  state: {
+    search: ?string,
+  }
 
   render() {
     return (

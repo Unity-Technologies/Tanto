@@ -1,4 +1,4 @@
-// TODO: add flow annotations
+/* @flow */
 
 import React, { Component } from 'react'
 import Select from 'react-select'
@@ -6,28 +6,31 @@ import 'react-select/dist/react-select.css'
 import { reviewers } from '../../api/testData'
 
 export type Props = {
-  defaultValue?: // project: PropTypes.string.isRequired,
-  Array<any>,
-  placeholder?: // style: PropTypes.object,
-  // onChange: PropTypes.func,
-  // width: PropTypes.string,
-  string,
+  defaultValue?: Array<any>,
+  placeholder?: string,
   disabled?: boolean,
 };
 
 class UserFilter extends Component {
+  /* eslint-disable react/sort-comp */
   constructor(props: Props) {
     super(props)
     this.state = {
       options: reviewers,
       value: props.defaultValue || [],
-    }
-    this.handleSelectChange = this.handleSelectChange.bind(this)
+    };
+
+    (this:any).handleSelectChange = this.handleSelectChange.bind(this)
   }
 
   props: Props
 
-  handleSelectChange(value) {
+  state: {
+    options: Array<{ value: string, label: string }>,
+    value: any,
+  }
+
+  handleSelectChange(value: any) {
     this.setState({ value })
   }
 

@@ -1,5 +1,4 @@
 // TODO: add flow annotations
-/*eslint-disable */
 
 import React, { Component } from 'react'
 import { NewComment, Comment } from 'components'
@@ -19,6 +18,8 @@ export type Props = {
 };
 
 class UnifiedRow extends Component {
+  /* eslint-disable react/sort-comp */
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -30,7 +31,6 @@ class UnifiedRow extends Component {
     this.cancelComment = this.cancelComment.bind(this)
     this.collapseComments = this.collapseComments.bind(this)
     this.handleCommentSave = this.handleCommentSave.bind(this)
-
   }
 
   props: Props
@@ -124,7 +124,7 @@ class UnifiedRow extends Component {
                   {...comment}
                 />
               ))}
-              {!this.state.commentState &&
+            {!this.state.commentState &&
               <RaisedButton
                 label="Add Comment"
                 backgroundColor="#d9edf7"

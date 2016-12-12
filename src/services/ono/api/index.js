@@ -1,6 +1,7 @@
+/* @flow */
 import 'isomorphic-fetch'
 import { routes } from 'universal/constants'
-import { checkHttpStatus, parseJSON } from 'universal/requests'
+import { checkHttpStatus, checkForGraphQlErrors, parseJSON } from 'universal/requests'
 
 // /**
 //  * Posts the data. Data object has the same format as 'fetch' accepts
@@ -34,4 +35,5 @@ export function get(query: string, variables: any) {
   return fetch(url, { credentials: 'same-origin' })
     .then(checkHttpStatus)
     .then(parseJSON)
+    .then(checkForGraphQlErrors)
 }

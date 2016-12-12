@@ -20,7 +20,7 @@ import Statistics from 'containers/Project/Statistics'
 import PullRequest from 'containers/Project/PullRequest'
 import NewPullRequest from 'containers/Project/NewPullRequest'
 
-import { app, project, pullrequest, changeset } from 'components/SideBarConfig/SideBarConfig'
+import { app, project, pullrequest, changeset } from 'containers/SideBar/SideBarConfig'
 
 export default (store) => {
   const onAppEnter = () => {
@@ -57,7 +57,7 @@ export default (store) => {
           <Route path="changelog" component={Changelog} />
           <Route path="pullrequests" component={ProjectPullRequests} />
           <Route onEnter={onPullRequestEnter}>
-            <Route path="pullrequest/:prid" component={PullRequest} />
+            <Route path="pullrequest/:prid(/:category)" component={PullRequest} />
           </Route>
           <Route onEnter={onChangesetEnter}>
             <Route path="changeset/:hash" component={Changeset} />

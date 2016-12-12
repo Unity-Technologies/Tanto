@@ -17,7 +17,7 @@ const subHeader = text => (
 )
 
 export type Props = {
-  data?: any,
+  data: Array<any>,
   compact?: boolean,
   showCheckboxes?: boolean,
 }

@@ -1,19 +1,30 @@
-/**
- * Check HTTP response status
- */
-export default function checkHttpStatus(response: any): Object {
+/* @flow */
+
+export function HttpStatusError(response: Response) {
+  this.message = response.statusText
+  this.status = response.status
+}
+
+export function GraphQlError(errors: Array<{ message: string }>) {
+  const firstError = errors && errors[0] && errors[0].message
+  this.message = `GraphQlError: '${firstError || '?'}'`
+}
+
+export function checkHttpStatus(response: Response): Object {
   if (response.status >= 200 && response.status < 300) {
     return response
   }
 
-  const error = new Error(response.statusText)
-  error.response = response
-  throw error
+  throw new HttpStatusError(response)
 }
 
-/**
- * Parse JSON response
- */
-export function parseJSON(response: any): Object {
+export function parseJSON(response: Response): Object {
   return response.json()
+}
+
+export function checkForGraphQlErrors(responseJson: Object): Object {
+  if (responseJson && responseJson.errors) {
+    throw new GraphQlError(responseJson.errors)
+  }
+  return responseJson
 }

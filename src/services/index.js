@@ -1,5 +1,0 @@
-/* @flow */
-
-/* eslint-disable */
-
-

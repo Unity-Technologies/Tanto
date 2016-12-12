@@ -1,10 +1,11 @@
-// TODO: add flow annotations
+/* @flow */
 
 import React, { Component } from 'react'
 import { Col, Row, ListGroupItem } from 'react-bootstrap'
-import { TestAvatar } from 'components'
 import { Link } from 'react-router'
+
 import { fromNow } from 'utils/datetime'
+import TestAvatar from 'components/TestAvatar'
 
 import './styles.css'
 
@@ -14,7 +15,7 @@ const subHeader = text => (
   </div>
 )
 
-export type Props = {
+export type PullRequestListItemProps = {
   id: string,
   title: string,
   status: string,
@@ -28,7 +29,7 @@ export type Props = {
   destBranch: string,
   destLink: string,
   buildName?: string,
-  buildStatus?: string,
+  buildStatus: string,
   buildDate?: string,
   buildLink?: string,
   showRemoveIcon?: boolean,
@@ -36,16 +37,17 @@ export type Props = {
 };
 
 class PullRequestListItem extends Component {
-  constructor(props: Props) {
-    super(props)
-    this.handleRemoveClick = this.handleRemoveClick.bind(this)
+  constructor(props: PullRequestListItemProps) {
+    super(props);
+
+    (this:any).handleRemoveClick = this.handleRemoveClick.bind(this)
   }
 
-  props: Props
+  props: PullRequestListItemProps
 
   handleRemoveClick() {
-    if (this.onRemoveClick) {
-      this.onRemoveClick(this.id)
+    if (this.props.onRemoveClick) {
+      this.props.onRemoveClick(this.props.id)
     }
   }
 
