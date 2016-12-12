@@ -1,9 +1,8 @@
 /* @flow */
-/* eslint-disable */
+
 
 import React, { Component } from 'react'
 import moment from 'moment'
-import _ from 'lodash'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Divider from 'material-ui/Divider'
@@ -34,12 +33,13 @@ class ProjectItem extends Component {
     this.touchTapEventHandler = this.touchTapEventHandler.bind(this)
   }
 
-  props: Props
-
   state: {
     open: boolean,
     followed: boolean,
   }
+
+  props: Props
+
 
   toggleOpen() {
     const value = this.state.open
@@ -55,13 +55,12 @@ class ProjectItem extends Component {
     if (this.props.clickHandler) {
       this.props.clickHandler(this.props.project.id)
     }
-  } 
+  }
 
   render() {
     const {
       project,
       inset,
-      clickHandler,
     } = this.props
 
     const {
