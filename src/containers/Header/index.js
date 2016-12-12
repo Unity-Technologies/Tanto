@@ -7,7 +7,7 @@ import { Navbar, Nav } from 'react-bootstrap'
 import Badge from 'material-ui/Badge'
 
 import Logout from '../Logout'
-import SearchBox from '../SearchBox'
+import SearchBox from 'components/SearchBox'
 import './styles.css'
 
 const badgeStyle = {

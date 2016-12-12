@@ -1,20 +1,22 @@
 // TODO: add flow annotations
 
 import React, { Component } from 'react'
-import { FileList, BranchSelect, ReduxBreadcrumb, Filter } from 'components'
 import urljoin from 'url-join'
 import _ from 'lodash'
 import Helmet from 'react-helmet'
 import { push } from 'react-router-redux'
 import { Col, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import { Sticky, StickyContainer } from 'react-sticky'
+
+import { FileList, BranchSelect, Filter } from 'components'
+import ReduxBreadcrumb from 'containers/ReduxBreadcrumb'
 import {
   BREADCRUMB_PUSH_LINK,
   BREADCRUMB_CLEAN,
   BREADCRUMB_UPDATE,
 } from 'ducks/breadcrumb'
 
-import { Sticky, StickyContainer } from 'react-sticky'
 import { projectFilesTestData, changesets } from '../../../api/testData'
 
 

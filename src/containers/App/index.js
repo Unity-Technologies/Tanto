@@ -4,7 +4,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import { SideBar, Header } from '../../components'
+import Header from '../Header'
+import SideBar from '../SideBar'
 
 // TODO: these should be configurable:
 const APP_NAME = 'Tanto'
