@@ -16,9 +16,6 @@ export type Props = {
     id: string,
   }>,
   isFetching?: boolean,
-  totalNew?: number,
-  totalInProgress?: number,
-  total?: number,
   error?: string,
   showRemoveButton?: boolean,
   onRemoveClick?: Function,
@@ -29,19 +26,14 @@ function PullRequestList(props: Props) {
     items,
     activePage,
     totalPagesCount,
-    isFetching, error,
-    totalInProgress,
+    isFetching,
+    error,
     showRemoveButton,
-    onRemoveClick,
-    total,
-    totalNew } = props
+    onRemoveClick } = props
   return (
     <div>
       {isFetching && <LinearProgress />}
       {error && <ErrorMessage error />}
-      <div className="sub-title">
-        {total} total, {totalInProgress} in progress, {totalNew} new
-      </div>
       <List
         items={items}
         totalPagesCount={totalPagesCount}
@@ -50,7 +42,7 @@ function PullRequestList(props: Props) {
         {items.map(item => (
           <PullRequestListItem
             key={item.id}
-            {...item}
+            pullRequest={item}
             showRemoveButton={showRemoveButton}
             onRemoveClick={onRemoveClick}
           />

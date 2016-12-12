@@ -20,10 +20,10 @@ export function* fetchPullRequests(query, parser, updateSession) {
 
     const pullrequests = parser(response)
 
-    yield put(prActions.setPullRequests(pullrequests))
+    yield put(prActions.setPullRequests(pullrequests.nodes))
 
-    const ids = pullrequests.map(x => x.id)
-    yield put(updateSession(ids))
+    const ids = pullrequests.nodes.map(x => x.id)
+    yield put(updateSession(ids, pullrequests.total))
   } catch (error) {
     yield put(prActions.requestError(error))
   } finally {

@@ -5,30 +5,30 @@ import _ from 'lodash'
 export const userPullRequestsQuery = name => `
 {
   me {
-     ${name} {
-      edges {
-        node {
-          id
-          description
-          title
-          created
-          updated
-          status
-          origin_branch
-          dest_branch
-          owner {
-            username
-            email
-            full_name
-          }
-          origin_repository {
+    ${name} {
+      total
+      nodes {
+        id
+        description
+        title
+        updated
+        status
+        origin {
+          branch
+          revision
+          repository {
             name
           }
-          origin_rev
-          dest_repository {
+        }
+        target {
+          branch
+          repository {
             name
           }
-          metadata_etag
+        }
+        owner {
+          username
+          fullName
         }
       }
     }
@@ -36,39 +36,53 @@ export const userPullRequestsQuery = name => `
 }`
 
 export const constants = {
-  pull_requests_owned: 'pull_requests_owned',
-  pull_requests_under_review: 'pull_requests_under_review',
-  pull_requests_participating: 'pull_requests_participating',
+  pullRequestsOwned: 'pullRequestsOwned',
+  pullRequestsAssigned: 'pullRequestsAssigned',
 }
 
 export const queries = {
-  CURRENT_USER_PULL_REQUESTS: userPullRequestsQuery(constants.pull_requests_owned),
-  CURRENT_USER_ASSIGNED_PULL_REQUESTS: userPullRequestsQuery(constants.pull_requests_under_review),
-  CURRENT_USER_WATCHING_PULL_REQUESTS: userPullRequestsQuery(constants.pull_requests_participating),
+  CURRENT_USER_PULL_REQUESTS: userPullRequestsQuery(constants.pullRequestsOwned),
+  CURRENT_USER_ASSIGNED_PULL_REQUESTS: userPullRequestsQuery(constants.pullRequestsAssigned),
 }
-
-export const KEY_MAP = {
-  origin_branch: 'originBranch',
-  dest_branch: 'destBranch',
-  origin_rev: 'originRev',
-  dest_repository: 'destRepository',
-  origin_repository: 'originRepository',
-}
-
-export const transform = (obj, keyMap) =>
-_.mapKeys(obj, (value, key) => (keyMap.hasOwnProperty(key) ? keyMap[key] : key))
 
 export const parsers = {
   parseCurrentUserPullRequests: response => (
-    _.get(response, ['data', 'me', constants.pull_requests_owned, 'edges'])
-      .map(x => transform(x.node, KEY_MAP))
+    _.get(response, ['data', 'me', constants.pullRequestsOwned])
   ),
   parseCurrentUserAssignedPullRequests: response => (
-    _.get(response, ['data', 'me', constants.pull_requests_under_review, 'edges'])
-      .map(x => transform(x.node, KEY_MAP))
-  ),
-  parseCurrentUserWatchingPullRequests: response => (
-    _.get(response, ['data', 'me', constants.pull_requests_participating, 'edges'])
-      .map(x => transform(x.node, KEY_MAP))
+    _.get(response, ['data', 'me', constants.pullRequestsAssigned])
   ),
 }
+
+export type RepositoryGraphType = {
+  name: string
+}
+
+export type PullRequestUserType = {
+  username: string,
+  fullName: string,
+}
+
+export type TargetGraphType = {
+  branch: string,
+  repository: RepositoryGraphType,
+}
+
+export type OriginGraphType = {
+  branch: string,
+  revision: string,
+  repository: RepositoryGraphType,
+}
+
+export type PullRequestGraphType = {
+  id: string,
+  title: string,
+  descroiption: string,
+  updated: string,
+  status: string,
+  created: string,
+  owner: PullRequestUserType,
+  origin: OriginGraphType,
+  target: TargetGraphType,
+}
+

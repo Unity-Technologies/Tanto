@@ -5,7 +5,6 @@ import reducer, {
   computePullRequestLink,
   computePullRequestOriginLink,
   computePullRequestTargetLink,
-  flattenPullRequestUsername,
   computePullRequest,
   actions,
   types,
@@ -22,19 +21,23 @@ const pr1 = {
   created: '2016-11-15 16:18:36.628901',
   updated: '2016-11-15 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging',
-  destBranch: 'trunk',
   owner: {
-    username: 'test1',
+    username: 'test2',
     email: 'test1@test.tt',
-    full_name: 'test test1',
+    fullName: 'test test11',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging1',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -45,19 +48,23 @@ const pr2 = {
   created: '2016-11-14 16:18:36.628901',
   updated: '2016-11-14 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging2',
-  destBranch: 'trunk',
   owner: {
     username: 'test2',
     email: 'test2@test.tt',
-    full_name: 'test test2',
+    fullName: 'test test2',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging2',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -68,19 +75,23 @@ const pr3 = {
   created: '2016-11-13 16:18:36.628901',
   updated: '2016-11-13 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging3',
-  destBranch: 'trunk',
   owner: {
     username: 'test3',
     email: 'test3@test.tt',
-    full_name: 'test test23',
+    fullName: 'test test44',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '3d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging3',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -91,19 +102,23 @@ const pr4 = {
   created: '2016-11-12 16:18:36.628901',
   updated: '2016-11-12 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging4',
-  destBranch: 'trunk',
   owner: {
     username: 'test4',
     email: 'test4@test.tt',
-    full_name: 'test test4',
+    fullName: 'test test44',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '4d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging4',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -114,19 +129,23 @@ const pr5 = {
   created: '2016-11-13 16:18:36.628901',
   updated: '2016-11-13 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging5',
-  destBranch: 'trunk',
   owner: {
     username: 'test5',
     email: 'test5@test.tt',
-    full_name: 'test test55',
+    fullName: 'test test55',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging5',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -233,25 +252,29 @@ describe('pullrequests reducer', () => {
 
 describe('session selectors computations', () => {
   const pullrequest = {
-    id: '1UHVsbFJlcXVlc3Q6MQ==',
+    id: 'UHVsbFJlcXVlc3Q6MQ==',
     description: 'test description',
-    title: 'Some test pull request 1',
+    title: 'Some test pull request',
     created: '2016-11-15 16:18:36.628901',
     updated: '2016-11-15 16:18:36.628916',
     status: 'new',
-    originBranch: 'graphics/gi/bugfix/staging',
-    destBranch: 'trunk',
     owner: {
-      username: 'test1',
-      email: 'test1@test.tt',
-      full_name: 'test test1',
+      username: 'test',
+      email: 'test@test.tt',
+      fullName: 'test test',
     },
-    originRepository: {
-      name: 'unity/unity',
+    origin: {
+      revision: 'd1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+      branch: 'graphics/gi/bugfix/staging',
+      repository: {
+        name: 'unity/unity',
+      },
     },
-    originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-    destRepository: {
-      name: 'unity/unity',
+    target: {
+      branch: 'trunk',
+      repository: {
+        name: 'unity/unity',
+      },
     },
   }
 
@@ -259,7 +282,7 @@ describe('session selectors computations', () => {
     const link = (name, id) => `/${name}/pullrequest/${id}`
     expect(computePullRequestLink(pullrequest, link)).to.be.eql({
       ...pullrequest,
-      link: link(pullrequest.originRepository.name, pullrequest.id),
+      link: link(pullrequest.origin.name, pullrequest.id),
     })
   })
 
@@ -267,7 +290,7 @@ describe('session selectors computations', () => {
     const link = (name, branch) => `/${name}?${branch}`
     expect(computePullRequestOriginLink(pullrequest, link)).to.be.eql({
       ...pullrequest,
-      originLink: link(pullrequest.originRepository.name, pullrequest.originBranch),
+      originLink: link(pullrequest.origin.name, pullrequest.origin.branch),
     })
   })
 
@@ -275,14 +298,7 @@ describe('session selectors computations', () => {
     const link = (name, branch) => `/${name}?${branch}`
     expect(computePullRequestTargetLink(pullrequest, link)).to.be.eql({
       ...pullrequest,
-      destLink: link(pullrequest.destRepository.name, pullrequest.destBranch),
-    })
-  })
-
-  it('flattenPullRequestUsername', () => {
-    expect(flattenPullRequestUsername(pullrequest)).to.be.eql({
-      ...pullrequest,
-      username: pullrequest.owner.username,
+      targetLink: link(pullrequest.target.name, pullrequest.target.branch),
     })
   })
 
@@ -290,21 +306,12 @@ describe('session selectors computations', () => {
     const fn1 = (name, branch) => `/${name}?${branch}`
     const fn2 = (name, id) => `/${name}/pullrequest/${id}`
 
-    const computed = computePullRequest(pullrequest)(fn1)(fn2)
+    const computed = computePullRequest(pullrequest)(fn2)(fn1)
     expect(computed).to.be.eql({
       ...pullrequest,
-      link: fn2(pullrequest.originRepository.name, pullrequest.id),
-      destLink: fn1(pullrequest.destRepository.name, pullrequest.destBranch),
-      originLink: fn1(pullrequest.originRepository.name, pullrequest.originBranch),
-      username: pullrequest.owner.username,
-    /**
-     * test build data
-     */
-
-      buildStatus: 'success',
-      buildName: 'ABV-2333',
-      buildDate: '2016-11-14 16:18:36.628916',
-      buildLink: '#',
+      link: fn2(pullrequest.origin.name, pullrequest.id),
+      targetLink: fn1(pullrequest.target.name, pullrequest.target.branch),
+      originLink: fn1(pullrequest.origin.name, pullrequest.origin.branch),
     })
   })
 })

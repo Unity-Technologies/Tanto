@@ -5,7 +5,7 @@ import reducer, { actions, types, DEVELOPER_PERSONA } from '../index'
 
 const expect = require('chai').expect
 
-describe('actions', () => {
+describe('session actions', () => {
   it('set profile', () => {
     const profile = {
       username: 'testusername',
@@ -51,32 +51,38 @@ describe('actions', () => {
 
   it('set user pull requests ids', () => {
     const ids = ['1', '2', '3']
+    const total = 3
     const action = {
       type: types.SET_PRS_IDS,
       ids,
+      total,
     }
 
-    expect(actions.setUserPRIds(ids)).to.eql(action)
+    expect(actions.setUserPRIds(ids, total)).to.eql(action)
   })
 
   it('set user pull requests assigned ids', () => {
     const ids = ['1', '2', '3']
+    const total = 3
     const action = {
       type: types.SET_ASSIGNED_PRS_IDS,
       ids,
+      total,
     }
 
-    expect(actions.setUserAssignedPRIds(ids)).to.eql(action)
+    expect(actions.setUserAssignedPRIds(ids, total)).to.eql(action)
   })
 
   it('set user pull requests watching ids', () => {
     const ids = ['1', '2', '3']
+    const total = 3
     const action = {
       type: types.SET_WATCHING_PRS_IDS,
       ids,
+      total,
     }
 
-    expect(actions.setUserWatchingPRsIds(ids)).to.eql(action)
+    expect(actions.setUserWatchingPRsIds(ids, total)).to.eql(action)
   })
 })
 
@@ -85,13 +91,22 @@ describe('session reducer', () => {
     error: null,
     isFetching: false,
     persona: DEVELOPER_PERSONA,
-    pr_ids: [],
-    pr_ids_assigned: [],
-    pr_ids_watching: [],
+    pullRequestsAssigned: {
+      ids: [],
+      total: 0,
+    },
+    pullRequestsOwned: {
+      ids: [],
+      total: 0,
+    },
+    pullRequestsWatching: {
+      ids: [],
+      total: 0,
+    },
     profile: {
       username: null,
       email: null,
-      full_name: null,
+      fullName: null,
     },
   }
 
@@ -115,17 +130,20 @@ describe('session reducer', () => {
 
   it('should handle SET_PRS_IDS', () => {
     const ids = ['1', '2', '3', '4']
-    expect(reducer({}, actions.setUserPRIds(ids))).to.eql({ pr_ids: ids })
+    const total = 12
+    expect(reducer({}, actions.setUserPRIds(ids, total))).to.eql({ pullRequestsOwned: { ids, total } })
   })
 
   it('should handle SET_ASSIGNED_PRS_IDS', () => {
     const ids = ['1', '2', '3', '4']
-    expect(reducer({}, actions.setUserAssignedPRIds(ids))).to.eql({ pr_assigned_ids: ids })
+    const total = 12
+    expect(reducer({}, actions.setUserAssignedPRIds(ids, total))).to.eql({ pullRequestsAssigned: { ids, total } })
   })
 
   it('should handle SET_WATCHING_PRS_IDS', () => {
     const ids = ['1', '2', '3', '4']
-    expect(reducer({}, actions.setUserWatchingPRsIds(ids))).to.eql({ pr_watching_ids: ids })
+    const total = 12
+    expect(reducer({}, actions.setUserWatchingPRsIds(ids, total))).to.eql({ pullRequestsWatching: { ids, total } })
   })
 
   it('should handle REQUEST_ERROR', () => {

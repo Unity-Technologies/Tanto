@@ -52,6 +52,10 @@ export const parsers = {
 
 // TODO: these types can be statically valided and compared with Ono schema:
 
+export type Repository = {
+  name: string
+}
+
 export type PullRequestUserType = {
   username: string,
   fullName: string,

@@ -3,6 +3,7 @@
 import _ from 'lodash'
 import { helpers } from 'routes/helpers'
 import { reduceArrayToObj } from 'ducks/normalizer'
+import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
 
 /**
  * Action types
@@ -20,46 +21,28 @@ export const types = {
   FETCH_USER_WATCHING_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_WATCHING_PULL_REQUESTS',
 }
 
-export const computePullRequestBuilds = (pullrequest: Object): Object => (
-  { ...pullrequest,
-    buildStatus: 'success',
-    buildName: 'ABV-2333',
-    buildDate: '2016-11-14 16:18:36.628916',
-    buildLink: '#',
-  }
-)
 
 export const computePullRequestLink = (pullrequest: Object, fn: any): Object => (
-  { ...pullrequest, link: fn(pullrequest.originRepository.name, pullrequest.id) }
+  { ...pullrequest, link: fn(pullrequest.origin.name, pullrequest.id) }
 )
 
 export const computePullRequestOriginLink = (pullrequest: Object, fn: any): Object => (
   { ...pullrequest,
-    originLink: fn(pullrequest.originRepository.name, pullrequest.originBranch || ''),
+    originLink: fn(pullrequest.target.name, pullrequest.origin.branch || ''),
   }
 )
 
 export const computePullRequestTargetLink = (pullrequest: Object, fn: any): Object => (
-  { ...pullrequest, destLink: fn(pullrequest.destRepository.name, pullrequest.destBranch || '') }
-)
-
-export const flattenPullRequestUsername = (pullrequest: Object): Object => (
-  { ...pullrequest, username: pullrequest.owner.username }
+  { ...pullrequest, targetLink: fn(pullrequest.target.name, pullrequest.target.branch || '') }
 )
 
 export const computePullRequest = (pullrequest: Object): any => (
   fn1 => (
     fn2 => (
-        computePullRequestBuilds(
-          flattenPullRequestUsername(
-            flattenPullRequestUsername(
-              computePullRequestTargetLink(
-                computePullRequestOriginLink(
-                  computePullRequestLink(pullrequest, fn2), fn1), fn1))))
-    )
-  )
+            computePullRequestTargetLink(
+              computePullRequestOriginLink(
+                computePullRequestLink(pullrequest, fn1), fn2), fn2)))
 )
-
 
 /**
  * Initial state
@@ -69,6 +52,17 @@ const initialState = {
   isFetching: false,
   byId: {},
   allIds: [],
+}
+
+export type PullRequestDictionary = {
+  [id: string]: Object
+}
+
+export type PullRequestsStateType = {
+  error: ?string,
+  isFetching: boolean,
+  byId: PullRequestDictionary,
+  allIds: Array<string>,
 }
 
 /**
@@ -107,7 +101,8 @@ const ids = (state: Array<string> = [], action: Object) => {
 /**
  * Pullrequests reducer
  */
-export default (state: Object = initialState, action: Object): Object => {
+export default (
+  state: PullRequestsStateType = initialState, action: Object): PullRequestsStateType => {
   switch (action.type) {
     case types.SET_PULL_REQUESTS:
       return {
@@ -142,12 +137,13 @@ export default (state: Object = initialState, action: Object): Object => {
  * Actions
  */
 export const actions = {
-  sendingRequest: (sending: boolean): Object => ({ type: types.SENDING_REQUEST, sending }),
-  requestError: (error: string): Object => ({ type: types.REQUEST_ERROR, error }),
-  clearError: (): Object => ({ type: types.CLEAR_ERROR }),
+  sendingRequest: (sending: boolean) => ({ type: types.SENDING_REQUEST, sending }),
+  requestError: (error: string) => ({ type: types.REQUEST_ERROR, error }),
+  clearError: () => ({ type: types.CLEAR_ERROR }),
   setPullRequests:
-    (pullrequests: Array<Object>): Object => ({ type: types.SET_PULL_REQUESTS, pullrequests }),
-  fetchUserPullRequests: (): Object => ({ type: types.FETCH_USER_PULL_REQUESTS }),
-  fetchUserAssignedPullRequests: (): Object => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS }),
-  fatchUserWatchingPullRequests: (): Object => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS }),
+    (pullrequests:
+      Array<PullRequestGraphType>) => ({ type: types.SET_PULL_REQUESTS, pullrequests }),
+  fetchUserPullRequests: () => ({ type: types.FETCH_USER_PULL_REQUESTS }),
+  fetchUserAssignedPullRequests: () => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS }),
+  fatchUserWatchingPullRequests: () => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS }),
 }

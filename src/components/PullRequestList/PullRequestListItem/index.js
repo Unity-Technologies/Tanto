@@ -5,6 +5,7 @@ import { Col, Row, ListGroupItem } from 'react-bootstrap'
 import { TestAvatar } from 'components'
 import { Link } from 'react-router'
 import { fromNow } from 'utils/datetime'
+import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
 
 import './styles.css'
 
@@ -15,25 +16,11 @@ const subHeader = text => (
 )
 
 export type Props = {
-  id: string,
-  title: string,
-  status: string,
-  username: string,
-  updated: string,
-  link: string,
-  originRepository: string,
-  originBranch: string,
-  originLink: string,
-  destRepository: string,
-  destBranch: string,
-  destLink: string,
-  buildName?: string,
-  buildStatus?: string,
-  buildDate?: string,
-  buildLink?: string,
-  showRemoveIcon?: boolean,
-  onRemoveClick?: Function,
-};
+  pullRequest: PullRequestGraphType,
+  // TODO: replace with the build type in the future
+  build: Object,
+  showRemoveIcon: boolean,
+}
 
 class PullRequestListItem extends Component {
   constructor(props: Props) {
@@ -50,88 +37,73 @@ class PullRequestListItem extends Component {
   }
 
   render() {
-    const {
-      title,
-      status,
-      username,
-      updated,
-      link,
-      originBranch,
-      originLink,
-      destBranch,
-      destLink,
-      buildName,
-      buildStatus,
-      buildDate,
-      buildLink,
-      showRemoveIcon,
-     } = this.props
+    const { pullRequest, build, showRemoveIcon } = this.props
 
     return (
-      <ListGroupItem style={{ borderLeft: `4px solid ${status}` }}>
+      <ListGroupItem className={`${pullRequest.status.replace('_', '-')}-status`}>
         <Row>
           <Col md={5}>
             <div style={{ display: 'table' }}>
               <TestAvatar />
               <div style={{ paddingLeft: '10px', display: 'table' }}>
-                <Link to={link}>{title}</Link>
+                <Link to={pullRequest.link}>{pullRequest.title}</Link>
                 <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
-                  <strong>{username}</strong>, last updated {fromNow(updated)}
+                  <strong>{pullRequest.owner.fullName}</strong> updated {fromNow(pullRequest.updated)}
                 </div>
               </div>
             </div>
           </Col>
-          <Col md={2} >
+          <Col md={3} >
             <div style={{ overflowWrap: 'break-word' }}>
               {subHeader('Origin:')}
               <div>
                 <Link
-                  style={{ textDecoration: 'none', color: '#5a6082' }}
-                  to={originLink}
+                  style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
+                  to={pullRequest.originLink}
                 >
-                  {originBranch}
+                  {pullRequest.origin.repository.name}<span style={{ color: '#8ea7b6' }}>#</span>{pullRequest.origin.branch}
                 </Link>
               </div>
             </div>
           </Col>
-          <Col md={2} >
+          <Col md={3} >
             <div>
               {subHeader('Target:')}
               <div style={{ overflowWrap: 'break-word' }}>
                 <Link
-                  style={{ textDecoration: 'none', color: '#5a6082' }}
-                  to={destLink}
+                  style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
+                  to={pullRequest.targetLink}
                 >
-                  {destBranch}
+                  {pullRequest.target.repository.name}
                 </Link>
               </div>
             </div>
           </Col>
-          <Col md={2}>
-            {buildName &&
+          {build &&
+            <Col md={2}>
               <div style={{ overflowWrap: 'break-word' }}>
                 {subHeader('Latest build:')}
                 <Link
-                  className={`build-${buildStatus}`}
+                  className={`build-${build.status}`}
                   style={{ textDecoration: 'none', textTransform: 'uppercase' }}
-                  to={buildLink}
+                  to={build.link}
                 >
-                  {buildName}-{buildStatus}
+                  {build.name}-{build.number}
                 </Link>
-                <div style={{ color: '#8c8c8c', fontSize: '12px' }}>{fromNow(buildDate)}</div>
+                <div style={{ color: '#8c8c8c', fontSize: '12px' }}>{fromNow(build.date)}</div>
               </div>
-            }
-          </Col>
-          <Col md={1} style={{ float: 'right' }}>
-            {showRemoveIcon &&
+            </Col>
+          }
+          {showRemoveIcon &&
+            <Col md={build ? 1 : 3} style={{ float: 'right' }}>
               <div
                 onClick={this.handleRemoveClick}
                 className="remove-icon"
               >
                 <i className="fa fa-trash" aria-hidden="true" />
               </div>
-            }
-          </Col>
+            </Col>
+          }
         </Row>
       </ListGroupItem>
     )

@@ -22,7 +22,7 @@ describe('pullrequests saga', () => {
     const query = 'test query'
 
     const pullrequests = [{ id: 1, title: '1' }, { id: 2, title: '2' }]
-    const testResponse = { data: { me: { prs: pullrequests } } }
+    const testResponse = { data: { me: { prs: { nodes: pullrequests, total: 12 } } } }
     const parser = response => (response.data.me.prs)
     const updateSession = prs => (prs)
     const generator = fetchPullRequests(query, parser, updateSession)

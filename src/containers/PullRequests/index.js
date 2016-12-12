@@ -18,12 +18,12 @@ import './styles.css'
 const tabTitle = (text, badge) => (
   <div style={{ display: 'inline-flex' }}>
     <div style={{ float: 'left', marginRight: '5px' }}>{text}</div>
-    {!!badge && <div style={{ marginRight: '15px' }}><Badge>{badge}</Badge></div>}
+    {!!badge && <div className="tab-badge">{badge}</div>}
   </div>
 )
 
 function PullRequests(props) {
-  const { totalUserPRs, totalUserAssignedPRs } = props
+  const { totalOwned, totalAssigned } = props
   return (
     <div>
       <Helmet title="Pull Requests" />
@@ -33,7 +33,7 @@ function PullRequests(props) {
             id="userPullRequestsTab"
             eventKey={1}
             className="tab"
-            title={tabTitle('Pull request on review', totalUserPRs)}
+            title={tabTitle('Pull requests on review', totalAssigned)}
           >
             <AssignedPullRequestList />
           </Tab>
@@ -41,7 +41,7 @@ function PullRequests(props) {
             id="userAssignedPullRequestsTab"
             eventKey={2}
             className="tab"
-            title={tabTitle('My pull request', totalUserAssignedPRs)}
+            title={tabTitle('My pull requests', totalOwned)}
           >
             <UserPullRequestList />
           </Tab>
@@ -53,10 +53,8 @@ function PullRequests(props) {
 
 export default connect(
   state => ({
-    // should come from state
-    totalUserPRs: 10,
-     // should come from state
-    totalUserAssignedPRs: 100,
+    totalOwned: state.session.pullRequestsOwned.total,
+    totalAssigned: state.session.pullRequestsAssigned.total,
   })
 )(PullRequests)
 

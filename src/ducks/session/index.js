@@ -30,13 +30,22 @@ const initialState = {
   error: null,
   isFetching: false,
   persona: DEVELOPER_PERSONA,
-  pr_ids: [],
-  pr_ids_assigned: [],
-  pr_ids_watching: [],
+  pullRequestsAssigned: {
+    ids: [],
+    total: 0,
+  },
+  pullRequestsOwned: {
+    ids: [],
+    total: 0,
+  },
+  pullRequestsWatching: {
+    ids: [],
+    total: 0,
+  },
   profile: {
     username: null,
     email: null,
-    full_name: null,
+    fullName: null,
   },
 }
 
@@ -58,17 +67,17 @@ export default (state: Object = initialState, action: Object): Object => {
     case types.SET_PRS_IDS:
       return {
         ...state,
-        pr_ids: action.ids,
+        pullRequestsOwned: { ids: action.ids, total: action.total },
       }
     case types.SET_ASSIGNED_PRS_IDS:
       return {
         ...state,
-        pr_assigned_ids: action.ids,
+        pullRequestsAssigned: { ids: action.ids, total: action.total },
       }
     case types.SET_WATCHING_PRS_IDS:
       return {
         ...state,
-        pr_watching_ids: action.ids,
+        pullRequestsWatching: { ids: action.ids, total: action.total },
       }
     case types.SENDING_REQUEST:
       return {
@@ -100,8 +109,11 @@ export const actions = {
   fetchProfile: (): Object => ({ type: types.FETCH_USER_PROFILE }),
   setProfile: (profile: Object): Object => ({ type: types.SET_USER_PROFILE, profile }),
   setPersona: (persona: string): Object => ({ type: types.SET_USER_PERSONA, persona }),
-  setUserPRIds: (ids: Array<string>): Object => ({ type: types.SET_PRS_IDS, ids }),
-  setUserAssignedPRIds: (ids: Array<string>): Object => ({ type: types.SET_ASSIGNED_PRS_IDS, ids }),
+  setUserPRIds:
+    (ids: Array<string>, total: number): Object => ({ type: types.SET_PRS_IDS, ids, total }),
+  setUserAssignedPRIds:
+    (ids: Array<string>, total: number): Object => ({ type: types.SET_ASSIGNED_PRS_IDS, ids, total }),
   setUserWatchingPRsIds:
-  (ids: Array<string>): Object => ({ type: types.SET_WATCHING_PRS_IDS, ids }),
+    (ids: Array<string>, total: number): Object => ({ type: types.SET_WATCHING_PRS_IDS, ids, total }),
+
 }

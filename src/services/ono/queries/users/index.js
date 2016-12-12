@@ -3,7 +3,7 @@ const USER_PROFILE_QUERY = `
 {
   me {
     username,
-    full_name,
+    fullName,
     email
   }
 }`
