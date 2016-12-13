@@ -26,7 +26,7 @@ export type Props = {
   pathname: string,
 };
 
-const PARENT_GROUP: GroupType = { name: '', shortName: 'Parent Group' }
+const PARENT_GROUP: GroupType = { name: '', shortName: 'Parent Group', description: '' }
 
 
 export class Projects extends Component {

@@ -1,4 +1,4 @@
-
+/* @flow */
 export const GET_TOPLEVEL_PROJECTS_QUERY = `
 query {
 	repositories {

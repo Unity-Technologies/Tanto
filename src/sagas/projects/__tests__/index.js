@@ -82,7 +82,7 @@ describe('fetchProjects Saga test with empty path', () => {
 
   it('Should call put the result in the store', () => {
     expect(step3.value).to.eql(
-      put(actions.fetchProjectsSuccess(parseToplevelProjectsData(TOPLEVEL))))
+      put(actions.fetchProjectsSuccess(parseToplevelProjectsData(TOPLEVEL, action.path))))
   })
 
   it('Should set isFetching to false', () => {
@@ -108,7 +108,7 @@ describe('fetchProjects Saga test with a path', () => {
 
   it('Should call put the result in the store', () => {
     expect(step3.value).to.eql(
-      put(actions.fetchProjectsSuccess(parseProjectsData(NESTED_GROUPS), action.path)))
+      put(actions.fetchProjectsSuccess(parseProjectsData(NESTED_GROUPS, action.path), action.path)))
   })
 
   it('Should set isFetching to false', () => {

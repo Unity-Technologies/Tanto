@@ -6,8 +6,10 @@ const expect = require('chai').expect
 
 const testRepo = {
   name: 'test',
+  id: '55',
+  updated: '2016-01-01',
   description: 'just to have an object',
-  owner: 'testowner',
+  owner: { fullName: 'testowner' },
 }
 
 const initialState = {
