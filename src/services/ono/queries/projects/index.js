@@ -42,15 +42,17 @@ query($name: String!) {
 
 export type ProjectType = {
   name: string,
-  description?: string,
+  shortName?: string,
+  description: ?string,
   id: string,
   owner: { fullName: string },
-  updatedTime: string,
+  updated: string,
 }
 
 export type GroupType = {
   name: string,
-  description?: string,
+  shortName?: string,
+  description: ?string,
 }
 
 export type ReturnType = {
@@ -68,17 +70,23 @@ export function parseToplevelProjectsData(data: any): ReturnType {
 
 function removeBaseName(item: Object, base: string) {
   const next = item
-  next.name = item.name.replace(base, '')
+  next.shortName = item.name.replace(base, '')
   return next
 }
 
 export function parseProjectsData(data: any, path: string): ReturnType {
-  const parent = { name: 'Parent Group' }
-  const projects = data.data.group.repositories.nodes
-  const groups = data.data.group.groups.map(x => removeBaseName(x, `${path}/`))
+  let projects
+  let groups
+  if (data.data.group) {
+    projects = data.data.group.repositories.nodes.map(x => removeBaseName(x, `${path}/`))
+    groups = data.data.group.groups.map(x => removeBaseName(x, `${path}/`))
+  } else {
+    projects = []
+    groups = []
+  }
   return {
-    projects: projects.map(x => removeBaseName(x, `${path}/`)),
-    groups: [parent, ...groups],
+    projects,
+    groups,
   }
 }
 

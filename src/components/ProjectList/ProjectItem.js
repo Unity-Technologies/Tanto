@@ -1,6 +1,5 @@
 /* @flow */
 
-
 import React, { Component } from 'react'
 import moment from 'moment'
 import Col from 'react-bootstrap/lib/Col'
@@ -18,7 +17,7 @@ const subHeader = text => (
 )
 
 type Props = {
-  clickHandler: Function,
+  clickHandler?: Function,
   inset: number,
   project: ProjectType,
 }
@@ -27,36 +26,25 @@ class ProjectItem extends Component {
   constructor(props: Props) {
     super(props)
     this.state = {
-      open: false,
       followed: false,
     }
-    this.touchTapEventHandler = this.touchTapEventHandler.bind(this)
   }
 
   state: {
-    open: boolean,
     followed: boolean,
   }
 
   props: Props
-
-
-  toggleOpen() {
-    const value = this.state.open
-    this.setState({ open: !value })
-  }
-
-  toggleFollow() {
+  toggleFollow = () => {
     const value = this.state.followed
     this.setState({ followed: !value })
   }
 
-  touchTapEventHandler() {
+  touchTapEventHandler = () => {
     if (this.props.clickHandler) {
       this.props.clickHandler(this.props.project.id)
     }
   }
-
   render() {
     const {
       project,
@@ -66,15 +54,16 @@ class ProjectItem extends Component {
     const {
       owner,
       name,
+      shortName,
       description,
       id,
-      updatedTime,
+      updated,
     } = project
 
     const ownerName = owner.fullName
-    const primaryText = name
+    const primaryText = shortName || name
     const secondaryText = description || ''
-    const diff = moment(updatedTime).fromNow()
+    const diff = moment(updated).fromNow()
 
     const listItemWithoutNestedStyle = {
       paddingLeft: `${inset}px`,

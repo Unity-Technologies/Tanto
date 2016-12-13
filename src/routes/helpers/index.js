@@ -1,3 +1,5 @@
+/* @flow */
+
 export const helpers = {
   buildPullRequestLink:
     (projectName: string, id: string): string => (`/${projectName}/pullrequests/${id}`),
@@ -11,4 +13,8 @@ export const helpers = {
 
 export function groupPathFromPath(path: string) {
   return path.replace(/^\/projects(\/)?/, '')
+}
+
+export function isBaseProjectsPath(path: string) {
+  return path === '/projects' || path === '/projects'
 }

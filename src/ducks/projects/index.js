@@ -1,4 +1,4 @@
-// TODO: add flow annotations
+/* @flow */
 
 import projectQuery from 'graphql-queries/project'
 import _ from 'lodash'
@@ -48,6 +48,13 @@ export const types = {
   PROJECT_PULLREQUESTS_FAILURE,
 }
 
+export type StateType = {
+  isFetching: boolean,
+  projects: Array<ProjectType>,
+  groups: Array<GroupType>,
+  errors: Array<any>,
+}
+
 /**
  * Update project field with the action result
  * @param  {[type]} projects [description]
@@ -55,7 +62,7 @@ export const types = {
  * @param  {[type]} result   [description]
  * @return {[type]}          [description]
  */
-export const updateProject = (projects, projectId, field, result) => {
+export const updateProject = (projects: any, projectId: any, field: any, result: any) => {
   if (!projects || !field) {
     return projects
   }
@@ -72,24 +79,14 @@ export const updateProject = (projects, projectId, field, result) => {
   return projects
 }
 
-
-/**
- * PROJECTS initial state
- * @type {Object}
- */
-const initialState = {
+const initialState: StateType = {
   isFetching: false,
-  tree: { groups: [], projects: [] },
   projects: [],
+  groups: [],
+  errors: [],
 }
 
-/**
- * PROJECTS reducer
- * @param  {[type]} state  =             initialState [description]
- * @param  {[type]} action [description]
- * @return {[type]}        [description]
- */
-export default function project(state = initialState, action) {
+export default function project(state: StateType = initialState, action: Object): StateType {
   switch (action.type) {
     case PROJECTS_REQUEST:
       return {
@@ -171,26 +168,28 @@ export default function project(state = initialState, action) {
   }
 }
 
-/**
- * Fetch groups and projects the first level action
- * @type {[type]}
- */
-export const fetchProjects = (path: String) => ({
+export const fetchProjects = (path: string) => ({
   type: PROJECTS_REQUEST,
   path,
 })
 
-export const clearProjects = (path: String) => ({
+export const clearProjects = () => ({
   type: PROJECTS_CLEAR,
 })
 
 
-export const fetchProjectsFailure = errors => ({
+export const fetchProjectsFailure = (errors: Array<any>) => ({
   type: PROJECTS_FAILURE,
   errors,
 })
 
-export const fetchProjectsSuccess = result => ({
+
+export type ResultType = {
+  groups: Array<GroupType>,
+  projects: Array<ProjectType>,
+}
+
+export const fetchProjectsSuccess = (result: ResultType) => ({
   type: PROJECTS_SUCCESS,
   result,
 })
@@ -198,7 +197,7 @@ export const fetchProjectsSuccess = result => ({
 /**
  * Sets the isFetching status
  */
-export const fetchingStatus = status => ({
+export const fetchingStatus = (status: boolean) => ({
   type: PROJECTS_FETCHING,
   fetching: status,
 })
@@ -208,36 +207,36 @@ export const fetchingStatus = status => ({
  * Fetch gproject branches
  * @type {[type]}
  */
-export const fetchProjectBranches = id => ({
+export const fetchProjectBranches = (id: any) => ({
   types: [PROJECT_BRANCHES_REQUEST, PROJECT_BRANCHES_SUCCESS, PROJECT_BRANCHES_FAILURE],
-  promise: api => api(projectQuery.projectBranches(id)),
+  promise: (api: any) => api(projectQuery.projectBranches(id)),
 })
 
 /**
  * Fetch project changelog
  * @type {[type]}
  */
-export const fetchProjectChangelog = id => ({
+export const fetchProjectChangelog = (id: any) => ({
   types: [PROJECT_CHANGELOG_REQUEST, PROJECT_CHANGELOG_SUCCESS, PROJECT_CHANGELOG_FAILURE],
-  promise: api => api(projectQuery.projectChangelog(id)),
+  promise: (api: any) => api(projectQuery.projectChangelog(id)),
 })
 
 /**
  * Fetch project files tree structure
  * @type {[type]}
  */
-export const fetchProjectFiles = id => ({
+export const fetchProjectFiles = (id: any) => ({
   types: [PROJECT_FILES_REQUEST, PROJECT_FILES_SUCCESS, PROJECT_FILES_FAILURE],
-  promise: api => api(projectQuery.projectFiles(id)),
+  promise: (api: any) => api(projectQuery.projectFiles(id)),
 })
 
 /**
  * Fetch project pull requests
  * @type {[type]}
  */
-export const fetchProjectPullRequests = id => ({
+export const fetchProjectPullRequests = (id: any) => ({
   types: [PROJECT_PULLREQUESTS_REQUEST, PROJECT_PULLREQUESTS_SUCCESS, PROJECT_PULLREQUESTS_FAILURE],
-  promise: api => api(projectQuery.projectPullRequests(id)),
+  promise: (api: any) => api(projectQuery.projectPullRequests(id)),
 })
 
 export const actions = {

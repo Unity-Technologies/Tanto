@@ -13,18 +13,20 @@ const testRepo = {
 const initialState = {
   isFetching: false,
   tree: [testRepo],
-  project: [testRepo],
+  projects: [testRepo],
+  groups: [],
+  errors: [],
 }
 
 describe('Projects Actions', () => {
   it('Should return an action of type PROJECTS_FAILURE with an error key', () => {
-    const errors = 'some error'
+    const errors = ['some error']
     const errorAction = { type: types.PROJECTS_FAILURE, errors }
     expect(actions.fetchProjectsFailure(errors)).to.eql(errorAction)
   })
 
   it('Should return an action of type PROJECTS_SUCCESS with a result object', () => {
-    const result = { data: 'data' }
+    const result = { data: 'data', groups: [], projects: [] }
     const successAction = { type: types.PROJECTS_SUCCESS, result }
     expect(actions.fetchProjectsSuccess(result)).to.eql(successAction)
   })
@@ -45,7 +47,7 @@ describe('Projects Actions', () => {
 
 describe('Projects Reducers', () => {
   it('Should not modify state with PROJECTS_REQUEST action', () => {
-    const nextState = project(initialState, actions.fetchProjects())
+    const nextState = project(initialState, actions.fetchProjects('path'))
     expect(initialState).to.eql(nextState)
   })
 

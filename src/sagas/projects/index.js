@@ -9,7 +9,7 @@ import { GET_TOPLEVEL_PROJECTS_QUERY,
          parseToplevelProjectsData } from 'services/ono/queries/projects'
 
 
-export function* fetchProjects(action) {
+export function* fetchProjects(action:Object): Generator<any, any, any> {
   try {
     let data
     yield put(actions.fetchingStatus(true))
