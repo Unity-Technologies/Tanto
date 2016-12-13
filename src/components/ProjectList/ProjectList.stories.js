@@ -14,8 +14,7 @@ const itemList = [
     id: '5',
     owner: { fullName: 'William Sprent' },
     inset: 10,
-    updatedTime: '2016-12-09 10:00:12.250926',
-    clickHandler: action('go'),
+    updated: '2016-12-09 10:00:12.250926',
   },
   {
     name: 'Some-Other-Repository',
@@ -23,8 +22,7 @@ const itemList = [
     id: '5',
     owner: { fullName: 'William Sprent' },
     inset: 10,
-    updatedTime: '2016-11-09 10:00:12.250926',
-    clickHandler: action('go'),
+    updated: '2016-11-09 10:00:12.250926',
   },
 ]
 
@@ -32,6 +30,7 @@ storiesOf('ProjectList', module)
   .addDecorator(muiTheme())
   .add('default', () => (
     <ProjectList
-      data={itemList}
+      projects={itemList}
+      clickHandler={action('go')}
     />
   ))
