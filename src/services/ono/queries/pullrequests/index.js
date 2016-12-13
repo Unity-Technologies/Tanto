@@ -3,37 +3,37 @@
 import _ from 'lodash'
 
 export const userPullRequestsQuery = name => `
-{
-  me {
-    ${name} {
-      total
-      nodes {
-        id
-        description
-        title
-        updated
-        status
-        origin {
-          branch
-          revision
-          repository {
-            name
+  query ($first: Int!, $offset: Int!,) {
+    me {
+      ${name}(first: $first, offset: $offset) {
+        total
+        nodes {
+          id
+          description
+          title
+          updated
+          status
+          origin {
+            branch
+            revision
+            repository {
+              name
+            }
           }
-        }
-        target {
-          branch
-          repository {
-            name
+          target {
+            branch
+            repository {
+              name
+            }
           }
-        }
-        owner {
-          username
-          fullName
+          owner {
+            username
+            fullName
+          }
         }
       }
     }
-  }
-}`
+  }`
 
 export const constants = {
   pullRequestsOwned: 'pullRequestsOwned',

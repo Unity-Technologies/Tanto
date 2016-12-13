@@ -11,12 +11,25 @@ import Toolbar from '../Toolbar'
 
 export type Props = {
   dispatch: Function,
-  items: Array<any>
+  items: Array<any>,
+  pageSize: number,
 }
 
 class AssignedPullRequestList extends Component {
+  constructor(props: Props) {
+    super(props)
+    this.handlePageSelect = this.handlePageSelect.bind(this)
+    this.state = { activePage: 1 }
+  }
+
   componentDidMount() {
-    this.props.dispatch(actions.fetchUserAssignedPullRequests())
+    const first = this.props.pageSize
+    const offset = 0
+    this.props.dispatch(actions.fetchUserAssignedPullRequests(first, offset))
+  }
+
+  handlePageSelect = (offset) => {
+
   }
 
   props: Props

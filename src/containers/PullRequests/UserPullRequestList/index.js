@@ -18,9 +18,13 @@ class UserPullRequestList extends Component {
   constructor(props: Props) {
     super(props)
     this.handleRemove = this.handleRemove.bind(this)
+    this.state = { activePage: 1, pageSize: 10 }
   }
+
   componentDidMount() {
-    this.props.dispatch(actions.fetchUserPullRequests())
+    const first = this.state.pageSize
+    const offset = 0
+    this.props.dispatch(actions.fetchUserPullRequests(first, offset))
   }
 
   props: Props
@@ -41,9 +45,7 @@ class UserPullRequestList extends Component {
 
 export default connect(
   state => ({
-    pageSize: 10,
     total: state.session.pullRequestsOwned.total,
-    activePage: 1,
     isFetching: state.pullrequests.isFetching,
     error: state.pullrequests.error,
     items: sessionSelectors.getPullRequests(state) || [],

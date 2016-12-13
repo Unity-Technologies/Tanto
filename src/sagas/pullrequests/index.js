@@ -12,11 +12,11 @@ import {
 /**
  * Fetch pull requests
  */
-export function* fetchPullRequests(query, parser, updateSession) {
+export function* fetchPullRequests(query, parser, updateSession, variables) {
   try {
     yield put(prActions.sendingRequest(true))
 
-    const response = yield call(get, query)
+    const response = yield call(get, query, { first: variables.first, offset: variables.offset })
 
     const pullrequests = parser(response)
 
@@ -34,32 +34,32 @@ export function* fetchPullRequests(query, parser, updateSession) {
 /**
  * Fetch current user pull requests
  */
-export function* fetchCurrentUserPullRequests() {
+export function* fetchCurrentUserPullRequests(variables) {
   yield call(
     fetchPullRequests,
     queries.CURRENT_USER_PULL_REQUESTS,
     parsers.parseCurrentUserPullRequests,
-    sessionActions.setUserPRIds)
+    sessionActions.setUserPRIds, variables)
 }
 
 /**
  * Fetch current user assigned pull requests
  */
-export function* fetchCurrentUserAssignedPullRequests() {
+export function* fetchCurrentUserAssignedPullRequests(variables) {
   yield call(
     fetchPullRequests,
     queries.CURRENT_USER_ASSIGNED_PULL_REQUESTS,
     parsers.parseCurrentUserAssignedPullRequests,
-    sessionActions.setUserAssignedPRIds)
+    sessionActions.setUserAssignedPRIds, variables)
 }
 
 /**
  * Fetch current user watching pull requests
  */
-export function* fetchCurrentUserWatchingPullRequests() {
+export function* fetchCurrentUserWatchingPullRequests(variables) {
   yield call(
     fetchPullRequests,
     queries.CURRENT_USER_WATCHING_PULL_REQUESTS,
     parsers.parseCurrentUserWatchingPullRequests,
-    sessionActions.setUserWatchingPRsIds)
+    sessionActions.setUserWatchingPRsIds, variables)
 }

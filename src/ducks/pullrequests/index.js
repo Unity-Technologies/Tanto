@@ -22,17 +22,17 @@ export const types = {
 }
 
 
-export const computePullRequestLink = (pullrequest: Object, fn: any): Object => (
+export const computePullRequestLink = (pullrequest: Object, fn: Function): Object => (
   { ...pullrequest, link: fn(pullrequest.origin.name, pullrequest.id) }
 )
 
-export const computePullRequestOriginLink = (pullrequest: Object, fn: any): Object => (
+export const computePullRequestOriginLink = (pullrequest: Object, fn: Function): Object => (
   { ...pullrequest,
     originLink: fn(pullrequest.target.name, pullrequest.origin.branch || ''),
   }
 )
 
-export const computePullRequestTargetLink = (pullrequest: Object, fn: any): Object => (
+export const computePullRequestTargetLink = (pullrequest: Object, fn: Function): Object => (
   { ...pullrequest, targetLink: fn(pullrequest.target.name, pullrequest.target.branch || '') }
 )
 
@@ -70,13 +70,6 @@ export type PullRequestsStateType = {
  */
 const entities = (state = {}, action) => {
   switch (action.type) {
-    // case 'UPDATE_PULLREQUEST':
-    //   return {
-    //     ...state,
-    //     [action.id]: {
-    //       ...action.pullrequests
-    //     }
-    //   }
     default:
       if (action.pullrequests) {
         return _.merge({}, state, action.pullrequests)
@@ -143,7 +136,10 @@ export const actions = {
   setPullRequests:
     (pullrequests:
       Array<PullRequestGraphType>) => ({ type: types.SET_PULL_REQUESTS, pullrequests }),
-  fetchUserPullRequests: () => ({ type: types.FETCH_USER_PULL_REQUESTS }),
-  fetchUserAssignedPullRequests: () => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS }),
-  fatchUserWatchingPullRequests: () => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS }),
+  fetchUserPullRequests:
+    (first, offset) => ({ type: types.FETCH_USER_PULL_REQUESTS, first, offset }),
+  fetchUserAssignedPullRequests:
+    (first, offset) => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, first, offset }),
+  fatchUserWatchingPullRequests:
+    (first, offset) => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS, first, offset }),
 }
