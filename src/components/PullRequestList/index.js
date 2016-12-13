@@ -10,34 +10,40 @@ import PullRequestListItem from './PullRequestListItem'
 import './styles.css'
 
 export type Props = {
-  totalPagesCount?: number,
+  total?: number,
   activePage?: number,
+  pageSize: number,
   items: Array<{
     id: string,
   }>,
-  isFetching?: boolean,
+  isFetching: boolean,
   error?: string,
   showRemoveButton?: boolean,
   onRemoveClick?: Function,
+  onPageSelect: Function,
 }
 
 function PullRequestList(props: Props) {
   const {
     items,
     activePage,
-    totalPagesCount,
+    total,
+    pageSize,
     isFetching,
     error,
     showRemoveButton,
-    onRemoveClick } = props
+    onRemoveClick,
+    onPageSelect } = props
   return (
     <div>
       {isFetching && <LinearProgress />}
       {error && <ErrorMessage error />}
       <List
         items={items}
-        totalPagesCount={totalPagesCount}
+        total={total}
         activePage={activePage}
+        pageSize={pageSize}
+        onPageSelect={onPageSelect}
       >
         {items.map(item => (
           <PullRequestListItem

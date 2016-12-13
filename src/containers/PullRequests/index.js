@@ -1,18 +1,12 @@
 /* @flow */
 
-export type Props = {
-  totalUserPRs?: number,
-  totalUserAssignedPRs?: number,
-};
-
-/* eslint-disable */
-
 import React from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
-import { Tabs, Tab, Badge } from 'react-bootstrap'
+import { Tabs, Tab } from 'react-bootstrap'
 import UserPullRequestList from './UserPullRequestList'
 import AssignedPullRequestList from './AssignedPullRequestList'
+import _ from 'lodash'
 import './styles.css'
 
 const tabTitle = (text, badge) => (
@@ -22,7 +16,13 @@ const tabTitle = (text, badge) => (
   </div>
 )
 
-function PullRequests(props) {
+
+export type Props = {
+  totalOwned?: number,
+  totalAssigned?: number,
+}
+
+function PullRequests(props: Props) {
   const { totalOwned, totalAssigned } = props
   return (
     <div>
@@ -30,7 +30,6 @@ function PullRequests(props) {
       <div >
         <Tabs animation={false} defaultActiveKey={1}>
           <Tab
-            id="userPullRequestsTab"
             eventKey={1}
             className="tab"
             title={tabTitle('Pull requests on review', totalAssigned)}
@@ -38,7 +37,6 @@ function PullRequests(props) {
             <AssignedPullRequestList />
           </Tab>
           <Tab
-            id="userAssignedPullRequestsTab"
             eventKey={2}
             className="tab"
             title={tabTitle('My pull requests', totalOwned)}

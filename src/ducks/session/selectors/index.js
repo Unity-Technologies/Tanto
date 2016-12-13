@@ -1,14 +1,18 @@
 import { createSelector } from 'reselect'
 import _ from 'lodash'
 
+export const getIds = (state) => {
+  const { pages, currentPage } = state
+  return pages[currentPage]
+}
 
 /**
  * Selectors
  */
 
-export const pullRequestsOwnedIdsSelector = state => state.session.pullRequestsOwned.ids
-export const pullRequestsAssignedIdsSelector = state => state.session.pullRequestsAssigned.ids
-export const pullRequestsWatchingIdsSelector = state => state.session.pullRequestsWatching.ids
+export const pullRequestsOwnedIdsSelector = state => getIds(state.session.pullRequestsOwned)
+export const pullRequestsAssignedIdsSelector = state => getIds(state.session.pullRequestsAssigned)
+export const pullRequestsWatchingIdsSelector = state => getIds(state.session.pullRequestsWatching)
 export const pullRequestsSelector = state => state.pullrequests.byId
 
 export const pullRequestsOwned = createSelector(

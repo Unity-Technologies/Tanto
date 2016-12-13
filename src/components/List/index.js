@@ -24,8 +24,7 @@ class List extends Component {
       activePage: eventKey,
     })
     if (this.props.onPageSelect) {
-      const offset = this.props.pageSize * eventKey
-      this.props.onPageSelect(offset)
+      this.props.onPageSelect(eventKey)
     }
   }
 

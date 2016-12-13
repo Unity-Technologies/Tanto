@@ -1,9 +1,7 @@
 // TODO: add flow annotations
 
-import _ from 'lodash'
-import { helpers } from 'routes/helpers'
-import { reduceArrayToObj } from 'ducks/normalizer'
 import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
+import { entitiesReducer, entitiesPageReducer, requestPage, receivePage } from 'ducks/pagination'
 
 /**
  * Action types
@@ -66,46 +64,19 @@ export type PullRequestsStateType = {
 }
 
 /**
- * Pull request `byId` state reducer
- */
-const entities = (state = {}, action) => {
-  switch (action.type) {
-    default:
-      if (action.pullrequests) {
-        return _.merge({}, state, action.pullrequests)
-      }
-      return state
-  }
-}
-
-/**
- * Pull request `allIds` state reducer
- */
-const ids = (state: Array<string> = [], action: Object) => {
-  switch (action.type) {
-    default:
-      if (action.ids) {
-        return state.concat(action.ids)
-      }
-      return state
-  }
-}
-
-/**
  * Pullrequests reducer
  */
 export default (
   state: PullRequestsStateType = initialState, action: Object): PullRequestsStateType => {
   switch (action.type) {
     case types.SET_PULL_REQUESTS:
-      return {
-        ...state,
-        byId:
-          entities(state.byId, { pullrequests: reduceArrayToObj(action.pullrequests
-            .map(x =>
-              computePullRequest(x)(helpers.buildPullRequestLink)(helpers.buildProjectLink))) }),
-        allIds: ids(state.allIds, { ids: action.pullrequests.map(x => x.id) }),
-      }
+      return entitiesReducer(state, receivePage(action))
+    case types.FETCH_PULL_REQUESTS:
+      return entitiesPageReducer(state, requestPage(action))
+    case types.FETCH_USER_ASSIGNED_PULL_REQUESTS:
+    case types.FETCH_USER_PULL_REQUESTS:
+    case types.FETCH_USER_WATCHING_PULL_REQUESTS:
+      return entitiesReducer(state, requestPage(action))
     case types.SENDING_REQUEST:
       return {
         ...state,
@@ -134,12 +105,12 @@ export const actions = {
   requestError: (error: string) => ({ type: types.REQUEST_ERROR, error }),
   clearError: () => ({ type: types.CLEAR_ERROR }),
   setPullRequests:
-    (pullrequests:
-      Array<PullRequestGraphType>) => ({ type: types.SET_PULL_REQUESTS, pullrequests }),
+    (page: number, nodes:
+      Array<PullRequestGraphType>) => ({ type: types.SET_PULL_REQUESTS, page, nodes }),
   fetchUserPullRequests:
-    (first, offset) => ({ type: types.FETCH_USER_PULL_REQUESTS, first, offset }),
+    (page: number, pageSize: number) => ({ type: types.FETCH_USER_PULL_REQUESTS, page, pageSize }),
   fetchUserAssignedPullRequests:
-    (first, offset) => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, first, offset }),
+    (page: number, pageSize: number) => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, page, pageSize }),
   fatchUserWatchingPullRequests:
-    (first, offset) => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS, first, offset }),
+    (page: number, pageSize: number) => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS, page, pageSize }),
 }

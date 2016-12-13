@@ -12,18 +12,21 @@ import {
 /**
  * Fetch pull requests
  */
-export function* fetchPullRequests(query, parser, updateSession, variables) {
+export function* fetchPullRequests(action, query, parser, updateSession) {
   try {
+    const { page, pageSize } = action
+    const first = pageSize
+    const offset = pageSize * (page - 1)
+
     yield put(prActions.sendingRequest(true))
 
-    const response = yield call(get, query, { first: variables.first, offset: variables.offset })
+    const response = yield call(get, query, { first, offset })
 
-    const pullrequests = parser(response)
+    const { nodes, total } = parser(response)
 
-    yield put(prActions.setPullRequests(pullrequests.nodes))
+    yield put(prActions.setPullRequests(page, nodes))
 
-    const ids = pullrequests.nodes.map(x => x.id)
-    yield put(updateSession(ids, pullrequests.total))
+    yield put(updateSession(page, nodes, total, pageSize))
   } catch (error) {
     yield put(prActions.requestError(error))
   } finally {
@@ -34,32 +37,35 @@ export function* fetchPullRequests(query, parser, updateSession, variables) {
 /**
  * Fetch current user pull requests
  */
-export function* fetchCurrentUserPullRequests(variables) {
+export function* fetchCurrentUserPullRequests(action) {
   yield call(
     fetchPullRequests,
+    action,
     queries.CURRENT_USER_PULL_REQUESTS,
     parsers.parseCurrentUserPullRequests,
-    sessionActions.setUserPRIds, variables)
+    sessionActions.setPullRequestsOwned)
 }
 
 /**
  * Fetch current user assigned pull requests
  */
-export function* fetchCurrentUserAssignedPullRequests(variables) {
+export function* fetchCurrentUserAssignedPullRequests(action) {
   yield call(
     fetchPullRequests,
+    action,
     queries.CURRENT_USER_ASSIGNED_PULL_REQUESTS,
     parsers.parseCurrentUserAssignedPullRequests,
-    sessionActions.setUserAssignedPRIds, variables)
+    sessionActions.setPullRequestsAssigned)
 }
 
 /**
  * Fetch current user watching pull requests
  */
-export function* fetchCurrentUserWatchingPullRequests(variables) {
+export function* fetchCurrentUserWatchingPullRequests(action) {
   yield call(
     fetchPullRequests,
+    action,
     queries.CURRENT_USER_WATCHING_PULL_REQUESTS,
     parsers.parseCurrentUserWatchingPullRequests,
-    sessionActions.setUserWatchingPRsIds, variables)
+    sessionActions.setPullRequestsWatching)
 }
