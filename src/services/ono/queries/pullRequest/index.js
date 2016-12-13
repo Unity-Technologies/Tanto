@@ -1,25 +1,42 @@
 /* @flow */
 
+// FIXME: avatar(size: 40)
 const PULL_REQUEST_QUERY = `
 query ($id: Int!) {
-  pull_request(id: $id) {
+  pullRequest(id: $id) {
     title
     status
     created
     owner {
-      avatar(size: 40)
-      full_name
+      fullName
       username
     }
     reviewers {
-      edges {
-        node {
-          review_status
-          user {
-            avatar(size: 40)
-            full_name
-            username
-          }
+      status
+      user {
+        fullName
+        username
+      }
+    }
+    files {
+      id
+      name
+      oldName
+      diff
+      stats {
+        added
+        deleted
+        binary
+      }
+      operation
+      comments {
+        text
+        line
+        created
+        modified
+        author {
+          fullName
+          username
         }
       }
     }
@@ -30,33 +47,51 @@ query ($id: Int!) {
 export default PULL_REQUEST_QUERY
 
 export const parsers = {
-  // TODO: this could be done by the fetch function...
-  // Pretty simple transformation
-  pullRequestQuery: (response: any) => (
-    Object.assign(
-      {},
-      response.data.pull_request,
-      { reviewers: response.data.pull_request.reviewers.edges.map(e => e.node) }
-    )
-  ),
+  pullRequestQuery: (response: any) => response.data.pullRequest,
 }
+
+// TODO: these types can be statically valided and compared with Ono schema:
 
 export type PullRequestUserType = {
   username: string,
-  full_name: string,
-  avatar: ?string,
+  fullName: string,
 }
 
 export type PullRequestReviewerType = {
-  review_status: ?string,
-  user: PullRequestUserType
+  status: ?string,
+  user: PullRequestUserType,
 }
 
-// TODO: this can be automatically extracted from schema
+export type FileChangeStats = {
+  added: number,
+  deleted: number,
+  binary: boolean,
+}
+
+export type InlineComment = {
+  id: string,
+  text: string,
+  created: string,
+  modified: string,
+  author: PullRequestUserType,
+  line: string,
+}
+
+export type File = {
+  id: string,
+  name: string,
+  oldName: string,
+  diff: string,
+  stats: FileChangeStats,
+  operation: string,
+  comments: Array<InlineComment>,
+}
+
 export type PullRequestGraphType = {
   title: string,
   status: string,
   created: string,
   owner: PullRequestUserType,
-  reviewers: Array<PullRequestReviewerType>
+  reviewers: Array<PullRequestReviewerType>,
+  files: Array<File>,
 }

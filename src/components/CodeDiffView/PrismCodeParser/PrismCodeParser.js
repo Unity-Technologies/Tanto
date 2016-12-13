@@ -1,3 +1,5 @@
+// FIXME: move me to the back-end
+
 const REMOVE_MARK = '-'
 const ADDED_MARK = '+'
 

@@ -53,6 +53,7 @@
     "Promise": true,
     "socket": true,
     "webpackIsomorphicTools": true,
-    "Generator": true
+    "Generator": true,
+    "SyntheticInputEvent": true
   }
 }

@@ -1,3 +1,5 @@
+/* @flow */
+
 export const routes = {
   ONO_API_ROUTE: '/api/ono',
   ONO_AUTH_ROUTE: '/auth/ono',

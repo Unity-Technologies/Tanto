@@ -7,10 +7,10 @@ const pullRequest = {
   status: 'new',
   created: '2016-11-28 14:08:40.578150',
   owner: {
-    avatar: null,
-    full_name: 'Kateryna Musina',
+    fullName: 'Kateryna Musina',
     username: 'kateryna',
   },
+  files: [],
 }
 
 describe('actions', () => {
