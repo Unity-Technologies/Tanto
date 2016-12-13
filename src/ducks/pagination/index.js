@@ -1,7 +1,6 @@
 export const REQUEST_PAGE = 'REQUEST_PAGE'
 export const RECEIVE_PAGE = 'RECEIVE_PAGE'
-import { reduceArrayToObj } from 'ducks/normalizer'
-import _ from 'lodash'
+
 import { combineReducers } from 'redux'
 
 type PagePayload = {
@@ -14,12 +13,6 @@ type PagePayload = {
 export const requestPage = (payload: PagePayload) => ({ type: 'REQUEST_PAGE', payload })
 export const receivePage = (payload: PagePayload) => ({ type: 'RECEIVE_PAGE', payload })
 
-export const entities =
-  (state = {}, action) => (action.nodes ? _.merge({}, state, action.nodes) : state)
-
-export const ids =
-  (state: Array<string> = [], action: Object) => (action.ids ? state.concat(action.ids) : state)
-
 export const currentPage = (state = 0, action = {}) =>
   (action.type === RECEIVE_PAGE ? action.payload.page : state)
 
@@ -29,12 +22,6 @@ export const pageSize = (state = 15, action = {}) =>
 export const total = (state = 0, action = {}) =>
   (action.type === RECEIVE_PAGE ? action.payload.total : state)
 
-export const byId = (state = {}, action = {}) =>
-  (action.type === RECEIVE_PAGE ?
-    entities(state, { nodes: reduceArrayToObj(action.payload.nodes) }) : state)
-
-export const allIds = (state = {}, action = {}) =>
-    (action.type === RECEIVE_PAGE ? ids(state, { ids: action.payload.nodes.map(x => x.id) }) : state)
 
 export const pages = (state = {}, action = {}) => {
   switch (action.type) {
@@ -61,13 +48,3 @@ export const pagination = combineReducers({
   pageSize,
 })
 
-export const entitiesReducer = combineReducers({
-  byId,
-  allIds,
-})
-
-export const entitiesPageReducer = combineReducers({
-  byId,
-  allIds,
-  pagination,
-})

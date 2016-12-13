@@ -20,9 +20,6 @@ class List extends Component {
   props: Props
 
   handleSelect(eventKey: number) {
-    this.setState({
-      activePage: eventKey,
-    })
     if (this.props.onPageSelect) {
       this.props.onPageSelect(eventKey)
     }

@@ -13,7 +13,7 @@ export const getIds = (state) => {
 export const pullRequestsOwnedIdsSelector = state => getIds(state.session.pullRequestsOwned)
 export const pullRequestsAssignedIdsSelector = state => getIds(state.session.pullRequestsAssigned)
 export const pullRequestsWatchingIdsSelector = state => getIds(state.session.pullRequestsWatching)
-export const pullRequestsSelector = state => state.pullrequests.byId
+export const pullRequestsSelector = state => state.pullrequests.entities
 
 export const pullRequestsOwned = createSelector(
   pullRequestsSelector, pullRequestsOwnedIdsSelector,

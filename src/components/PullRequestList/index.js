@@ -11,7 +11,7 @@ import './styles.css'
 
 export type Props = {
   total?: number,
-  activePage?: number,
+  activePage: number,
   pageSize: number,
   items: Array<{
     id: string,

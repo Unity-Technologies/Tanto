@@ -75,17 +75,17 @@ export default (state: Object = initialState, action: Object): Object => {
     case types.SET_PULL_REQUESTS_OWNED:
       return {
         ...state,
-        pullRequestsOwned: pagination(state, receivePage(action)),
+        pullRequestsOwned: pagination(state.pullRequestsOwned, receivePage(action)),
       }
     case types.SET_PULL_REQUESTS_ASSIGNED:
       return {
         ...state,
-        pullRequestsAssigned: pagination(state, receivePage(action)),
+        pullRequestsAssigned: pagination(state.pullRequestsAssigned, receivePage(action)),
       }
     case types.SET_PULL_REQUESTS_WATCHING:
       return {
         ...state,
-        pullRequestsWatching: pagination(state, receivePage(action)),
+        pullRequestsWatching: pagination(state.pullRequestsWatching, receivePage(action)),
       }
     case types.SENDING_REQUEST:
       return {

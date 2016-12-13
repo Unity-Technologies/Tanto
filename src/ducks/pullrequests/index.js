@@ -1,16 +1,15 @@
 // TODO: add flow annotations
 
 import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
-import { entitiesReducer, entitiesPageReducer, requestPage, receivePage } from 'ducks/pagination'
+import { isFetching, error, entities, setEntities, types as entitiesTypes } from 'ducks/entities'
+
+import { pagination, requestPage } from 'ducks/pagination'
+import { combineReducers } from 'redux'
 
 /**
  * Action types
  */
 export const types = {
-  SENDING_REQUEST: 'PULLREQUESTS/SENDING_REQUEST',
-  REQUEST_ERROR: 'PULLREQUESTS/REQUEST_ERROR',
-  CLEAR_ERROR: 'PULLREQUESTS/CLEAR_ERROR',
-
   SET_PULL_REQUESTS: 'PULLREQUESTSUSER/SET_PULL_REQUESTS',
   FETCH_PULL_REQUESTS: 'PULLREQUESTS/FETCH_PULL_REQUESTS',
 
@@ -48,8 +47,13 @@ export const computePullRequest = (pullrequest: Object): any => (
 const initialState = {
   error: null,
   isFetching: false,
-  byId: {},
-  allIds: [],
+  entities: {},
+  pagination: {
+    total: 0,
+    pages: {},
+    pageSize: 0,
+    currentPage: 0,
+  },
 }
 
 export type PullRequestDictionary = {
@@ -59,9 +63,15 @@ export type PullRequestDictionary = {
 export type PullRequestsStateType = {
   error: ?string,
   isFetching: boolean,
-  byId: PullRequestDictionary,
-  allIds: Array<string>,
+  entities: PullRequestDictionary,
 }
+
+export const entitiesReducer = combineReducers({
+  entities,
+  error,
+  isFetching,
+  pagination,
+})
 
 /**
  * Pullrequests reducer
@@ -70,30 +80,14 @@ export default (
   state: PullRequestsStateType = initialState, action: Object): PullRequestsStateType => {
   switch (action.type) {
     case types.SET_PULL_REQUESTS:
-      return entitiesReducer(state, receivePage(action))
+      return entitiesReducer(state, setEntities(action.nodes))
     case types.FETCH_PULL_REQUESTS:
-      return entitiesPageReducer(state, requestPage(action))
+      return entitiesReducer(state, requestPage(action))
     case types.FETCH_USER_ASSIGNED_PULL_REQUESTS:
     case types.FETCH_USER_PULL_REQUESTS:
     case types.FETCH_USER_WATCHING_PULL_REQUESTS:
-      return entitiesReducer(state, requestPage(action))
-    case types.SENDING_REQUEST:
-      return {
-        ...state,
-        isFetching: action.sending,
-      }
-    case types.REQUEST_ERROR:
-      return {
-        ...state,
-        error: action.error,
-      }
-    case types.CLEAR_ERROR:
-      return {
-        ...state,
-        error: null,
-      }
     default:
-      return state
+      return entitiesReducer(state, action)
   }
 }
 
@@ -101,9 +95,9 @@ export default (
  * Actions
  */
 export const actions = {
-  sendingRequest: (sending: boolean) => ({ type: types.SENDING_REQUEST, sending }),
-  requestError: (error: string) => ({ type: types.REQUEST_ERROR, error }),
-  clearError: () => ({ type: types.CLEAR_ERROR }),
+  sendingRequest: (sending: boolean) => ({ type: entitiesTypes.SENDING_REQUEST, sending }),
+  requestError: (error: string) => ({ type: entitiesTypes.REQUEST_ERROR, error }),
+  clearError: () => ({ type: entitiesTypes.CLEAR_ERROR }),
   setPullRequests:
     (page: number, nodes:
       Array<PullRequestGraphType>) => ({ type: types.SET_PULL_REQUESTS, page, nodes }),
