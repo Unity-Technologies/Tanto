@@ -8,6 +8,12 @@ export const types = {
   SET: 'ENTITIES/CLEAR_ERROR',
 }
 
+export const actions = {
+  sendingRequest: (sending: boolean) => ({ type: types.SENDING_REQUEST, sending }),
+  requestError: (error: string) => ({ type: types.REQUEST_ERROR, error }),
+  clearError: () => ({ type: types.CLEAR_ERROR }),
+}
+
 export const setEntities = (nodes) => ({ type: types.SET, nodes })
 
 export const mergeEntities =

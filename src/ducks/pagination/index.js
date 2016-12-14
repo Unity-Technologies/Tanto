@@ -10,8 +10,8 @@ type PagePayload = {
   nodes?: Array<Object>
 }
 
-export const requestPage = (payload: PagePayload) => ({ type: 'REQUEST_PAGE', payload })
-export const receivePage = (payload: PagePayload) => ({ type: 'RECEIVE_PAGE', payload })
+export const requestPage = (payload: PagePayload) => ({ type: REQUEST_PAGE, payload })
+export const receivePage = (payload: PagePayload) => ({ type: RECEIVE_PAGE, payload })
 
 export const currentPage = (state = 0, action = {}) =>
   (action.type === RECEIVE_PAGE ? action.payload.page : state)
@@ -21,7 +21,6 @@ export const pageSize = (state = 15, action = {}) =>
 
 export const total = (state = 0, action = {}) =>
   (action.type === RECEIVE_PAGE ? action.payload.total : state)
-
 
 export const pages = (state = {}, action = {}) => {
   switch (action.type) {

@@ -6,10 +6,6 @@ export const getIds = (state) => {
   return pages[currentPage]
 }
 
-/**
- * Selectors
- */
-
 export const pullRequestsOwnedIdsSelector = state => getIds(state.session.pullRequestsOwned)
 export const pullRequestsAssignedIdsSelector = state => getIds(state.session.pullRequestsAssigned)
 export const pullRequestsWatchingIdsSelector = state => getIds(state.session.pullRequestsWatching)

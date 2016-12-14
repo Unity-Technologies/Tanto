@@ -138,13 +138,14 @@ const pr5 = {
     },
   },
 }
+
 const sessionState = {
   error: null,
   isFetching: false,
   persona: DEVELOPER_PERSONA,
-  pullRequestsOwned: { ids: [pr2.id, pr3.id] },
-  pullRequestsAssigned: { ids: [pr1.id, pr4.id] },
-  pullRequestsWatching: { ids: [pr5.id] },
+  pullRequestsOwned: { pages: { 1: [pr2.id, pr3.id], 2: [pr1.id, pr4.id] }, currentPage: 2 },
+  pullRequestsAssigned: { pages: { 1: [pr1.id, pr3.id], 2: [pr2.id, pr4.id] }, currentPage: 1 },
+  pullRequestsWatching: { pages: { 1: [pr2.id, pr1.id], 2: [pr4.id] }, currentPage: 1 },
   profile: {
     username: 'testauthor1',
     email: 'test@test.ff',
@@ -152,15 +153,15 @@ const sessionState = {
   },
 }
 
-const byId = {}
-byId[pr1.id] = pr1
-byId[pr2.id] = pr2
-byId[pr3.id] = pr3
-byId[pr4.id] = pr4
-byId[pr5.id] = pr5
+const entities = {}
+entities[pr1.id] = pr1
+entities[pr2.id] = pr2
+entities[pr3.id] = pr3
+entities[pr4.id] = pr4
+entities[pr5.id] = pr5
 
 const pullrequstsState = {
-  byId,
+  entities,
 }
 
 const state = {
@@ -178,15 +179,15 @@ describe('session selectors', () => {
   })
 
   it('get user pull requests', () => {
-    expect(selectors.getPullRequests(state)).to.eql([pr2, pr3])
+    expect(selectors.getPullRequests(state)).to.eql([pr1, pr4])
   })
 
   it('get user pull assigned requests', () => {
-    expect(selectors.getPullRequestsAssigned(state)).to.eql([pr1, pr4])
+    expect(selectors.getPullRequestsAssigned(state)).to.eql([pr1, pr3])
   })
 
   it('get user pull watching requests', () => {
-    expect(selectors.getPullRequestsWatching(state)).to.eql([pr5])
+    expect(selectors.getPullRequestsWatching(state)).to.eql([pr2, pr1])
   })
 })
 

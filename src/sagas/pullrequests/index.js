@@ -3,6 +3,7 @@
 import { call, put } from 'redux-saga/effects'
 import { actions as sessionActions } from 'ducks/session'
 import { actions as prActions } from 'ducks/pullrequests'
+import { actions as entitiesActions } from 'ducks/entities'
 import { get } from 'services/ono/api'
 import {
   queries,
@@ -18,7 +19,7 @@ export function* fetchPullRequests(action, query, parser, updateSession) {
     const first = pageSize
     const offset = pageSize * (page - 1)
 
-    yield put(prActions.sendingRequest(true))
+    yield put(entitiesActions.sendingRequest(true))
 
     const response = yield call(get, query, { first, offset })
 
@@ -28,9 +29,9 @@ export function* fetchPullRequests(action, query, parser, updateSession) {
 
     yield put(updateSession(page, nodes, total, pageSize))
   } catch (error) {
-    yield put(prActions.requestError(error))
+    yield put(entitiesActions.requestError(error))
   } finally {
-    yield put(prActions.sendingRequest(false))
+    yield put(entitiesActions.sendingRequest(false))
   }
 }
 
