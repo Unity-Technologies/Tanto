@@ -12,9 +12,8 @@ export const actions = {
   sendingRequest: (sending: boolean) => ({ type: types.SENDING_REQUEST, sending }),
   requestError: (error: string) => ({ type: types.REQUEST_ERROR, error }),
   clearError: () => ({ type: types.CLEAR_ERROR }),
+  setEntities: (nodes) => ({ type: types.SET, nodes }),
 }
-
-export const setEntities = (nodes) => ({ type: types.SET, nodes })
 
 export const mergeEntities =
   (state = {}, action) => (action.nodes ? _.merge({}, state, action.nodes) : state)
@@ -23,7 +22,7 @@ export const entities = (state = {}, action) =>
   (action.type === types.SET ?
     mergeEntities(state, { nodes: reduceArrayToObj(action.nodes) }) : state)
 
-export const error = (state = {}, action) => {
+export const error = (state = null, action) => {
   switch (action.type) {
     case types.REQUEST_ERROR:
       return action.error
@@ -34,6 +33,6 @@ export const error = (state = {}, action) => {
   }
 }
 
-export const isFetching = (state = {}, action) =>
+export const isFetching = (state = false, action) =>
   (action.type === types.SENDING_REQUEST ? action.sending : state)
 

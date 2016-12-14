@@ -1,7 +1,7 @@
 // TODO: add flow annotations
 
 import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
-import { isFetching, error, entities, setEntities } from 'ducks/entities'
+import { isFetching, error, entities, actions as entitiesActions } from 'ducks/entities'
 
 import { pagination, requestPage } from 'ducks/pagination'
 import { combineReducers } from 'redux'
@@ -57,7 +57,7 @@ export default (
   state: PullRequestsStateType = initialState, action: Object): PullRequestsStateType => {
   switch (action.type) {
     case types.SET_PULL_REQUESTS:
-      return entitiesReducer(state, setEntities(action.nodes))
+      return entitiesReducer(state, entitiesActions.setEntities(action.nodes))
     case types.FETCH_PULL_REQUESTS:
       return entitiesReducer(state, requestPage(action))
     default:
