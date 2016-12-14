@@ -63,7 +63,7 @@ describe('pagination reducers', () => {
 
   it('pages request page', () => {
     const payload = { page: 21 }
-    const action = receivePage(payload)
+    const action = requestPage(payload)
     const state = { 21: [] }
     expect(pages({}, action)).to.eql(state)
   })
@@ -78,14 +78,14 @@ describe('pagination reducers', () => {
 })
 
 describe('pagination combine reducer', () => {
-  it('should request page', () => {
+  it('should handle REQUEST_PAGE', () => {
     const payload = { page: 11 }
     const action = {
       type: REQUEST_PAGE,
       payload,
     }
 
-    const state = { 11: [] }
+    const state = { pages: { 11: [] }, currentPage: 0, pageSize: 15, total: 0 }
     expect(pagination({}, action)).to.eql(state)
   })
 
@@ -93,11 +93,11 @@ describe('pagination combine reducer', () => {
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
     const payload = { page: 11, pageSize: 12, total: 120, nodes }
     const action = {
-      type: REQUEST_PAGE,
+      type: RECEIVE_PAGE,
       payload,
     }
 
-    const state = { 21: nodes.map(x => x.id), currentPage: 11, pageSize: 12, total: 120 }
+    const state = { pages: { 11: nodes.map(x => x.id) }, currentPage: 11, pageSize: 12, total: 120 }
     expect(pagination({}, action)).to.eql(state)
   })
 })

@@ -6,10 +6,13 @@ import {
   error,
   actions,
   types,
-  isFetching,
+
 } from '../index'
 
 const expect = chai.expect
+const chaiSubset = require('chai-subset')
+chai.use(chaiSubset)
+
 
 describe('pull request actions', () => {
   it('request error', () => {
@@ -36,3 +39,12 @@ describe('pull request actions', () => {
     expect(actions.sendingRequest(true)).to.eql(action)
   })
 })
+
+describe('entities error reducer', () => {
+  it('should handle REQUEST_ERROR', () => {
+    const errorMessage = 'test error'
+    const action = actions.requestError(errorMessage)
+    expect(error({}, action)).to.eql(errorMessage)
+  })
+})
+
