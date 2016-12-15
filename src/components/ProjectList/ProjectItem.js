@@ -1,152 +1,121 @@
-// TODO: add flow annotations
-/* eslint-disable */
+/* @flow */
 
 import React, { Component } from 'react'
-import _ from 'lodash'
+import moment from 'moment'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Divider from 'material-ui/Divider'
 import { ListItem } from 'material-ui/List'
+import type { ProjectType } from 'ducks/projects'
 
 const subHeader = text => (
   <div
-    style={{ color: '#8c8c8c', fontSize: '13px' }}
+    style={{ color: '#8c8c8c', fontSize: '14px' }}
   >
     {text}
   </div>
 )
 
-export type Props = {
-  item: Object,
-  clickHandler: Function,
-  childrenProp: string,
-  primaryTextProp: string,
-  secondaryTextProp?: string,
-  inset?: // updated: PropTypes.string,
-  // owner: PropTypes.string,
-  number,
-  valueProp: string,
+type Props = {
+  clickHandler?: Function,
+  inset: number,
+  project: ProjectType,
 }
 
 class ProjectItem extends Component {
   constructor(props: Props) {
     super(props)
-
     this.state = {
-      open: false,
       followed: false,
     }
-    this.toggleOpen = this.toggleOpen.bind(this)
-    this.toggleFollow = this.toggleFollow.bind(this)
+  }
+
+  state: {
+    followed: boolean,
   }
 
   props: Props
-
-  toggleOpen() {
-    const value = this.state.open
-    this.setState({ open: !value })
-  }
-
-  toggleFollow() {
+  toggleFollow = () => {
     const value = this.state.followed
     this.setState({ followed: !value })
   }
 
+  touchTapEventHandler = () => {
+    if (this.props.clickHandler) {
+      this.props.clickHandler(this.props.project.id)
+    }
+  }
   render() {
     const {
-      item,
-      childrenProp,
-      primaryTextProp,
-      secondaryTextProp,
-      valueProp,
-      clickHandler,
+      project,
       inset,
     } = this.props
 
-    const primaryText = item[primaryTextProp]
-    const secondaryText = secondaryTextProp ? item[secondaryTextProp] : ''
-    const value = item[valueProp]
-    const children = item[childrenProp]
+    const {
+      owner,
+      name,
+      shortName,
+      description,
+      id,
+      updated,
+    } = project
 
-    const listItemWithNestedStyle = {
-      fontSize: '13px',
-    }
+    const ownerName = owner.fullName
+    const primaryText = shortName || name
+    const secondaryText = description || ''
+    const diff = moment(updated).fromNow()
 
     const listItemWithoutNestedStyle = {
       paddingLeft: `${inset}px`,
-      fontSize: '13px',
-    }
-
-    const innerDivStyle = {
-      paddingTop: '10px',
-      paddingBottom: '10px',
+      fontSize: '14px',
     }
 
     return (
       <div>
         <ListItem
+          key={id}
           disableTouchRipple
-          innerDivStyle={children && !!children.length ? null : innerDivStyle}
-          nestedListStyle={{ paddingTop: 0, paddingBottom: 0 }}
-          style={children ? listItemWithNestedStyle : listItemWithoutNestedStyle}
-          value={value}
-          onNestedListToggle={children ? this.toggleOpen : null}
-          leftIcon={children && !!children.length ?
-            <i style={{ fontSize: '20px' }} className={`fa ${this.state.open ? 'fa-folder-open-o' : 'fa-folder-o'}`} aria-hidden="true" /> : null}
-          primaryText={
-            children && !!children.length ?
-              <div style={{ display: 'inline-block', width: '100%' }}>
-                <div style={{ fontWeight: 700, float: 'left' }}>{primaryText}</div>
-                <div style={{ marginRight: '50px', fontStyle: 'italic', fontSize: '12px', color: '#8a8a88', float: 'right' }}>{this.state.open ? '' : 'Project folder description goes here ...'}</div></div> :
-                  <Row>
-                    <Col md={5}>
-                      <div>
-                        <a onClick={() => { clickHandler(value) }}>{primaryText}</a>
-                      </div>
-                      <span style={{ fontStyle: 'italic', fontSize: '12px', color: '#8a8a88' }}>{secondaryText}</span>
-                    </Col>
-                    <Col md={3}>
-                      {subHeader('Owner:')}
-                      <div style={{ color: '#4e4a4a' }}>John Doe</div>
-                    </Col>
-                    <Col md={3}>
-                      {subHeader('Last update:')}
-                      <div style={{ color: '#4e4a4a' }}>2 hours ago, by <strong>John Doe</strong></div>
-                    </Col>
-                    <Col md={1}>
-                      <div
-                        style={{
-                          fontSize: '20px',
-                          float: 'right',
-                          cursor: 'pointer',
-                          color: this.state.followed ? 'rgb(37, 146, 106)' : '#aebac0' }}
-                      >
-                        <i
-                          className="fa fa-rss"
-                          onClick={this.toggleFollow}
-                          aria-hidden="true"
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-      }
-          primaryTogglesNestedList={!!(children && children.length)}
-          insetChildren
-          nestedItems={
-            children && !!children.length &&
-            children.map(child =>
-              <ProjectItem
-                key={_.uniqueId('_project_item')}
-                item={child}
-                clickHandler={clickHandler}
-                childrenProp={childrenProp}
-                primaryTextProp={primaryTextProp}
-                secondaryTextProp={secondaryTextProp}
-                valueProp={valueProp}
-                inset={inset + 30}
+          style={listItemWithoutNestedStyle}
+          onTouchTap={this.touchTapEventHandler}
+          value={id}
+          rightIconButton={
+            <div
+              style={{
+                paddingTop: '10px',
+                paddingBottom: '10px',
+                fontSize: '35px',
+                cursor: 'pointer',
+                color: this.state.followed ? 'rgb(37, 146, 106)' : '#aebac0' }}
+            >
+              <i
+                className="fa fa-rss"
+                onClick={this.toggleFollow}
+                aria-hidden="true"
               />
-            )
-          }
+            </div>
+            }
+          primaryText={
+            <Row>
+              <Col md={4}>
+                <div style={{ fontStyle: 'bold', fontSize: '16px', color: '#666666' }}>
+                           {primaryText}
+                </div>
+                <span style={{ fontStyle: 'italic', fontSize: '13px', color: '#8a8a88' }}>
+                            {secondaryText}
+                </span>
+              </Col>
+              <Col md={4}>
+                      {subHeader('Owner:')}
+                <div style={{ color: '#4e4a4a' }}>{ownerName}</div>
+              </Col>
+              <Col md={4}>
+                      {subHeader('Last update:')}
+                <div style={{ color: '#4e4a4a' }}>
+                  {diff}
+                </div>
+              </Col>
+            </Row>
+                      }
         />
         <Divider />
       </div>)
