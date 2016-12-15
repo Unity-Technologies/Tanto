@@ -18,12 +18,6 @@ export type Props = {
 }
 
 class UserPullRequestList extends Component {
-  constructor(props: Props) {
-    super(props)
-    this.handleRemove = this.handleRemove.bind(this)
-    this.handlePageSelect = this.handlePageSelect.bind(this)
-  }
-
   componentDidMount() {
     const { activePage, pageSize } = this.props
     this.props.dispatch(actions.fetchUserPullRequests(activePage, pageSize))

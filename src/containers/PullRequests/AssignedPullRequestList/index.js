@@ -18,11 +18,6 @@ export type Props = {
 }
 
 class AssignedPullRequestList extends Component {
-  constructor(props: Props) {
-    super(props)
-    this.handlePageSelect = this.handlePageSelect.bind(this)
-  }
-
   componentDidMount() {
     const { activePage, pageSize } = this.props
     this.props.dispatch(actions.fetchUserAssignedPullRequests(activePage, pageSize))

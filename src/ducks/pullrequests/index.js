@@ -1,4 +1,4 @@
-// TODO: add flow annotations
+/* @flow */
 
 import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
 import { isFetching, error, entities, actions as entitiesActions } from 'ducks/entities'
@@ -69,9 +69,6 @@ export default (
  * Actions
  */
 export const actions = {
-  // sendingRequest: (sending: boolean) => ({ type: entitiesTypes.SENDING_REQUEST, sending }),
-  // requestError: (error: string) => ({ type: entitiesTypes.REQUEST_ERROR, error }),
-  // clearError: () => ({ type: entitiesTypes.CLEAR_ERROR }),
   setPullRequests:
     (page: number, nodes:
       Array<PullRequestGraphType>) => ({ type: types.SET_PULL_REQUESTS, page, nodes }),

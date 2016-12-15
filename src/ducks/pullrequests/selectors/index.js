@@ -1,3 +1,5 @@
+/* @flow */
+
 export const computePullRequestLink = (pullrequest: Object, fn: Function): Object => (
   { ...pullrequest, link: fn(pullrequest.origin.name, pullrequest.id) }
 )

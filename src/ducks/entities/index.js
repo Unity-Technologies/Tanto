@@ -1,3 +1,5 @@
+/* @flow */
+
 import { reduceArrayToObj } from 'ducks/normalizer'
 import _ from 'lodash'
 
@@ -18,9 +20,16 @@ export const actions = {
 export const mergeEntities =
   (state = {}, action) => (action.nodes ? _.merge({}, state, action.nodes) : state)
 
-export const entities = (state = {}, action) =>
-  (action.type === types.SET ?
-    mergeEntities(state, { nodes: reduceArrayToObj(action.nodes) }) : state)
+export const entities = (state = {}, action) => {
+  switch (action.type) {
+    case types.SET: {
+      const updatedState = mergeEntities(state, { nodes: reduceArrayToObj(action.nodes) })
+      return _.isEqual(updatedState, state) ? state : updatedState
+    }
+    default:
+      return state
+  }
+}
 
 export const error = (state = null, action) => {
   switch (action.type) {

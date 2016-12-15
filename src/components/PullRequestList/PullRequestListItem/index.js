@@ -1,4 +1,4 @@
-// TODO: add flow annotations
+/* @flow */
 
 import React, { Component } from 'react'
 import { Col, Row, ListGroupItem } from 'react-bootstrap'
@@ -23,14 +23,9 @@ export type Props = {
 }
 
 class PullRequestListItem extends Component {
-  constructor(props: Props) {
-    super(props)
-    this.handleRemoveClick = this.handleRemoveClick.bind(this)
-  }
-
   props: Props
 
-  handleRemoveClick() {
+  handleRemoveClick = () => {
     if (this.onRemoveClick) {
       this.onRemoveClick(this.id)
     }
