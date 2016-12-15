@@ -1,8 +1,6 @@
 import chai from 'chai'
 import { reduceArrayToObj } from 'ducks/normalizer'
 import {
-  setEntities,
-  mergeEntities,
   entities,
   error,
   actions,
@@ -18,12 +16,12 @@ chai.use(chaiSubset)
 
 describe('pull request actions', () => {
   it('request error', () => {
-    const error = 'test error'
+    const errorMessage = 'test error'
     const action = {
       type: types.REQUEST_ERROR,
-      error,
+      error: errorMessage,
     }
-    expect(actions.requestError(error)).to.eql(action)
+    expect(actions.requestError(errorMessage)).to.eql(action)
   })
 
   it('clear error', () => {

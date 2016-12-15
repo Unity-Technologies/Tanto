@@ -43,7 +43,11 @@ class UserPullRequestList extends Component {
     return (
       <div>
         <Toolbar />
-        <PullRequestList showRemoveButton onPageSelect={this.handlePageSelect} onRemoveClick={this.handleRemove} {...this.props} />
+        <PullRequestList
+          showRemoveButton
+          onPageSelect={this.handlePageSelect}
+          onRemoveClick={this.handleRemove} {...this.props}
+        />
       </div>
     )
   }

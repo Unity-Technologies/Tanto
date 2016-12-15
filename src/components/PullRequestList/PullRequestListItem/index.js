@@ -48,7 +48,8 @@ class PullRequestListItem extends Component {
               <div style={{ paddingLeft: '10px', display: 'table' }}>
                 <Link to={pullRequest.link}>{pullRequest.title}</Link>
                 <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
-                  <strong>{pullRequest.owner.fullName}</strong> updated {fromNow(pullRequest.updated)}
+                  <strong>{pullRequest.owner.fullName}</strong>
+                    updated {fromNow(pullRequest.updated)}
                 </div>
               </div>
             </div>
@@ -61,7 +62,8 @@ class PullRequestListItem extends Component {
                   style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
                   to={pullRequest.originLink}
                 >
-                  {pullRequest.origin.repository.name}<span style={{ color: '#8ea7b6' }}>#</span>{pullRequest.origin.branch}
+                  {pullRequest.origin.repository.name}
+                  <span style={{ color: '#8ea7b6' }}>#</span>{pullRequest.origin.branch}
                 </Link>
               </div>
             </div>

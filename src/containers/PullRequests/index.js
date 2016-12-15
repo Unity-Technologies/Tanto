@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { Tabs, Tab } from 'react-bootstrap'
 import UserPullRequestList from './UserPullRequestList'
 import AssignedPullRequestList from './AssignedPullRequestList'
-import _ from 'lodash'
 import './styles.css'
 
 const tabTitle = (text, badge) => (
