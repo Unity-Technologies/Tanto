@@ -1,5 +1,4 @@
 // TODO: add flow annotations
-/* eslint-disable */
 
 import React, { Component } from 'react'
 import { fromJS } from 'immutable'
@@ -49,6 +48,8 @@ export type Props = {
 };
 
 class TextEditorBox extends Component {
+  /* eslint-disable react/sort-comp */
+
   constructor(props: Props) {
     super(props)
 
@@ -69,7 +70,6 @@ class TextEditorBox extends Component {
     this.onToogleInlineStyle = this.onToogleInlineStyle.bind(this)
     this.onToogleBlockType = this.onToogleBlockType.bind(this)
     this.focus = this.focus.bind(this)
-
   }
 
   props: Props
@@ -137,11 +137,17 @@ class TextEditorBox extends Component {
         style={style}
       >
         {this.props.header}
-        {!hideStyleControls && !readOnly &&
+      {!hideStyleControls && !readOnly &&
         <div style={{ width: '100%', padding: '10px' }}>
           <div style={{ display: 'inline-flex' }}>
             <TestAvatar />
-            <div style={{ fontSize: '14px', color: '#31708f', padding: '0 20px', fontWeight: 'bold', fontFamily: '"Helvetica Neue", Helvetica, sans-serif' }}>
+            <div
+              style={{
+                fontSize: '14px', color: '#31708f', padding: '0 20px',
+                fontWeight: 'bold',
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+              }}
+            >
               Bob Dou (author)
             </div>
           </div>

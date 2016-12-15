@@ -1,5 +1,4 @@
 // TODO: finish flow annotations
-/*eslint-disable */
 
 import React, { Component } from 'react'
 import { NewComment, Comment } from 'components'
@@ -23,6 +22,7 @@ export type Props = {
 }
 
 class SplitRow extends Component {
+  /* eslint-disable react/sort-comp */
   constructor(props: Props) {
     super(props)
     this.state = {

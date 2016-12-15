@@ -1,7 +1,5 @@
 // TODO: add flow annotations
 
-/* eslint-disable */
-
 import React, { Component } from 'react'
 import { BranchSelect, ChangesetList } from 'components'
 import { connect } from 'react-redux'

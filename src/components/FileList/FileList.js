@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable */
 
 import React from 'react'
 import { Link } from 'react-router'
@@ -16,7 +15,16 @@ import FolderClosedIcon from 'material-ui/svg-icons/file/folder'
 import File from 'material-ui/svg-icons/editor/insert-drive-file'
 
 export type Props = {
-  data: Array<any>,
+  data: Array<{
+    // FIXME: make this reflect graphql
+    children: boolean,
+    name: string,
+    size: number,
+    revision: string,
+    commitmessage: string,
+    updated:string,
+    author: string,
+  }>,
   onFileClick: Function,
 };
 
@@ -49,8 +57,9 @@ const FileList = ({ data, onFileClick }: Props) =>
         >
           <TableRowColumn style={{ width: '20px' }}>
             {item.children ?
-              <FolderClosedIcon style={{ fill: 'rgba(212, 213, 214, 0.721569)' }} /> :
-                <File style={{ fill: 'rgba(167, 236, 232, 0.6)' }} />
+              <FolderClosedIcon style={{ fill: 'rgba(212, 213, 214, 0.721569)' }} />
+              :
+              <File style={{ fill: 'rgba(167, 236, 232, 0.6)' }} />
         }
           </TableRowColumn>
           <TableRowColumn>
@@ -73,6 +82,5 @@ const FileList = ({ data, onFileClick }: Props) =>
     </TableBody>
   </Table>
 
-;
 
 export default FileList

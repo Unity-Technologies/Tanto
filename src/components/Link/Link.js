@@ -5,8 +5,8 @@ import { Link as RouterLink } from 'react-router'
 
 export type Props = {
   style?: Object,
-  label?: string,
-  to?: string,
+  label: string,
+  to: string,
 };
 
 function Link(props: Props) {
