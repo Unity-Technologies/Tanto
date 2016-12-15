@@ -46,7 +46,7 @@ export default (store) => {
         <IndexRoute component={Home} />
         <Route path="/home" component={Home} />
         <Route path="/pullrequests" component={PullRequests} />
-        <Route path="/projects" component={Projects} />
+        <Route path="/projects(/**)" component={Projects} />
       </Route>
 
       <Route onEnter={onProjectEnter}>
