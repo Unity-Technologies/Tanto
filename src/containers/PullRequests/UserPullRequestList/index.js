@@ -11,16 +11,20 @@ import Toolbar from '../Toolbar'
 
 export type Props = {
   dispatch: Function,
+  activePage: number,
+  pageSize: number,
+  total: number,
   items: Array<any>,
 }
 
 class UserPullRequestList extends Component {
-  constructor(props: Props) {
-    super(props)
-    this.handleRemove = this.handleRemove.bind(this)
-  }
   componentDidMount() {
-    this.props.dispatch(actions.fetchUserPullRequests())
+    const { activePage, pageSize } = this.props
+    this.props.dispatch(actions.fetchUserPullRequests(activePage, pageSize))
+  }
+
+  handlePageSelect = (page) => {
+    this.props.dispatch(actions.fetchUserPullRequests(page, this.props.pageSize))
   }
 
   props: Props
@@ -33,7 +37,11 @@ class UserPullRequestList extends Component {
     return (
       <div>
         <Toolbar />
-        <PullRequestList showRemoveButton onRemoveClick={this.handleRemove} {...this.props} />
+        <PullRequestList
+          showRemoveButton
+          onPageSelect={this.handlePageSelect}
+          onRemoveClick={this.handleRemove} {...this.props}
+        />
       </div>
     )
   }
@@ -41,16 +49,9 @@ class UserPullRequestList extends Component {
 
 export default connect(
   state => ({
-    // should come from state
-    totalPagesCount: 10,
-     // should come from state
-    total: 5,
-     // should come from state
-    totalInProgress: 20,
-     // should come from state
-    totalNew: 14,
-     // should come from state
-    activePage: 1,
+    pageSize: 3,
+    activePage: state.session.pullRequestsOwned.currentPage,
+    total: state.session.pullRequestsOwned.total,
     isFetching: state.pullrequests.isFetching,
     error: state.pullrequests.error,
     items: sessionSelectors.getPullRequests(state) || [],

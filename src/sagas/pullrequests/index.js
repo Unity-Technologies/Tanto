@@ -3,6 +3,7 @@
 import { call, put } from 'redux-saga/effects'
 import { actions as sessionActions } from 'ducks/session'
 import { actions as prActions } from 'ducks/pullrequests'
+import { actions as entitiesActions } from 'ducks/entities'
 import { get } from 'services/ono/api'
 import {
   queries,
@@ -12,54 +13,60 @@ import {
 /**
  * Fetch pull requests
  */
-export function* fetchPullRequests(query, parser, updateSession) {
+export function* fetchPullRequests(action, query, parser, updateSession) {
   try {
-    yield put(prActions.sendingRequest(true))
+    const { page, pageSize } = action
+    const first = pageSize
+    const offset = pageSize * (page - 1)
 
-    const response = yield call(get, query)
+    yield put(entitiesActions.sendingRequest(true))
 
-    const pullrequests = parser(response)
+    const response = yield call(get, query, { first, offset })
 
-    yield put(prActions.setPullRequests(pullrequests))
+    const { nodes, total } = parser(response)
 
-    const ids = pullrequests.map(x => x.id)
-    yield put(updateSession(ids))
+    yield put(prActions.setPullRequests(page, nodes))
+
+    yield put(updateSession(page, nodes, total, pageSize))
   } catch (error) {
-    yield put(prActions.requestError(error))
+    yield put(entitiesActions.requestError(error))
   } finally {
-    yield put(prActions.sendingRequest(false))
+    yield put(entitiesActions.sendingRequest(false))
   }
 }
 
 /**
  * Fetch current user pull requests
  */
-export function* fetchCurrentUserPullRequests() {
+export function* fetchCurrentUserPullRequests(action) {
   yield call(
     fetchPullRequests,
+    action,
     queries.CURRENT_USER_PULL_REQUESTS,
     parsers.parseCurrentUserPullRequests,
-    sessionActions.setUserPRIds)
+    sessionActions.setPullRequestsOwned)
 }
 
 /**
  * Fetch current user assigned pull requests
  */
-export function* fetchCurrentUserAssignedPullRequests() {
+export function* fetchCurrentUserAssignedPullRequests(action) {
   yield call(
     fetchPullRequests,
+    action,
     queries.CURRENT_USER_ASSIGNED_PULL_REQUESTS,
     parsers.parseCurrentUserAssignedPullRequests,
-    sessionActions.setUserAssignedPRIds)
+    sessionActions.setPullRequestsAssigned)
 }
 
 /**
  * Fetch current user watching pull requests
  */
-export function* fetchCurrentUserWatchingPullRequests() {
+export function* fetchCurrentUserWatchingPullRequests(action) {
   yield call(
     fetchPullRequests,
+    action,
     queries.CURRENT_USER_WATCHING_PULL_REQUESTS,
     parsers.parseCurrentUserWatchingPullRequests,
-    sessionActions.setUserWatchingPRsIds)
+    sessionActions.setPullRequestsWatching)
 }

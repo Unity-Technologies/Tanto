@@ -1,32 +1,22 @@
-import { constants, parsers, transform } from 'services/ono/queries/pullrequests'
+import { constants, parsers } from 'services/ono/queries/pullrequests'
 
 const expect = require('chai').expect
-
 
 const node1 = {
   id: 'UHVsbFJlcXVlc3Q6MQ==',
   title: 'Some test pull request 1',
-  origin_rev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  origin_branch: 'graphics/gi/bugfix/staging',
-  origin_repository: {
-    id: 'UmVwb3NpdG9yeTox',
+  origin: {
+    revision: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging1',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  dest_branch: 'trunk',
-  dest_repository: {
-    id: 'UmVwb3NpdG9yeTox',
-  },
-}
-const node1Transformed = {
-  id: 'UHVsbFJlcXVlc3Q6MQ==',
-  title: 'Some test pull request 1',
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  originBranch: 'graphics/gi/bugfix/staging',
-  originRepository: {
-    id: 'UmVwb3NpdG9yeTox',
-  },
-  destBranch: 'trunk',
-  destRepository: {
-    id: 'UmVwb3NpdG9yeTox',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -44,20 +34,6 @@ const node2 = {
   },
 }
 
-const node2Transformed = {
-  id: 'UHVsbFJlcXVlc3Q6NQ==',
-  title: 'Some test pull request 2',
-  originRev: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  originBranch: 'graphics/gi/bugfix/staging2',
-  originRepository: {
-    id: 'UmVwb3NpdG9yeTos',
-  },
-  destBranch: 'trunk',
-  destRepository: {
-    id: 'UmVwb3NpdG9yeTos',
-  },
-}
-
 const testnodes = [
   {
     node: node1,
@@ -67,7 +43,7 @@ const testnodes = [
   },
 ]
 
-const testResponse = (property, pullrequests) => {
+const testResponse = (property, pullrequests, total) => {
   const response = {
     data: {
       me: {
@@ -75,7 +51,8 @@ const testResponse = (property, pullrequests) => {
     },
   }
   response.data.me[property] = {
-    edges: pullrequests,
+    nodes: pullrequests,
+    total,
   }
 
   return response
@@ -83,41 +60,15 @@ const testResponse = (property, pullrequests) => {
 
 describe('services pullrequests query parsers', () => {
   it('parseCurrentUserPullRequests', () => {
-    const response = testResponse(constants.pull_requests_owned, testnodes)
+    const response = testResponse(constants.pullRequestsOwned, testnodes, 12)
     expect(parsers.parseCurrentUserPullRequests(response))
-      .to.be.eql([node1Transformed, node2Transformed])
+      .to.be.eql({ nodes: testnodes, total: 12 })
   })
 
   it('parseCurrentUserAssignedPullRequests', () => {
-    const response = testResponse(constants.pull_requests_under_review, testnodes)
+    const response = testResponse(constants.pullRequestsAssigned, testnodes, 10)
     expect(parsers.parseCurrentUserAssignedPullRequests(response))
-      .to.be.eql([node1Transformed, node2Transformed])
-  })
-
-  it('parseCurrentUserWatchingPullRequests', () => {
-    const response = testResponse(constants.pull_requests_participating, testnodes)
-    expect(parsers.parseCurrentUserWatchingPullRequests(response))
-      .to.be.eql([node1Transformed, node2Transformed])
-  })
-
-  it('transforms reponse to camelCase', () => {
-    const obj = {
-      id: 'testid',
-      title: 'test_title',
-      origin_branch: 'graphics',
-      dest_branch: 'trunk',
-    }
-    const objExpected = {
-      id: 'testid',
-      title: 'test_title',
-      originBranch: 'graphics',
-      destBranch: 'trunk',
-    }
-    const keyMap = {
-      origin_branch: 'originBranch',
-      dest_branch: 'destBranch',
-    }
-    expect(transform(obj, keyMap)).to.be.eql(objExpected)
+      .to.be.eql({ nodes: testnodes, total: 10 })
   })
 })
 

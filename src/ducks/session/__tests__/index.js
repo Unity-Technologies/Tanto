@@ -2,10 +2,11 @@
 /* eslint-disable max-len */
 
 import reducer, { actions, types, DEVELOPER_PERSONA } from '../index'
+import { pagination, receivePage } from 'ducks/pagination'
 
 const expect = require('chai').expect
 
-describe('actions', () => {
+describe('session actions', () => {
   it('set profile', () => {
     const profile = {
       username: 'testusername',
@@ -49,34 +50,52 @@ describe('actions', () => {
     expect(actions.fetchProfile()).to.eql(action)
   })
 
-  it('set user pull requests ids', () => {
-    const ids = ['1', '2', '3']
+  it('set user pull requests owned', () => {
+    const total = 3
+    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
+    const page = 1
+    const pageSize = 12
     const action = {
-      type: types.SET_PRS_IDS,
-      ids,
+      type: types.SET_PULL_REQUESTS_OWNED,
+      page,
+      pageSize,
+      nodes,
+      total,
     }
 
-    expect(actions.setUserPRIds(ids)).to.eql(action)
+    expect(actions.setPullRequestsOwned(page, nodes, total, pageSize)).to.eql(action)
   })
 
   it('set user pull requests assigned ids', () => {
-    const ids = ['1', '2', '3']
+    const total = 3
+    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
+    const page = 1
+    const pageSize = 12
     const action = {
-      type: types.SET_ASSIGNED_PRS_IDS,
-      ids,
+      type: types.SET_PULL_REQUESTS_ASSIGNED,
+      page,
+      pageSize,
+      nodes,
+      total,
     }
 
-    expect(actions.setUserAssignedPRIds(ids)).to.eql(action)
+    expect(actions.setPullRequestsAssigned(page, nodes, total, pageSize)).to.eql(action)
   })
 
   it('set user pull requests watching ids', () => {
-    const ids = ['1', '2', '3']
+    const total = 3
+    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
+    const page = 1
+    const pageSize = 12
     const action = {
-      type: types.SET_WATCHING_PRS_IDS,
-      ids,
+      type: types.SET_PULL_REQUESTS_WATCHING,
+      page,
+      pageSize,
+      nodes,
+      total,
     }
 
-    expect(actions.setUserWatchingPRsIds(ids)).to.eql(action)
+    expect(actions.setPullRequestsWatching(page, nodes, total, pageSize)).to.eql(action)
   })
 })
 
@@ -85,13 +104,28 @@ describe('session reducer', () => {
     error: null,
     isFetching: false,
     persona: DEVELOPER_PERSONA,
-    pr_ids: [],
-    pr_ids_assigned: [],
-    pr_ids_watching: [],
+    pullRequestsAssigned: {
+      total: 0,
+      pages: {},
+      pageSize: 0,
+      currentPage: 0,
+    },
+    pullRequestsOwned: {
+      total: 0,
+      pages: {},
+      pageSize: 0,
+      currentPage: 0,
+    },
+    pullRequestsWatching: {
+      total: 0,
+      pages: {},
+      pageSize: 0,
+      currentPage: 0,
+    },
     profile: {
       username: null,
       email: null,
-      full_name: null,
+      fullName: null,
     },
   }
 
@@ -113,19 +147,31 @@ describe('session reducer', () => {
     expect(reducer({}, actions.setPersona(persona))).to.eql({ persona })
   })
 
-  it('should handle SET_PRS_IDS', () => {
-    const ids = ['1', '2', '3', '4']
-    expect(reducer({}, actions.setUserPRIds(ids))).to.eql({ pr_ids: ids })
+  it('should handle SET_PULL_REQUESTS_OWNED', () => {
+    const total = 12
+    const page = 3
+    const pageSize = 12
+    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
+    const action = actions.setPullRequestsOwned(page, nodes, total, pageSize)
+    expect(reducer({}, action)).to.eql({ pullRequestsOwned: pagination({}, receivePage(action)) })
   })
 
-  it('should handle SET_ASSIGNED_PRS_IDS', () => {
-    const ids = ['1', '2', '3', '4']
-    expect(reducer({}, actions.setUserAssignedPRIds(ids))).to.eql({ pr_assigned_ids: ids })
+  it('should handle SET_PULL_REQUESTS_ASSIGNED', () => {
+    const total = 12
+    const page = 3
+    const pageSize = 12
+    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
+    const action = actions.setPullRequestsAssigned(page, nodes, total, pageSize)
+    expect(reducer({}, action)).to.eql({ pullRequestsAssigned: pagination({}, receivePage(action)) })
   })
 
-  it('should handle SET_WATCHING_PRS_IDS', () => {
-    const ids = ['1', '2', '3', '4']
-    expect(reducer({}, actions.setUserWatchingPRsIds(ids))).to.eql({ pr_watching_ids: ids })
+  it('should handle SET_PULL_REQUESTS_WATCHING', () => {
+    const total = 12
+    const page = 3
+    const pageSize = 12
+    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
+    const action = actions.setPullRequestsWatching(page, nodes, total, pageSize)
+    expect(reducer({}, action)).to.eql({ pullRequestsWatching: pagination({}, receivePage(action)) })
   })
 
   it('should handle REQUEST_ERROR', () => {

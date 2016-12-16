@@ -1,14 +1,9 @@
 /* @flow */
 
-export type Props = {
-  totalUserPRs?: number,
-  totalUserAssignedPRs?: number,
-};
-
 import React from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
-import { Tabs, Tab, Badge } from 'react-bootstrap'
+import { Tabs, Tab } from 'react-bootstrap'
 import UserPullRequestList from './UserPullRequestList'
 import AssignedPullRequestList from './AssignedPullRequestList'
 import './styles.css'
@@ -16,30 +11,34 @@ import './styles.css'
 const tabTitle = (text, badge) => (
   <div style={{ display: 'inline-flex' }}>
     <div style={{ float: 'left', marginRight: '5px' }}>{text}</div>
-    {!!badge && <div style={{ marginRight: '15px' }}><Badge>{badge}</Badge></div>}
+    {!!badge && <div className="tab-badge">{badge}</div>}
   </div>
 )
 
-function PullRequests(props) {
-  const { totalUserPRs, totalUserAssignedPRs } = props
+
+export type Props = {
+  totalOwned?: number,
+  totalAssigned?: number,
+}
+
+function PullRequests(props: Props) {
+  const { totalOwned, totalAssigned } = props
   return (
     <div>
       <Helmet title="Pull Requests" />
       <div >
         <Tabs animation={false} defaultActiveKey={1}>
           <Tab
-            id="userPullRequestsTab"
             eventKey={1}
             className="tab"
-            title={tabTitle('Pull request on review', totalUserPRs)}
+            title={tabTitle('Pull requests on review', totalAssigned)}
           >
             <AssignedPullRequestList />
           </Tab>
           <Tab
-            id="userAssignedPullRequestsTab"
             eventKey={2}
             className="tab"
-            title={tabTitle('My pull request', totalUserAssignedPRs)}
+            title={tabTitle('My pull requests', totalOwned)}
           >
             <UserPullRequestList />
           </Tab>
@@ -51,9 +50,8 @@ function PullRequests(props) {
 
 export default connect(
   state => ({
-    // should come from state
-    totalUserPRs: 10,
-     // should come from state
-    totalUserAssignedPRs: 100,
+    totalOwned: state.session.pullRequestsOwned.total,
+    totalAssigned: state.session.pullRequestsAssigned.total,
   })
 )(PullRequests)
+

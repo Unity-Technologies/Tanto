@@ -1,5 +1,7 @@
 /* @flow */
 
+import { pagination, receivePage } from 'ducks/pagination'
+
 /**
  * Action types
  */
@@ -10,9 +12,9 @@ export const types = {
   SET_USER_PROFILE: 'SESSION/SET_USER_PROFILE',
   CLEAR_ERROR: 'SESSION/CLEAR_ERROR',
   SET_USER_PERSONA: 'SESSION/SET_USER_PERSONA',
-  SET_PRS_IDS: 'SESSION/SET_PRS_IDS',
-  SET_ASSIGNED_PRS_IDS: 'SESSION/SET_ASSIGNED_PRS_IDS',
-  SET_WATCHING_PRS_IDS: 'SESSION/SET_WATCHING_PRS_IDS',
+  SET_PULL_REQUESTS_OWNED: 'SESSION/SET_PULL_REQUESTS_OWNED',
+  SET_PULL_REQUESTS_ASSIGNED: 'SESSION/SET_PULL_REQUESTS_ASSIGNED',
+  SET_PULL_REQUESTS_WATCHING: 'SESSION/SET_PULL_REQUESTS_WATCHING',
 }
 
 /**
@@ -30,13 +32,28 @@ const initialState = {
   error: null,
   isFetching: false,
   persona: DEVELOPER_PERSONA,
-  pr_ids: [],
-  pr_ids_assigned: [],
-  pr_ids_watching: [],
+  pullRequestsAssigned: {
+    total: 0,
+    pages: {},
+    pageSize: 0,
+    currentPage: 0,
+  },
+  pullRequestsOwned: {
+    total: 0,
+    pages: {},
+    pageSize: 0,
+    currentPage: 0,
+  },
+  pullRequestsWatching: {
+    total: 0,
+    pages: {},
+    pageSize: 0,
+    currentPage: 0,
+  },
   profile: {
     username: null,
     email: null,
-    full_name: null,
+    fullName: null,
   },
 }
 
@@ -55,20 +72,20 @@ export default (state: Object = initialState, action: Object): Object => {
         ...state,
         persona: action.persona,
       }
-    case types.SET_PRS_IDS:
+    case types.SET_PULL_REQUESTS_OWNED:
       return {
         ...state,
-        pr_ids: action.ids,
+        pullRequestsOwned: pagination(state.pullRequestsOwned, receivePage(action)),
       }
-    case types.SET_ASSIGNED_PRS_IDS:
+    case types.SET_PULL_REQUESTS_ASSIGNED:
       return {
         ...state,
-        pr_assigned_ids: action.ids,
+        pullRequestsAssigned: pagination(state.pullRequestsAssigned, receivePage(action)),
       }
-    case types.SET_WATCHING_PRS_IDS:
+    case types.SET_PULL_REQUESTS_WATCHING:
       return {
         ...state,
-        pr_watching_ids: action.ids,
+        pullRequestsWatching: pagination(state.pullRequestsWatching, receivePage(action)),
       }
     case types.SENDING_REQUEST:
       return {
@@ -90,6 +107,7 @@ export default (state: Object = initialState, action: Object): Object => {
   }
 }
 
+
 /**
  * Actions
  */
@@ -100,8 +118,13 @@ export const actions = {
   fetchProfile: (): Object => ({ type: types.FETCH_USER_PROFILE }),
   setProfile: (profile: Object): Object => ({ type: types.SET_USER_PROFILE, profile }),
   setPersona: (persona: string): Object => ({ type: types.SET_USER_PERSONA, persona }),
-  setUserPRIds: (ids: Array<string>): Object => ({ type: types.SET_PRS_IDS, ids }),
-  setUserAssignedPRIds: (ids: Array<string>): Object => ({ type: types.SET_ASSIGNED_PRS_IDS, ids }),
-  setUserWatchingPRsIds:
-  (ids: Array<string>): Object => ({ type: types.SET_WATCHING_PRS_IDS, ids }),
+  setPullRequestsOwned:
+    (page: number, nodes: Array<Object>, total: number, pageSize: number): Object =>
+      ({ type: types.SET_PULL_REQUESTS_OWNED, page, nodes, total, pageSize }),
+  setPullRequestsAssigned:
+    (page: number, nodes: Array<Object>, total: number, pageSize: number): Object =>
+      ({ type: types.SET_PULL_REQUESTS_ASSIGNED, page, nodes, total, pageSize }),
+  setPullRequestsWatching:
+    (page: number, nodes: Array<Object>, total: number, pageSize: number): Object =>
+      ({ type: types.SET_PULL_REQUESTS_WATCHING, page, nodes, total, pageSize }),
 }

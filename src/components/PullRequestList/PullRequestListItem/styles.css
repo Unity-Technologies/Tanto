@@ -1,5 +1,5 @@
 .new-status {
-    border-left: 4px solid lightgrey;
+    border-left: 4px solid #6fb9ed;
 }
 
 .approved-status {
@@ -7,11 +7,15 @@
 }
 
 .under-review-status {
-    border-left: 4px solid lightyellow;
+    border-left: 4px solid rgba(235, 184, 30, 0.48);
 }
 
 .rejected-status {
     border-left: 4px solid lightcoral;
+}
+
+.closed-status {
+    border-left: 4px solid lightgray;
 }
 
 .remove-icon {

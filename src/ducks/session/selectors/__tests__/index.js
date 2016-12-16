@@ -3,6 +3,7 @@ import { selectors } from '../index'
 
 const expect = require('chai').expect
 
+
 const pr1 = {
   id: '1UHVsbFJlcXVlc3Q6MQ==',
   description: 'test description',
@@ -10,19 +11,23 @@ const pr1 = {
   created: '2016-11-15 16:18:36.628901',
   updated: '2016-11-15 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging',
-  destBranch: 'trunk',
   owner: {
-    username: 'test1',
+    username: 'test2',
     email: 'test1@test.tt',
-    full_name: 'test test1',
+    fullName: 'test test11',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging1',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -33,19 +38,23 @@ const pr2 = {
   created: '2016-11-14 16:18:36.628901',
   updated: '2016-11-14 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging2',
-  destBranch: 'trunk',
   owner: {
     username: 'test2',
     email: 'test2@test.tt',
-    full_name: 'test test2',
+    fullName: 'test test2',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging2',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -56,19 +65,23 @@ const pr3 = {
   created: '2016-11-13 16:18:36.628901',
   updated: '2016-11-13 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging3',
-  destBranch: 'trunk',
   owner: {
     username: 'test3',
     email: 'test3@test.tt',
-    full_name: 'test test23',
+    fullName: 'test test44',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '3d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging3',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -79,19 +92,23 @@ const pr4 = {
   created: '2016-11-12 16:18:36.628901',
   updated: '2016-11-12 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging4',
-  destBranch: 'trunk',
   owner: {
     username: 'test4',
     email: 'test4@test.tt',
-    full_name: 'test test4',
+    fullName: 'test test44',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '4d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging4',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -102,19 +119,23 @@ const pr5 = {
   created: '2016-11-13 16:18:36.628901',
   updated: '2016-11-13 16:18:36.628916',
   status: 'new',
-  originBranch: 'graphics/gi/bugfix/staging5',
-  destBranch: 'trunk',
   owner: {
     username: 'test5',
     email: 'test5@test.tt',
-    full_name: 'test test55',
+    fullName: 'test test55',
   },
-  originRepository: {
-    name: 'unity/unity',
+  origin: {
+    revision: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    branch: 'graphics/gi/bugfix/staging5',
+    repository: {
+      name: 'unity/unity',
+    },
   },
-  originRev: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
-  destRepository: {
-    name: 'unity/unity',
+  target: {
+    branch: 'trunk',
+    repository: {
+      name: 'unity/unity',
+    },
   },
 }
 
@@ -122,9 +143,9 @@ const sessionState = {
   error: null,
   isFetching: false,
   persona: DEVELOPER_PERSONA,
-  pr_ids: [pr2.id, pr3.id],
-  pr_assigned_ids: [pr1.id, pr4.id],
-  pr_watching_ids: [pr5.id],
+  pullRequestsOwned: { pages: { 1: [pr2.id, pr3.id], 2: [pr1.id, pr4.id] }, currentPage: 2 },
+  pullRequestsAssigned: { pages: { 1: [pr1.id, pr3.id], 2: [pr2.id, pr4.id] }, currentPage: 1 },
+  pullRequestsWatching: { pages: { 1: [pr2.id, pr1.id], 2: [pr4.id] }, currentPage: 1 },
   profile: {
     username: 'testauthor1',
     email: 'test@test.ff',
@@ -132,15 +153,15 @@ const sessionState = {
   },
 }
 
-const byId = {}
-byId[pr1.id] = pr1
-byId[pr2.id] = pr2
-byId[pr3.id] = pr3
-byId[pr4.id] = pr4
-byId[pr5.id] = pr5
+const entities = {}
+entities[pr1.id] = pr1
+entities[pr2.id] = pr2
+entities[pr3.id] = pr3
+entities[pr4.id] = pr4
+entities[pr5.id] = pr5
 
 const pullrequstsState = {
-  byId,
+  entities,
 }
 
 const state = {
@@ -158,15 +179,15 @@ describe('session selectors', () => {
   })
 
   it('get user pull requests', () => {
-    expect(selectors.getPullRequests(state)).to.eql([pr2, pr3])
+    expect(selectors.getPullRequests(state)).to.eql([pr1, pr4])
   })
 
   it('get user pull assigned requests', () => {
-    expect(selectors.getPullRequestsAssigned(state)).to.eql([pr1, pr4])
+    expect(selectors.getPullRequestsAssigned(state)).to.eql([pr1, pr3])
   })
 
   it('get user pull watching requests', () => {
-    expect(selectors.getPullRequestsWatching(state)).to.eql([pr5])
+    expect(selectors.getPullRequestsWatching(state)).to.eql([pr2, pr1])
   })
 })
 

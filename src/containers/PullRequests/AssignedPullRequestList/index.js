@@ -11,12 +11,20 @@ import Toolbar from '../Toolbar'
 
 export type Props = {
   dispatch: Function,
-  items: Array<any>
-};
+  activePage: number,
+  pageSize: number,
+  total: number,
+  items: Array<any>,
+}
 
 class AssignedPullRequestList extends Component {
   componentDidMount() {
-    this.props.dispatch(actions.fetchUserAssignedPullRequests())
+    const { activePage, pageSize } = this.props
+    this.props.dispatch(actions.fetchUserAssignedPullRequests(activePage, pageSize))
+  }
+
+  handlePageSelect = (page) => {
+    this.props.dispatch(actions.fetchUserAssignedPullRequests(page, this.props.pageSize))
   }
 
   props: Props
@@ -25,7 +33,7 @@ class AssignedPullRequestList extends Component {
     return (
       <div>
         <Toolbar />
-        <PullRequestList {...this.props} />
+        <PullRequestList onPageSelect={this.handlePageSelect} {...this.props} />
       </div>
     )
   }
@@ -33,16 +41,9 @@ class AssignedPullRequestList extends Component {
 
 export default connect(
   state => ({
-    // should come from state
-    totalPagesCount: 10,
-     // should come from state
-    total: 100,
-     // should come from state
-    totalInProgress: 20,
-     // should come from state
-    totalNew: 14,
-     // should come from state
-    activePage: 1,
+    pageSize: 3,
+    activePage: state.session.pullRequestsAssigned.currentPage,
+    total: state.session.pullRequestsAssigned.total,
     isFetching: state.pullrequests.isFetching,
     error: state.pullrequests.error,
     items: sessionSelectors.getPullRequestsAssigned(state) || [],

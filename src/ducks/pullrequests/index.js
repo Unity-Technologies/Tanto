@@ -1,64 +1,21 @@
-// TODO: add flow annotations
+/* @flow */
 
-import _ from 'lodash'
-import { helpers } from 'routes/helpers'
-import { reduceArrayToObj } from 'ducks/normalizer'
+import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
+import { isFetching, error, entities, actions as entitiesActions } from 'ducks/entities'
+
+import { pagination, requestPage } from 'ducks/pagination'
+import { combineReducers } from 'redux'
 
 /**
  * Action types
  */
 export const types = {
-  SENDING_REQUEST: 'PULLREQUESTS/SENDING_REQUEST',
-  REQUEST_ERROR: 'PULLREQUESTS/REQUEST_ERROR',
-  CLEAR_ERROR: 'PULLREQUESTS/CLEAR_ERROR',
-
   SET_PULL_REQUESTS: 'PULLREQUESTSUSER/SET_PULL_REQUESTS',
   FETCH_PULL_REQUESTS: 'PULLREQUESTS/FETCH_PULL_REQUESTS',
-
   FETCH_USER_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_PULL_REQUESTS',
   FETCH_USER_ASSIGNED_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_ASSIGNED_PULL_REQUESTS',
   FETCH_USER_WATCHING_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_WATCHING_PULL_REQUESTS',
 }
-
-export const computePullRequestBuilds = (pullrequest: Object): Object => (
-  { ...pullrequest,
-    buildStatus: 'success',
-    buildName: 'ABV-2333',
-    buildDate: '2016-11-14 16:18:36.628916',
-    buildLink: '#',
-  }
-)
-
-export const computePullRequestLink = (pullrequest: Object, fn: any): Object => (
-  { ...pullrequest, link: fn(pullrequest.originRepository.name, pullrequest.id) }
-)
-
-export const computePullRequestOriginLink = (pullrequest: Object, fn: any): Object => (
-  { ...pullrequest,
-    originLink: fn(pullrequest.originRepository.name, pullrequest.originBranch || ''),
-  }
-)
-
-export const computePullRequestTargetLink = (pullrequest: Object, fn: any): Object => (
-  { ...pullrequest, destLink: fn(pullrequest.destRepository.name, pullrequest.destBranch || '') }
-)
-
-export const flattenPullRequestUsername = (pullrequest: Object): Object => (
-  { ...pullrequest, username: pullrequest.owner.username }
-)
-
-export const computePullRequest = (pullrequest: Object): any => (
-  fn1 => (
-    fn2 => (
-        computePullRequestBuilds(
-          flattenPullRequestUsername(
-            flattenPullRequestUsername(
-              computePullRequestTargetLink(
-                computePullRequestOriginLink(
-                  computePullRequestLink(pullrequest, fn2), fn1), fn1))))
-    )
-  )
-)
 
 
 /**
@@ -67,74 +24,44 @@ export const computePullRequest = (pullrequest: Object): any => (
 const initialState = {
   error: null,
   isFetching: false,
-  byId: {},
-  allIds: [],
+  entities: {},
+  pagination: {
+    total: 0,
+    pages: {},
+    pageSize: 0,
+    currentPage: 0,
+  },
 }
 
-/**
- * Pull request `byId` state reducer
- */
-const entities = (state = {}, action) => {
-  switch (action.type) {
-    // case 'UPDATE_PULLREQUEST':
-    //   return {
-    //     ...state,
-    //     [action.id]: {
-    //       ...action.pullrequests
-    //     }
-    //   }
-    default:
-      if (action.pullrequests) {
-        return _.merge({}, state, action.pullrequests)
-      }
-      return state
-  }
+export type PullRequestDictionary = {
+  [id: string]: Object
 }
 
-/**
- * Pull request `allIds` state reducer
- */
-const ids = (state: Array<string> = [], action: Object) => {
-  switch (action.type) {
-    default:
-      if (action.ids) {
-        return state.concat(action.ids)
-      }
-      return state
-  }
+export type PullRequestsStateType = {
+  error: ?string,
+  isFetching: boolean,
+  entities: PullRequestDictionary,
 }
+
+export const entitiesReducer = combineReducers({
+  entities,
+  error,
+  isFetching,
+  pagination,
+})
 
 /**
  * Pullrequests reducer
  */
-export default (state: Object = initialState, action: Object): Object => {
+export default (
+  state: PullRequestsStateType = initialState, action: Object): PullRequestsStateType => {
   switch (action.type) {
     case types.SET_PULL_REQUESTS:
-      return {
-        ...state,
-        byId:
-          entities(state.byId, { pullrequests: reduceArrayToObj(action.pullrequests
-            .map(x =>
-              computePullRequest(x)(helpers.buildPullRequestLink)(helpers.buildProjectLink))) }),
-        allIds: ids(state.allIds, { ids: action.pullrequests.map(x => x.id) }),
-      }
-    case types.SENDING_REQUEST:
-      return {
-        ...state,
-        isFetching: action.sending,
-      }
-    case types.REQUEST_ERROR:
-      return {
-        ...state,
-        error: action.error,
-      }
-    case types.CLEAR_ERROR:
-      return {
-        ...state,
-        error: null,
-      }
+      return entitiesReducer(state, entitiesActions.setEntities(action.nodes))
+    case types.FETCH_PULL_REQUESTS:
+      return entitiesReducer(state, requestPage(action))
     default:
-      return state
+      return entitiesReducer(state, action)
   }
 }
 
@@ -142,12 +69,17 @@ export default (state: Object = initialState, action: Object): Object => {
  * Actions
  */
 export const actions = {
-  sendingRequest: (sending: boolean): Object => ({ type: types.SENDING_REQUEST, sending }),
-  requestError: (error: string): Object => ({ type: types.REQUEST_ERROR, error }),
-  clearError: (): Object => ({ type: types.CLEAR_ERROR }),
   setPullRequests:
-    (pullrequests: Array<Object>): Object => ({ type: types.SET_PULL_REQUESTS, pullrequests }),
-  fetchUserPullRequests: (): Object => ({ type: types.FETCH_USER_PULL_REQUESTS }),
-  fetchUserAssignedPullRequests: (): Object => ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS }),
-  fatchUserWatchingPullRequests: (): Object => ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS }),
+    (page: number, nodes:
+      Array<PullRequestGraphType>) => ({ type: types.SET_PULL_REQUESTS, page, nodes }),
+  fetchPullRequests:
+    (page: number, pageSize: number) => ({ type: types.FETCH_PULL_REQUESTS, page, pageSize }),
+  fetchUserPullRequests:
+    (page: number, pageSize: number) => ({ type: types.FETCH_USER_PULL_REQUESTS, page, pageSize }),
+  fetchUserAssignedPullRequests:
+    (page: number, pageSize: number) =>
+      ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, page, pageSize }),
+  fatchUserWatchingPullRequests:
+    (page: number, pageSize: number) =>
+      ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS, page, pageSize }),
 }

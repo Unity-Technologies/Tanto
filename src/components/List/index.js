@@ -1,36 +1,38 @@
-// TODO: add flow annotations
+/* @flow */
 
 import React, { Component } from 'react'
 import { ListGroup, Pagination } from 'react-bootstrap'
 import './styles.css'
 
-class List extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { activePage: this.props.activePage }
-    this.handleSelect = this.handleSelect.bind(this)
-  }
+export type Props = {
+  pageSize: number,
+  total: number,
+  activePage: number,
+  onPageSelect?: Function,
+}
 
-  handleSelect(eventKey: number) {
-    this.setState({
-      activePage: eventKey,
-    })
+class List extends Component {
+  props: Props
+
+  handleSelect = (eventKey: number) => {
     if (this.props.onPageSelect) {
       this.props.onPageSelect(eventKey)
     }
   }
 
   render() {
+    const { pageSize, total, children, activePage } = this.props
+    const totalPagesCount = Math.ceil(total / pageSize)
     return (
       <div>
         <ListGroup
           fill
           className="list-group"
         >
-          {this.props.children}
+          {children}
         </ListGroup>
 
-        {this.props.totalPagesCount > 0 &&
+        {totalPagesCount > 1 &&
           <div className="pagination-parent">
             <Pagination
               prev
@@ -39,9 +41,9 @@ class List extends Component {
               last
               ellipsis
               boundaryLinks
-              items={this.props.totalPagesCount}
+              items={totalPagesCount}
               maxButtons={5}
-              activePage={this.state.activePage}
+              activePage={activePage}
               onSelect={this.handleSelect}
               className="pagination"
             />

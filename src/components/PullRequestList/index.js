@@ -3,54 +3,52 @@
 
 import React from 'react'
 import LinearProgress from 'material-ui/LinearProgress'
-
 import ErrorMessage from 'components/ErrorMessage'
 import List from 'components/List'
 import PullRequestListItem from './PullRequestListItem'
-import type { PullRequestListItemProps } from './PullRequestListItem'
 
 import './styles.css'
 
 export type Props = {
-  totalPagesCount?: number,
-  activePage?: number,
-  items: Array<PullRequestListItemProps>,
-  isFetching?: boolean,
-  totalNew?: number,
-  totalInProgress?: number,
   total?: number,
+  activePage: number,
+  pageSize: number,
+  items: Array<{
+    id: string,
+  }>,
+  isFetching: boolean,
   error?: string,
   showRemoveButton?: boolean,
   onRemoveClick?: Function,
+  onPageSelect: Function,
 }
 
 function PullRequestList(props: Props) {
   const {
     items,
     activePage,
-    totalPagesCount,
-    isFetching, error,
-    totalInProgress,
+    total,
+    pageSize,
+    isFetching,
+    error,
     showRemoveButton,
     onRemoveClick,
-    total,
-    totalNew } = props
+    onPageSelect } = props
   return (
     <div>
       {isFetching && <LinearProgress />}
       {error && <ErrorMessage error />}
-      <div className="sub-title">
-        {total} total, {totalInProgress} in progress, {totalNew} new
-      </div>
       <List
         items={items}
-        totalPagesCount={totalPagesCount}
+        total={total}
         activePage={activePage}
+        pageSize={pageSize}
+        onPageSelect={onPageSelect}
       >
         {items.map(item => (
           <PullRequestListItem
             key={item.id}
-            {...item}
+            pullRequest={item}
             showRemoveButton={showRemoveButton}
             onRemoveClick={onRemoveClick}
           />

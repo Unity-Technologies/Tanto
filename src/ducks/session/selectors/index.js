@@ -1,23 +1,15 @@
 import { createSelector } from 'reselect'
 import _ from 'lodash'
 
-export const computePullRequestBuilds = (pullrequest: Object): Object => (
-  { ...pullrequest,
-    buildStatus: 'success',
-    buildName: 'ABV-2333',
-    buildDate: '2016-11-14 16:18:36.628916',
-    buildLink: '#',
-  }
-)
+export const getIds = (state) => {
+  const { pages, currentPage } = state
+  return pages[currentPage]
+}
 
-/**
- * Selectors
- */
-
-export const pullRequestsOwnedIdsSelector = state => state.session.pr_ids
-export const pullRequestsAssignedIdsSelector = state => state.session.pr_assigned_ids
-export const pullRequestsWatchingIdsSelector = state => state.session.pr_watching_ids
-export const pullRequestsSelector = state => state.pullrequests.byId
+export const pullRequestsOwnedIdsSelector = state => getIds(state.session.pullRequestsOwned)
+export const pullRequestsAssignedIdsSelector = state => getIds(state.session.pullRequestsAssigned)
+export const pullRequestsWatchingIdsSelector = state => getIds(state.session.pullRequestsWatching)
+export const pullRequestsSelector = state => state.pullrequests.entities
 
 export const pullRequestsOwned = createSelector(
   pullRequestsSelector, pullRequestsOwnedIdsSelector,
