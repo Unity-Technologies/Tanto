@@ -23,9 +23,15 @@ const dataFixture = [
 
 storiesOf('ChangesetGroupedList', module)
   .addDecorator(muiTheme())
-  .add('accordian', () => (
+  .add('accordion', () => (
     <ChangesetGroupedList
       data={dataFixture}
-      accordian
+      accordion
+    />
+  ))
+  .add('no accordion', () => (
+    <ChangesetGroupedList
+      data={dataFixture}
+      accordion={false}
     />
   ))
