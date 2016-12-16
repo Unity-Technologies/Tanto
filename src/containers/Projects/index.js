@@ -11,10 +11,12 @@ import ProjectList from 'components/ProjectList/ProjectList'
 import ErrorMessage from 'components/ErrorMessage'
 import GroupList from 'components/GroupList/GroupList'
 import { fetchProjects, clearProjects } from 'ducks/projects'
+import { fetchRepositories } from 'ducks/repositories'
 import type { GroupType, ProjectType, StateType } from 'ducks/projects'
 import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { helpers, groupPathFromPath, isBaseProjectsPath } from 'routes/helpers'
 
+import { repositories, nestedGroups } from 'ducks/repositories/selectors'
 
 export type Props = {
   isFetching: boolean,
@@ -34,6 +36,7 @@ export class Projects extends Component {
     const { dispatch, pathname } = this.props
     this.props.dispatch(clearProjects())
     this.updateNode(dispatch, pathname)
+    dispatch(fetchRepositories(groupPathFromPath(pathname)))
   }
 
   componentWillReceiveProps(nextProp: any, nextState?: StateType) {
@@ -45,6 +48,7 @@ export class Projects extends Component {
 
   updateNode = (dispatch: Function, pathname: string) => {
     dispatch(fetchProjects(groupPathFromPath(pathname)))
+    dispatch(fetchRepositories(groupPathFromPath(pathname)))
   }
 
   props: Props
@@ -167,11 +171,13 @@ export class Projects extends Component {
 }
 
 export default connect(
-  state => ({
+  (state, props) => ({
     pathname: state.routing.locationBeforeTransitions.pathname,
     isFetching: state.projects.isFetching,
     errors: state.projects.errors || [],
     projects: state.projects.projects,
     groups: state.projects.groups,
+    repositories: repositories(state, props),
+    groups2: nestedGroups(state, props),
   })
 )(Projects)

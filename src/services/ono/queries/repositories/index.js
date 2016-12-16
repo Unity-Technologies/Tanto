@@ -1,5 +1,5 @@
 /* @flow */
-export const GET_TOPLEVEL_PROJECTS_QUERY = `
+export const TOPLEVEL_REPOSITORIES_QUERY = `
 query {
 	repositories {
     nodes {
@@ -8,18 +8,23 @@ query {
       owner {
         fullName
       }
+      groupId
+      groupName
       description
       updated
     }
   }
   groups {
+    id
     name
     path
+    parentGroupName
+    parentGroupId
     description
   }
 }`
 
-export const GET_PROJECTS_QUERY = `
+export const REPOSITORIES_QUERY = `
 query($name: String!) {
 	group(name: $name) {
     repositories {
@@ -31,19 +36,22 @@ query($name: String!) {
         }
         description
         groupId
+        groupName
         updated
       }
     }
     groups {
+      id
       name
       path
+      parentGroupName
+      parentGroupId
       description
     }
   }
 }`
 
-
-export type ProjectType = {
+export type RepositoryType = {
   name: string,
   shortName?: string,
   description: ?string,
@@ -59,48 +67,22 @@ export type GroupType = {
 }
 
 export type ReturnType = {
-  projects: Array<ProjectType>,
+  repositories: Array<RepositoryType>,
   groups: Array<GroupType>,
 }
 
 export function parseRepositories(data: any): ReturnType {
   const root = (data.data.group || data.data)
   return {
-    projects: root.repositories.nodes,
+    repositories: root.repositories.nodes,
     groups: root.groups,
   }
 }
 
-export function parseToplevelProjectsData(data: any): ReturnType {
-  return {
-    projects: data.data.repositories.nodes,
-    groups: data.data.groups,
-  }
-}
-
-function removeBaseName(item: Object, base: string) {
-  const next = item
-  next.shortName = item.name.replace(base, '')
-  return next
-}
-
-export function parseProjectsData(data: any, path: string): ReturnType {
-  let projects
-  let groups
-  if (data.data.group) {
-    projects = data.data.group.repositories.nodes.map(x => removeBaseName(x, `${path}/`))
-    groups = data.data.group.groups.map(x => removeBaseName(x, `${path}/`))
-  } else {
-    projects = []
-    groups = []
-  }
-  return {
-    projects,
-    groups,
-  }
-}
+export const query =
+  (groupName: string): string => (groupName ? REPOSITORIES_QUERY : TOPLEVEL_REPOSITORIES_QUERY)
 
 export const queries = {
-  GET_TOPLEVEL_PROJECTS_QUERY,
-  GET_PROJECTS_QUERY,
+  TOPLEVEL_REPOSITORIES_QUERY,
+  REPOSITORIES_QUERY,
 }

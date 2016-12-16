@@ -6,6 +6,7 @@ import { reducer as formReducer } from 'redux-form'
 
 import breadcrumb from './breadcrumb'
 import projects from './projects'
+import repositories from './repositories'
 import pullRequest from './pullRequest'
 import pullrequests from './pullrequests'
 import session from './session'
@@ -20,4 +21,5 @@ export default combineReducers({
   routing: routerReducer,
   session,
   sidebar,
+  repositories,
 })

@@ -20,7 +20,7 @@ class GroupItem extends Component {
 
   touchTapEventHandler = () => {
     if (this.props.clickHandler) {
-      this.props.clickHandler(this.props.group.name)
+      this.props.clickHandler(this.props.group.path)
     }
   }
 
@@ -32,11 +32,10 @@ class GroupItem extends Component {
 
     const {
       name,
-      shortName,
       description,
     } = group
 
-    const primaryText = shortName || name
+    const primaryText = name
     const secondaryText = description || ''
 
     const listItemWithoutNestedStyle = {

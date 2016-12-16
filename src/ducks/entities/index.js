@@ -14,18 +14,22 @@ export const actions = {
   sendingRequest: (sending: boolean) => ({ type: types.SENDING_REQUEST, sending }),
   requestError: (error: string) => ({ type: types.REQUEST_ERROR, error }),
   clearError: () => ({ type: types.CLEAR_ERROR }),
-  setEntities: (nodes) => ({ type: types.SET, nodes }),
+  setEntities: (nodes, idAttribute: string = 'id') => ({ type: types.SET, nodes, idAttribute }),
 }
 
-export const mergeEntities =
-  (state = {}, action) => (action.nodes ? _.merge({}, state, action.nodes) : state)
+export const mergeEntities = (state = {}, action) => {
+  if (action.nodes) {
+    const nodes = reduceArrayToObj(action.nodes, action.idAttribute)
+    const updatedState = _.merge({}, state, nodes)
+    return _.isEqual(updatedState, state) ? state : updatedState
+  }
+  return state
+}
 
 export const entities = (state = {}, action) => {
   switch (action.type) {
-    case types.SET: {
-      const updatedState = mergeEntities(state, { nodes: reduceArrayToObj(action.nodes) })
-      return _.isEqual(updatedState, state) ? state : updatedState
-    }
+    case types.SET:
+      return mergeEntities(state, action)
     default:
       return state
   }
