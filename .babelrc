@@ -4,8 +4,7 @@
   "plugins": [
     "lodash",
     "transform-runtime",
-    "add-module-exports",
-    "transform-decorators-legacy"
+    "add-module-exports"
   ],
 
   "env": {
