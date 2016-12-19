@@ -1,6 +1,8 @@
 /* @flow */
+/* eslint-disable  import/no-extraneous-dependencies */
 
 import type { RepositoryType, GroupType } from 'services/ono/queries/projects'
+export type { RepositoryType, GroupType } from 'services/ono/queries/projects'
 import {
   isFetching,
   error,
@@ -17,7 +19,6 @@ export const types = {
   SET_GROUPS: 'REPOSITORIES/SET_GROUPS',
   FETCH_REPOSITORIES: 'REPOSITORIES/FETCH_REPOSITORIES',
 }
-
 
 /**
  * Initial state
@@ -45,8 +46,7 @@ export type RepositoryStateType = {
   entities: RepositoryDictionary,
 }
 
-
-export const groups = (state = {}, action) => {
+export const groups = (state: Object= {}, action: Object): Object => {
   switch (action.type) {
     case types.SET_GROUPS:
       return mergeEntities(state, entitiesActions.setEntities(action.nodes))
@@ -78,9 +78,10 @@ export default (
 }
 
 export const setRepositories =
-  (nodes: Array<RepositoryType>) => ({ type: types.SET_REPOSITORIES, nodes })
-export const setGroups = (nodes: Array<GroupType>) => ({ type: types.SET_GROUPS, nodes })
-export const fetchRepositories = (name: string) => ({ type: types.FETCH_REPOSITORIES, name })
+  (nodes: Array<RepositoryType>): Object => ({ type: types.SET_REPOSITORIES, nodes })
+export const setGroups = (nodes: Array<GroupType>): Object => ({ type: types.SET_GROUPS, nodes })
+export const fetchRepositories =
+  (name: string): Object => ({ type: types.FETCH_REPOSITORIES, name })
 
 /**
  * Actions

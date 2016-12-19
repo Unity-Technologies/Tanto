@@ -77,9 +77,9 @@ export const actions = {
   fetchUserPullRequests:
     (page: number, pageSize: number) => ({ type: types.FETCH_USER_PULL_REQUESTS, page, pageSize }),
   fetchUserAssignedPullRequests:
-    (page: number, pageSize: number) =>
+    (page: number, pageSize: number): Object =>
       ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, page, pageSize }),
   fatchUserWatchingPullRequests:
-    (page: number, pageSize: number) =>
+    (page: number, pageSize: number): Object =>
       ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS, page, pageSize }),
 }
