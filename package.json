@@ -9,7 +9,7 @@
     "check-ci": "yarn run check && yarn run build",
     "clean": "rm -rf static/dist",
     "dev": "concurrently --kill-others \"npm run watch-client\" \"npm run start-dev\"",
-    "flow": "flow --show-all-errors; test $? -eq 0 -o $? -eq 2",
+    "flow": "flow --show-all-errors",
     "lint": "eslint . --fix",
     "start-dev": "better-npm-run start-dev",
     "start-prod": "better-npm-run start-prod",
