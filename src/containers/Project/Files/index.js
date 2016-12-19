@@ -1,4 +1,4 @@
-// TODO: add flow annotations
+/* @flow */
 
 import React, { Component } from 'react'
 import urljoin from 'url-join'
@@ -11,12 +11,6 @@ import { connect } from 'react-redux'
 import { FileList, BranchSelect, Filter } from 'components'
 import Breadcrumb from 'components/Breadcrumb'
 import { breadcrumbItems } from 'routes/helpers'
-
-import {
-  BREADCRUMB_PUSH_LINK,
-  BREADCRUMB_CLEAN,
-  BREADCRUMB_UPDATE,
-} from 'ducks/breadcrumb'
 
 import { projectFilesTestData, changesets } from '../../../api/testData'
 
@@ -33,22 +27,15 @@ export type Props = {
 class Files extends Component {
   constructor(props: Props) {
     super(props)
-    this.clickHandler = this.clickHandler.bind(this)
-    this.findChild = this.findChild.bind(this)
-    this.updateCurrentNode = this.updateCurrentNode.bind(this)
     this.state = { currentNode: this.props.data }
   }
 
   componentDidMount() {
-    if (this.props.pathname.endsWith('/files')) {
-      this.props.dispatch({ type: BREADCRUMB_CLEAN })
-    }
     this.updateCurrentNode(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.pathname.endsWith('/files')) {
-      this.props.dispatch({ type: BREADCRUMB_CLEAN })
       if (this.state) {
         this.setState({ currentNode: nextProps.data })
       } else {
@@ -59,26 +46,19 @@ class Files extends Component {
     }
   }
 
-  updateCurrentNode(nextProps) {
-    const { params: { splat }, dispatch, location: { pathname } } = nextProps
+  updateCurrentNode = (nextProps) => {
+    const { params: { splat } } = nextProps
     if (splat) {
       const nestedItem = this.findChild(nextProps.data, splat.split('/'))
       if (nestedItem) {
         this.setState({ currentNode: nestedItem.children })
       }
     }
-
-    const index = pathname.lastIndexOf('files')
-    const items = pathname.slice(index).split('/').filter(Boolean)
-    dispatch({
-      type: BREADCRUMB_UPDATE,
-      result: items.length > 1 ? items.length - 1 : 0,
-    })
   }
 
   props: Props
 
-  findChild(nodes, path) {
+  findChild = (nodes, path) => {
     if (!nodes.length || !path.length) {
       return parent
     }
@@ -93,7 +73,7 @@ class Files extends Component {
     return item
   }
 
-  clickHandler(item) {
+  clickHandler = (item) => {
     const { location: { pathname }, dispatch } = this.props
 
     const nestedItem = _.find(this.state.currentNode, { id: item.id })
@@ -101,11 +81,7 @@ class Files extends Component {
       this.setState({ currentNode: nestedItem.children })
     }
     const link = urljoin(pathname, item.name)
-    const result = {
-      label: item.name,
-      link,
-    }
-    dispatch({ type: BREADCRUMB_PUSH_LINK, result })
+
     dispatch(push(link))
   }
 

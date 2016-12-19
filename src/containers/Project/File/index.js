@@ -29,10 +29,9 @@ class File extends Component {
   constructor(props: Props) {
     super(props)
     this.state = { code: props.file, comments: [] }
-    this.onSaveComment = this.onSaveComment.bind(this)
   }
 
-  onSaveComment(message) {
+  onSaveComment = (message) => {
     const comments = this.state.comments
     comments.push({
       id: _.uniqueId(),
