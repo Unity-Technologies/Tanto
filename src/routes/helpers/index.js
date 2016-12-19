@@ -1,22 +1,11 @@
 /* @flow */
 
-export const helpers = {
-  buildPullRequestLink:
-    (projectName: string, id: string): string => (`/${projectName}/pullrequests/${id}`),
-  buildProjectLink:
-    (projectName: string, branch:string): string => (`/${projectName}?branch=${branch}`),
-  buildProjectLinkNoBranch:
-    (projectName: string): string => (`/project/${projectName}`),
-  buildProjectsLink:
-    (suffix: string): string => (`/projects/${suffix}`),
-}
-
 type LinkType = {
   link: string,
   label: string
 }
 
-export function breadcrumbItems(pathname: string): Array<LinkType> {
+export const breadcrumbItems = (pathname: string): Array<LinkType> => {
   const items = pathname.split('/').filter(entry => entry.trim() !== '')
   let path = ''
   return items.map(x => {
@@ -25,10 +14,21 @@ export function breadcrumbItems(pathname: string): Array<LinkType> {
   })
 }
 
-export function groupPathFromPath(path: string) {
-  return path.replace(/^\/projects(\/)?/, '')
-}
+export const groupPathFromPath = (path: string): string => path.replace(/^\/projects(\/)?/, '')
+export const buildPullRequestLink =
+  (projectName: string, id: string): string => (`/${projectName}/pullrequests/${id}`)
+export const buildProjectLink =
+  (projectName: string, branch: string): string => (`/${projectName}?branch=${branch}`)
+export const buildProjectLinkNoBranch =
+  (projectName: string): string => (`/project/${projectName}`)
+export const buildProjectsLink =
+  (suffix: string): string => (`/projects/${suffix}`)
 
-export function isBaseProjectsPath(path: string) {
-  return path === '/projects' || path === '/projects'
+export const helpers = {
+  buildPullRequestLink,
+  buildProjectLink,
+  buildProjectLinkNoBranch,
+  buildProjectsLink,
+  groupPathFromPath,
+  breadcrumbItems,
 }
