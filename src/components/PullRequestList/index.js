@@ -37,7 +37,7 @@ function PullRequestList(props: Props) {
   return (
     <div>
       {isFetching && <LinearProgress />}
-      {error && <ErrorMessage error />}
+      {error && <ErrorMessage text={error} />}
       <List
         items={items}
         total={total}

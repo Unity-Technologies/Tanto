@@ -45,7 +45,7 @@ export default connect(
     activePage: state.session.pullRequestsAssigned.currentPage,
     total: state.session.pullRequestsAssigned.total,
     isFetching: state.pullrequests.isFetching,
-    error: state.pullrequests.error,
+    error: state.pullrequests.error ? state.pullrequests.error.message : null,
     items: sessionSelectors.getPullRequestsAssigned(state) || [],
   })
 )(AssignedPullRequestList)

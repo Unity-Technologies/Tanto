@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import ProjectList from 'components/ProjectList/ProjectList'
 import ErrorMessage from 'components/ErrorMessage'
 import GroupList from 'components/GroupList/GroupList'
+import LinearProgress from 'material-ui/LinearProgress'
 import { fetchRepositories } from 'ducks/repositories'
 import type { GroupType, ProjectType, StateType } from 'ducks/projects'
 import { helpers, groupPathFromPath } from 'routes/helpers'
@@ -64,14 +65,15 @@ export class Projects extends Component {
   }
 
   render() {
-    const { isFetching, errors, projects, theme, groups } = this.props
+    const { isFetching, error, projects, theme, groups } = this.props
     const breadcrumbItems = this.breadcrumbItems()
 
     return (
       <div>
         <Helmet title="Projects" />
         <Breadcrumb items={breadcrumbItems} />
-
+        {isFetching && <LinearProgress />}
+        {error && <ErrorMessage text={error} />}
         <GroupList
           groups={groups}
           valueProp="id"
@@ -93,17 +95,9 @@ export class Projects extends Component {
           {...theme}
         />
       {!isFetching && !projects.length &&
-       !groups.length && !errors.length &&
+       !groups.length && !error &&
         <div style={{ textAlign: 'center', padding: '10%' }} >
           <h4>NO PROJECTS</h4>
-        </div>
-      }
-
-      {!!errors.length &&
-        <div style={{ textAlign: 'center', padding: '10%' }}>
-          {errors.map(item =>
-            <ErrorMessage error={item} />
-          )}
         </div>
       }
       </div>
@@ -115,7 +109,7 @@ export default connect(
   (state, props) => ({
     pathname: state.routing.locationBeforeTransitions.pathname,
     isFetching: state.repositories.isFetching,
-    errors: state.repositories.errors || [],
+    error: state.repositories.error ? state.repositories.error.message : null,
     projects: repositories(state, props),
     groups: groupsSelector(state, props),
   })

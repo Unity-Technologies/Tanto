@@ -1,22 +1,15 @@
 /* @flow */
 
 import React from 'react'
-import Paper from 'material-ui/Paper'
-import ErrorIcon from 'material-ui/svg-icons/alert/error'
-import { red500 } from 'material-ui/styles/colors'
+import { Alert } from 'react-bootstrap'
 
-export type Props = { error: string };
+export type Props = { text: string }
 
-function ErrorMessage({ error }: Props) {
+function ErrorMessage({ text }: Props) {
   return (
-    <Paper style={{ padding: '20px' }}>
-      <div style={{ float: 'left' }}>
-        <ErrorIcon color={red500} />
-      </div>
-      <div>
-        {error}
-      </div>
-    </Paper>
+    <Alert bsStyle="danger" style={{ fontSize: '13px' }}>
+      <strong><i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong> {text}
+    </Alert>
   )
 }
 
