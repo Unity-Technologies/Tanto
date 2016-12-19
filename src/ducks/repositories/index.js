@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { ProjectType, GroupType } from 'services/ono/queries/projects'
+import type { RepositoryType, GroupType } from 'services/ono/queries/projects'
 import {
   isFetching,
   error,
@@ -78,7 +78,7 @@ export default (
 }
 
 export const setRepositories =
-  (nodes: Array<ProjectType>) => ({ type: types.SET_REPOSITORIES, nodes })
+  (nodes: Array<RepositoryType>) => ({ type: types.SET_REPOSITORIES, nodes })
 export const setGroups = (nodes: Array<GroupType>) => ({ type: types.SET_GROUPS, nodes })
 export const fetchRepositories = (name: string) => ({ type: types.FETCH_REPOSITORIES, name })
 

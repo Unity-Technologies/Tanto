@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Divider from 'material-ui/Divider'
 import { ListItem } from 'material-ui/List'
-import type { ProjectType } from 'ducks/projects'
+import type { RepositoryType } from 'ducks/repositories'
 
 const subHeader = text => (
   <div
@@ -19,7 +19,7 @@ const subHeader = text => (
 type Props = {
   clickHandler?: Function,
   inset: number,
-  project: ProjectType,
+  project: RepositoryType,
 }
 
 class ProjectItem extends Component {

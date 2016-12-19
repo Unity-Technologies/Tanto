@@ -9,7 +9,7 @@ import ErrorMessage from 'components/ErrorMessage'
 import GroupList from 'components/GroupList/GroupList'
 import LinearProgress from 'material-ui/LinearProgress'
 import { fetchRepositories } from 'ducks/repositories'
-import type { GroupType, ProjectType, StateType } from 'ducks/projects'
+import type { GroupType, RepositoryType, StateType } from 'ducks/repositories'
 import { helpers, groupPathFromPath, breadcrumbItems } from 'routes/helpers'
 import { repositories, groups as groupsSelector } from 'ducks/repositories/selectors'
 import Breadcrumb from 'components/Breadcrumb'
@@ -17,7 +17,7 @@ import Breadcrumb from 'components/Breadcrumb'
 export type Props = {
   isFetching: boolean,
   errors: Array<any>,
-  projects: Array<ProjectType>,
+  projects: Array<RepositoryType>,
   groups: Array<GroupType>,
   dispatch: Function,
   theme: Object,
