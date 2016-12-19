@@ -1,4 +1,3 @@
-/* @flow */
 /* eslint-disable max-len */
 
 import reducer, { actions, types, DEVELOPER_PERSONA } from '../index'

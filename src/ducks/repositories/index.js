@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint-disable  import/no-extraneous-dependencies */
 
-import type { RepositoryType, GroupType } from 'services/ono/queries/projects'
-export type { RepositoryType, GroupType } from 'services/ono/queries/projects'
+import type { RepositoryType, GroupType } from 'services/ono/queries/repositories'
+export type { RepositoryType, GroupType } from 'services/ono/queries/repositories'
 import {
   isFetching,
   error,
@@ -28,7 +28,6 @@ const initialState = {
   isFetching: false,
   entities: {},
   groups: {},
-  routes: {},
 }
 
 export type RepositoryDictionary = {
@@ -39,12 +38,13 @@ export type GroupDictionary = {
   [name: string]: Object
 }
 
-export type RepositoryStateType = {
-  error: ?string,
+export type StateType = {
+  error: ?Object,
   isFetching: boolean,
   groups: GroupDictionary,
   entities: RepositoryDictionary,
 }
+
 
 export const groups = (state: Object= {}, action: Object): Object => {
   switch (action.type) {
@@ -66,12 +66,10 @@ export const entitiesReducer = combineReducers({
  * Repositories reducer
  */
 export default (
-  state: RepositoryStateType = initialState, action: Object): RepositoryStateType => {
+  state: StateType = initialState, action: Object): StateType => {
   switch (action.type) {
     case types.SET_REPOSITORIES:
       return entitiesReducer(state, entitiesActions.setEntities(action.nodes))
-    case types.FETCH_REPOSITORIES:
-      return entitiesReducer(state, action)
     default:
       return entitiesReducer(state, action)
   }

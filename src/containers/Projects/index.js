@@ -16,11 +16,12 @@ import Breadcrumb from 'components/Breadcrumb'
 
 export type Props = {
   isFetching: boolean,
-  errors: Array<any>,
+  error: string,
   projects: Array<RepositoryType>,
   groups: Array<GroupType>,
   dispatch: Function,
   theme: Object,
+  style: Object,
   pathname: string,
   breadcrumbItems: Array<Object>
 }
@@ -62,7 +63,7 @@ export class Projects extends Component {
     return (
       <div>
         <Helmet title="Projects" />
-        <Breadcrumb items={items} />
+        <Breadcrumb items={items} skip={0} />
         {isFetching && <LinearProgress />}
         {error && <ErrorMessage text={error} />}
         <GroupList

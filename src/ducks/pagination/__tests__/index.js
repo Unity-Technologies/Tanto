@@ -1,5 +1,3 @@
-/* @flow */
-
 import chai from 'chai'
 import {
   pages,

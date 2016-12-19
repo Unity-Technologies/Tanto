@@ -46,7 +46,6 @@ describe('repositories reducer', () => {
       isFetching: false,
       entities: {},
       groups: {},
-      routes: {},
     }
 
     expect(reducer(undefined, {})).to.eql(initialState)
@@ -103,11 +102,11 @@ describe('repositories reducer', () => {
     expect(reducer({}, actions.setGroups(nodes))).to.containSubset(state)
   })
 
-  it('should handle FETCH_REPOSITORIES', () => {
+  it('should handle ANY action by entities reducer', () => {
     const name = 'groupname'
 
     const action = {
-      type: types.FETCH_REPOSITORIES,
+      type: 'ANY',
       name,
     }
     const state = entitiesReducer({}, action)

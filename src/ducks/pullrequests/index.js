@@ -22,7 +22,7 @@ export const types = {
  * Initial state
  */
 const initialState = {
-  error: null,
+  error: {},
   isFetching: false,
   entities: {},
   pagination: {
@@ -37,10 +37,18 @@ export type PullRequestDictionary = {
   [id: string]: Object
 }
 
+export type PaginationType = {
+  total: number,
+  pages: Object,
+  pageSize: number,
+  currentPage: number,
+}
+
 export type PullRequestsStateType = {
-  error: ?string,
+  error: Object,
   isFetching: boolean,
   entities: PullRequestDictionary,
+  pagination: Object,
 }
 
 export const entitiesReducer = combineReducers({

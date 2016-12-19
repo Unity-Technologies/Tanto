@@ -5,10 +5,9 @@ import Divider from 'material-ui/Divider'
 import Avatar from 'material-ui/Avatar'
 import FileFolder from 'material-ui/svg-icons/file/folder'
 import { ListItem } from 'material-ui/List'
-import type { GroupType } from 'ducks/repositories'
 
 export type Props = {
-  group: GroupType,
+  group: Object,
   inset: number,
   clickHandler?: Function,
 }

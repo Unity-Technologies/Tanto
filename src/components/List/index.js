@@ -1,4 +1,5 @@
-/* @flow */
+// TODO: enable flow, issue for components that use props.children
+// https://github.com/facebook/flow/issues/1820
 
 import React, { Component } from 'react'
 import { ListGroup, Pagination } from 'react-bootstrap'
@@ -8,7 +9,8 @@ export type Props = {
   pageSize: number,
   total: number,
   activePage: number,
-  onPageSelect?: Function,
+  children: any,
+  onPageSelect: Function,
 }
 
 class List extends Component {

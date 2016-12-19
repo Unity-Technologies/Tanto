@@ -7,28 +7,21 @@ import _ from 'lodash'
 
 import './styles.css'
 
-type LinkType = {
-  link: string,
-  label: string,
-  active: boolean,
-}
-
 export type Props = {
-  items: Array<LinkType>,
-  style: Object,
-  skip: number,
+  items: Array<Object>,
+  skip: ?number,
 }
 
 export const Breadcrumb = (props: Props) => {
-  const { items, style, skip } = props
-  if (skip > 0) {
+  const { items, skip } = props
+  if (skip && skip > 0) {
     items.splice(0, skip)
   }
   items[items.length - 1].active = true
   return (
     <div>
       {items && items.length > 0 &&
-        <BootstrapBreadcrumb style={style}>
+        <BootstrapBreadcrumb>
           {items.map(item => (
             <BootstrapBreadcrumb.Item
               className={item.active ? 'active' : ''}

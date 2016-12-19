@@ -54,14 +54,13 @@ class ProjectItem extends Component {
     const {
       owner,
       name,
-      shortName,
       description,
       id,
       updated,
     } = project
 
     const ownerName = owner.fullName
-    const primaryText = shortName || name
+    const primaryText = name
     const secondaryText = description || ''
     const diff = moment(updated).fromNow()
 

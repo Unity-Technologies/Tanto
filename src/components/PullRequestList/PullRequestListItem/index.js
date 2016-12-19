@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: fix flow for build property
 
 import React, { Component } from 'react'
 import { Col, Row, ListGroupItem } from 'react-bootstrap'
@@ -19,7 +19,7 @@ export type Props = {
   pullRequest: PullRequestGraphType,
   // TODO: replace with the build type in the future
   build: Object,
-  showRemoveIcon: boolean,
+  showRemoveButton: boolean,
 }
 
 class PullRequestListItem extends Component {
@@ -32,7 +32,7 @@ class PullRequestListItem extends Component {
   }
 
   render() {
-    const { pullRequest, build, showRemoveIcon } = this.props
+    const { pullRequest, build, showRemoveButton } = this.props
 
     return (
       <ListGroupItem className={`${pullRequest.status.replace('_', '-')}-status`}>
@@ -91,7 +91,7 @@ class PullRequestListItem extends Component {
               </div>
             </Col>
           }
-          {showRemoveIcon &&
+          {showRemoveButton &&
             <Col md={build ? 1 : 3} style={{ float: 'right' }}>
               <div
                 onClick={this.handleRemoveClick}

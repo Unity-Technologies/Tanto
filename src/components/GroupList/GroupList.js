@@ -3,10 +3,9 @@
 import React from 'react'
 import { List } from 'material-ui/List'
 import GroupItem from './GroupItem'
-import type { GroupType } from 'ducks/repositories'
 
 export type Props = {
-  groups: Array<GroupType>,
+  groups: Array<Object>,
   clickHandler: Function,
 }
 

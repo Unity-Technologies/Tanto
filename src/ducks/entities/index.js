@@ -18,7 +18,7 @@ export const actions = {
     ({ type: types.SET, nodes, idAttribute }),
 }
 
-export const mergeEntities = (state:Object = {}, action: Object): Object => {
+export const mergeEntities = (state: Object = {}, action: Object): Object => {
   if (action.nodes) {
     const nodes = reduceArrayToObj(action.nodes, action.idAttribute)
     const updatedState = _.merge({}, state, nodes)
@@ -27,7 +27,7 @@ export const mergeEntities = (state:Object = {}, action: Object): Object => {
   return state
 }
 
-export const entities = (state:Object = {}, action:Object): Object => {
+export const entities = (state: Object = {}, action: Object): Object => {
   switch (action.type) {
     case types.SET:
       return mergeEntities(state, action)

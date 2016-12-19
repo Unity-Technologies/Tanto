@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: enable flow
 
 import React, { Component } from 'react'
 import urljoin from 'url-join'
@@ -27,7 +27,7 @@ export type Props = {
 class Files extends Component {
   constructor(props: Props) {
     super(props)
-    this.state = { currentNode: this.props.data }
+    this.state = { currentNode: this.props.data || {} }
   }
 
   componentDidMount() {

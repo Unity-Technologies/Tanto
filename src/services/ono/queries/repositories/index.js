@@ -51,7 +51,6 @@ query($name: String!) {
 
 export type RepositoryType = {
   name: string,
-  shortName?: string,
   description: ?string,
   id: string,
   owner: { fullName: string },
@@ -60,7 +59,7 @@ export type RepositoryType = {
 
 export type GroupType = {
   name: string,
-  shortName?: string,
+  path: string,
   description: ?string,
 }
 

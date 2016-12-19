@@ -13,6 +13,7 @@ export type Props = {
   dispatch: Function,
   activePage: number,
   pageSize: number,
+  isFetching: boolean,
   total: number,
   items: Array<any>,
 }

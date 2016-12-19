@@ -1,4 +1,4 @@
-/* @flow */
+// TODO: enable flow
 
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
