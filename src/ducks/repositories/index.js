@@ -27,6 +27,7 @@ const initialState = {
   isFetching: false,
   entities: {},
   groups: {},
+  routes: {},
 }
 
 export type RepositoryDictionary = {

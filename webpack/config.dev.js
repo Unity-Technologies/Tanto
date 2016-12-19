@@ -9,7 +9,7 @@ const port = (+process.env.PORT + 1) || 3001
 const baseConfig = require('./config.base')
 
 module.exports = Object.assign({}, baseConfig.config, {
-  devtool: 'eval',
+  devtool: 'inline-source-map',
   entry: {
     main: [
       `webpack-hot-middleware/client?path=http://${host}:${port}/__webpack_hmr`,

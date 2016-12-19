@@ -8,7 +8,7 @@ query {
       owner {
         fullName
       }
-      groupId
+      groupPath
       groupName
       description
       updated
@@ -19,7 +19,6 @@ query {
     name
     path
     parentGroupName
-    parentGroupId
     description
   }
 }`
@@ -35,7 +34,7 @@ query($name: String!) {
           fullName
         }
         description
-        groupId
+        groupPath
         groupName
         updated
       }
@@ -45,7 +44,6 @@ query($name: String!) {
       name
       path
       parentGroupName
-      parentGroupId
       description
     }
   }

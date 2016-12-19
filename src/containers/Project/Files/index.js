@@ -9,8 +9,8 @@ import { Col, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { Sticky, StickyContainer } from 'react-sticky'
 
-import { FileList, BranchSelect, Filter } from 'components'
-import ReduxBreadcrumb from 'containers/ReduxBreadcrumb'
+import { FileList, BranchSelect, Filter, Breadcrumb } from 'components'
+
 import {
   BREADCRUMB_PUSH_LINK,
   BREADCRUMB_CLEAN,
@@ -26,6 +26,7 @@ export type Props = {
   dispatch: Function,
   location: Object,
   params: Object,
+  breadcrumbItems: Array<Object>,
 };
 
 class Files extends Component {
@@ -108,7 +109,7 @@ class Files extends Component {
   }
 
   render() {
-    const { params: { id } } = this.props
+    const { params: { id }, breadcrumbItems } = this.props
     return (
       <div>
         <Helmet title="Files" />
@@ -177,7 +178,7 @@ class Files extends Component {
           </Sticky>
 
           <div>
-            <ReduxBreadcrumb />
+            <Breadcrumb items={breadcrumbItems} />
           </div>
           <FileList
             data={this.state.currentNode}
@@ -192,4 +193,5 @@ class Files extends Component {
 export default connect(state => ({
   pathname: state.routing.locationBeforeTransitions.pathname,
   data: projectFilesTestData,
+  breadcrumbItems: state.breadcrumb.items,
 }))(Files)
