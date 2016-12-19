@@ -9,5 +9,5 @@ import ErrorMessage from './index.js'
 storiesOf('ErrorMessage', module)
   .addDecorator(muiTheme())
   .add('default', () => (
-    <ErrorMessage error={'lorem ipsum'} />
+    <ErrorMessage text={'lorem ipsum'} />
   ))
