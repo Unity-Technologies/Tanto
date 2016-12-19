@@ -10,7 +10,7 @@ import GroupList from 'components/GroupList/GroupList'
 import LinearProgress from 'material-ui/LinearProgress'
 import { fetchRepositories } from 'ducks/repositories'
 import type { GroupType, ProjectType, StateType } from 'ducks/projects'
-import { helpers, groupPathFromPath } from 'routes/helpers'
+import { helpers, groupPathFromPath, breadcrumbItems } from 'routes/helpers'
 import { repositories, groups as groupsSelector } from 'ducks/repositories/selectors'
 import Breadcrumb from 'components/Breadcrumb'
 
@@ -49,15 +49,6 @@ export class Projects extends Component {
     this.props.dispatch(push(path))
   }
 
-  breadcrumbItems = () => {
-    const items = this.props.pathname.split('/').filter(entry => entry.trim() !== '')
-    let path = ''
-    return items.map(x => {
-      path = path.concat('/', x)
-      return { link: path, label: x }
-    })
-  }
-
   projectClickHandler = (projectName: string) => {
     const { dispatch } = this.props
     const path = helpers.buildProjectLinkNoBranch(projectName)
@@ -65,13 +56,13 @@ export class Projects extends Component {
   }
 
   render() {
-    const { isFetching, error, projects, theme, groups } = this.props
-    const breadcrumbItems = this.breadcrumbItems()
+    const { isFetching, error, projects, theme, groups, pathname } = this.props
+    const items = breadcrumbItems(pathname)
 
     return (
       <div>
         <Helmet title="Projects" />
-        <Breadcrumb items={breadcrumbItems} />
+        <Breadcrumb items={items} />
         {isFetching && <LinearProgress />}
         {error && <ErrorMessage text={error} />}
         <GroupList

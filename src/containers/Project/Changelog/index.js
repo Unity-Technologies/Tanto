@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 import { BranchSelect, ChangesetList } from 'components'
 import { connect } from 'react-redux'
 import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
-import { Sticky, StickyContainer } from 'react-sticky'
 
 import { prChangesetList3, prChangesetList1, prChangesetList2 } from '../../../api/testPullRequest'
 
@@ -99,67 +98,56 @@ class Changelog extends Component {
 
     const { params: { id }, data } = this.props
     return (
-      <StickyContainer>
-        <Sticky
-          style={{
-            zIndex: 1030,
-            backgroundColor: '#f8f8f8',
-            marginBottom: '20px',
-            border: '1px solid rgb(226, 226, 226)',
-            borderRadius: '4px',
-          }}
-        >
-          <div style={{ padding: '10px' }}>
-            <Row>
-              <Col md={4}>
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    border: '1px solid lightgrey',
-                    borderRadius: '5px',
-                    padding: '7px',
-                    width: '100%',
-                    backgroundColor: 'white' }}
+      <div>
+        <div style={{ padding: '10px' }}>
+          <Row>
+            <Col md={4}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  border: '1px solid lightgrey',
+                  borderRadius: '5px',
+                  padding: '7px',
+                  width: '100%',
+                  backgroundColor: 'white' }}
+              >
+                <span
+                  style={{ pagging: '10px', color: 'grey' }}
                 >
-                  <span
-                    style={{ pagging: '10px', color: 'grey' }}
-                  >
-                    <i className="fa fa-search" aria-hidden="true" />
-                  </span>
-                  <input
-                    type="text"
-                    style={{
-                      outline: 'none',
-                      border: 'none',
-                      marginLeft: '10px',
-                      fontSize: '14px',
-                      width: '100%' }}
-                  />
+                  <i className="fa fa-search" aria-hidden="true" />
+                </span>
+                <input
+                  type="text"
+                  style={{
+                    outline: 'none',
+                    border: 'none',
+                    marginLeft: '10px',
+                    fontSize: '14px',
+                    width: '100%' }}
+                />
 
-                </div>
-              </Col>
+              </div>
+            </Col>
 
-              <Col md={4}>
-                <BranchSelect project={id} placeholder="Select branch ..." />
-              </Col>
+            <Col md={4}>
+              <BranchSelect project={id} placeholder="Select branch ..." />
+            </Col>
 
 
-              <Col md={4}>
-                <ButtonGroup style={{ float: 'right' }}>
-                  <Button style={showChangesButtonStyle}>
-                    Show
-                  </Button>
-                  <Button style={openPrButtonStyle}>
-                    Open Pull
-                  </Button>
-                </ButtonGroup>
-              </Col>
-            </Row>
-          </div>
-
-        </Sticky>
+            <Col md={4}>
+              <ButtonGroup style={{ float: 'right' }}>
+                <Button style={showChangesButtonStyle}>
+                  Show
+                </Button>
+                <Button style={openPrButtonStyle}>
+                  Open Pull
+                </Button>
+              </ButtonGroup>
+            </Col>
+          </Row>
+        </div>
         <ChangesetList showCheckboxes data={data} />
-      </StickyContainer>
+      </div>
     )
   }
 }

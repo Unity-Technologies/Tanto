@@ -7,9 +7,10 @@ import Helmet from 'react-helmet'
 import { push } from 'react-router-redux'
 import { Col, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { Sticky, StickyContainer } from 'react-sticky'
 
-import { FileList, BranchSelect, Filter, Breadcrumb } from 'components'
+import { FileList, BranchSelect, Filter } from 'components'
+import Breadcrumb from 'components/Breadcrumb'
+import { breadcrumbItems } from 'routes/helpers'
 
 import {
   BREADCRUMB_PUSH_LINK,
@@ -109,82 +110,69 @@ class Files extends Component {
   }
 
   render() {
-    const { params: { id }, breadcrumbItems } = this.props
+    const { params: { id }, pathname } = this.props
+    const items = breadcrumbItems(pathname)
     return (
       <div>
         <Helmet title="Files" />
-        <StickyContainer>
-          <Sticky
-            style={{
-              zIndex: 1030,
-              backgroundColor: '#f8f8f8',
-              marginBottom: '20px',
-              border: '1px solid rgb(226, 226, 226)',
-              borderRadius: '4px',
-            }}
-          >
-            <div style={{ padding: '10px' }}>
-              <Row>
-                <Col md={4}>
-                  <div
-                    style={{
-                      display: 'inline-flex',
-                      border: '1px solid lightgrey',
-                      borderRadius: '5px',
-                      padding: '7px',
-                      width: '100%',
-                      backgroundColor: 'white' }}
-                  >
-                    <span
-                      style={{ pagging: '10px', color: 'grey' }}
-                    >
-                      <i className="fa fa-search" aria-hidden="true" />
-                    </span>
-                    <input
-                      type="text"
-                      style={{
-                        outline: 'none',
-                        border: 'none',
-                        marginLeft: '10px',
-                        fontSize: '14px',
-                        width: '100%' }}
-                    />
+        <div style={{ padding: '10px' }}>
+          <Row>
+            <Col md={4}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  border: '1px solid lightgrey',
+                  borderRadius: '5px',
+                  padding: '7px',
+                  width: '100%',
+                  backgroundColor: 'white' }}
+              >
+                <span
+                  style={{ pagging: '10px', color: 'grey' }}
+                >
+                  <i className="fa fa-search" aria-hidden="true" />
+                </span>
+                <input
+                  type="text"
+                  style={{
+                    outline: 'none',
+                    border: 'none',
+                    marginLeft: '10px',
+                    fontSize: '14px',
+                    width: '100%' }}
+                />
 
-                  </div>
-                </Col>
+              </div>
+            </Col>
 
 
-                <Col md={7}>
-                  <div style={{ display: 'inline-flex' }}>
-                    <div style={{ width: '270px', marginRight: '5px' }}>
-                      <BranchSelect project={id} placeholder="Select branch ..." />
-                    </div>
-                    <Filter data={changesets} placeholder="Select changeset..." />
-                  </div>
-                </Col>
-                <Col md={1}>
-                  <div style={{ float: 'right' }}><a
-                    className="btn"
-                    style={{
-                      color: 'white',
-                      backgroundColor: '#3dc5a0' }} aria-label="Download"
-                  >
-                    <i className="fa fa-download" aria-hidden="true" />
-                  </a>
-                  </div>
-                </Col>
-              </Row>
-            </div>
-          </Sticky>
+            <Col md={7}>
+              <div style={{ display: 'inline-flex' }}>
+                <div style={{ width: '270px', marginRight: '5px' }}>
+                  <BranchSelect project={id} placeholder="Select branch ..." />
+                </div>
+                <Filter data={changesets} placeholder="Select changeset..." />
+              </div>
+            </Col>
+            <Col md={1}>
+              <div style={{ float: 'right' }}><a
+                className="btn"
+                style={{
+                  color: 'white',
+                  backgroundColor: '#3dc5a0' }} aria-label="Download"
+              >
+                <i className="fa fa-download" aria-hidden="true" />
+              </a>
+              </div>
+            </Col>
+          </Row>
+        </div>
+        <Breadcrumb items={items} skip={2} />
 
-          <div>
-            <Breadcrumb items={breadcrumbItems} />
-          </div>
-          <FileList
-            data={this.state.currentNode}
-            onFileClick={this.clickHandler}
-          />
-        </StickyContainer>
+        <FileList
+          data={this.state.currentNode}
+          onFileClick={this.clickHandler}
+        />
       </div>
     )
   }
@@ -193,5 +181,4 @@ class Files extends Component {
 export default connect(state => ({
   pathname: state.routing.locationBeforeTransitions.pathname,
   data: projectFilesTestData,
-  breadcrumbItems: state.breadcrumb.items,
 }))(Files)

@@ -8,10 +8,14 @@ import _ from 'lodash'
 export type Props = {
   items: Array<any>,
   style: Object,
+  skip: number,
 }
 
 export const Breadcrumb = (props: Props) => {
-  const { items, style } = props
+  const { items, style, skip } = props
+  if (skip > 0) {
+    items.splice(0, skip)
+  }
   return (
     <div>
       {items && items.length > 0 &&

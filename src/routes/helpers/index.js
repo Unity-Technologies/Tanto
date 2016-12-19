@@ -11,6 +11,20 @@ export const helpers = {
     (suffix: string): string => (`/projects/${suffix}`),
 }
 
+type LinkType = {
+  link: string,
+  label: string
+}
+
+export function breadcrumbItems(pathname: string): Array<LinkType> {
+  const items = pathname.split('/').filter(entry => entry.trim() !== '')
+  let path = ''
+  return items.map(x => {
+    path = path.concat('/', x)
+    return { link: path, label: x }
+  })
+}
+
 export function groupPathFromPath(path: string) {
   return path.replace(/^\/projects(\/)?/, '')
 }
