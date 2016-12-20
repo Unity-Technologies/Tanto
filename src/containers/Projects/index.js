@@ -2,17 +2,16 @@
 
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
-import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
-import ProjectList from 'components/ProjectList/ProjectList'
 import ErrorMessage from 'components/ErrorMessage'
-import GroupList from 'components/GroupList/GroupList'
 import LinearProgress from 'material-ui/LinearProgress'
 import { fetchRepositories } from 'ducks/repositories'
-import type { GroupType, RepositoryType, StateType } from 'ducks/repositories'
-import { helpers, groupPathFromPath } from 'routes/helpers'
+import type { StateType } from 'ducks/repositories'
+import { groupPathFromPath } from 'routes/helpers'
 import { repositories, groups as groupsSelector } from 'ducks/repositories/selectors'
 import Breadcrumb from 'components/Breadcrumb'
+import RepositoryList from 'components/RepositoryList'
+import type { RepositoryType, GroupType } from 'components/RepositoryList'
 
 export type Props = {
   isFetching: boolean,
@@ -27,37 +26,21 @@ export type Props = {
 }
 
 export class Projects extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch, pathname } = this.props
-    this.updateNode(dispatch, pathname)
     dispatch(fetchRepositories(groupPathFromPath(pathname)))
   }
 
   componentWillReceiveProps(nextProp: any, nextState?: StateType) {
     if (this.props.pathname !== nextProp.pathname) {
-      this.updateNode(this.props.dispatch, nextProp.pathname)
+      this.props.dispatch(fetchRepositories(groupPathFromPath(nextProp.pathname)))
     }
-  }
-
-  updateNode = (dispatch: Function, pathname: string) => {
-    dispatch(fetchRepositories(groupPathFromPath(pathname)))
   }
 
   props: Props
 
-  groupClickHandler = (groupName: string) => {
-    const path = helpers.buildProjectsLink(groupName)
-    this.props.dispatch(push(path))
-  }
-
-  projectClickHandler = (projectName: string) => {
-    const { dispatch } = this.props
-    const path = helpers.buildProjectLinkNoBranch(projectName)
-    dispatch(push(path))
-  }
-
   render() {
-    const { isFetching, error, projects, theme, groups, pathname } = this.props
+    const { isFetching, error, projects, groups, pathname } = this.props
 
     return (
       <div>
@@ -65,26 +48,7 @@ export class Projects extends Component {
         <Breadcrumb path={pathname} skip={0} />
         {isFetching && <LinearProgress />}
         {error && <ErrorMessage text={error} />}
-        <GroupList
-          groups={groups}
-          valueProp="id"
-          childrenProp="projects"
-          primaryTextProp="name"
-          secondaryTextProp="description"
-          clickHandler={this.groupClickHandler}
-          {...theme}
-        />
-        <ProjectList
-          projects={projects}
-          valueProp="id"
-          childrenProp="projects"
-          primaryTextProp="name"
-          secondaryTextProp="description"
-          clickHandler={this.projectClickHandler}
-          updated="updated"
-          owner="owner"
-          {...theme}
-        />
+        <RepositoryList groups={groups} repositories={projects} path={pathname} />
       {!isFetching && !projects.length &&
        !groups.length && !error &&
         <div style={{ textAlign: 'center', padding: '10%' }} >

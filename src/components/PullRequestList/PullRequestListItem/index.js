@@ -44,7 +44,7 @@ class PullRequestListItem extends Component {
                 <Link to={pullRequest.link}>{pullRequest.title}</Link>
                 <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
                   <strong>{pullRequest.owner.fullName}</strong>
-                    updated {fromNow(pullRequest.updated)}
+                  <span> updated {fromNow(pullRequest.updated)}</span>
                 </div>
               </div>
             </div>
@@ -92,7 +92,7 @@ class PullRequestListItem extends Component {
             </Col>
           }
           {showRemoveButton &&
-            <Col md={build ? 1 : 3} style={{ float: 'right' }}>
+            <Col md={1} style={{ float: 'right' }}>
               <div
                 onClick={this.handleRemoveClick}
                 className="remove-icon"
