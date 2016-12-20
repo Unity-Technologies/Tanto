@@ -3,6 +3,7 @@
 
 import type { RepositoryType, GroupType } from 'services/ono/queries/repositories'
 export type { RepositoryType, GroupType } from 'services/ono/queries/repositories'
+import type { ErrorType } from 'ducks/entities'
 import {
   isFetching,
   error,
@@ -24,7 +25,8 @@ export const types = {
  * Initial state
  */
 const initialState = {
-  error: null,
+  error: {
+    message: '' },
   isFetching: false,
   entities: {},
   groups: {},
@@ -39,7 +41,7 @@ export type GroupDictionary = {
 }
 
 export type StateType = {
-  error: ?Object,
+  error: ErrorType,
   isFetching: boolean,
   groups: GroupDictionary,
   entities: RepositoryDictionary,

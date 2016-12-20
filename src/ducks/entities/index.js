@@ -10,6 +10,10 @@ export const types = {
   SET: 'ENTITIES/CLEAR_ERROR',
 }
 
+export type ErrorType = {
+  message: string
+}
+
 export const actions = {
   sendingRequest: (sending: boolean): Object => ({ type: types.SENDING_REQUEST, sending }),
   requestError: (error: string): Object => ({ type: types.REQUEST_ERROR, error }),
@@ -36,17 +40,17 @@ export const entities = (state: Object = {}, action: Object): Object => {
   }
 }
 
-export const error = (state:Object = {}, action:Object): Object => {
+export const error = (state: ErrorType = { message: '' }, action:Object): Object => {
   switch (action.type) {
     case types.REQUEST_ERROR:
       return action.error
     case types.CLEAR_ERROR:
-      return {}
+      return { message: '' }
     default:
       return state
   }
 }
 
-export const isFetching = (state: boolean= false, action:Object): boolean =>
+export const isFetching = (state: boolean = false, action: Object): boolean =>
   (action.type === types.SENDING_REQUEST ? action.sending : state)
 

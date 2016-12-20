@@ -12,6 +12,13 @@ type PagePayload = {
   nodes?: Array<Object>
 }
 
+export type PaginationType = {
+  total: number,
+  pages: Object,
+  pageSize: number,
+  currentPage: number,
+}
+
 export const requestPage = (payload: PagePayload) => ({ type: REQUEST_PAGE, payload })
 export const receivePage = (payload: PagePayload) => ({ type: RECEIVE_PAGE, payload })
 
