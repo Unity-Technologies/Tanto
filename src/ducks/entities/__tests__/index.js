@@ -71,7 +71,7 @@ describe('entities error reducer', () => {
 
   it('should handle CLEAR_ERROR', () => {
     const action = actions.clearError()
-    expect(error('error', action)).to.eql({})
+    expect(error('error', action)).to.eql({ message: '' })
   })
 })
 
