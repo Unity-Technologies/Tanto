@@ -8,6 +8,7 @@ export type Props = {
   pageSize: number,
   total: number,
   activePage: number,
+  children?: number | string | React.Element <*> | Array < any >,
   onPageSelect?: Function,
 }
 

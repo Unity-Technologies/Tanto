@@ -1,0 +1,9 @@
+.breadcrumb a {
+    color: rgba(69, 75, 94, 0.87);
+    font-size: 13px;
+}
+
+.breadcrumb>.active a {
+    text-decoration: none;
+    font-weight: bold;
+}

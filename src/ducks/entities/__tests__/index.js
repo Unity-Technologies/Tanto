@@ -14,7 +14,7 @@ const expect = chai.expect
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
 
-describe('pull request actions', () => {
+describe('entities actions', () => {
   it('request error', () => {
     const errorMessage = 'test error'
     const action = {
@@ -39,13 +39,26 @@ describe('pull request actions', () => {
     expect(actions.sendingRequest(true)).to.eql(action)
   })
 
-  it('sest entities', () => {
+  it('sets entities with default id attribute', () => {
     const nodes = [1, 2, 3]
+    const idAttribute = 'id'
     const action = {
       type: types.SET,
       nodes,
+      idAttribute,
     }
     expect(actions.setEntities(nodes)).to.eql(action)
+  })
+
+  it('sets entities with id attribute', () => {
+    const nodes = [1, 2, 3]
+    const idAttribute = 'name'
+    const action = {
+      type: types.SET,
+      nodes,
+      idAttribute,
+    }
+    expect(actions.setEntities(nodes, idAttribute)).to.eql(action)
   })
 })
 
@@ -58,7 +71,7 @@ describe('entities error reducer', () => {
 
   it('should handle CLEAR_ERROR', () => {
     const action = actions.clearError()
-    expect(error('error', action)).to.eql(null)
+    expect(error('error', action)).to.eql({ message: '' })
   })
 })
 

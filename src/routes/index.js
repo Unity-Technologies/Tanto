@@ -25,7 +25,6 @@ import { app, project, pullrequest, changeset } from 'containers/SideBar/SideBar
 export default (store) => {
   const onAppEnter = () => {
     app(store)
-    // store.dispatch(actions.fetchProfile())
     store.dispatch({ type: types.FETCH_USER_PROFILE })
   }
   const onProjectEnter = (nextState) => {

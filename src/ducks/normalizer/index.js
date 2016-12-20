@@ -1,7 +1,5 @@
 /* @flow */
 
-/* eslint-disable*/
-
 /**
  * Transforms object to the object with the ID property(state normalizaton)
  * Example:
@@ -35,7 +33,5 @@ export const reduceArrayToObj = (arr: Array<Object>, idAttribute: string = 'id')
 /**
  * It's dummy merge of two objects or two arrays
  */
-export const merge = (obj1: Object, obj2: Object): Object => {
-  return { ...obj1, ...obj2 }
-}
+export const merge = (obj1: Object, obj2: Object): Object => ({ ...obj1, ...obj2 })
 

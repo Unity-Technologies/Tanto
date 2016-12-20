@@ -13,6 +13,7 @@ export type Props = {
   dispatch: Function,
   activePage: number,
   pageSize: number,
+  isFetching: boolean,
   total: number,
   items: Array<any>,
 }
@@ -53,7 +54,7 @@ export default connect(
     activePage: state.session.pullRequestsOwned.currentPage,
     total: state.session.pullRequestsOwned.total,
     isFetching: state.pullrequests.isFetching,
-    error: state.pullrequests.error,
+    error: state.pullrequests.error ? state.pullrequests.error.message : null,
     items: sessionSelectors.getPullRequests(state) || [],
   })
 )(UserPullRequestList)

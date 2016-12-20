@@ -148,7 +148,7 @@ class Code extends Component {
         </pre>
       }
       {!!this.state.error &&
-        <ErrorMessage message={this.state.error} />
+        <ErrorMessage text={this.state.error} />
       }
       </div>
     )

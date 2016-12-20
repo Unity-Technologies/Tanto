@@ -10,38 +10,47 @@ export const types = {
   SET: 'ENTITIES/CLEAR_ERROR',
 }
 
-export const actions = {
-  sendingRequest: (sending: boolean) => ({ type: types.SENDING_REQUEST, sending }),
-  requestError: (error: string) => ({ type: types.REQUEST_ERROR, error }),
-  clearError: () => ({ type: types.CLEAR_ERROR }),
-  setEntities: (nodes) => ({ type: types.SET, nodes }),
+export type ErrorType = {
+  message: string
 }
 
-export const mergeEntities =
-  (state = {}, action) => (action.nodes ? _.merge({}, state, action.nodes) : state)
+export const actions = {
+  sendingRequest: (sending: boolean): Object => ({ type: types.SENDING_REQUEST, sending }),
+  requestError: (error: string): Object => ({ type: types.REQUEST_ERROR, error }),
+  clearError: (): Object => ({ type: types.CLEAR_ERROR }),
+  setEntities: (nodes: Array<Object>, idAttribute: string = 'id'): Object =>
+    ({ type: types.SET, nodes, idAttribute }),
+}
 
-export const entities = (state = {}, action) => {
+export const mergeEntities = (state: Object = {}, action: Object): Object => {
+  if (action.nodes) {
+    const nodes = reduceArrayToObj(action.nodes, action.idAttribute)
+    const updatedState = _.merge({}, state, nodes)
+    return _.isEqual(updatedState, state) ? state : updatedState
+  }
+  return state
+}
+
+export const entities = (state: Object = {}, action: Object): Object => {
   switch (action.type) {
-    case types.SET: {
-      const updatedState = mergeEntities(state, { nodes: reduceArrayToObj(action.nodes) })
-      return _.isEqual(updatedState, state) ? state : updatedState
-    }
+    case types.SET:
+      return mergeEntities(state, action)
     default:
       return state
   }
 }
 
-export const error = (state = null, action) => {
+export const error = (state: ErrorType = { message: '' }, action:Object): Object => {
   switch (action.type) {
     case types.REQUEST_ERROR:
       return action.error
     case types.CLEAR_ERROR:
-      return null
+      return { message: '' }
     default:
       return state
   }
 }
 
-export const isFetching = (state = false, action) =>
+export const isFetching = (state: boolean = false, action: Object): boolean =>
   (action.type === types.SENDING_REQUEST ? action.sending : state)
 

@@ -1,11 +1,10 @@
-/* @flow */
+// TODO: enable flow
 
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 
 import { Col, Row, Button, ButtonGroup } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { Sticky, StickyContainer } from 'react-sticky'
 
 import Filter from 'components/Filter'
 import BranchSelect from 'components/BranchSelect'
@@ -56,89 +55,76 @@ class PullRequests extends Component {
     return (
       <div>
         <Helmet title="Project Pull Requests" />
-        <StickyContainer>
+        <div style={{ padding: '10px' }}>
+          <Row>
+            <Col md={3}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  border: '1px solid lightgrey',
+                  borderRadius: '5px',
+                  padding: '7px',
+                  width: '100%',
+                  backgroundColor: 'white' }}
+              >
+                <span
+                  style={{ pagging: '10px', color: 'grey' }}
+                >
+                  <i className="fa fa-search" aria-hidden="true" />
+                </span>
+                <input
+                  type="text"
+                  style={{
+                    outline: 'none',
+                    border: 'none',
+                    marginLeft: '10px',
+                    fontSize: '14px',
+                    width: '100%' }}
+                />
 
-          <Sticky
-            style={{
-              zIndex: 1030,
-              backgroundColor: '#f8f8f8',
-              marginBottom: '20px',
-              border: '1px solid rgb(226, 226, 226)',
-              borderRadius: '4px',
-            }}
-          >
-            <div style={{ padding: '10px' }}>
-              <Row>
-                <Col md={3}>
-                  <div
-                    style={{
-                      display: 'inline-flex',
-                      border: '1px solid lightgrey',
-                      borderRadius: '5px',
-                      padding: '7px',
-                      width: '100%',
-                      backgroundColor: 'white' }}
-                  >
-                    <span
-                      style={{ pagging: '10px', color: 'grey' }}
-                    >
-                      <i className="fa fa-search" aria-hidden="true" />
-                    </span>
-                    <input
-                      type="text"
-                      style={{
-                        outline: 'none',
-                        border: 'none',
-                        marginLeft: '10px',
-                        fontSize: '14px',
-                        width: '100%' }}
-                    />
+              </div>
+            </Col>
 
-                  </div>
-                </Col>
+            <Col md={3}>
+              <BranchSelect project={id} placeholder="Select branch ..." />
+            </Col>
 
-                <Col md={3}>
-                  <BranchSelect project={id} placeholder="Select branch ..." />
-                </Col>
+            <Col md={4}>
+              <div style={{ float: 'left', marginRight: '5px' }}>
+                <Filter data={sort} placeholder="Order by..." />
+              </div>
+              <div style={{ float: 'left', marginRight: '5px' }}>
+                <a
+                  className="btn"
+                  style={{
+                    color: 'white',
+                    backgroundColor: '#b9ebae' }} aria-label="Sort ascending"
+                >
+                  <i className="fa fa-sort-amount-asc" aria-hidden="true" />
+                </a>
+              </div>
+              <div style={{ float: 'left' }}>
+                <a
+                  className="btn"
+                  style={{
+                    color: 'white',
+                    backgroundColor: 'lightgrey' }} aria-label="Sort descending"
+                >
+                  <i className="fa fa-sort-amount-desc" aria-hidden="true" />
+                </a>
+              </div>
+            </Col>
 
-                <Col md={4}>
-                  <div style={{ float: 'left', marginRight: '5px' }}>
-                    <Filter data={sort} placeholder="Order by..." />
-                  </div>
-                  <div style={{ float: 'left', marginRight: '5px' }}>
-                    <a
-                      className="btn"
-                      style={{
-                        color: 'white',
-                        backgroundColor: '#b9ebae' }} aria-label="Sort ascending"
-                    >
-                      <i className="fa fa-sort-amount-asc" aria-hidden="true" />
-                    </a>
-                  </div>
-                  <div style={{ float: 'left' }}>
-                    <a
-                      className="btn"
-                      style={{
-                        color: 'white',
-                        backgroundColor: 'lightgrey' }} aria-label="Sort descending"
-                    >
-                      <i className="fa fa-sort-amount-desc" aria-hidden="true" />
-                    </a>
-                  </div>
-                </Col>
+            <Col md={2}>
+              <ButtonGroup style={{ float: 'right' }}>
+                <Button style={approveButtonStyle}>
+                New Pul</Button>
+              </ButtonGroup>
+            </Col>
+          </Row>
+        </div>
 
-                <Col md={2}>
-                  <ButtonGroup style={{ float: 'right' }}>
-                    <Button style={approveButtonStyle}>
-                    New Pul</Button>
-                  </ButtonGroup>
-                </Col>
-              </Row>
-            </div>
-
-          </Sticky>
-          <PullRequestList items={PullRequestsDataList} />
-        </StickyContainer>
+        <PullRequestList items={PullRequestsDataList} />
       </div>
     )
   }

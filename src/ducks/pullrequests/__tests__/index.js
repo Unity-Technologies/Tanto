@@ -220,7 +220,9 @@ describe('pullrequests reducer', () => {
 
   it('should return initial state', () => {
     const initialState = {
-      error: null,
+      error: {
+        message: '',
+      },
       isFetching: false,
       entities: {},
       pagination: {

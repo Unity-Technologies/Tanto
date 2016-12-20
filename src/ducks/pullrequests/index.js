@@ -2,8 +2,9 @@
 
 import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
 import { isFetching, error, entities, actions as entitiesActions } from 'ducks/entities'
-
+import type { ErrorType } from 'ducks/entities'
 import { pagination, requestPage } from 'ducks/pagination'
+import type { PaginationType } from 'ducks/pagination'
 import { combineReducers } from 'redux'
 
 /**
@@ -22,7 +23,9 @@ export const types = {
  * Initial state
  */
 const initialState = {
-  error: null,
+  error: {
+    message: '',
+  },
   isFetching: false,
   entities: {},
   pagination: {
@@ -37,10 +40,12 @@ export type PullRequestDictionary = {
   [id: string]: Object
 }
 
+
 export type PullRequestsStateType = {
-  error: ?string,
+  error: ErrorType,
   isFetching: boolean,
   entities: PullRequestDictionary,
+  pagination: PaginationType,
 }
 
 export const entitiesReducer = combineReducers({
@@ -77,9 +82,9 @@ export const actions = {
   fetchUserPullRequests:
     (page: number, pageSize: number) => ({ type: types.FETCH_USER_PULL_REQUESTS, page, pageSize }),
   fetchUserAssignedPullRequests:
-    (page: number, pageSize: number) =>
+    (page: number, pageSize: number): Object =>
       ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, page, pageSize }),
   fatchUserWatchingPullRequests:
-    (page: number, pageSize: number) =>
+    (page: number, pageSize: number): Object =>
       ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS, page, pageSize }),
 }

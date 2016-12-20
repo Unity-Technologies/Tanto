@@ -14,12 +14,17 @@ storiesOf('PullRequestList', module)
       items={[]}
       totalPagesCount={1}
       activePage={1}
+      pageSize={12}
       isFetching={false}
+      onPageSelect={() => {}}
     />
   ))
   .add('fetching', () => (
     <PullRequestList
       items={[]}
       isFetching
+      activePage={1}
+      pageSize={12}
+      onPageSelect={() => { }}
     />
   ))

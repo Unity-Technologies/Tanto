@@ -3,10 +3,10 @@
 import React from 'react'
 import { List } from 'material-ui/List'
 import ProjectItem from './ProjectItem'
-import type { ProjectType } from 'ducks/projects'
+import type { RepositoryType } from 'ducks/repositories'
 
 export type Props = {
-  projects: Array<ProjectType>,
+  projects: Array<RepositoryType>,
   clickHandler: Function,
 }
 
