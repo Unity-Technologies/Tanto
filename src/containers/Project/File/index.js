@@ -5,7 +5,6 @@ import Helmet from 'react-helmet'
 import _ from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { breadcrumbItems } from 'routes/helpers'
 import { Col, Row, Panel } from 'react-bootstrap'
 import {
   CodeMirrorView,
@@ -84,7 +83,7 @@ class File extends Component {
     }
 
     const { params: { id }, location: { pathname } } = this.props
-    const items = breadcrumbItems(pathname)
+
     return (
       <div>
         <Helmet title="File" />
@@ -142,7 +141,7 @@ class File extends Component {
         </div>
 
         <div>
-          <Breadcrumb items={items} skip={2} />
+          <Breadcrumb path={pathname} skip={2} />
         </div>
 
         <Panel

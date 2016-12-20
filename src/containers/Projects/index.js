@@ -10,7 +10,7 @@ import GroupList from 'components/GroupList/GroupList'
 import LinearProgress from 'material-ui/LinearProgress'
 import { fetchRepositories } from 'ducks/repositories'
 import type { GroupType, RepositoryType, StateType } from 'ducks/repositories'
-import { helpers, groupPathFromPath, breadcrumbItems } from 'routes/helpers'
+import { helpers, groupPathFromPath } from 'routes/helpers'
 import { repositories, groups as groupsSelector } from 'ducks/repositories/selectors'
 import Breadcrumb from 'components/Breadcrumb'
 
@@ -58,12 +58,11 @@ export class Projects extends Component {
 
   render() {
     const { isFetching, error, projects, theme, groups, pathname } = this.props
-    const items = breadcrumbItems(pathname)
 
     return (
       <div>
         <Helmet title="Projects" />
-        <Breadcrumb items={items} skip={0} />
+        <Breadcrumb path={pathname} skip={0} />
         {isFetching && <LinearProgress />}
         {error && <ErrorMessage text={error} />}
         <GroupList

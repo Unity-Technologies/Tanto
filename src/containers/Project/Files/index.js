@@ -10,7 +10,6 @@ import { connect } from 'react-redux'
 
 import { FileList, BranchSelect, Filter } from 'components'
 import Breadcrumb from 'components/Breadcrumb'
-import { breadcrumbItems } from 'routes/helpers'
 
 import { projectFilesTestData, changesets } from '../../../api/testData'
 
@@ -87,7 +86,6 @@ class Files extends Component {
 
   render() {
     const { params: { id }, pathname } = this.props
-    const items = breadcrumbItems(pathname)
     return (
       <div>
         <Helmet title="Files" />
@@ -143,7 +141,7 @@ class Files extends Component {
             </Col>
           </Row>
         </div>
-        <Breadcrumb items={items} skip={2} />
+        <Breadcrumb path={pathname} skip={2} />
 
         <FileList
           data={this.state.currentNode}
