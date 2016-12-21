@@ -1,12 +1,11 @@
 /* @flow */
 
+/* eslint-disable import/no-extraneous-dependencies*/
+
 import { reduceArrayToObj } from 'ducks/normalizer'
 import _ from 'lodash'
 
 export const types = {
-  SENDING_REQUEST: 'ENTITIES/SENDING_REQUEST',
-  REQUEST_ERROR: 'ENTITIES/REQUEST_ERROR',
-  CLEAR_ERROR: 'ENTITIES/CLEAR_ERROR',
   SET: 'ENTITIES/CLEAR_ERROR',
 }
 
@@ -15,9 +14,6 @@ export type ErrorType = {
 }
 
 export const actions = {
-  sendingRequest: (sending: boolean): Object => ({ type: types.SENDING_REQUEST, sending }),
-  requestError: (error: string): Object => ({ type: types.REQUEST_ERROR, error }),
-  clearError: (): Object => ({ type: types.CLEAR_ERROR }),
   setEntities: (nodes: Array<Object>, idAttribute: string = 'id'): Object =>
     ({ type: types.SET, nodes, idAttribute }),
 }
@@ -39,18 +35,4 @@ export const entities = (state: Object = {}, action: Object): Object => {
       return state
   }
 }
-
-export const error = (state: ErrorType = { message: '' }, action:Object): Object => {
-  switch (action.type) {
-    case types.REQUEST_ERROR:
-      return action.error
-    case types.CLEAR_ERROR:
-      return { message: '' }
-    default:
-      return state
-  }
-}
-
-export const isFetching = (state: boolean = false, action: Object): boolean =>
-  (action.type === types.SENDING_REQUEST ? action.sending : state)
 

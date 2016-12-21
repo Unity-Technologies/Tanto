@@ -1,7 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 import { actions } from 'ducks/repositories'
-import { get } from 'services/ono/api'
-import { actions as entitiesActions } from 'ducks/entities'
+import fetchSaga from 'sagas/fetch'
 
 import {
   query,
@@ -47,6 +46,7 @@ describe('repositories saga', () => {
   it('fetchRepositories should fetch the nested level projects', () => {
     const name = 'group1'
     const action = {
+      type: 'SOME_TYPE',
       name,
     }
     const repos = [repo1, repo2, repo3]
@@ -54,17 +54,15 @@ describe('repositories saga', () => {
     const testResponse = { data: { repositories: { nodes: repos }, groups } }
 
     const generator = fetchRepositories(action)
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(true)))
-    expect(generator.next().value).to.deep.equal(call(get, query(name), { name }))
+    expect(generator.next().value).to.deep.equal(call(fetchSaga, action.type, query(name), { name }))
     expect(generator.next(testResponse).value).to.deep.equal(put(actions.setRepositories(repos)))
     expect(generator.next(testResponse).value).to.deep.equal(put(actions.setGroups(groups)))
-
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(false)))
   })
 
   it('fetchRepositories should fetch the first level projects', () => {
     const name = null
     const action = {
+      type: 'SOME_TYPE',
       name,
     }
     const repos = [repo1, repo2, repo3]
@@ -72,26 +70,8 @@ describe('repositories saga', () => {
     const testResponse = { data: { group: { repositories: { nodes: repos }, groups } } }
 
     const generator = fetchRepositories(action)
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(true)))
-    expect(generator.next().value).to.deep.equal(call(get, query(name), null))
+    expect(generator.next().value).to.deep.equal(call(fetchSaga, action.type, query(name), null))
     expect(generator.next(testResponse).value).to.deep.equal(put(actions.setRepositories(repos)))
     expect(generator.next(testResponse).value).to.deep.equal(put(actions.setGroups(groups)))
-
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(false)))
-  })
-
-  it('fetchRepositories should catch an error', () => {
-    const name = null
-    const action = {
-      name,
-    }
-
-    const error = 'Test error'
-
-    const generator = fetchRepositories(action)
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(true)))
-    expect(generator.throw(error).value).to.deep.equal(put(entitiesActions.requestError(error)))
-
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(false)))
   })
 })

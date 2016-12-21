@@ -1,8 +1,7 @@
 /* @flow */
 
 import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
-import { isFetching, error, entities, actions as entitiesActions } from 'ducks/entities'
-import type { ErrorType } from 'ducks/entities'
+import { entities, actions as entitiesActions } from 'ducks/entities'
 import { pagination, requestPage } from 'ducks/pagination'
 import type { PaginationType } from 'ducks/pagination'
 import { combineReducers } from 'redux'
@@ -18,15 +17,10 @@ export const types = {
   FETCH_USER_WATCHING_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_WATCHING_PULL_REQUESTS',
 }
 
-
 /**
  * Initial state
  */
 const initialState = {
-  error: {
-    message: '',
-  },
-  isFetching: false,
   entities: {},
   pagination: {
     total: 0,
@@ -42,16 +36,12 @@ export type PullRequestDictionary = {
 
 
 export type PullRequestsStateType = {
-  error: ErrorType,
-  isFetching: boolean,
   entities: PullRequestDictionary,
   pagination: PaginationType,
 }
 
 export const entitiesReducer = combineReducers({
   entities,
-  error,
-  isFetching,
   pagination,
 })
 

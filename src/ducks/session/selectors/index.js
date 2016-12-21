@@ -28,15 +28,3 @@ export const pullRequestsWatching = createSelector(
   (pullRequests, pullRequestsWatchingIds) =>
     _.values(_.pick(pullRequests, pullRequestsWatchingIds))
 )
-
-export const selectors = {
-  getPersona: (state: Object): string => state.session.persona,
-  getProfile: (state: Object): Object => state.session.profile,
-
-  /**
-   * Raw entities slice from state
-   */
-  getPullRequests: (state: Object): Array<Object> => pullRequestsOwned(state),
-  getPullRequestsAssigned: (state: Object): Array<Object> => pullRequestsAssigned(state),
-  getPullRequestsWatching: (state: Object): Array<Object> => pullRequestsWatching(state),
-}

@@ -49,6 +49,25 @@ query($name: String!) {
   }
 }`
 
+export const ALL_REPOSITORIES_QUERY = `
+query($name: String!) {
+	repositories(all: true, filter: $filter) {
+    nodes {
+      fullName
+    }
+  }
+}`
+
+export const REPOSITORY_BRANCHES = `
+query($name: String!) {
+	repository(name: $name) {
+    branches {
+      name
+      revision
+    }
+  }
+}`
+
 export type RepositoryType = {
   name: string,
   description: ?string,

@@ -1,44 +1,35 @@
-// TODO: add flow annotations
+/* @flow */
+/* eslint-disable import/no-extraneous-dependencies*/
 
-import { call, put } from 'redux-saga/effects'
+import { put, call } from 'redux-saga/effects'
 import { actions as sessionActions } from 'ducks/session'
 import { actions as prActions } from 'ducks/pullrequests'
-import { actions as entitiesActions } from 'ducks/entities'
-import { get } from 'services/ono/api'
-import {
-  queries,
-  parsers,
-} from 'services/ono/queries/pullrequests'
+import fetchSaga from 'sagas/fetch'
+import { queries, parsers } from 'services/ono/queries/pullrequests'
 
 /**
  * Fetch pull requests
  */
-export function* fetchPullRequests(action, query, parser, updateSession) {
-  try {
-    const { page, pageSize } = action
-    const first = pageSize
-    const offset = pageSize * (page - 1)
+export function* fetchPullRequests(
+  action: Object,
+  query: string,
+  parser: Function,
+  updateSession: Function): Generator<any, any, any> {
+  const { page, pageSize } = action
+  const first = pageSize
+  const offset = pageSize * (page - 1)
 
-    yield put(entitiesActions.sendingRequest(true))
+  const response = yield call(fetchSaga, action.type, query, { first, offset })
 
-    const response = yield call(get, query, { first, offset })
-
-    const { nodes, total } = parser(response)
-
-    yield put(prActions.setPullRequests(page, nodes))
-
-    yield put(updateSession(page, nodes, total, pageSize))
-  } catch (error) {
-    yield put(entitiesActions.requestError(error))
-  } finally {
-    yield put(entitiesActions.sendingRequest(false))
-  }
+  const { nodes, total } = parser(response)
+  yield put(prActions.setPullRequests(page, nodes))
+  yield put(updateSession(page, nodes, total, pageSize))
 }
 
 /**
  * Fetch current user pull requests
  */
-export function* fetchCurrentUserPullRequests(action) {
+export function* fetchCurrentUserPullRequests(action: Object): Generator< any, any, any > {
   yield call(
     fetchPullRequests,
     action,
@@ -50,7 +41,7 @@ export function* fetchCurrentUserPullRequests(action) {
 /**
  * Fetch current user assigned pull requests
  */
-export function* fetchCurrentUserAssignedPullRequests(action) {
+export function* fetchCurrentUserAssignedPullRequests(action: Object): Generator<any, any, any> {
   yield call(
     fetchPullRequests,
     action,
@@ -62,7 +53,7 @@ export function* fetchCurrentUserAssignedPullRequests(action) {
 /**
  * Fetch current user watching pull requests
  */
-export function* fetchCurrentUserWatchingPullRequests(action) {
+export function* fetchCurrentUserWatchingPullRequests(action: Object): Generator<any, any, any> {
   yield call(
     fetchPullRequests,
     action,

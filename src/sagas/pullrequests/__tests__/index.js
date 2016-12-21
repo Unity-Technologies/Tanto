@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
+/* eslint-disable import/no-extraneous-dependencies*/
 
-import { call, put } from 'redux-saga/effects'
+import { put, call } from 'redux-saga/effects'
 import { actions } from 'ducks/pullrequests'
-import { get } from 'services/ono/api'
-import { actions as entitiesActions } from 'ducks/entities'
 import { actions as sessionActions } from 'ducks/session'
+import fetchSaga from 'sagas/fetch'
 import {
   queries,
   parsers,
@@ -29,41 +29,17 @@ describe('pullrequests saga', () => {
     const pageSize = 12
     const page = 1
     const action = {
+      type: 'SOME_FETCH',
       pageSize,
       page,
     }
     const first = pageSize
     const offset = pageSize * (page - 1)
-
     const generator = fetchPullRequests(action, query, parser, updateSession)
 
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(true)))
-    expect(generator.next().value).to.deep.equal(call(get, query, { first, offset }))
+    expect(generator.next().value).to.deep.equal(call(fetchSaga, action.type, query, { first, offset }))
     expect(generator.next(testResponse).value).to.deep.equal(put(actions.setPullRequests(page, pullrequests)))
     expect(generator.next(pullrequests).value).to.deep.equal(put(updateSession(page, pullrequests, total, pageSize)))
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(false)))
-  })
-
-  it('fetchPullRequests should catches users fetch pull requests exception', () => {
-    const query = 'test query'
-    const parser = response => (response.data.me.prs)
-    const updateSession = prs => (prs)
-    const error = 'TEST ERROR fetchUserProfile'
-
-    const pageSize = 12
-    const page = 1
-    const action = {
-      pageSize,
-      page,
-    }
-
-    const first = pageSize
-    const offset = pageSize * (page - 1)
-    const generator = fetchPullRequests(action, query, parser, updateSession)
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(true)))
-    expect(generator.next().value).to.deep.equal(call(get, query, { first, offset }))
-    expect(generator.throw(error).value).to.deep.equal(put(entitiesActions.requestError(error)))
-    expect(generator.next().value).to.deep.equal(put(entitiesActions.sendingRequest(false)))
   })
 
 
