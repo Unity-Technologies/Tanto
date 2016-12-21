@@ -201,7 +201,6 @@
     "react-router-redux": "^4.0.0",
     "react-scroll": "^1.0.24",
     "react-select": "^1.0.0-beta13",
-    "react-sticky": "^5.0.4",
     "react-tap-event-plugin": "^2.0.1",
     "redis": "^2.6.3",
     "redux": "^3.0.4",

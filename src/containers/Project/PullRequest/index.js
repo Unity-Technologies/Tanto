@@ -3,17 +3,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
-import { StickyContainer } from 'react-sticky'
-
 import { DEVELOPER_PERSONA } from 'ducks/session'
 import { actions } from 'ducks/pullRequest'
 import type { PullRequestGraphType } from 'ducks/pullRequest'
-
 import LoadingIcon from 'components/LoadingIcon'
-
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
-import StickyActionBar from './StickyActionBar'
+import ActionBar from './ActionBar'
 
 type Props = {
   dispatch: Function,
@@ -76,9 +72,9 @@ class PullRequest extends Component {
     const currentCategory = params.category || defaultCategory
 
     return (
-      <StickyContainer style={{ fontSize: '14px' }}>
+      <div>
         <Helmet title={`Pull Request: ${pullRequest.title}`} />
-        <StickyActionBar />
+        <ActionBar />
         {currentCategory === 'guardian' || currentCategory === 'manager' ?
           <LayoutGuardian pullRequest={pullRequest} />
         :
@@ -88,7 +84,7 @@ class PullRequest extends Component {
             rootPath={rootPath}
           />
         }
-      </StickyContainer>
+      </div>
     )
   }
 }
