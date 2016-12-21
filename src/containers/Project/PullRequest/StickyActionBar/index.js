@@ -1,7 +1,13 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import { Button, ButtonGroup, DropdownButton, MenuItem, Row, Col } from 'react-bootstrap'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import Button from 'react-bootstrap/lib/Button'
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
+import DropdownButton from 'react-bootstrap/lib/DropdownButton'
+import MenuItem from 'react-bootstrap/lib/MenuItem'
+
 import { Sticky } from 'react-sticky'
 import { connect } from 'react-redux'
 import {

@@ -2,7 +2,10 @@
 
 import React from 'react'
 import Helmet from 'react-helmet'
-import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
+import ListGroup from 'react-bootstrap/lib/ListGroup'
 import { prDescription } from '../../../api/testData'
 
 export type Props = {

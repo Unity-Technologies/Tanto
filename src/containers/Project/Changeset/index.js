@@ -2,7 +2,8 @@
 
 import React from 'react'
 import Helmet from 'react-helmet'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import Button from 'react-bootstrap/lib/Button'
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 import Scroll from 'react-scroll'
 
 import ChangesetFileList from 'components/ChangesetFileList'

@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react'
-import { ListGroup } from 'react-bootstrap'
+import ListGroup from 'react-bootstrap/lib/ListGroup'
 import RepositoryItem from './RepositoryItem'
 import GroupItem from './GroupItem'
 import type { RepositoryType } from './RepositoryItem'

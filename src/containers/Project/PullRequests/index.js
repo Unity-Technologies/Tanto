@@ -2,8 +2,11 @@
 
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import Button from 'react-bootstrap/lib/Button'
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 
-import { Col, Row, Button, ButtonGroup } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import Filter from 'components/Filter'

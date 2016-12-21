@@ -1,8 +1,15 @@
 // TODO: add flow annotations
 
 import React, { Component } from 'react'
-import { UserFilter, Label, TextEditorBox, Comment, NewComment } from 'components'
-import { Row, Col } from 'react-bootstrap'
+
+import TextEditorBox from 'components/TextEditorBox'
+import Label from 'components/Label'
+import NewComment from 'components/NewComment'
+import Comment from 'components/Comment'
+import UserFilter from 'components/UserFilter'
+
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
 import moment from 'moment'
 import TextField from 'material-ui/TextField'
 import _ from 'lodash'

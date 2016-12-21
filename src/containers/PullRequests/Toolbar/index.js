@@ -1,6 +1,9 @@
 import React from 'react'
-import { Filter, BranchSelect } from 'components'
-import { Col, Row } from 'react-bootstrap'
+
+import Filter from 'components/Filter'
+import BranchSelect from 'components/BranchSelect'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
 
 const sort = [
   { value: 1, label: 'Creation date' },

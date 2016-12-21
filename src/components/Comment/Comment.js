@@ -1,7 +1,9 @@
 // TODO: finish flow annotations
 
 import React, { Component } from 'react'
-import { TextEditorBox, Icon, TestAvatar } from 'components'
+import TextEditorBox from 'components/TextEditorBox'
+import Icon from 'components/Icon'
+import TestAvatar from 'components/TestAvatar'
 import IconButton from 'material-ui/IconButton'
 import Edit from 'material-ui/svg-icons/editor/mode-edit'
 import Settings from 'material-ui/svg-icons/action/settings'
@@ -9,7 +11,8 @@ import Close from 'material-ui/svg-icons/navigation/close'
 import RaisedButton from 'material-ui/RaisedButton'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import Button from 'react-bootstrap/lib/Button'
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 
 export type Props = {
   id?: string,

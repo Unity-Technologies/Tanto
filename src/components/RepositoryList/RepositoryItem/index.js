@@ -1,7 +1,9 @@
 /* @flow */
 
 import React from 'react'
-import { Col, Row, ListGroupItem } from 'react-bootstrap'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { Link } from 'react-router'
 import { fromNow } from 'utils/datetime'
 import { buildProjectLinkNoBranch } from 'routes/helpers'

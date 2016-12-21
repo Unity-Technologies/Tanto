@@ -1,7 +1,9 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import { ListGroup, Pagination } from 'react-bootstrap'
+import Pagination from 'react-bootstrap/lib/Pagination'
+import ListGroup from 'react-bootstrap/lib/ListGroup'
+
 import './styles.css'
 
 export type Props = {

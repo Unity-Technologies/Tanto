@@ -1,7 +1,10 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import { Col, Row, PanelGroup, Panel } from 'react-bootstrap'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import PanelGroup from 'react-bootstrap/lib/PanelGroup'
+import Panel from 'react-bootstrap/lib/Panel'
 import _ from 'lodash'
 
 import ChangesetList from 'components/ChangesetList'

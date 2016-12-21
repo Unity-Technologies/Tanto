@@ -5,14 +5,15 @@ import Helmet from 'react-helmet'
 import _ from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { Col, Row, Panel } from 'react-bootstrap'
-import {
-  CodeMirrorView,
-  BranchSelect,
-  Filter,
-  NewComment,
-  Comment,
-} from 'components'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import Panel from 'react-bootstrap/lib/Panel'
+
+import CodeMirrorView from 'components/CodeMirrorView'
+import BranchSelect from 'components/BranchSelect'
+import Filter from 'components/Filter'
+import NewComment from 'components/NewComment'
+import Comment from 'components/Comment'
 
 import Breadcrumb from 'components/Breadcrumb'
 import { changesets } from '../../../api/testData'

@@ -1,8 +1,12 @@
 // TODO: fix flow for build property
 
 import React, { Component } from 'react'
-import { Col, Row, ListGroupItem } from 'react-bootstrap'
-import { TestAvatar } from 'components'
+
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
+
+import TestAvatar from 'components/TestAvatar'
 import { Link } from 'react-router'
 import { fromNow } from 'utils/datetime'
 import { PullRequestGraphType } from 'services/ono/queries/pullrequests'

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import Prism from 'prismjs'
-import { ErrorMessage } from 'components'
+import ErrorMessage from 'components/ErrorMessage'
 import _ from 'lodash'
 import LinearProgress from 'material-ui/LinearProgress'
 import 'prismjs/themes/prism.css'

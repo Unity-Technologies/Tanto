@@ -2,9 +2,20 @@
 
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
-import { BranchSelect, TextEditorBox, UserFilter, CodeDiffView } from 'components'
+
+import TextEditorBox from 'components/TextEditorBox'
+import BranchSelect from 'components/BranchSelect'
+import UserFilter from 'components/UserFilter'
+import CodeDiffView from 'components/CodeDiffView'
+
 import FlatButton from 'material-ui/FlatButton'
-import { Nav, NavItem, Navbar, Row, Col } from 'react-bootstrap'
+
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import Nav from 'react-bootstrap/lib/Nav'
+import Navbar from 'react-bootstrap/lib/Navbar'
+import NavItem from 'react-bootstrap/lib/NavItem'
+
 import TextField from 'material-ui/TextField'
 import { connect } from 'react-redux'
 import { reviewers as reviewersTestData } from '../../../api/testData'

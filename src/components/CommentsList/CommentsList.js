@@ -1,7 +1,11 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
+import ListGroup from 'react-bootstrap/lib/ListGroup'
+
 
 import TestAvatar from '../TestAvatar'
 import './CommentsList.css'

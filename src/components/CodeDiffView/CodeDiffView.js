@@ -3,7 +3,12 @@
 import React, { Component } from 'react'
 import Scroll from 'react-scroll'
 import _ from 'lodash'
-import { Row, Col, Tab, Tabs } from 'react-bootstrap'
+
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import Tab from 'react-bootstrap/lib/Tab'
+import Tabs from 'react-bootstrap/lib/Tabs'
+
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 

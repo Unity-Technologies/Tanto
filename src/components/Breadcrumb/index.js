@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { Breadcrumb as BootstrapBreadcrumb } from 'react-bootstrap'
+import { default as BootstrapBreadcrumb } from 'react-bootstrap/lib/Breadcrumb'
 import _ from 'lodash'
 
 import './styles.css'

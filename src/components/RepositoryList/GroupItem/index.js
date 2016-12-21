@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react'
-import { ListGroupItem } from 'react-bootstrap'
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { Link } from 'react-router'
 
 export type GroupType = {

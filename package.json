@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "better-npm-run build",
+    "buildstats": "better-npm-run buildstats",
     "check": "yarn run lint && yarn run test && yarn run flow",
     "check-ci": "yarn run check && yarn run build",
     "clean": "rm -rf static/dist *.log webpack-assets.json",
@@ -48,6 +49,12 @@
     },
     "build": {
       "command": "webpack --colors --display-error-details -p --config webpack/config.prod.js",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "buildstats": {
+      "command": "webpack --colors --display-error-details -p --config webpack/config.prod.js --json > stats.json",
       "env": {
         "NODE_ENV": "production"
       }

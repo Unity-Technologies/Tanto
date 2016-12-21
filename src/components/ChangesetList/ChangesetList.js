@@ -2,8 +2,13 @@
 /* eslint-disable */
 
 import React, { Component } from 'react'
-import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
-import { ChangesetDelta, TestAvatar } from 'components'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import ListGroup from 'react-bootstrap/lib/ListGroup'
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
+
+import ChangesetDelta from 'components/ChangesetDelta'
+import TestAvatar from 'components/TestAvatar'
 import { Link } from 'react-router'
 import Checkbox from 'material-ui/Checkbox'
 import _ from 'lodash'

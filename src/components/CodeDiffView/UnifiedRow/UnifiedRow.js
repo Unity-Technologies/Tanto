@@ -1,7 +1,8 @@
 // TODO: add flow annotations
 
 import React, { Component } from 'react'
-import { NewComment, Comment } from 'components'
+import NewComment from 'components/NewComment'
+import Comment from 'components/Comment'
 import _ from 'lodash'
 import RaisedButton from 'material-ui/RaisedButton'
 

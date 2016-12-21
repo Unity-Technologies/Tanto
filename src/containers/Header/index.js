@@ -3,7 +3,8 @@
 import React from 'react'
 import { routes } from 'universal/constants'
 import { connect } from 'react-redux'
-import { Navbar, Nav } from 'react-bootstrap'
+import Nav from 'react-bootstrap/lib/Nav'
+import Navbar from 'react-bootstrap/lib/Navbar'
 import Badge from 'material-ui/Badge'
 
 import Logout from '../Logout'

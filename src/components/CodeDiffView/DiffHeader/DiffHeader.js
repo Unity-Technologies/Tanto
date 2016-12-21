@@ -3,7 +3,11 @@
 import React, { Component } from 'react'
 import IconButton from 'material-ui/IconButton'
 import View from 'material-ui/svg-icons/action/view-module'
-import { Nav, NavItem, Navbar } from 'react-bootstrap'
+
+import Nav from 'react-bootstrap/lib/Nav'
+import NavItem from 'react-bootstrap/lib/NavItem'
+import Navbar from 'react-bootstrap/lib/Navbar'
+
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 

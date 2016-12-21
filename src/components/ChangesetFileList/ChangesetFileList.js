@@ -1,6 +1,9 @@
 /* @flow */
 import React from 'react'
-import { Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import ListGroup from 'react-bootstrap/lib/ListGroup'
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import fuzzy from 'fuzzy'
 import { Link } from 'react-router'
 

@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react'
-import { Alert } from 'react-bootstrap'
+import Alert from 'react-bootstrap/lib/Alert'
 
 export type Props = { text: string }
 

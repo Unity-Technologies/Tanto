@@ -1,9 +1,13 @@
 // TODO: add flow annotations
 
 import React, { Component } from 'react'
-import { BranchSelect, ChangesetList } from 'components'
+import BranchSelect from 'components/BranchSelect'
+import ChangesetList from 'components/ChangesetList'
 import { connect } from 'react-redux'
-import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
+import Col from 'react-bootstrap/lib/Col'
+import Row from 'react-bootstrap/lib/Row'
+import Button from 'react-bootstrap/lib/Button'
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 
 import { prChangesetList3, prChangesetList1, prChangesetList2 } from '../../../api/testPullRequest'
 
