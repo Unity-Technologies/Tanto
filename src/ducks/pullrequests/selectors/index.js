@@ -39,6 +39,11 @@ export const isFetching =
 export const error =
   (state: StateType): Object => errorSelector(types.FETCH_PULL_REQUESTS)(state)
 
+export const isPullRequestFetching =
+  (state: StateType): boolean => isFetchingSelector(types.FETCH_PULL_REQUEST)(state)
+export const pullRequestError =
+  (state: StateType): Object => errorSelector(types.FETCH_PULL_REQUEST)(state)
+
 export const isOwnedFetching =
   (state: StateType): boolean => isFetchingSelector(types.FETCH_USER_PULL_REQUESTS)(state)
 export const ownedError =

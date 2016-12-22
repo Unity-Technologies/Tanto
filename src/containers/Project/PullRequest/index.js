@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { DEVELOPER_PERSONA } from 'ducks/session'
 import { fetchPullRequest } from 'ducks/pullrequests'
-import { pullRequestSelector } from 'ducks/pullrequests/selectors'
+import { pullRequestSelector, isPullRequestFetching, pullRequestError } from 'ducks/pullrequests/selectors'
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 import LoadingIcon from 'components/LoadingIcon'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
@@ -92,8 +92,8 @@ class PullRequest extends Component {
 
 export default connect(
   (state, props) => ({
-    error: state.pullRequest.error,
-    isFetching: state.pullRequest.isFetching,
+    error: pullRequestError(state),
+    isFetching: isPullRequestFetching(state),
     params: props.params,
     persona: state.session.persona,
     pullRequest: pullRequestSelector(state, props),
