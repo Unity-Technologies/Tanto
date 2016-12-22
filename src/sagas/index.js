@@ -5,17 +5,16 @@ import { takeLatest } from 'redux-saga'
 import { types as sessionTypes } from 'ducks/session'
 import { types as repoTypes } from 'ducks/repositories'
 import { types as prsTypes } from 'ducks/pullrequests'
-import { types as prTypes } from 'ducks/pullRequest'
 
 import fetchCurrentUserProfile from './session'
 import {
+  fetchPullRequest,
   fetchCurrentUserPullRequests,
   fetchCurrentUserAssignedPullRequests,
   fetchCurrentUserWatchingPullRequests,
 } from './pullrequests'
 
 import { fetchRepositories } from './repositories'
-import fetchPullRequest from './pullRequest'
 
 
 export default function* rootSaga(): Generator<*, *, *> {
@@ -30,5 +29,5 @@ export default function* rootSaga(): Generator<*, *, *> {
   yield fork(
     takeLatest, repoTypes.FETCH_REPOSITORIES, fetchRepositories)
   yield fork(
-    takeLatest, prTypes.FETCH_START, fetchPullRequest)
+    takeLatest, prsTypes.FETCH_PULL_REQUEST, fetchPullRequest)
 }

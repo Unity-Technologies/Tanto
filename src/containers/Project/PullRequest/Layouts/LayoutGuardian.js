@@ -4,7 +4,7 @@ import React from 'react'
 import Scroll from 'react-scroll'
 
 import Divider from 'components/Divider'
-import type { PullRequestGraphType } from 'ducks/pullRequest'
+import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 import CategoryModule from './common'
 
 

@@ -4,7 +4,19 @@ import {
   computePullRequestOriginLink,
   computePullRequestTargetLink,
   computePullRequest,
+  isFetching,
+  error,
+  isOwnedFetching,
+  isAssignedFetching,
+  assignedError,
+  ownedError,
+  isWatchingFetching,
+  watchingError,
+  pullRequestSelector,
 } from '../index'
+
+import { types } from 'ducks/pullrequests'
+
 
 const expect = chai.expect
 
@@ -72,5 +84,101 @@ describe('session selectors computations', () => {
       targetLink: fn1(pullrequest.target.name, pullrequest.target.branch),
       originLink: fn1(pullrequest.origin.name, pullrequest.origin.branch),
     })
+  })
+})
+
+
+describe('fetch status', () => {
+  it('isFetching for pull requests', () => {
+    const state = { fetch: { [types.FETCH_PULL_REQUESTS]: { isFetching: false } } }
+    expect(isFetching(state)).equals(false)
+
+    const state2 = { fetch: { [types.FETCH_PULL_REQUESTS]: { isFetching: true } } }
+    expect(isFetching(state2)).equals(true)
+
+    expect(isFetching({ fetch: {} })).equals(false)
+  })
+
+  it('isFetching for owned pull requests', () => {
+    const state = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { isFetching: false } } }
+    expect(isOwnedFetching(state)).equals(false)
+
+    const state2 = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { isFetching: true } } }
+    expect(isOwnedFetching(state2)).equals(true)
+
+    expect(isOwnedFetching({ fetch: {} })).equals(false)
+  })
+
+  it('isFetching for owned pull requests', () => {
+    const state = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { isFetching: false } } }
+    expect(isAssignedFetching(state)).equals(false)
+
+    const state2 = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { isFetching: true } } }
+    expect(isAssignedFetching(state2)).equals(true)
+
+    expect(isAssignedFetching({ fetch: {} })).equals(false)
+  })
+
+  it('isFetching for watching pull requests', () => {
+    const state = { fetch: { [types.FETCH_USER_WATCHING_PULL_REQUESTS]: { isFetching: false } } }
+    expect(isWatchingFetching(state)).equals(false)
+
+    const state2 = { fetch: { [types.FETCH_USER_WATCHING_PULL_REQUESTS]: { isFetching: true } } }
+    expect(isWatchingFetching(state2)).equals(true)
+
+    expect(isWatchingFetching({ fetch: {} })).equals(false)
+  })
+
+  it('error for pull requests', () => {
+    const testerror = { text: 'error message' }
+    const state = { fetch: { [types.FETCH_PULL_REQUESTS]: { error: testerror } } }
+    expect(error(state)).equals(testerror)
+
+    expect(error({ fetch: {} })).equals(null)
+  })
+
+  it('error for owned pull requests', () => {
+    const testerror = { text: 'error message' }
+    const state = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { error: testerror } } }
+    expect(ownedError(state)).equals(testerror)
+
+    expect(ownedError({ fetch: {} })).equals(null)
+  })
+
+  it('error for assigned pull requests', () => {
+    const testerror = { text: 'error message' }
+    const state = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { error: testerror } } }
+    expect(assignedError(state)).equals(testerror)
+
+    expect(assignedError({ fetch: {} })).equals(null)
+  })
+
+  it('error for watching pull requests', () => {
+    const testerror = { text: 'error message' }
+    const state = { fetch: { [types.FETCH_USER_WATCHING_PULL_REQUESTS]: { error: testerror } } }
+    expect(watchingError(state)).equals(testerror)
+
+    expect(watchingError({ fetch: {} })).equals(null)
+  })
+
+  it('error for watching pull requests', () => {
+    const testerror = { text: 'error message' }
+    const state = { fetch: { [types.FETCH_USER_WATCHING_PULL_REQUESTS]: { error: testerror } } }
+    expect(watchingError(state)).equals(testerror)
+
+    expect(watchingError({ fetch: {} })).equals(null)
+  })
+})
+
+describe('pullRequestSelector', () => {
+  it('should select pull request by params prid', () => {
+    const pullRequest = {
+      id: 12,
+      title: 'test pr',
+      description: 'test pr description',
+    }
+    const state = { pullrequests: { entities: { 12: pullRequest } } }
+    const props = { params: { prid: 12 } }
+    expect(pullRequestSelector(state, props)).to.eql(pullRequest)
   })
 })

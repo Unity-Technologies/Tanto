@@ -1,11 +1,13 @@
 /* @flow */
-
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { actions } from 'ducks/pullrequests'
-import { selectors as sessionSelectors } from 'ducks/session/selectors'
+import { fetchUserPullRequests } from 'ducks/pullrequests'
+import LinearProgress from 'material-ui/LinearProgress'
+import ErrorMessage from 'components/ErrorMessage'
+import { pullRequestsOwned } from 'ducks/session/selectors'
+import { isOwnedFetching, ownedError } from 'ducks/pullrequests/selectors'
 import PullRequestList from 'components/PullRequestList'
 import Toolbar from '../Toolbar'
 
@@ -15,17 +17,17 @@ export type Props = {
   pageSize: number,
   isFetching: boolean,
   total: number,
+  error: Object,
   items: Array<any>,
 }
 
 class UserPullRequestList extends Component {
   componentDidMount() {
-    const { activePage, pageSize } = this.props
-    this.props.dispatch(actions.fetchUserPullRequests(activePage, pageSize))
+    this.props.dispatch(fetchUserPullRequests(this.props.activePage, this.props.pageSize))
   }
 
   handlePageSelect = (page) => {
-    this.props.dispatch(actions.fetchUserPullRequests(page, this.props.pageSize))
+    this.props.dispatch(fetchUserPullRequests(page, this.props.pageSize))
   }
 
   props: Props
@@ -38,6 +40,8 @@ class UserPullRequestList extends Component {
     return (
       <div>
         <Toolbar />
+        {this.props.isFetching && <LinearProgress />}
+        {this.props.error && <ErrorMessage error={this.props.error} />}
         <PullRequestList
           showRemoveButton
           onPageSelect={this.handlePageSelect}
@@ -53,8 +57,8 @@ export default connect(
     pageSize: 3,
     activePage: state.session.pullRequestsOwned.currentPage,
     total: state.session.pullRequestsOwned.total,
-    isFetching: state.pullrequests.isFetching,
-    error: state.pullrequests.error ? state.pullrequests.error.message : null,
-    items: sessionSelectors.getPullRequests(state) || [],
+    isFetching: isOwnedFetching(state),
+    error: ownedError(state),
+    items: pullRequestsOwned(state) || [],
   })
 )(UserPullRequestList)

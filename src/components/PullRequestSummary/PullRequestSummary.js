@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
 
-import type { PullRequestGraphType } from 'ducks/pullRequest'
+import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 import Reviewers from '../Reviewers'
 import UserAvatar from '../UserAvatar'
 

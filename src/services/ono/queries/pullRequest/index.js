@@ -4,6 +4,7 @@
 const PULL_REQUEST_QUERY = `
 query ($id: Int!) {
   pullRequest(id: $id) {
+    id
     title
     status
     created
@@ -46,9 +47,7 @@ query ($id: Int!) {
 
 export default PULL_REQUEST_QUERY
 
-export const parsers = {
-  pullRequestQuery: (response: any) => response.data.pullRequest,
-}
+export const pullRequestQuery = (response: any) => response.data.pullRequest
 
 // TODO: these types can be statically valided and compared with Ono schema:
 

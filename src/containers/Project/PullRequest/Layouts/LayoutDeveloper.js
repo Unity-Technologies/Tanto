@@ -3,7 +3,7 @@ import React from 'react'
 import Badge from 'react-bootstrap/lib/Badge'
 import { Link } from 'react-router'
 
-import type { PullRequestGraphType } from 'ducks/pullRequest'
+import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 
 import CategoryModule from './common'
 

@@ -1,5 +1,5 @@
 import { DEVELOPER_PERSONA } from 'ducks/session'
-import { selectors } from '../index'
+import { pullRequestsOwned, pullRequestsAssigned, pullRequestsWatching } from '../index'
 
 const expect = require('chai').expect
 
@@ -170,24 +170,16 @@ const state = {
 }
 
 describe('session selectors', () => {
-  it('get persona', () => {
-    expect(selectors.getPersona(state)).to.eql(DEVELOPER_PERSONA)
-  })
-
-  it('get profile', () => {
-    expect(selectors.getProfile(state)).to.eql(sessionState.profile)
-  })
-
   it('get user pull requests', () => {
-    expect(selectors.getPullRequests(state)).to.eql([pr1, pr4])
+    expect(pullRequestsOwned(state)).to.eql([pr1, pr4])
   })
 
   it('get user pull assigned requests', () => {
-    expect(selectors.getPullRequestsAssigned(state)).to.eql([pr1, pr3])
+    expect(pullRequestsAssigned(state)).to.eql([pr1, pr3])
   })
 
   it('get user pull watching requests', () => {
-    expect(selectors.getPullRequestsWatching(state)).to.eql([pr2, pr1])
+    expect(pullRequestsWatching(state)).to.eql([pr2, pr1])
   })
 })
 

@@ -204,7 +204,6 @@
     "react-tap-event-plugin": "^2.0.1",
     "redis": "^2.6.3",
     "redux": "^3.0.4",
-    "redux-form": "^6.1.1",
     "redux-form-validation": "0.0.6",
     "redux-localstorage": "^0.4.0",
     "redux-logger": "^2.7.4",

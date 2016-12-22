@@ -8,14 +8,18 @@ import LinearProgress from 'material-ui/LinearProgress'
 import { fetchRepositories } from 'ducks/repositories'
 import type { StateType } from 'ducks/repositories'
 import { groupPathFromPath } from 'routes/helpers'
-import { repositories, groups as groupsSelector } from 'ducks/repositories/selectors'
+import {
+  repositories as repositoriesSelector,
+  groups as groupsSelector,
+  error as errorSelector,
+  isFetching as isFetchingSelector } from 'ducks/repositories/selectors'
 import Breadcrumb from 'components/Breadcrumb'
 import RepositoryList from 'components/RepositoryList'
 import type { RepositoryType, GroupType } from 'components/RepositoryList'
 
 export type Props = {
   isFetching: boolean,
-  error: string,
+  error: Object,
   projects: Array<RepositoryType>,
   groups: Array<GroupType>,
   dispatch: Function,
@@ -47,14 +51,13 @@ export class Projects extends Component {
         <Helmet title="Projects" />
         <Breadcrumb path={pathname} skip={0} />
         {isFetching && <LinearProgress />}
-        {error && <ErrorMessage text={error} />}
+        {error && <ErrorMessage error={error} />}
         <RepositoryList groups={groups} repositories={projects} path={pathname} />
-      {!isFetching && !projects.length &&
-       !groups.length && !error &&
-        <div style={{ textAlign: 'center', padding: '10%' }} >
-          <h4>NO PROJECTS</h4>
-        </div>
-      }
+        {!isFetching && !projects.length && !groups.length && !error &&
+          <div style={{ textAlign: 'center', padding: '10%' }} >
+            <h4>NO PROJECTS</h4>
+          </div>
+        }
       </div>
     )
   }
@@ -63,9 +66,9 @@ export class Projects extends Component {
 export default connect(
   (state, props) => ({
     pathname: state.routing.locationBeforeTransitions.pathname,
-    isFetching: state.repositories.isFetching,
-    error: state.repositories.error ? state.repositories.error.message : null,
-    projects: repositories(state, props),
+    isFetching: isFetchingSelector(state),
+    error: errorSelector(state),
+    projects: repositoriesSelector(state, props),
     groups: groupsSelector(state, props),
   })
 )(Projects)

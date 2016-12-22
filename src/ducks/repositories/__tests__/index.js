@@ -42,9 +42,6 @@ describe('repositories actions', () => {
 describe('repositories reducer', () => {
   it('should return initial state', () => {
     const initialState = {
-      error: {
-        message: '' },
-      isFetching: false,
       entities: {},
       groups: {},
     }

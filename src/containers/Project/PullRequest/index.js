@@ -4,8 +4,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { DEVELOPER_PERSONA } from 'ducks/session'
-import { actions } from 'ducks/pullRequest'
-import type { PullRequestGraphType } from 'ducks/pullRequest'
+import { fetchPullRequest } from 'ducks/pullrequests'
+import {
+  pullRequestSelector,
+  isPullRequestFetching,
+  pullRequestError,
+} from 'ducks/pullrequests/selectors'
+import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 import LoadingIcon from 'components/LoadingIcon'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
@@ -33,7 +38,7 @@ class PullRequest extends Component {
   componentDidMount() {
     const { dispatch, params } = this.props
     const pullRequestId = parseInt(params.prid, 10)
-    dispatch(actions.fetchStart(pullRequestId))
+    dispatch(fetchPullRequest(pullRequestId))
   }
 
   props: Props
@@ -90,11 +95,11 @@ class PullRequest extends Component {
 }
 
 export default connect(
-  (state, ownProps) => ({
-    error: state.pullRequest.error,
-    isFetching: state.pullRequest.isFetching,
-    params: ownProps.params,
+  (state, props) => ({
+    error: pullRequestError(state),
+    isFetching: isPullRequestFetching(state),
+    params: props.params,
     persona: state.session.persona,
-    pullRequest: state.pullRequest.pullRequest,
+    pullRequest: pullRequestSelector(state, props),
   })
 )(PullRequest)

@@ -8,7 +8,7 @@ import IssuesList from 'components/IssuesList'
 import PullRequestDiscussion from 'components/PullRequestDiscussion'
 import PullRequestSummary from 'components/PullRequestSummary'
 
-import type { PullRequestGraphType } from 'ducks/pullRequest'
+import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 
 import {
   PullRequestData, prChangesetList, prIssues,
