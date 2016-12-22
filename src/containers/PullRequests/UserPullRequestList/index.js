@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { actions } from 'ducks/pullrequests'
+import { fetchUserPullRequests } from 'ducks/pullrequests'
 import LinearProgress from 'material-ui/LinearProgress'
 import ErrorMessage from 'components/ErrorMessage'
 import { pullRequestsOwned } from 'ducks/session/selectors'
@@ -23,11 +23,11 @@ export type Props = {
 
 class UserPullRequestList extends Component {
   componentDidMount() {
-    this.props.dispatch(actions.fetchUserPullRequests(this.props.activePage, this.props.pageSize))
+    this.props.dispatch(fetchUserPullRequests(this.props.activePage, this.props.pageSize))
   }
 
   handlePageSelect = (page) => {
-    this.props.dispatch(actions.fetchUserPullRequests(page, this.props.pageSize))
+    this.props.dispatch(fetchUserPullRequests(page, this.props.pageSize))
   }
 
   props: Props

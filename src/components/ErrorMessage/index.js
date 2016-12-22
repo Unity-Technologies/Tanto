@@ -11,7 +11,12 @@ export type Props = {
 
 function ErrorMessage(props: Props) {
   const propertyName = props.propertyName || 'message'
-  const message = props.error ? props.error[propertyName] : (props.text ? props.text : 'Error')
+  let message = 'Error'
+  if (props.text) {
+    message = props.text
+  } else if (props.error && props.error.hasOwnProperty(propertyName)) {
+    message = props.error[propertyName]
+  }
   return (
     <Alert bsStyle="danger" style={{ fontSize: '13px' }}>
       <strong><i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong> {message}

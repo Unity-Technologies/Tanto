@@ -53,3 +53,6 @@ export const isWatchingFetching =
   (state: StateType): boolean => isFetchingSelector(types.FETCH_USER_WATCHING_PULL_REQUESTS)(state)
 export const watchingError =
   (state: StateType): Object => errorSelector(types.FETCH_USER_WATCHING_PULL_REQUESTS)(state)
+
+export const pullRequestSelector =
+  (state: Object, props: Object): Object => state.pullrequests.entities[props.params.prid]

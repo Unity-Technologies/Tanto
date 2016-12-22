@@ -3,9 +3,10 @@
 
 import { put, call } from 'redux-saga/effects'
 import { actions as sessionActions } from 'ducks/session'
-import { actions as prActions } from 'ducks/pullrequests'
+import { setPullRequests, setPullRequest } from 'ducks/pullrequests'
 import fetchSaga from 'sagas/fetch'
 import { queries, parsers } from 'services/ono/queries/pullrequests'
+import PULL_REQUEST_QUERY, { pullRequestQuery } from 'services/ono/queries/pullRequest'
 
 /**
  * Fetch pull requests
@@ -22,8 +23,18 @@ export function* fetchPullRequests(
   const response = yield call(fetchSaga, action.type, query, { first, offset })
 
   const { nodes, total } = parser(response)
-  yield put(prActions.setPullRequests(page, nodes))
+  yield put(setPullRequests(page, nodes))
   yield put(updateSession(page, nodes, total, pageSize))
+}
+
+/**
+ * Fetch pull request
+ */
+
+export function* fetchPullRequest(action: Object): Generator<any, any, any> {
+  const response = yield call(fetchSaga, action.type, PULL_REQUEST_QUERY, { id: action.id })
+  const pullRequest = pullRequestQuery(response)
+  yield put(setPullRequest(pullRequest))
 }
 
 /**

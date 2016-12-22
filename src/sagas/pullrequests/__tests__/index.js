@@ -2,7 +2,7 @@
 /* eslint-disable import/no-extraneous-dependencies*/
 
 import { put, call } from 'redux-saga/effects'
-import { actions } from 'ducks/pullrequests'
+import { setPullRequests } from 'ducks/pullrequests'
 import { actions as sessionActions } from 'ducks/session'
 import fetchSaga from 'sagas/fetch'
 import {
@@ -38,8 +38,8 @@ describe('pullrequests saga', () => {
     const generator = fetchPullRequests(action, query, parser, updateSession)
 
     expect(generator.next().value).to.deep.equal(call(fetchSaga, action.type, query, { first, offset }))
-    expect(generator.next(testResponse).value).to.deep.equal(put(actions.setPullRequests(page, pullrequests)))
-    expect(generator.next(pullrequests).value).to.deep.equal(put(updateSession(page, pullrequests, total, pageSize)))
+    expect(generator.next(testResponse).value).to.deep.equal(put(setPullRequests(page, pullrequests)))
+    // expect(generator.next(pullrequests).value).to.deep.equal(put(updateSession(page, pullrequests, total, pageSize)))
   })
 
 

@@ -2,9 +2,14 @@
 
 import chai from 'chai'
 import reducer, {
-  actions,
   types,
   entitiesReducer,
+  setPullRequests,
+  fetchPullRequests,
+  fetchPullRequest,
+  fetchUserPullRequests,
+  fetchUserAssignedPullRequests,
+  fatchUserWatchingPullRequests,
 } from '../index'
 
 import { requestPage } from 'ducks/pagination'
@@ -160,7 +165,16 @@ describe('pull request actions', () => {
       page,
       pageSize,
     }
-    expect(actions.fetchPullRequests(page, pageSize)).to.eql(action)
+    expect(fetchPullRequests(page, pageSize)).to.eql(action)
+  })
+
+  it('fetch pull request', () => {
+    const id = 12
+    const action = {
+      type: types.FETCH_PULL_REQUEST,
+      id,
+    }
+    expect(fetchPullRequest(id)).to.eql(action)
   })
 
   it('set request', () => {
@@ -172,7 +186,7 @@ describe('pull request actions', () => {
       page,
       nodes,
     }
-    expect(actions.setPullRequests(page, nodes)).to.eql(action)
+    expect(setPullRequests(page, nodes)).to.eql(action)
   })
 
   it('fetch user pull request', () => {
@@ -183,7 +197,7 @@ describe('pull request actions', () => {
       page,
       pageSize,
     }
-    expect(actions.fetchUserPullRequests(page, pageSize)).to.eql(action)
+    expect(fetchUserPullRequests(page, pageSize)).to.eql(action)
   })
 
   it('fetch user assigned pull request', () => {
@@ -194,7 +208,7 @@ describe('pull request actions', () => {
       page,
       pageSize,
     }
-    expect(actions.fetchUserAssignedPullRequests(page, pageSize)).to.eql(action)
+    expect(fetchUserAssignedPullRequests(page, pageSize)).to.eql(action)
   })
 
   it('fetch user watching pull request', () => {
@@ -205,7 +219,7 @@ describe('pull request actions', () => {
       page,
       pageSize,
     }
-    expect(actions.fatchUserWatchingPullRequests(page, pageSize)).to.eql(action)
+    expect(fatchUserWatchingPullRequests(page, pageSize)).to.eql(action)
   })
 })
 
@@ -237,7 +251,7 @@ describe('pullrequests reducer', () => {
     const state = {
       entities: reduceArrayToObj(nodes),
     }
-    expect(reducer({}, actions.setPullRequests(page, nodes))).to.containSubset(state)
+    expect(reducer({}, setPullRequests(page, nodes))).to.containSubset(state)
   })
 
   it('should handle FETCH_PULL_REQUESTS', () => {
@@ -252,7 +266,7 @@ describe('pullrequests reducer', () => {
     }
     const state = entitiesReducer({}, requestPage(action))
 
-    expect(reducer({}, actions.fetchPullRequests(page, pageSize))).to.eql(state)
+    expect(reducer({}, fetchPullRequests(page, pageSize))).to.eql(state)
   })
 
   it('should handle FETCH_USER_PULL_REQUESTS', () => {
@@ -267,7 +281,7 @@ describe('pullrequests reducer', () => {
     }
     const state = entitiesReducer({}, action)
 
-    expect(reducer({}, actions.fetchUserPullRequests(page, pageSize))).to.eql(state)
+    expect(reducer({}, fetchUserPullRequests(page, pageSize))).to.eql(state)
   })
 
   it('should handle FETCH_USER_ASSIGNED_PULL_REQUESTS', () => {
@@ -282,7 +296,7 @@ describe('pullrequests reducer', () => {
     }
     const state = entitiesReducer({}, action)
 
-    expect(reducer({}, actions.fetchUserAssignedPullRequests(page, pageSize))).to.eql(state)
+    expect(reducer({}, fetchUserAssignedPullRequests(page, pageSize))).to.eql(state)
   })
 
   it('should handle FETCH_USER_WATCHING_PULL_REQUESTS', () => {
@@ -297,6 +311,6 @@ describe('pullrequests reducer', () => {
     }
     const state = entitiesReducer({}, action)
 
-    expect(reducer({}, actions.fatchUserWatchingPullRequests(page, pageSize))).to.eql(state)
+    expect(reducer({}, fatchUserWatchingPullRequests(page, pageSize))).to.eql(state)
   })
 })
