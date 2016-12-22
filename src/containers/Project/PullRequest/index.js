@@ -5,7 +5,11 @@ import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { DEVELOPER_PERSONA } from 'ducks/session'
 import { fetchPullRequest } from 'ducks/pullrequests'
-import { pullRequestSelector, isPullRequestFetching, pullRequestError } from 'ducks/pullrequests/selectors'
+import {
+  pullRequestSelector,
+  isPullRequestFetching,
+  pullRequestError,
+} from 'ducks/pullrequests/selectors'
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 import LoadingIcon from 'components/LoadingIcon'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
