@@ -6,6 +6,7 @@ node_js:
   - '7'
 
 script:
+  - npm rebuild node-sass
   - yarn run check-ci
 
 cache:

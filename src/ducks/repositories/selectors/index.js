@@ -38,3 +38,9 @@ export const isFetching =
   (state: StateType): boolean => isFetchingSelector(types.FETCH_REPOSITORIES)(state)
 export const error =
   (state: StateType): Object => errorSelector(types.FETCH_REPOSITORIES)(state)
+
+
+export const isSearchingRepository =
+  (state: StateType): boolean => isFetchingSelector(types.SEARCH_REPOSITORY)(state)
+export const searchRepositoryError =
+  (state: StateType): Object => errorSelector(types.SEARCH_REPOSITORY)(state)
