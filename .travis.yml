@@ -9,7 +9,7 @@ script:
   - yarn run check-ci
 
 cache:
-  yarn: true
+  yarn: false
   directories:
     - node_modules
 
