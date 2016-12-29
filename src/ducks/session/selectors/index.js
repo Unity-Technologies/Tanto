@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import _ from 'lodash'
 
 export const getIds = (state) => {
-  const { pages, currentPage } = state
+  const { pagination: { pages, currentPage } } = state
   return pages[currentPage]
 }
 

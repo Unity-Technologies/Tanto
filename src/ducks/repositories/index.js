@@ -53,7 +53,7 @@ export const groups = (state: Object= {}, action: Object): Object => {
   }
 }
 
-export const names = (state: Array<string> = [], action: Object): Array<string> => (
+export const names = (state: Array<Object> = [], action: Object): Array<Object> => (
   action.type === types.SET_REPOSITORIES_NAMES ? action.nodes : state)
 
 export const entitiesReducer = combineReducers({
@@ -85,12 +85,12 @@ export const setGroups = (nodes: Array<GroupType>): Object => ({ type: types.SET
 export const fetchRepositories =
   (name: string): Object => ({ type: types.FETCH_REPOSITORIES, name })
 export const setRepositoriesNames =
-  (nodes: Array<string>): Object => ({ type: types.SET_REPOSITORIES_NAMES, nodes })
+  (nodes: Array<Object>): Object => ({ type: types.SET_REPOSITORIES_NAMES, nodes })
 export const searchRepository =
   (filter: string, first: string): Object =>
     ({ type: types.SEARCH_REPOSITORY, filter, first })
 export const fetchRepositoryBranches =
-  (name: string): Object => ({ type: types.FETCH_REPOSITORY_BRANCHES, name })
+  (id: number): Object => ({ type: types.FETCH_REPOSITORY_BRANCHES, id })
 
 /**
  * Actions

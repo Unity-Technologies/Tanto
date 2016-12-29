@@ -11,7 +11,7 @@ import { pullRequestsAssigned } from 'ducks/session/selectors'
 import { isAssignedFetching, assignedError } from 'ducks/pullrequests/selectors'
 
 import PullRequestList from 'components/PullRequestList'
-import Toolbar from '../Toolbar'
+
 
 export type Props = {
   dispatch: Function,
@@ -38,7 +38,7 @@ class AssignedPullRequestList extends Component {
   render() {
     return (
       <div>
-        <Toolbar />
+
         {this.props.isFetching && <LinearProgress />}
         {this.props.error && <ErrorMessage error={this.props.error} />}
         <PullRequestList onPageSelect={this.handlePageSelect} {...this.props} />
@@ -50,8 +50,8 @@ class AssignedPullRequestList extends Component {
 export default connect(
   state => ({
     pageSize: 3,
-    activePage: state.session.pullRequestsAssigned.currentPage,
-    total: state.session.pullRequestsAssigned.total,
+    activePage: state.session.pullRequestsAssigned.pagination.currentPage,
+    total: state.session.pullRequestsAssigned.pagination.total,
     isFetching: isAssignedFetching(state),
     error: assignedError(state),
     items: pullRequestsAssigned(state) || [],

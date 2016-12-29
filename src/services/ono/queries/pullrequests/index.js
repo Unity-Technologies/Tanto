@@ -3,9 +3,9 @@
 import _ from 'lodash'
 
 export const userPullRequestsQuery = name => `
-  query ($first: Int!, $offset: Int!,) {
+  query ($first: Int, $offset: Int, $branch: String, $repo: String, $orderBy: Ordering) {
     me {
-      ${name}(first: $first, offset: $offset) {
+      ${name}(first: $first, offset: $offset, repo: $repo, branch: $branch, orderBy: $orderBy) {
         total
         nodes {
           id
@@ -85,4 +85,6 @@ export type PullRequestGraphType = {
   origin: OriginGraphType,
   target: TargetGraphType,
 }
+
+export const OrderFields = ['updated']
 

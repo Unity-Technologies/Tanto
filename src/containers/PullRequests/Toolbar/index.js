@@ -1,54 +1,52 @@
-import React, { Component } from 'react'
+/* @flow */
 
-// import Filter from 'components/Filter'
-// import BranchSelect from 'components/BranchSelect'
+import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
-import Select from 'react-select'
-import { connect } from 'react-redux'
-import { searchRepository } from 'ducks/repositories'
-import { isSearchingRepository, searchRepositoryError } from 'ducks/repositories/selectors'
-
-// const sort = [
-//   { value: 1, label: 'Creation date' },
-//   { value: 2, label: 'Last update date' },
-//   { value: 3, label: 'Changes size' },
-//   { value: 4, label: 'Comments number' },
-//   { value: 5, label: 'Builds count' },
-//   { value: 6, label: 'Reviewers count' },
-//   { value: 7, label: 'Versions count' },
-// ]
-
-// export const branches = [
-//   { value: 1, label: 'default' },
-//   { value: 2, label: '5.3/devs/default' },
-//   { value: 3, label: '5.3/devs/feature1/feature' },
-//   { value: 4, label: '5.3/devs/feature2' },
-//   { value: 5, label: '5.3/devs/feature3' },
-//   { value: 6, label: '5.3/devs/feature4' },
-// ]
+import BranchSelect from '../BranchSelect'
+import RepoSelect from '../RepoSelect'
+import OrderSelect from '../OrderSelect'
 
 type Props = {
   isSearching: boolean,
-  repositoriesNames: Array<string>
+  repo: string,
+  branch: string,
+  order: string,
+  field: string,
+  onRepoSelect: Function,
+  onBranchSelect: Function,
+  onOrderChange: Function,
+  onOrderFieldSelect: Function,
 }
 
+const UPDATED = 'UPDATED'
+
 class Toolbar extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { options: [] }
-  }
+  // handleRepoSelect = (repo: number): void => {
+  //   if (this.props.onRepoSelect) {
+  //     this.props.onRepoSelect(repo)
+  //   }
+  // }
+
+  // handleBranchSelect = (branch: string): void => {
+  //   if (this.props.onBranchSelect) {
+  //     this.props.onBranchSelect(branch)
+  //   }
+  // }
+
+  // handleOrderChange = (order: string): void => {
+  //   if (this.props.onOrderChange) {
+  //     this.props.onOrderChange(order)
+  //   }
+  // }
+
+  // handleOrderFieldSelect = (field: string): void => {
+  //   if (this.props.onBranchSelect) {
+  //     this.props.onBranchSelect(branch)
+  //   }
+  // }
+
   props: Props
-
-  onChange = (value) => {
-    this.props.dispatch(searchRepository(`%${value}%`, 5))
-  }
-
-  componentWillReceiveProps(nextProp: any) {
-    this.setState({
-      options: nextProp.repositoriesNames.map(x => ({ label: x, value: x })),
-    })
-  }
 
   render() {
     return (
@@ -56,50 +54,27 @@ class Toolbar extends Component {
         style={{
           backgroundColor: '#f8f8f8',
           padding: '10px',
+          marginBottom: '5px',
         }}
       >
         <Row>
-          <Col md={4}>
-            <Select
-              name="repository"
-              value="one"
-              options={this.state.options}
-              onInputChange={this.onChange}
-              placeholder="filter by repository"
-              isLoading={this.props.isSearching}
+          <Col md={3}>
+            <RepoSelect onSelect={this.handleRepoSelect} />
+          </Col>
+
+          <Col md={3}>
+            <BranchSelect
+              repoId={this.state.repo}
+              onSelect={this.handleBranchChange}
             />
           </Col>
 
           <Col md={4}>
-            {/* <BranchSelect branches={[]} placeholder="Select branch ..." />*/}
-          </Col>
-
-          <Col md={4}>
-            <div style={{ float: 'left', marginRight: '5px' }}>
-              {/* <Filter data={[]} placeholder="Order by..." />*/}
-            </div>
-            <div style={{ float: 'left', marginRight: '5px' }}>
-              <a
-                className="btn"
-                style={{
-                  color: 'white',
-                  backgroundColor: '#b9ebae',
-                }} aria-label="Sort ascending"
-              >
-                <i className="fa fa-sort-amount-asc" aria-hidden="true" />
-              </a>
-            </div>
-            <div style={{ float: 'left' }}>
-              <a
-                className="btn"
-                style={{
-                  color: 'white',
-                  backgroundColor: 'lightgrey',
-                }} aria-label="Sort descending"
-              >
-                <i className="fa fa-sort-amount-desc" aria-hidden="true" />
-              </a>
-            </div>
+            <OrderSelect
+              options={[UPDATED]}
+              onSelect={this.handleOrderFieldSelect}
+              onOrderChange={this.handleOrderSelect}
+            />
           </Col>
         </Row>
       </div>
@@ -107,10 +82,4 @@ class Toolbar extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    isFetching: isSearchingRepository(state),
-    error: searchRepositoryError(state),
-    repositoriesNames: state.repositories.names,
-  })
-)(Toolbar)
+export default Toolbar

@@ -1,7 +1,7 @@
 /* @flow */
 
 import { fork } from 'redux-saga/effects'
-import { takeLatest, takeEvery } from 'redux-saga'
+import { takeLatest } from 'redux-saga'
 import { types as sessionTypes } from 'ducks/session'
 import { types as repoTypes } from 'ducks/repositories'
 import { types as prsTypes } from 'ducks/pullrequests'
@@ -37,5 +37,5 @@ export default function* rootSaga(): Generator<*, *, *> {
   yield fork(
     takeLatest, repoTypes.SEARCH_REPOSITORY, searchRepository)
   yield fork(
-    takeEvery, repoTypes.FETCH_REPOSITORY_BRANCHES, fetchRepositoryBranches)
+    takeLatest, repoTypes.FETCH_REPOSITORY_BRANCHES, fetchRepositoryBranches)
 }

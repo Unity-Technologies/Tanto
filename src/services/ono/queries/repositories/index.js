@@ -50,7 +50,7 @@ query($name: String!) {
 }`
 
 export const ALL_REPOSITORIES_QUERY = `
-query($filter: String!, $first: Int) {
+query($filter: String, $first: Int) {
 	repositories(all: true, filter: $filter, first: $first) {
     nodes {
       id
@@ -60,8 +60,8 @@ query($filter: String!, $first: Int) {
 }`
 
 export const REPOSITORY_BRANCHES = `
-query($name: String!) {
-	repository(name: $name) {
+query($id: Int!) {
+	repository(id: $id) {
     id
     branches {
       name
@@ -101,12 +101,12 @@ export function parseRepositories(data: any): ReturnType {
   }
 }
 
-export function parseAllRepositoriesNames(data: any): Array<string> {
-  return data ? data.data.repositories.nodes.map(x => x.fullName) : []
+export function parseAllRepositoriesNames(data: any): Array<Object> {
+  return data ? data.data.repositories.nodes : []
 }
 
 export function parseRepository(data: any): Object {
-  return data.repository
+  return data.data.repository
 }
 
 export const query =

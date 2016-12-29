@@ -44,6 +44,7 @@ describe('repositories reducer', () => {
     const initialState = {
       entities: {},
       groups: {},
+      names: [],
     }
 
     expect(reducer(undefined, {})).to.eql(initialState)

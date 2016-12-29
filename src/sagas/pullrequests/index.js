@@ -20,11 +20,21 @@ export function* fetchPullRequests(
   const first = pageSize
   const offset = pageSize * (page - 1)
 
-  const response = yield call(fetchSaga, action.type, query, { first, offset })
+  let orderBy = {
+    direction: 'ASC',
+    field: '',
+  }
+
+  if (action.orderBy) {
+    orderBy = action.orderBy
+  }
+
+
+  const response = yield call(fetchSaga, action.type, query, { first, offset, orderBy, branch: action.branch, repo: action.repo })
 
   const { nodes, total } = parser(response)
   yield put(setPullRequests(page, nodes))
-  yield put(updateSession(page, nodes, total, pageSize))
+  yield put(updateSession(page, nodes, total, pageSize, action.repo, action.branch))
 }
 
 /**

@@ -3,8 +3,10 @@
 import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
 import { entities, actions as entitiesActions } from 'ducks/entities'
 import { pagination, requestPage } from 'ducks/pagination'
+import { orderBy, DIRECTION } from 'ducks/order'
 import type { PaginationType } from 'ducks/pagination'
 import { combineReducers } from 'redux'
+import type { OrderByType } from 'ducks/order'
 
 /**
  * Action types
@@ -30,12 +32,15 @@ const initialState = {
     pageSize: 0,
     currentPage: 0,
   },
+  orderBy: {
+    direction: DIRECTION.ASC,
+    field: '',
+  },
 }
 
 export type PullRequestDictionary = {
   [id: string]: Object
 }
-
 
 export type PullRequestsStateType = {
   entities: PullRequestDictionary,
@@ -45,6 +50,7 @@ export type PullRequestsStateType = {
 export const entitiesReducer = combineReducers({
   entities,
   pagination,
+  orderBy,
 })
 
 /**
@@ -60,13 +66,21 @@ export default (
     case types.FETCH_PULL_REQUESTS:
       return entitiesReducer(state, requestPage(action))
     default:
-      return entitiesReducer(state, action)
+      return state
   }
 }
 
 /**
  * Actions
  */
+
+export type FetchPullRequestArgs = {
+  page: number,
+  pageSize: number,
+  branch: string,
+  repo: string,
+  orderBy: OrderByType,
+}
 
 export const setPullRequests = (page: number, nodes: Array<PullRequestGraphType>): Object =>
   ({ type: types.SET_PULL_REQUESTS, page, nodes })
@@ -88,3 +102,6 @@ export const fetchUserAssignedPullRequests = (page: number, pageSize: number): O
 export const fatchUserWatchingPullRequests = (page: number, pageSize: number): Object =>
   ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS, page, pageSize })
 
+export const fetchUserPullRequests2 =
+  (args: FetchPullRequestArgs): Object =>
+    ({ type: types.FETCH_USER_PULL_REQUESTS, ...args })

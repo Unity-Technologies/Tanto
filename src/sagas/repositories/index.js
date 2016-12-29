@@ -25,8 +25,10 @@ export function* fetchRepositories(action: Object): Generator<any, any, any> {
   yield put(actions.setGroups(groups))
 }
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export function* searchRepository(action: Object): Generator<any, any, any> {
+  yield call(delay, 500)
   const response = yield call(
     fetchSaga, action.type, ALL_REPOSITORIES_QUERY, { first: action.first, filter: action.filter })
   const names = parseAllRepositoriesNames(response)
@@ -34,7 +36,8 @@ export function* searchRepository(action: Object): Generator<any, any, any> {
 }
 
 export function* fetchRepositoryBranches(action: Object): Generator<any, any, any> {
-  const response = yield call(fetchSaga, action.type, REPOSITORY_BRANCHES, { name: action.name })
+  yield call(delay, 500)
+  const response = yield call(fetchSaga, action.type, REPOSITORY_BRANCHES, { id: action.id })
   const node = parseRepository(response)
   yield put(actions.setRepository(node))
 }

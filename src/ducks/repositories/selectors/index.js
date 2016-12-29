@@ -44,3 +44,10 @@ export const isSearchingRepository =
   (state: StateType): boolean => isFetchingSelector(types.SEARCH_REPOSITORY)(state)
 export const searchRepositoryError =
   (state: StateType): Object => errorSelector(types.SEARCH_REPOSITORY)(state)
+
+export const repoBranchesSelector =
+  (state: Object, props: Object): Array<Object> => {
+    const repo = state.repositories.entities[props.repoId]
+    return repo ? repo.branches : []
+  }
+

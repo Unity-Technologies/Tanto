@@ -4,6 +4,7 @@ export const types = {
   SENDING_REQUEST: 'FETCH/SENDING_REQUEST',
   REQUEST_ERROR: 'FETCH/REQUEST_ERROR',
   CLEAR_ERROR: 'FETCH/CLEAR_ERROR',
+  FETCH_DATA: 'FETCH/FETCH_DATA',
 }
 
 export const actions = {
@@ -50,6 +51,7 @@ export const fetchSelector =
     const st = state.fetch[key]
     return st && st.hasOwnProperty(prop) ? st[prop] : defaultValue
   }
+
 
 export const isFetchingSelector =
   (key: string): Function => (state: Object): boolean => {
