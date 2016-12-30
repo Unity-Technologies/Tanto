@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import Tabs from 'react-bootstrap/lib/Tabs'
 import Tab from 'react-bootstrap/lib/Tab'
 import PullRequestContainer from 'containers/PullRequestContainer'
-import { fetchUserPullRequests2, fetchAssignedPullRequests2 } from 'ducks/pullrequests'
+import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/pullrequests'
 import { pullRequestsOwned, pullRequestsAssigned } from 'ducks/session/selectors'
 import {
   isOwnedFetching,
@@ -61,23 +61,25 @@ function PullRequests(props: Props) {
       <div >
         <Tabs animation={false} defaultActiveKey={1}>
           <Tab
+            key="tab1"
             eventKey={1}
             className="tab"
             title={tabTitle('Pull requests on review', totalAssigned)}
           >
             <PullRequestContainer
               mapStateToProps={mapStateToPropsAssigned}
-              fetchData={fetchAssignedPullRequests2}
+              fetchData={fetchUserAssignedPullRequests}
             />
           </Tab>
           <Tab
+            key="tab2"
             eventKey={2}
             className="tab"
             title={tabTitle('My pull requests', totalOwned)}
           >
             <PullRequestContainer
               mapStateToProps={mapStateToPropsOwned}
-              fetchData={fetchUserPullRequests2}
+              fetchData={fetchUserPullRequests}
             />
           </Tab>
         </Tabs>

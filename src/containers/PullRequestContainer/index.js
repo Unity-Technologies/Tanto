@@ -8,12 +8,10 @@ import { FiltersFields } from 'ducks/pullrequests'
 import LinearProgress from 'material-ui/LinearProgress'
 import ErrorMessage from 'components/ErrorMessage'
 import PullRequestList from 'components/PullRequestList'
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
 import BranchSelect from 'containers/BranchSelect'
 import RepoSelect from 'containers/RepoSelect'
 import OrderSelect from 'containers/OrderSelect'
-import type { OrderByType } from 'ducks/order'
+import type { OrderByType, DirectionType } from 'ducks/order'
 
 export type Props = {
   dispatch: Function,
@@ -27,7 +25,10 @@ export type Props = {
   repo: string,
   orderBy: OrderByType,
   fetchData: Function,
+  showRepoSelect: boolean,
 }
+
+const selectBoxStyle = { minWidth: '200px', maxWidth: '250px', marginRight: '5px' }
 
 class PullRequestContainer extends Component {
   componentDidMount() {
@@ -51,7 +52,7 @@ class PullRequestContainer extends Component {
     this.props.dispatch(this.props.fetchData(args))
   }
 
-  handleOrderChange = (order: string): void => {
+  handleOrderChange = (order: DirectionType): void => {
     const args = this.getArguments()
     args.orderBy.direction = order
     this.props.dispatch(this.props.fetchData(args))
@@ -82,26 +83,36 @@ class PullRequestContainer extends Component {
   render() {
     return (
       <div>
-        <Row>
-          <Col md={3}>
-            <RepoSelect onSelect={this.handleRepoSelect} />
-          </Col>
-
-          <Col md={3}>
+        <div
+          style={{
+            padding: '5px',
+            display: 'flex',
+            marginBottom: '5px',
+            borderRadius: '4px',
+            backgroundColor: 'rgb(242, 242, 242)',
+          }}
+        >
+          {!this.props.showRepoSelect &&
+            <div style={selectBoxStyle}>
+              <RepoSelect
+                onSelect={this.handleRepoSelect}
+              />
+            </div>
+          }
+          <div style={selectBoxStyle}>
             <BranchSelect
               repoId={this.props.repo}
               onSelect={this.handleBranchSelect}
             />
-          </Col>
-
-          <Col md={4}>
+          </div>
+          <div style={selectBoxStyle}>
             <OrderSelect
               options={FiltersFields}
               onSelect={this.handleOrderFieldSelect}
               onOrderChange={this.handleOrderChange}
             />
-          </Col>
-        </Row>
+          </div>
+        </div>
         {this.props.isFetching && <LinearProgress />}
         {this.props.error && <ErrorMessage error={this.props.error} />}
         <PullRequestList

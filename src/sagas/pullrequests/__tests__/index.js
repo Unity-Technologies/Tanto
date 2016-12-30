@@ -28,18 +28,26 @@ describe('pullrequests saga', () => {
     const updateSession = prs => (prs)
     const pageSize = 12
     const page = 1
+    const branch = 'testbranch'
+    const repo = 'testrepo'
+    const orderBy = {
+      direction: 'ASC',
+      field: '',
+    }
     const action = {
       type: 'SOME_FETCH',
       pageSize,
+      branch,
+      repo,
+      orderBy,
       page,
     }
     const first = pageSize
     const offset = pageSize * (page - 1)
     const generator = fetchPullRequests(action, query, parser, updateSession)
 
-    expect(generator.next().value).to.deep.equal(call(fetchSaga, action.type, query, { first, offset }))
+    expect(generator.next().value).to.deep.equal(call(fetchSaga, action.type, query, { first, offset, branch, repo, orderBy }))
     expect(generator.next(testResponse).value).to.deep.equal(put(setPullRequests(page, pullrequests)))
-    // expect(generator.next(pullrequests).value).to.deep.equal(put(updateSession(page, pullrequests, total, pageSize)))
   })
 
 

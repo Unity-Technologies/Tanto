@@ -1,7 +1,7 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import type { OrderByType } from 'ducks/order'
+import type { DirectionType } from 'ducks/order'
 import { DIRECTION } from 'ducks/order'
 import Select from 'react-select'
 
@@ -15,17 +15,17 @@ type OrderProps = {
   options: Array<string>,
   onSelect: Function,
   onOrderChange: Function,
+  style: ?Object,
 }
 
 type SwitchButtonProps = {
   label: string,
-  order: string,
-  state: string,
+  isSelected: boolean,
   onSelect: Function,
 }
 
 const SwitchOrderButton = (props: SwitchButtonProps) => (
-  <div style={{ float: 'left', margin: '2px 5px' }}>
+  <div style={{ float: 'left', margin: '2px' }}>
     <a
       onClick={props.onSelect}
       className="btn"
@@ -42,23 +42,17 @@ const SwitchOrderButton = (props: SwitchButtonProps) => (
 class OrderSelect extends Component {
   constructor(props: OrderProps) {
     super(props)
-    this.state = { field: {}, order: DIRECTION.ASC }
-  }
-
-  componentWillReceiveProps(nextProp: any): void {
-    this.setState({
-      options: nextProp.options.map(x => ({ label: x, value: x })),
-    })
+    this.state = { field: null, order: DIRECTION.ASC }
   }
 
   handleFieldChange = (field: SelectItemType): void => {
     this.setState({ field })
     if (this.props.onSelect) {
-      this.props.onSelect(field.value)
+      this.props.onSelect(field ? field.value : '')
     }
   }
 
-  handleOrderChange = (order: OrderByType): void => {
+  handleOrderChange = (order: DirectionType): void => {
     this.setState({ order })
     if (this.props.onOrderChange) {
       this.props.onOrderChange(order)
@@ -69,15 +63,19 @@ class OrderSelect extends Component {
   handleDescClick = () => this.handleOrderChange(DIRECTION.DESC)
 
   props: OrderProps
+  state: {
+    field: ?SelectItemType,
+    order: DirectionType
+  }
 
   render() {
     return (
-      <div>
+      <div style={{ display: 'flex' }}>
         <Select
           value={this.state.field}
           name="branch"
-          style={{ float: 'left', width: '70%' }}
-          options={this.state.options}
+          style={{ float: 'left', minWidth: '180px', width: '70%', marginRight: '3px', ...this.props.style }}
+          options={this.props.options.map(x => ({ label: x, value: x }))}
           onChange={this.handleFieldChange}
           placeholder="fields ..."
         />

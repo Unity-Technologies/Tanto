@@ -48,6 +48,16 @@ export const searchRepositoryError =
 export const repoBranchesSelector =
   (state: Object, props: Object): Array<Object> => {
     const repo = state.repositories.entities[props.repoId]
-    return repo ? repo.branches : []
+    return repo && repo.branches ? repo.branches : []
   }
+export const branchesSelector = createSelector(
+  repoBranchesSelector,
+  repoBranches => repoBranches.map(x => ({ label: x.name, value: x.revision }))
+)
+
+export const repoNamesSelector = (state: Object): Array<Object> => state.repositories.names
+export const repositoriesNames = createSelector(
+  repoNamesSelector,
+  repoNames => repoNames.map(x => ({ label: x.fullName, value: x.id }))
+)
 

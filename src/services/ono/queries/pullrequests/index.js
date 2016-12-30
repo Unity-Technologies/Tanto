@@ -2,10 +2,49 @@
 
 import _ from 'lodash'
 
+const subQuery = `
+    total
+    nodes {
+      id
+      description
+      title
+      updated
+      status
+      origin {
+        branch
+        revision
+        repository {
+          id
+          name
+        }
+      }
+      target {
+        branch
+        repository {
+          id
+          name
+        }
+      }
+      owner {
+        username
+        fullName
+      }
+    }
+`
+
 export const userPullRequestsQuery = name => `
   query ($first: Int, $offset: Int, $branch: String, $repo: String, $orderBy: Ordering) {
     me {
       ${name}(first: $first, offset: $offset, repo: $repo, branch: $branch, orderBy: $orderBy) {
+        ${subQuery}
+      }
+    }
+  }`
+
+export const projectPullRequestsQuery = `
+  query ($first: Int, $offset: Int, $branch: String, $repo: Int, $orderBy: Ordering) {
+    repository(id: $repo) {
+      pullRequests(first: $first, offset: $offset, branch: $branch, orderBy: $orderBy) {
         total
         nodes {
           id
@@ -17,12 +56,14 @@ export const userPullRequestsQuery = name => `
             branch
             revision
             repository {
+              id
               name
             }
           }
           target {
             branch
             repository {
+              id
               name
             }
           }
@@ -45,13 +86,22 @@ export const queries = {
   CURRENT_USER_ASSIGNED_PULL_REQUESTS: userPullRequestsQuery(constants.pullRequestsAssigned),
 }
 
+export const parseCurrentUserPullRequests = response => (
+  _.get(response, ['data', 'me', constants.pullRequestsOwned])
+)
+
+export const parseCurrentUserAssignedPullRequests = response => (
+  _.get(response, ['data', 'me', constants.pullRequestsAssigned])
+)
+
+export const parsePullRequests = response => (
+  _.get(response, ['data', 'repository', 'pullRequests'])
+)
+
 export const parsers = {
-  parseCurrentUserPullRequests: response => (
-    _.get(response, ['data', 'me', constants.pullRequestsOwned])
-  ),
-  parseCurrentUserAssignedPullRequests: response => (
-    _.get(response, ['data', 'me', constants.pullRequestsAssigned])
-  ),
+  parseCurrentUserPullRequests,
+  parseCurrentUserAssignedPullRequests,
+  parsePullRequests,
 }
 
 export type RepositoryGraphType = {

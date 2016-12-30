@@ -3,7 +3,8 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
-import { repoBranchesSelector } from 'ducks/repositories/selectors'
+import { fetchRepositoryBranches } from 'ducks/repositories'
+import { branchesSelector } from 'ducks/repositories/selectors'
 
 type SelectItemType = {
   label: string,
@@ -14,35 +15,47 @@ type BranchProps = {
   repoId: number,
   options: Array<SelectItemType>,
   onSelect: Function,
+  style: ?Object,
 }
+
 
 class BranchSelect extends Component {
   constructor(props: BranchProps) {
     super(props)
-    this.state = { branch: '' }
+    this.state = { branch: null }
   }
 
-  componentWillReceiveProps(nextProp: any): void {
-    this.setState({
-      options: nextProp.options.map(x => ({ label: x.name, value: x.revision })),
-    })
+  componentDidMount() {
+    if (this.props.repoId) {
+      this.props.dispatch(fetchRepositoryBranches(this.props.repoId))
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.repoId !== nextProps.repoId) {
+      this.props.dispatch(fetchRepositoryBranches(nextProps.repoId))
+    }
   }
 
   handleBranchChange = (branch: SelectItemType): void => {
     this.setState({ branch })
     if (this.props.onSelect) {
-      this.props.onSelect(branch.value)
+      this.props.onSelect(branch ? branch.value : '')
     }
   }
 
   props: BranchProps
+  state: {
+    branch: ?SelectItemType,
+  }
 
   render() {
     return (
       <Select
+        style={this.props.style}
         value={this.state.branch}
         name="branch"
-        options={this.state.options}
+        options={this.props.options}
         onChange={this.handleBranchChange}
         placeholder="branch ..."
       />
@@ -52,6 +65,6 @@ class BranchSelect extends Component {
 
 export default connect(
   (state, props) => ({
-    options: repoBranchesSelector(state, props),
+    options: branchesSelector(state, props),
   })
 )(BranchSelect)

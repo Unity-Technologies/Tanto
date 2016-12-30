@@ -28,6 +28,7 @@ export const types = {
 const initialState = {
   entities: {},
   groups: {},
+  names: [],
 }
 
 export type RepositoryDictionary = {
@@ -41,6 +42,7 @@ export type GroupDictionary = {
 export type StateType = {
   groups: GroupDictionary,
   entities: RepositoryDictionary,
+  names: Array<Object>
 }
 
 
@@ -87,10 +89,10 @@ export const fetchRepositories =
 export const setRepositoriesNames =
   (nodes: Array<Object>): Object => ({ type: types.SET_REPOSITORIES_NAMES, nodes })
 export const searchRepository =
-  (filter: string, first: string): Object =>
+  (filter: string, first: number): Object =>
     ({ type: types.SEARCH_REPOSITORY, filter, first })
 export const fetchRepositoryBranches =
-  (id: number): Object => ({ type: types.FETCH_REPOSITORY_BRANCHES, id })
+  (id: any): Object => ({ type: types.FETCH_REPOSITORY_BRANCHES, id })
 
 /**
  * Actions

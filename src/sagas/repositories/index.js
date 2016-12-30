@@ -41,3 +41,4 @@ export function* fetchRepositoryBranches(action: Object): Generator<any, any, an
   const node = parseRepository(response)
   yield put(actions.setRepository(node))
 }
+

@@ -33,15 +33,19 @@ describe('session actions', () => {
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
     const page = 1
     const pageSize = 12
+    const repo = 'testrepo'
+    const branch = 'testbranch'
     const action = {
       type: types.SET_PULL_REQUESTS_OWNED,
       page,
       pageSize,
       nodes,
       total,
+      branch,
+      repo,
     }
 
-    expect(actions.setPullRequestsOwned(page, nodes, total, pageSize)).to.eql(action)
+    expect(actions.setPullRequestsOwned(page, nodes, total, pageSize, repo, branch)).to.eql(action)
   })
 
   it('set user pull requests assigned ids', () => {
@@ -49,15 +53,19 @@ describe('session actions', () => {
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
     const page = 1
     const pageSize = 12
+    const repo = 'testrepo'
+    const branch = 'testbranch'
     const action = {
       type: types.SET_PULL_REQUESTS_ASSIGNED,
       page,
       pageSize,
       nodes,
       total,
+      branch,
+      repo,
     }
 
-    expect(actions.setPullRequestsAssigned(page, nodes, total, pageSize)).to.eql(action)
+    expect(actions.setPullRequestsAssigned(page, nodes, total, pageSize, repo, branch)).to.eql(action)
   })
 
   it('set user pull requests watching ids', () => {
@@ -65,15 +73,19 @@ describe('session actions', () => {
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
     const page = 1
     const pageSize = 12
+    const repo = 'testrepo'
+    const branch = 'testbranch'
     const action = {
       type: types.SET_PULL_REQUESTS_WATCHING,
       page,
       pageSize,
       nodes,
       total,
+      branch,
+      repo,
     }
 
-    expect(actions.setPullRequestsWatching(page, nodes, total, pageSize)).to.eql(action)
+    expect(actions.setPullRequestsWatching(page, nodes, total, pageSize, repo, branch)).to.eql(action)
   })
 })
 

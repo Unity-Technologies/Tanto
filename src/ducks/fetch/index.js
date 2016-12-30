@@ -52,7 +52,6 @@ export const fetchSelector =
     return st && st.hasOwnProperty(prop) ? st[prop] : defaultValue
   }
 
-
 export const isFetchingSelector =
   (key: string): Function => (state: Object): boolean => {
     const st = state.fetch[key]
@@ -64,4 +63,22 @@ export const errorSelector =
     const fetchState = state.fetch[key]
     return fetchState && fetchState.hasOwnProperty('error') ? fetchState.error : null
   }
+
+export type FetchAction = {
+  type: string,
+  name: string,
+  query: string,
+  args: Object,
+  callback: Function
+
+}
+
+export const fetchActionCreator =
+  (type: string, args: Object, query: string, callback: Function): FetchAction => ({
+    type: types.FETCH_DATA,
+    name: type,
+    query,
+    args,
+    callback,
+  })
 

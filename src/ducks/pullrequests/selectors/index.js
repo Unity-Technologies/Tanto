@@ -2,6 +2,8 @@
 
 import { types } from '../index'
 import { isFetchingSelector, errorSelector } from 'ducks/fetch'
+import { createSelector } from 'reselect'
+import _ from 'lodash'
 
 export const computePullRequestLink = (pullrequest: Object, fn: Function): Object => (
   { ...pullrequest, link: fn(pullrequest.origin.name, pullrequest.id) }
@@ -61,3 +63,20 @@ export const watchingError =
 
 export const pullRequestSelector =
   (state: Object, props: Object): Object => state.pullrequests.entities[props.params.prid]
+
+export const getIds = (state) => {
+  const { pagination: { pages, currentPage } } = state
+  return pages[currentPage]
+}
+
+export const pullRequestsEntitiesSelector =
+  (state: Object, props: Object): Object => state.pullrequests.entities
+
+export const pullRequestsIdsSelector =
+  (state: Object, props: Object): Object => getIds(state.pullrequests)
+
+export const pullRequests = createSelector(
+  pullRequestsEntitiesSelector, pullRequestsIdsSelector,
+  (pullRequestsEntities, pullRequestsIds) =>
+    _.values(_.pick(pullRequestsEntities, pullRequestsIds))
+)
