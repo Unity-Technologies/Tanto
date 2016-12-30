@@ -13,7 +13,7 @@ import reducer, {
 } from '../index'
 
 import { requestPage } from 'ducks/pagination'
-
+import { orderBy, DIRECTION } from 'ducks/order'
 import { reduceArrayToObj } from 'ducks/normalizer'
 
 
@@ -232,6 +232,7 @@ describe('pullrequests reducer', () => {
   byId[pr4.id] = pr4
   byId[pr5.id] = pr5
 
+
   it('should return initial state', () => {
     const initialState = {
       entities: {},
@@ -240,6 +241,10 @@ describe('pullrequests reducer', () => {
         pages: {},
         pageSize: 0,
         currentPage: 0,
+      },
+      orderBy: {
+        direction: DIRECTION.ASC,
+        field: '',
       },
     }
     expect(reducer(undefined, {})).to.eql(initialState)

@@ -1,6 +1,8 @@
 /* @flow */
 
 import React, { Component } from 'react'
+import type { OrderByType } from 'ducks/order'
+import { DIRECTION } from 'ducks/order'
 import Select from 'react-select'
 
 
@@ -14,13 +16,6 @@ type OrderProps = {
   onSelect: Function,
   onOrderChange: Function,
 }
-
-const ORDER = {
-  ASC: 'ASC',
-  DESC: 'DESC',
-}
-
-type OrderType = ORDER.ASC | ORDER.DESC
 
 type SwitchButtonProps = {
   label: string,
@@ -47,7 +42,7 @@ const SwitchOrderButton = (props: SwitchButtonProps) => (
 class OrderSelect extends Component {
   constructor(props: OrderProps) {
     super(props)
-    this.state = { field: {}, order: ORDER.ASC }
+    this.state = { field: {}, order: DIRECTION.ASC }
   }
 
   componentWillReceiveProps(nextProp: any): void {
@@ -63,15 +58,15 @@ class OrderSelect extends Component {
     }
   }
 
-  handleOrderChange = (order: OrderType): void => {
+  handleOrderChange = (order: OrderByType): void => {
     this.setState({ order })
     if (this.props.onOrderChange) {
       this.props.onOrderChange(order)
     }
   }
 
-  handleAscClick = () => this.handleOrderChange(ORDER.ASC)
-  handleDescClick = () => this.handleOrderChange(ORDER.DESC)
+  handleAscClick = () => this.handleOrderChange(DIRECTION.ASC)
+  handleDescClick = () => this.handleOrderChange(DIRECTION.DESC)
 
   props: OrderProps
 
@@ -88,12 +83,12 @@ class OrderSelect extends Component {
         />
         <SwitchOrderButton
           label="Sort ascending"
-          isSelected={this.state.order === ORDER.ASC}
+          isSelected={this.state.order === DIRECTION.ASC}
           onSelect={this.handleAscClick}
         />
         <SwitchOrderButton
           label="Sort descending"
-          isSelected={this.state.order === ORDER.DESC}
+          isSelected={this.state.order === DIRECTION.DESC}
           onSelect={this.handleDescClick}
         />
       </div>

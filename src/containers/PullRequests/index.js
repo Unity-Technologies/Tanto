@@ -5,8 +5,15 @@ import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import Tabs from 'react-bootstrap/lib/Tabs'
 import Tab from 'react-bootstrap/lib/Tab'
-import UserPullRequestList from './UserPullRequestList'
-import AssignedPullRequestList from './AssignedPullRequestList'
+import PullRequestContainer from 'containers/PullRequestContainer'
+import { fetchUserPullRequests2, fetchAssignedPullRequests2 } from 'ducks/pullrequests'
+import { pullRequestsOwned, pullRequestsAssigned } from 'ducks/session/selectors'
+import {
+  isOwnedFetching,
+  ownedError,
+  isAssignedFetching,
+  assignedError,
+} from 'ducks/pullrequests/selectors'
 import './styles.css'
 
 const tabTitle = (text, badge) => (
@@ -15,6 +22,30 @@ const tabTitle = (text, badge) => (
     {!!badge && <div className="tab-badge">{badge}</div>}
   </div>
 )
+
+const mapStateToPropsOwned = (state, props) => ({
+  repo: state.session.pullRequestsOwned.filters.repo,
+  branch: state.session.pullRequestsOwned.filters.branch,
+  pageSize: 3,
+  activePage: state.session.pullRequestsOwned.pagination.currentPage,
+  total: state.session.pullRequestsOwned.pagination.total,
+  isFetching: isOwnedFetching(state),
+  error: ownedError(state),
+  items: pullRequestsOwned(state) || [],
+  orderBy: state.session.pullRequestsOwned.orderBy,
+})
+
+const mapStateToPropsAssigned = (state, props) => ({
+  repo: state.session.pullRequestsAssigned.filters.repo,
+  branch: state.session.pullRequestsAssigned.filters.branch,
+  pageSize: 3,
+  activePage: state.session.pullRequestsAssigned.pagination.currentPage,
+  total: state.session.pullRequestsAssigned.pagination.total,
+  isFetching: isAssignedFetching(state),
+  error: assignedError(state),
+  items: pullRequestsAssigned(state) || [],
+  orderBy: state.session.pullRequestsAssigned.orderBy,
+})
 
 
 export type Props = {
@@ -34,14 +65,20 @@ function PullRequests(props: Props) {
             className="tab"
             title={tabTitle('Pull requests on review', totalAssigned)}
           >
-            <AssignedPullRequestList />
+            <PullRequestContainer
+              mapStateToProps={mapStateToPropsAssigned}
+              fetchData={fetchAssignedPullRequests2}
+            />
           </Tab>
           <Tab
             eventKey={2}
             className="tab"
             title={tabTitle('My pull requests', totalOwned)}
           >
-            <UserPullRequestList />
+            <PullRequestContainer
+              mapStateToProps={mapStateToPropsOwned}
+              fetchData={fetchUserPullRequests2}
+            />
           </Tab>
         </Tabs>
       </div>

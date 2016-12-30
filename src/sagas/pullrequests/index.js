@@ -29,7 +29,6 @@ export function* fetchPullRequests(
     orderBy = action.orderBy
   }
 
-
   const response = yield call(fetchSaga, action.type, query, { first, offset, orderBy, branch: action.branch, repo: action.repo })
 
   const { nodes, total } = parser(response)

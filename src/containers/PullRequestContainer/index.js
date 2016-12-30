@@ -3,18 +3,16 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchUserPullRequests, fetchUserPullRequests2 } from 'ducks/pullrequests'
 import type { FetchPullRequestArgs } from 'ducks/pullrequests'
+import { FiltersFields } from 'ducks/pullrequests'
 import LinearProgress from 'material-ui/LinearProgress'
 import ErrorMessage from 'components/ErrorMessage'
-import { pullRequestsOwned } from 'ducks/session/selectors'
-import { isOwnedFetching, ownedError } from 'ducks/pullrequests/selectors'
 import PullRequestList from 'components/PullRequestList'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
-import BranchSelect from '../BranchSelect'
-import RepoSelect from '../RepoSelect'
-import OrderSelect from '../OrderSelect'
+import BranchSelect from 'containers/BranchSelect'
+import RepoSelect from 'containers/RepoSelect'
+import OrderSelect from 'containers/OrderSelect'
 import type { OrderByType } from 'ducks/order'
 
 export type Props = {
@@ -27,18 +25,14 @@ export type Props = {
   items: Array<any>,
   branch: string,
   repo: string,
-  orderBy: OrderByType
+  orderBy: OrderByType,
+  fetchData: Function,
 }
 
-const UPDATED = 'UPDATED'
-
-class UserPullRequestList extends Component {
+class PullRequestContainer extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchUserPullRequests(this.props.activePage, this.props.pageSize))
-  }
-
-  handlePageSelect = (page) => {
-    this.props.dispatch(fetchUserPullRequests(page, this.props.pageSize))
+    const args = this.getArguments()
+    this.props.dispatch(this.props.fetchData(args))
   }
 
   props: Props
@@ -51,28 +45,34 @@ class UserPullRequestList extends Component {
     repo: this.props.repo,
   })
 
+  handlePageSelect = (page) => {
+    const args = this.getArguments()
+    args.page = page
+    this.props.dispatch(this.props.fetchData(args))
+  }
+
   handleOrderChange = (order: string): void => {
     const args = this.getArguments()
     args.orderBy.direction = order
-    this.props.dispatch(fetchUserPullRequests2(args))
+    this.props.dispatch(this.props.fetchData(args))
   }
 
   handleRepoSelect = (repo: string): void => {
     const args = this.getArguments()
     args.repo = repo
-    this.props.dispatch(fetchUserPullRequests2(args))
+    this.props.dispatch(this.props.fetchData(args))
   }
 
   handleBranchSelect = (branch: string): void => {
     const args = this.getArguments()
     args.branch = branch
-    this.props.dispatch(fetchUserPullRequests2(args))
+    this.props.dispatch(this.props.fetchData(args))
   }
 
   handleOrderFieldSelect = (field: string): void => {
     const args = this.getArguments()
     args.orderBy.field = field
-    this.props.dispatch(fetchUserPullRequests2(args))
+    this.props.dispatch(this.props.fetchData(args))
   }
 
   handleRemove = (id) => {
@@ -96,7 +96,7 @@ class UserPullRequestList extends Component {
 
           <Col md={4}>
             <OrderSelect
-              options={[UPDATED]}
+              options={FiltersFields}
               onSelect={this.handleOrderFieldSelect}
               onOrderChange={this.handleOrderChange}
             />
@@ -114,16 +114,5 @@ class UserPullRequestList extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    repo: state.session.pullRequestsOwned.filters.repo,
-    branch: state.session.pullRequestsOwned.filters.branch,
-    pageSize: 3,
-    activePage: state.session.pullRequestsOwned.pagination.currentPage,
-    total: state.session.pullRequestsOwned.pagination.total,
-    isFetching: isOwnedFetching(state),
-    error: ownedError(state),
-    items: pullRequestsOwned(state) || [],
-    orderBy: state.session.pullRequestsOwned.orderBy,
-  })
-)(UserPullRequestList)
+export default connect((state, props) => props.mapStateToProps(state, props))(PullRequestContainer)
+

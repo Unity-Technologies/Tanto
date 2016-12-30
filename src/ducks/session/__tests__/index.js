@@ -1,7 +1,10 @@
 /* eslint-disable max-len */
 
 import reducer, { actions, types, DEVELOPER_PERSONA } from '../index'
-import { pagination, receivePage } from 'ducks/pagination'
+import { sessionEntities } from 'ducks/session'
+import { receivePage } from 'ducks/pagination'
+import { DIRECTION } from 'ducks/order'
+import _ from 'lodash'
 
 const expect = require('chai').expect
 
@@ -16,30 +19,6 @@ describe('session actions', () => {
       profile,
     }
     expect(actions.setProfile(profile)).to.eql(action)
-  })
-
-  it('request error', () => {
-    const error = 'test error'
-    const action = {
-      type: types.REQUEST_ERROR,
-      error,
-    }
-    expect(actions.requestError(error)).to.eql(action)
-  })
-
-  it('clear error', () => {
-    const action = {
-      type: types.CLEAR_ERROR,
-    }
-    expect(actions.clearError()).to.eql(action)
-  })
-
-  it('sending request', () => {
-    const action = {
-      type: types.SENDING_REQUEST,
-      sending: true,
-    }
-    expect(actions.sendingRequest(true)).to.eql(action)
   })
 
   it('fetch profile', () => {
@@ -99,28 +78,27 @@ describe('session actions', () => {
 })
 
 describe('session reducer', () => {
+  const prState = {
+    orderBy: {
+      direction: DIRECTION.ASC,
+      field: '',
+    },
+    filters: {
+      branch: '',
+      repo: '',
+    },
+    pagination: {
+      total: 0,
+      pages: {},
+      pageSize: 0,
+      currentPage: 0,
+    },
+  }
+
   const initialState = {
-    error: null,
-    isFetching: false,
-    persona: DEVELOPER_PERSONA,
-    pullRequestsAssigned: {
-      total: 0,
-      pages: {},
-      pageSize: 0,
-      currentPage: 0,
-    },
-    pullRequestsOwned: {
-      total: 0,
-      pages: {},
-      pageSize: 0,
-      currentPage: 0,
-    },
-    pullRequestsWatching: {
-      total: 0,
-      pages: {},
-      pageSize: 0,
-      currentPage: 0,
-    },
+    pullRequestsAssigned: _.cloneDeep(prState),
+    pullRequestsOwned: _.cloneDeep(prState),
+    pullRequestsWatching: _.cloneDeep(prState),
     profile: {
       username: null,
       email: null,
@@ -152,7 +130,7 @@ describe('session reducer', () => {
     const pageSize = 12
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
     const action = actions.setPullRequestsOwned(page, nodes, total, pageSize)
-    expect(reducer({}, action)).to.eql({ pullRequestsOwned: pagination({}, receivePage(action)) })
+    expect(reducer({}, action)).to.eql({ pullRequestsOwned: sessionEntities({}, receivePage(action)) })
   })
 
   it('should handle SET_PULL_REQUESTS_ASSIGNED', () => {
@@ -161,7 +139,7 @@ describe('session reducer', () => {
     const pageSize = 12
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
     const action = actions.setPullRequestsAssigned(page, nodes, total, pageSize)
-    expect(reducer({}, action)).to.eql({ pullRequestsAssigned: pagination({}, receivePage(action)) })
+    expect(reducer({}, action)).to.eql({ pullRequestsAssigned: sessionEntities({}, receivePage(action)) })
   })
 
   it('should handle SET_PULL_REQUESTS_WATCHING', () => {
@@ -170,22 +148,6 @@ describe('session reducer', () => {
     const pageSize = 12
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
     const action = actions.setPullRequestsWatching(page, nodes, total, pageSize)
-    expect(reducer({}, action)).to.eql({ pullRequestsWatching: pagination({}, receivePage(action)) })
-  })
-
-  it('should handle REQUEST_ERROR', () => {
-    const error = 'test error message'
-    expect(reducer({}, actions.requestError(error))).to.eql({ error })
-  })
-
-  it('should handle SENDING_REQUEST', () => {
-    expect(reducer({}, actions.sendingRequest(true))).to.eql({ isFetching: true })
-    expect(reducer({ isFetching: false }, actions.sendingRequest(true))).to.eql({ isFetching: true })
-    expect(reducer({ isFetching: true }, actions.sendingRequest(false))).to.eql({ isFetching: false })
-  })
-
-  it('should handle CLEAR_ERROR', () => {
-    const error = { message: 'test error message' }
-    expect(reducer({ error }, actions.clearError(error))).to.eql({ error: null })
+    expect(reducer({}, action)).to.eql({ pullRequestsWatching: sessionEntities({}, receivePage(action)) })
   })
 })

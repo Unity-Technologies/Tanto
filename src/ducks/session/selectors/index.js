@@ -28,3 +28,4 @@ export const pullRequestsWatching = createSelector(
   (pullRequests, pullRequestsWatchingIds) =>
     _.values(_.pick(pullRequests, pullRequestsWatchingIds))
 )
+

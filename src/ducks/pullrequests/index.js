@@ -82,6 +82,8 @@ export type FetchPullRequestArgs = {
   orderBy: OrderByType,
 }
 
+export const FiltersFields = ['updated']
+
 export const setPullRequests = (page: number, nodes: Array<PullRequestGraphType>): Object =>
   ({ type: types.SET_PULL_REQUESTS, page, nodes })
 
@@ -105,3 +107,7 @@ export const fatchUserWatchingPullRequests = (page: number, pageSize: number): O
 export const fetchUserPullRequests2 =
   (args: FetchPullRequestArgs): Object =>
     ({ type: types.FETCH_USER_PULL_REQUESTS, ...args })
+
+export const fetchAssignedPullRequests2 =
+  (args: FetchPullRequestArgs): Object =>
+    ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, ...args })
