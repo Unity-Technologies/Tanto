@@ -1,13 +1,21 @@
 /* @flow */
 /* eslint-disable  import/no-extraneous-dependencies */
 
-import type { RepositoryType, GroupType } from 'services/ono/queries/repositories'
-export type { RepositoryType, GroupType } from 'services/ono/queries/repositories'
+import type { RepositoryType } from 'services/ono/queries/repositories'
+export type { RepositoryType } from 'services/ono/queries/repositories'
 import {
   entities,
   actions as entitiesActions,
   mergeEntities } from 'ducks/entities'
 import { combineReducers } from 'redux'
+import { fetchActionCreator } from 'ducks/fetch'
+
+import {
+  query,
+  parseRepositories,
+  REPOSITORY_BRANCHES,
+  parseRepository,
+} from 'services/ono/queries/repositories'
 
 /**
  * Action types
@@ -74,34 +82,48 @@ export default (
       return entitiesReducer(state, entitiesActions.setEntities(action.nodes))
     case types.SET_REPOSITORY:
       return entitiesReducer(state, entitiesActions.setEntity(action.node))
-    default:
+    case types.SET_REPOSITORIES_NAMES:
+    case types.SET_GROUPS:
       return entitiesReducer(state, action)
+    default:
+      return state
   }
 }
 
-export const setRepositories =
-  (nodes: Array<RepositoryType>): Object => ({ type: types.SET_REPOSITORIES, nodes })
+
 export const setRepository =
   (node: RepositoryType): Object => ({ type: types.SET_REPOSITORY, node })
-export const setGroups = (nodes: Array<GroupType>): Object => ({ type: types.SET_GROUPS, nodes })
-export const fetchRepositories =
-  (name: string): Object => ({ type: types.FETCH_REPOSITORIES, name })
+
 export const setRepositoriesNames =
   (nodes: Array<Object>): Object => ({ type: types.SET_REPOSITORIES_NAMES, nodes })
+
 export const searchRepository =
   (filter: string, first: number): Object =>
     ({ type: types.SEARCH_REPOSITORY, filter, first })
-export const fetchRepositoryBranches =
-  (id: any): Object => ({ type: types.FETCH_REPOSITORY_BRANCHES, id })
+
+
+export const fetchRepositoryBranches = (id: number): Object =>
+  fetchActionCreator(types.FETCH_REPOSITORY_BRANCHES, { id }, REPOSITORY_BRANCHES,
+    (data: Object, cbArgs: Object): Array<Object> =>
+      [{ type: types.SET_REPOSITORY, node: parseRepository(data) }])
+
+export const fetchRepositories = (name: string): Object =>
+  fetchActionCreator(types.FETCH_REPOSITORIES, { name }, query(name),
+    (data: Object, cbArgs: Object): Array<Object> => {
+      const { groups, repositories } = parseRepositories(data)
+      return [
+        { type: types.SET_REPOSITORIES, nodes: repositories },
+        { type: types.SET_GROUPS, nodes: groups },
+      ]
+    }
+  )
 
 /**
  * Actions
  */
 export const actions = {
-  setRepositories,
   setRepository,
   setRepositoriesNames,
-  setGroups,
   fetchRepositories,
   searchRepository,
   fetchRepositoryBranches,

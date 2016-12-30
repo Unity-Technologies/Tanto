@@ -3,7 +3,9 @@
 import { pagination, receivePage } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
 import { combineReducers } from 'redux'
+import USER_PROFILE_QUERY from 'services/ono/queries/users'
 import _ from 'lodash'
+import { fetchActionCreator } from 'ducks/fetch'
 
 /**
  * Action types
@@ -110,20 +112,20 @@ export default (state: Object = initialState, action: Object): Object => {
 }
 
 
+export const fetchProfile = (): Object =>
+  fetchActionCreator(types.FETCH_USER_PROFILE, { }, USER_PROFILE_QUERY,
+    (data: Object, cbArgs: Object): Array<Object> =>
+      [{ type: types.SET_USER_PROFILE, profile: data.data.me }])
+
+export const setProfile = (profile: Object): Object => ({ type: types.SET_USER_PROFILE, profile })
+
+export const setPersona = (persona: string): Object => ({ type: types.SET_USER_PERSONA, persona })
+
 /**
  * Actions
  */
 export const actions = {
-  fetchProfile: (): Object => ({ type: types.FETCH_USER_PROFILE }),
-  setProfile: (profile: Object): Object => ({ type: types.SET_USER_PROFILE, profile }),
-  setPersona: (persona: string): Object => ({ type: types.SET_USER_PERSONA, persona }),
-  setPullRequestsOwned:
-  (page: number, nodes: Array<Object>, total: number, pageSize: number, repoId: string, branchName: string): Object =>
-    ({ type: types.SET_PULL_REQUESTS_OWNED, page, nodes, total, pageSize, repo: repoId, branch: branchName }),
-  setPullRequestsAssigned:
-  (page: number, nodes: Array<Object>, total: number, pageSize: number, repoId: string, branchName: string): Object =>
-    ({ type: types.SET_PULL_REQUESTS_ASSIGNED, page, nodes, total, pageSize, repo: repoId, branch: branchName }),
-  setPullRequestsWatching:
-  (page: number, nodes: Array<Object>, total: number, pageSize: number, repoId: string, branchName: string): Object =>
-    ({ type: types.SET_PULL_REQUESTS_WATCHING, page, nodes, total, pageSize, repo: repoId, branch: branchName }),
+  fetchProfile,
+  setProfile,
+  setPersona,
 }

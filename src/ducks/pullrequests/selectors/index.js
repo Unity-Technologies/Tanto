@@ -64,7 +64,7 @@ export const watchingError =
 export const pullRequestSelector =
   (state: Object, props: Object): Object => state.pullrequests.entities[props.params.prid]
 
-export const getIds = (state) => {
+export const getIds = (state: Object) => {
   const { pagination: { pages, currentPage } } = state
   return pages[currentPage]
 }

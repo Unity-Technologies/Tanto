@@ -15,7 +15,6 @@ type OrderProps = {
   options: Array<string>,
   onSelect: Function,
   onOrderChange: Function,
-  style: ?Object,
 }
 
 type SwitchButtonProps = {
@@ -74,7 +73,7 @@ class OrderSelect extends Component {
         <Select
           value={this.state.field}
           name="branch"
-          style={{ float: 'left', minWidth: '180px', width: '70%', marginRight: '3px', ...this.props.style }}
+          style={{ float: 'left', minWidth: '180px', width: '70%', marginRight: '3px' }}
           options={this.props.options.map(x => ({ label: x, value: x }))}
           onChange={this.handleFieldChange}
           placeholder="fields ..."

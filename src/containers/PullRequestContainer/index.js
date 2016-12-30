@@ -3,7 +3,6 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import type { FetchPullRequestArgs } from 'ducks/pullrequests'
 import { FiltersFields } from 'ducks/pullrequests'
 import LinearProgress from 'material-ui/LinearProgress'
 import ErrorMessage from 'components/ErrorMessage'
@@ -38,8 +37,10 @@ class PullRequestContainer extends Component {
 
   props: Props
 
-  getArguments = (): FetchPullRequestArgs => ({
+  getArguments = (): Object => ({
     pageSize: this.props.pageSize,
+    first: this.props.pageSize,
+    offset: this.props.pageSize * (this.props.activePage - 1),
     page: this.props.activePage,
     orderBy: this.props.orderBy,
     branch: this.props.branch,
@@ -49,6 +50,7 @@ class PullRequestContainer extends Component {
   handlePageSelect = (page) => {
     const args = this.getArguments()
     args.page = page
+    args.offset = args.pageSize * (page - 1)
     this.props.dispatch(this.props.fetchData(args))
   }
 

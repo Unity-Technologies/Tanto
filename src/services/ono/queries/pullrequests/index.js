@@ -82,8 +82,8 @@ export const constants = {
 }
 
 export const queries = {
-  CURRENT_USER_PULL_REQUESTS: userPullRequestsQuery(constants.pullRequestsOwned),
-  CURRENT_USER_ASSIGNED_PULL_REQUESTS: userPullRequestsQuery(constants.pullRequestsAssigned),
+  USER_PULL_REQUESTS: userPullRequestsQuery(constants.pullRequestsOwned),
+  USER_ASSIGNED_PULL_REQUESTS: userPullRequestsQuery(constants.pullRequestsAssigned),
 }
 
 export const parseCurrentUserPullRequests = response => (

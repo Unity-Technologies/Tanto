@@ -16,6 +16,7 @@ type BranchProps = {
   options: Array<SelectItemType>,
   onSelect: Function,
   style: ?Object,
+  dispatch: Function,
 }
 
 
