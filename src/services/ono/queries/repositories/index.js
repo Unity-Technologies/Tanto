@@ -50,17 +50,19 @@ query($name: String!) {
 }`
 
 export const ALL_REPOSITORIES_QUERY = `
-query($name: String!) {
-	repositories(all: true, filter: $filter) {
+query($filter: String, $first: Int) {
+	repositories(all: true, filter: $filter, first: $first) {
     nodes {
+      id
       fullName
     }
   }
 }`
 
 export const REPOSITORY_BRANCHES = `
-query($name: String!) {
-	repository(name: $name) {
+query($id: Int!) {
+	repository(id: $id) {
+    id
     branches {
       name
       revision
@@ -73,6 +75,10 @@ export type RepositoryType = {
   description: ?string,
   id: string,
   owner: { fullName: string },
+  branches?: {
+    name: string,
+    revision: string,
+  },
   updated: string,
 }
 
@@ -93,6 +99,14 @@ export function parseRepositories(data: any): ReturnType {
     repositories: root.repositories.nodes,
     groups: root.groups,
   }
+}
+
+export function parseAllRepositoriesNames(data: any): Array<Object> {
+  return data ? data.data.repositories.nodes : []
+}
+
+export function parseRepository(data: any): Object {
+  return data.data.repository
 }
 
 export const query =

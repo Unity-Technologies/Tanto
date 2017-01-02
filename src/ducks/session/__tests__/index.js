@@ -1,7 +1,13 @@
 /* eslint-disable max-len */
 
-import reducer, { actions, types, DEVELOPER_PERSONA } from '../index'
-import { pagination, receivePage } from 'ducks/pagination'
+import reducer,
+{
+  actions,
+  types,
+  sessionEntities, repo, branch } from '../index'
+import { receivePage } from 'ducks/pagination'
+import { DIRECTION } from 'ducks/order'
+import _ from 'lodash'
 
 const expect = require('chai').expect
 
@@ -18,109 +24,38 @@ describe('session actions', () => {
     expect(actions.setProfile(profile)).to.eql(action)
   })
 
-  it('request error', () => {
-    const error = 'test error'
+  it('set persona', () => {
+    const persona = 'testpersona'
     const action = {
-      type: types.REQUEST_ERROR,
-      error,
+      type: types.SET_USER_PERSONA,
+      persona,
     }
-    expect(actions.requestError(error)).to.eql(action)
-  })
-
-  it('clear error', () => {
-    const action = {
-      type: types.CLEAR_ERROR,
-    }
-    expect(actions.clearError()).to.eql(action)
-  })
-
-  it('sending request', () => {
-    const action = {
-      type: types.SENDING_REQUEST,
-      sending: true,
-    }
-    expect(actions.sendingRequest(true)).to.eql(action)
-  })
-
-  it('fetch profile', () => {
-    const action = {
-      type: types.FETCH_USER_PROFILE,
-    }
-    expect(actions.fetchProfile()).to.eql(action)
-  })
-
-  it('set user pull requests owned', () => {
-    const total = 3
-    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const page = 1
-    const pageSize = 12
-    const action = {
-      type: types.SET_PULL_REQUESTS_OWNED,
-      page,
-      pageSize,
-      nodes,
-      total,
-    }
-
-    expect(actions.setPullRequestsOwned(page, nodes, total, pageSize)).to.eql(action)
-  })
-
-  it('set user pull requests assigned ids', () => {
-    const total = 3
-    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const page = 1
-    const pageSize = 12
-    const action = {
-      type: types.SET_PULL_REQUESTS_ASSIGNED,
-      page,
-      pageSize,
-      nodes,
-      total,
-    }
-
-    expect(actions.setPullRequestsAssigned(page, nodes, total, pageSize)).to.eql(action)
-  })
-
-  it('set user pull requests watching ids', () => {
-    const total = 3
-    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const page = 1
-    const pageSize = 12
-    const action = {
-      type: types.SET_PULL_REQUESTS_WATCHING,
-      page,
-      pageSize,
-      nodes,
-      total,
-    }
-
-    expect(actions.setPullRequestsWatching(page, nodes, total, pageSize)).to.eql(action)
+    expect(actions.setPersona(persona)).to.eql(action)
   })
 })
 
 describe('session reducer', () => {
+  const prState = {
+    orderBy: {
+      direction: DIRECTION.ASC,
+      field: '',
+    },
+    filters: {
+      branch: '',
+      repo: '',
+    },
+    pagination: {
+      total: 0,
+      pages: {},
+      pageSize: 0,
+      currentPage: 0,
+    },
+  }
+
   const initialState = {
-    error: null,
-    isFetching: false,
-    persona: DEVELOPER_PERSONA,
-    pullRequestsAssigned: {
-      total: 0,
-      pages: {},
-      pageSize: 0,
-      currentPage: 0,
-    },
-    pullRequestsOwned: {
-      total: 0,
-      pages: {},
-      pageSize: 0,
-      currentPage: 0,
-    },
-    pullRequestsWatching: {
-      total: 0,
-      pages: {},
-      pageSize: 0,
-      currentPage: 0,
-    },
+    pullRequestsAssigned: _.cloneDeep(prState),
+    pullRequestsOwned: _.cloneDeep(prState),
+    pullRequestsWatching: _.cloneDeep(prState),
     profile: {
       username: null,
       email: null,
@@ -151,8 +86,9 @@ describe('session reducer', () => {
     const page = 3
     const pageSize = 12
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const action = actions.setPullRequestsOwned(page, nodes, total, pageSize)
-    expect(reducer({}, action)).to.eql({ pullRequestsOwned: pagination({}, receivePage(action)) })
+    const action = {
+      type: types.SET_PULL_REQUESTS_OWNED, page, nodes, total, pageSize }
+    expect(reducer({}, action)).to.eql({ pullRequestsOwned: sessionEntities({}, receivePage(action)) })
   })
 
   it('should handle SET_PULL_REQUESTS_ASSIGNED', () => {
@@ -160,32 +96,29 @@ describe('session reducer', () => {
     const page = 3
     const pageSize = 12
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const action = actions.setPullRequestsAssigned(page, nodes, total, pageSize)
-    expect(reducer({}, action)).to.eql({ pullRequestsAssigned: pagination({}, receivePage(action)) })
+    const action = {
+      type: types.SET_PULL_REQUESTS_ASSIGNED, page, nodes, total, pageSize,
+    }
+    expect(reducer({}, action)).to.eql({ pullRequestsAssigned: sessionEntities({}, receivePage(action)) })
+  })
+})
+
+describe('session filters reducers', () => {
+  it('branch reducer', () => {
+    const branchName = 'testbranch'
+    const action = {
+      type: 'ANY',
+      branch: branchName,
+    }
+    expect(branch('', action)).to.eql(branchName)
   })
 
-  it('should handle SET_PULL_REQUESTS_WATCHING', () => {
-    const total = 12
-    const page = 3
-    const pageSize = 12
-    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const action = actions.setPullRequestsWatching(page, nodes, total, pageSize)
-    expect(reducer({}, action)).to.eql({ pullRequestsWatching: pagination({}, receivePage(action)) })
-  })
-
-  it('should handle REQUEST_ERROR', () => {
-    const error = 'test error message'
-    expect(reducer({}, actions.requestError(error))).to.eql({ error })
-  })
-
-  it('should handle SENDING_REQUEST', () => {
-    expect(reducer({}, actions.sendingRequest(true))).to.eql({ isFetching: true })
-    expect(reducer({ isFetching: false }, actions.sendingRequest(true))).to.eql({ isFetching: true })
-    expect(reducer({ isFetching: true }, actions.sendingRequest(false))).to.eql({ isFetching: false })
-  })
-
-  it('should handle CLEAR_ERROR', () => {
-    const error = { message: 'test error message' }
-    expect(reducer({ error }, actions.clearError(error))).to.eql({ error: null })
+  it('repo reducer', () => {
+    const repoName = 'testrepo'
+    const action = {
+      type: 'ANY',
+      repo: repoName,
+    }
+    expect(repo('', action)).to.eql(repoName)
   })
 })

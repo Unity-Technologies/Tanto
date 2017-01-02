@@ -4,6 +4,7 @@ export const types = {
   SENDING_REQUEST: 'FETCH/SENDING_REQUEST',
   REQUEST_ERROR: 'FETCH/REQUEST_ERROR',
   CLEAR_ERROR: 'FETCH/CLEAR_ERROR',
+  FETCH_DATA: 'FETCH/FETCH_DATA',
 }
 
 export const actions = {
@@ -62,4 +63,22 @@ export const errorSelector =
     const fetchState = state.fetch[key]
     return fetchState && fetchState.hasOwnProperty('error') ? fetchState.error : null
   }
+
+export type FetchAction = {
+  type: string,
+  name: string,
+  query: string,
+  args: Object,
+  callback: Function
+
+}
+
+export const fetchActionCreator =
+  (type: string, args: Object, query: string, callback: Function): FetchAction => ({
+    type: types.FETCH_DATA,
+    name: type,
+    query,
+    args,
+    callback,
+  })
 

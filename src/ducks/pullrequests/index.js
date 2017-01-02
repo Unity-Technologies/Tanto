@@ -1,10 +1,21 @@
 /* @flow */
 
-import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
+import {
+  projectPullRequestsQuery,
+  parsePullRequests,
+  queries,
+  parsers,
+} from 'services/ono/queries/pullrequests'
 import { entities, actions as entitiesActions } from 'ducks/entities'
-import { pagination, requestPage } from 'ducks/pagination'
+import PULL_REQUEST_QUERY, { pullRequestQuery } from 'services/ono/queries/pullRequest'
+
+import { pagination, receivePage } from 'ducks/pagination'
+import { orderBy, DIRECTION } from 'ducks/order'
 import type { PaginationType } from 'ducks/pagination'
 import { combineReducers } from 'redux'
+import type { OrderByType } from 'ducks/order'
+import { fetchActionCreator } from 'ducks/fetch'
+import { types as sessionTypes } from 'ducks/session'
 
 /**
  * Action types
@@ -12,6 +23,7 @@ import { combineReducers } from 'redux'
 export const types = {
   SET_PULL_REQUESTS: 'PULLREQUESTSUSER/SET_PULL_REQUESTS',
   SET_PULL_REQUEST: 'PULLREQUESTSUSER/SET_PULL_REQUEST',
+  SET_PULL_REQUESTS_PAGE: 'PULLREQUESTSUSER/SET_PULL_REQUESTS_PAGE',
   FETCH_PULL_REQUEST: 'PULLREQUESTS/FETCH_PULL_REQUEST',
   FETCH_PULL_REQUESTS: 'PULLREQUESTS/FETCH_PULL_REQUESTS',
   FETCH_USER_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_PULL_REQUESTS',
@@ -30,22 +42,33 @@ const initialState = {
     pageSize: 0,
     currentPage: 0,
   },
+  orderBy: {
+    direction: DIRECTION.ASC,
+    field: '',
+  },
+  filters: {
+    branch: '',
+  },
 }
 
 export type PullRequestDictionary = {
   [id: string]: Object
 }
 
-
 export type PullRequestsStateType = {
   entities: PullRequestDictionary,
   pagination: PaginationType,
+  orderBy: OrderByType,
+  filters: Object
 }
 
-export const entitiesReducer = combineReducers({
-  entities,
-  pagination,
+export const branch = (state: string = '', action: Object = {}): string =>
+  (action && action.branch ? action.branch : state)
+
+export const filters = combineReducers({
+  branch,
 })
+
 
 /**
  * Pullrequests reducer
@@ -54,37 +77,75 @@ export default (
   state: PullRequestsStateType = initialState, action: Object): PullRequestsStateType => {
   switch (action.type) {
     case types.SET_PULL_REQUESTS:
-      return entitiesReducer(state, entitiesActions.setEntities(action.nodes))
+      return {
+        ...state,
+        entities: entities(state.entities, entitiesActions.setEntities(action.nodes)),
+      }
+    case types.SET_PULL_REQUESTS_PAGE:
+      return {
+        ...state,
+        pagination: pagination(state.pagination, receivePage(action)),
+        orderBy: orderBy(state.orderBy, action),
+        filters: filters(state.filters, action),
+      }
     case types.SET_PULL_REQUEST:
-      return entitiesReducer(state, entitiesActions.setEntity(action.node))
-    case types.FETCH_PULL_REQUESTS:
-      return entitiesReducer(state, requestPage(action))
+      return {
+        ...state,
+        entities: entities(state.entities, entitiesActions.setEntity(action.node)),
+      }
+
     default:
-      return entitiesReducer(state, action)
+      return state
   }
 }
 
 /**
  * Actions
  */
+export type FetchPullRequestArgs = {
+  page: number,
+  pageSize: number,
+  branch: string,
+  repo: string,
+  orderBy: OrderByType,
+}
 
-export const setPullRequests = (page: number, nodes: Array<PullRequestGraphType>): Object =>
-  ({ type: types.SET_PULL_REQUESTS, page, nodes })
+export const FiltersFields = ['updated']
 
-export const setPullRequest = (node: PullRequestGraphType): Object =>
-  ({ type: types.SET_PULL_REQUEST, node })
+export const fetchPullRequest = (id: number): Object =>
+  fetchActionCreator(types.FETCH_PULL_REQUEST, { id }, PULL_REQUEST_QUERY,
+    (data: Object, cbArgs: Object): Array<Object> => {
+      const node = pullRequestQuery(data)
+      return [{ type: types.SET_PULL_REQUEST, node }]
+    })
 
-export const fetchPullRequests = (page: number, pageSize: number): Object =>
- ({ type: types.FETCH_PULL_REQUESTS, page, pageSize })
+export const fetchPullRequests = (args: FetchPullRequestArgs): Object =>
+  fetchActionCreator(types.FETCH_PULL_REQUESTS, args, projectPullRequestsQuery,
+  (data: Object, cbArgs: Object): Array<Object> => {
+    const { nodes, total } = parsePullRequests(data)
+    return [
+      { type: types.SET_PULL_REQUESTS, nodes },
+      { type: types.SET_PULL_REQUESTS_PAGE, nodes, total, ...cbArgs }]
+  })
 
-export const fetchPullRequest = (id: number): Object => ({ type: types.FETCH_PULL_REQUEST, id })
+export const fetchUserPullRequests = (args: FetchPullRequestArgs): Object =>
+  fetchActionCreator(types.FETCH_USER_PULL_REQUESTS, args, queries.USER_PULL_REQUESTS,
+    (data: Object, cbArgs: Object): Array<Object> => {
+      const { nodes, total } = parsers.parseCurrentUserPullRequests(data)
+      return [
+        { type: types.SET_PULL_REQUESTS, nodes },
+        { type: sessionTypes.SET_PULL_REQUESTS_OWNED, nodes, total, ...cbArgs },
+      ]
+    })
 
-export const fetchUserPullRequests = (page: number, pageSize: number): Object =>
-  ({ type: types.FETCH_USER_PULL_REQUESTS, page, pageSize })
-
-export const fetchUserAssignedPullRequests = (page: number, pageSize: number): Object =>
-  ({ type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, page, pageSize })
-
-export const fatchUserWatchingPullRequests = (page: number, pageSize: number): Object =>
-  ({ type: types.FETCH_USER_WATCHING_PULL_REQUESTS, page, pageSize })
+export const fetchUserAssignedPullRequests = (args: FetchPullRequestArgs): Object =>
+  fetchActionCreator(
+    types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, queries.USER_ASSIGNED_PULL_REQUESTS,
+    (data: Object, cbArgs: Object): Array<Object> => {
+      const { nodes, total } = parsers.parseCurrentUserAssignedPullRequests(data)
+      return [
+        { type: types.SET_PULL_REQUESTS, nodes },
+        { type: sessionTypes.SET_PULL_REQUESTS_ASSIGNED, nodes, total, ...cbArgs },
+      ]
+    })
 

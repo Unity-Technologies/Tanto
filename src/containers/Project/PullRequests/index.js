@@ -1,26 +1,14 @@
 // TODO: enable flow
 
-import React, { Component } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
-import Button from 'react-bootstrap/lib/Button'
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 
-import { connect } from 'react-redux'
-
-import Filter from 'components/Filter'
-import BranchSelect from 'components/BranchSelect'
-import PullRequestList from 'components/PullRequestList'
-import { PullRequestsDataList } from '../../../api/testPullRequest'
-import { sort } from '../../../api/testData'
-
-const approveButtonStyle = {
-  backgroundColor: '#1fb5ad',
-  borderColor: '#1fb5ad',
-  color: 'white',
-}
-
+import PullRequestContainer from 'containers/PullRequestContainer'
+import { fetchPullRequests } from 'ducks/pullrequests'
+import {
+  getPageFetchStatus,
+  getPageFetchError,
+  getPullRequests } from 'ducks/pullrequests/selectors'
 
 export type Props = {
   project_pullrequests: Array<any>,
@@ -30,113 +18,29 @@ export type Props = {
   items: Array<any>,
 }
 
+const mapStateToProps = (state, props) => ({
+  branch: state.pullrequests.filters.branch,
+  pageSize: 10,
+  activePage: state.pullrequests.pagination.currentPage,
+  total: state.pullrequests.pagination.total,
+  isFetching: getPageFetchStatus(state),
+  error: getPageFetchError(state),
+  items: getPullRequests(state) || [],
+  orderBy: state.session.pullRequestsOwned.orderBy,
+})
 
-class PullRequests extends Component {
-  componentDidMount() {
-  //  const { dispatch } = this.props
-      // TODO: should not be users PR fetch - should be replaced with the project pull requests
-    // dispatch(fetchUserPRs())
-    // dispatch(fetchUserReviewPRs())
-  }
-
-  props: Props
-
-  render() {
-    const {
-      // isFetching,
-      project_pullrequests,
-      params: { id },
-    } = this.props
-
-    // TODO : remove this
-    project_pullrequests.map((item) => {
-      const randomStatus = Math.floor(Math.random() * 4)
-      item.status = randomStatus // eslint-disable-line no-param-reassign
-      return true
-    })
-
-    return (
-      <div>
-        <Helmet title="Project Pull Requests" />
-        <div style={{ padding: '10px' }}>
-          <Row>
-            <Col md={3}>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  border: '1px solid lightgrey',
-                  borderRadius: '5px',
-                  padding: '7px',
-                  width: '100%',
-                  backgroundColor: 'white' }}
-              >
-                <span
-                  style={{ pagging: '10px', color: 'grey' }}
-                >
-                  <i className="fa fa-search" aria-hidden="true" />
-                </span>
-                <input
-                  type="text"
-                  style={{
-                    outline: 'none',
-                    border: 'none',
-                    marginLeft: '10px',
-                    fontSize: '14px',
-                    width: '100%' }}
-                />
-
-              </div>
-            </Col>
-
-            <Col md={3}>
-              <BranchSelect project={id} placeholder="Select branch ..." />
-            </Col>
-
-            <Col md={4}>
-              <div style={{ float: 'left', marginRight: '5px' }}>
-                <Filter data={sort} placeholder="Order by..." />
-              </div>
-              <div style={{ float: 'left', marginRight: '5px' }}>
-                <a
-                  className="btn"
-                  style={{
-                    color: 'white',
-                    backgroundColor: '#b9ebae' }} aria-label="Sort ascending"
-                >
-                  <i className="fa fa-sort-amount-asc" aria-hidden="true" />
-                </a>
-              </div>
-              <div style={{ float: 'left' }}>
-                <a
-                  className="btn"
-                  style={{
-                    color: 'white',
-                    backgroundColor: 'lightgrey' }} aria-label="Sort descending"
-                >
-                  <i className="fa fa-sort-amount-desc" aria-hidden="true" />
-                </a>
-              </div>
-            </Col>
-
-            <Col md={2}>
-              <ButtonGroup style={{ float: 'right' }}>
-                <Button style={approveButtonStyle}>
-                New Pul</Button>
-              </ButtonGroup>
-            </Col>
-          </Row>
-        </div>
-
-        <PullRequestList items={PullRequestsDataList} />
-      </div>
-    )
-  }
+function PullRequests(props: Props) {
+  return (
+    <div>
+      <Helmet title="Project Pull Requests" />
+      <PullRequestContainer
+        hideRepoSelect
+        mapStateToProps={mapStateToProps}
+        fetchData={fetchPullRequests}
+        repo={props.params.id}
+      />
+    </div>
+  )
 }
 
-export default connect(
-  state => ({
-    isFetching: state.session.isFetching,
-    errors: state.session.errors || [],
-    project_pullrequests: [...state.session.pullrequests_my, ...state.session.pullrequests_review],
-  })
-)(PullRequests)
+export default PullRequests

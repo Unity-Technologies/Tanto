@@ -1,16 +1,18 @@
 /* @flow */
 
 import { pagination, receivePage } from 'ducks/pagination'
+import { orderBy, DIRECTION } from 'ducks/order'
+import { combineReducers } from 'redux'
+import USER_PROFILE_QUERY from 'services/ono/queries/users'
+import _ from 'lodash'
+import { fetchActionCreator } from 'ducks/fetch'
 
 /**
  * Action types
  */
 export const types = {
-  SENDING_REQUEST: 'SESSION/SENDING_REQUEST',
-  REQUEST_ERROR: 'SESSION/REQUEST_ERROR',
   FETCH_USER_PROFILE: 'SESSION/FETCH_USER_PROFILE',
   SET_USER_PROFILE: 'SESSION/SET_USER_PROFILE',
-  CLEAR_ERROR: 'SESSION/CLEAR_ERROR',
   SET_USER_PERSONA: 'SESSION/SET_USER_PERSONA',
   SET_PULL_REQUESTS_OWNED: 'SESSION/SET_PULL_REQUESTS_OWNED',
   SET_PULL_REQUESTS_ASSIGNED: 'SESSION/SET_PULL_REQUESTS_ASSIGNED',
@@ -28,34 +30,51 @@ export const GUARDIAN_PERSONA = 'GUARDIAN_PERSONA'
 /**
  * Initial state
  */
+
+const prState = {
+  orderBy: {
+    direction: DIRECTION.ASC,
+    field: '',
+  },
+  filters: {
+    branch: '',
+    repo: '',
+  },
+  pagination: {
+    total: 0,
+    pages: {},
+    pageSize: 0,
+    currentPage: 0,
+  },
+}
+
 const initialState = {
-  error: null,
-  isFetching: false,
-  persona: DEVELOPER_PERSONA,
-  pullRequestsAssigned: {
-    total: 0,
-    pages: {},
-    pageSize: 0,
-    currentPage: 0,
-  },
-  pullRequestsOwned: {
-    total: 0,
-    pages: {},
-    pageSize: 0,
-    currentPage: 0,
-  },
-  pullRequestsWatching: {
-    total: 0,
-    pages: {},
-    pageSize: 0,
-    currentPage: 0,
-  },
+  pullRequestsAssigned: _.cloneDeep(prState),
+  pullRequestsOwned: _.cloneDeep(prState),
+  pullRequestsWatching: _.cloneDeep(prState),
   profile: {
     username: null,
     email: null,
     fullName: null,
   },
 }
+
+export const repo = (state: string = '', action: Object = {}): string =>
+  (action.repo ? action.repo : state)
+
+export const branch = (state: string = '', action: Object = {}): string =>
+  (action.branch ? action.branch : state)
+
+export const filters = combineReducers({
+  branch,
+  repo,
+})
+
+export const sessionEntities = combineReducers({
+  pagination,
+  orderBy,
+  filters,
+})
 
 /**
  * Current user reducer
@@ -75,32 +94,12 @@ export default (state: Object = initialState, action: Object): Object => {
     case types.SET_PULL_REQUESTS_OWNED:
       return {
         ...state,
-        pullRequestsOwned: pagination(state.pullRequestsOwned, receivePage(action)),
+        pullRequestsOwned: sessionEntities(state.pullRequestsOwned, receivePage(action)),
       }
     case types.SET_PULL_REQUESTS_ASSIGNED:
       return {
         ...state,
-        pullRequestsAssigned: pagination(state.pullRequestsAssigned, receivePage(action)),
-      }
-    case types.SET_PULL_REQUESTS_WATCHING:
-      return {
-        ...state,
-        pullRequestsWatching: pagination(state.pullRequestsWatching, receivePage(action)),
-      }
-    case types.SENDING_REQUEST:
-      return {
-        ...state,
-        isFetching: action.sending,
-      }
-    case types.REQUEST_ERROR:
-      return {
-        ...state,
-        error: action.error,
-      }
-    case types.CLEAR_ERROR:
-      return {
-        ...state,
-        error: null,
+        pullRequestsAssigned: sessionEntities(state.pullRequestsAssigned, receivePage(action)),
       }
     default:
       return state
@@ -108,23 +107,20 @@ export default (state: Object = initialState, action: Object): Object => {
 }
 
 
+export const fetchProfile = (): Object =>
+  fetchActionCreator(types.FETCH_USER_PROFILE, { }, USER_PROFILE_QUERY,
+    (data: Object, cbArgs: Object): Array<Object> =>
+      [{ type: types.SET_USER_PROFILE, profile: data.data.me }])
+
+export const setProfile = (profile: Object): Object => ({ type: types.SET_USER_PROFILE, profile })
+
+export const setPersona = (persona: string): Object => ({ type: types.SET_USER_PERSONA, persona })
+
 /**
  * Actions
  */
 export const actions = {
-  sendingRequest: (sending: boolean): Object => ({ type: types.SENDING_REQUEST, sending }),
-  requestError: (error: string): Object => ({ type: types.REQUEST_ERROR, error }),
-  clearError: (): Object => ({ type: types.CLEAR_ERROR }),
-  fetchProfile: (): Object => ({ type: types.FETCH_USER_PROFILE }),
-  setProfile: (profile: Object): Object => ({ type: types.SET_USER_PROFILE, profile }),
-  setPersona: (persona: string): Object => ({ type: types.SET_USER_PERSONA, persona }),
-  setPullRequestsOwned:
-    (page: number, nodes: Array<Object>, total: number, pageSize: number): Object =>
-      ({ type: types.SET_PULL_REQUESTS_OWNED, page, nodes, total, pageSize }),
-  setPullRequestsAssigned:
-    (page: number, nodes: Array<Object>, total: number, pageSize: number): Object =>
-      ({ type: types.SET_PULL_REQUESTS_ASSIGNED, page, nodes, total, pageSize }),
-  setPullRequestsWatching:
-    (page: number, nodes: Array<Object>, total: number, pageSize: number): Object =>
-      ({ type: types.SET_PULL_REQUESTS_WATCHING, page, nodes, total, pageSize }),
+  fetchProfile,
+  setProfile,
+  setPersona,
 }

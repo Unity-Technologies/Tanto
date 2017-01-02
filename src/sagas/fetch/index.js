@@ -18,4 +18,31 @@ export function* fetchSaga(
   return null
 }
 
+type ActionType = {
+  name: string,
+  query: string,
+  args: Object,
+  callback: Function
+}
+
+export function* fetchAnythingSaga(action: ActionType): Generator<any, any, any> {
+  try {
+    yield put(actions.clearError(action.name))
+    yield put(actions.sendingRequest(action.name, true))
+    const response = yield call(get, action.query, action.args)
+    if (action.callback) {
+      const callbacks = action.callback(response, action.args)
+      while (callbacks.length) {
+        const next = callbacks.splice(0, 1)
+        yield put(next[0])
+      }
+    }
+  } catch (error) {
+    yield put(actions.requestError(action.name, error))
+  } finally {
+    yield put(actions.sendingRequest(action.name, false))
+  }
+  return null
+}
+
 export default fetchSaga

@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import { DEVELOPER_PERSONA } from 'ducks/session'
 import { pullRequestsOwned, pullRequestsAssigned, pullRequestsWatching } from '../index'
 
@@ -143,9 +145,9 @@ const sessionState = {
   error: null,
   isFetching: false,
   persona: DEVELOPER_PERSONA,
-  pullRequestsOwned: { pages: { 1: [pr2.id, pr3.id], 2: [pr1.id, pr4.id] }, currentPage: 2 },
-  pullRequestsAssigned: { pages: { 1: [pr1.id, pr3.id], 2: [pr2.id, pr4.id] }, currentPage: 1 },
-  pullRequestsWatching: { pages: { 1: [pr2.id, pr1.id], 2: [pr4.id] }, currentPage: 1 },
+  pullRequestsOwned: { pagination: { pages: { 1: [pr2.id, pr3.id], 2: [pr1.id, pr4.id] }, currentPage: 2 } },
+  pullRequestsAssigned: { pagination: { pages: { 1: [pr1.id, pr3.id], 2: [pr2.id, pr4.id] }, currentPage: 1 } },
+  pullRequestsWatching: { pagination: { pages: { 1: [pr2.id, pr1.id], 2: [pr4.id] }, currentPage: 1 } },
   profile: {
     username: 'testauthor1',
     email: 'test@test.ff',
