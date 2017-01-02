@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import { muiTheme } from 'storybook-addon-material-ui'

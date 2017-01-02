@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable import/no-extraneous-dependencies */
 
 import { put, call } from 'redux-saga/effects'
 import { setRepositoriesNames } from 'ducks/repositories'

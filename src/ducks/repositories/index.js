@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable  import/no-extraneous-dependencies */
 
 import type { RepositoryType } from 'services/ono/queries/repositories'
 export type { RepositoryType } from 'services/ono/queries/repositories'

@@ -1,7 +1,5 @@
 /* @flow */
 
-/* eslint-disable import/no-extraneous-dependencies*/
-
 import { reduceArrayToObj, reduceObjById } from 'ducks/normalizer'
 import _ from 'lodash'
 

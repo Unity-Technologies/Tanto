@@ -38,7 +38,7 @@
     "semi": [2, "never"],
     "import/no-unresolved": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": false, "optionalDependencies": false, "peerDependencies": false}],
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "**/*.stories.js"], "optionalDependencies": false, "peerDependencies": false}],
     "react/forbid-prop-types": "off",
     "no-unused-vars": ["error", { "args": "none" }],
     "import/extensions": "off",
