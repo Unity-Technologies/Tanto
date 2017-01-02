@@ -2,6 +2,7 @@
 
 import React from 'react'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
+import _ from 'lodash'
 import RepositoryItem from './RepositoryItem'
 import GroupItem from './GroupItem'
 import type { RepositoryType } from './RepositoryItem'
@@ -30,6 +31,7 @@ function RepositoryList(props: Props) {
       {
         repositories.map(item =>
           <RepositoryItem
+            key={_.uniqueId('repositoryItem')}
             repository={item}
           />
         )

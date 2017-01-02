@@ -18,7 +18,14 @@ export function* fetchSaga(
   return null
 }
 
-export function* fetchAnythingSaga(action: Object): Generator<any, any, any> {
+type ActionType = {
+  name: string,
+  query: string,
+  args: Object,
+  callback: Function
+}
+
+export function* fetchAnythingSaga(action: ActionType): Generator<any, any, any> {
   try {
     yield put(actions.clearError(action.name))
     yield put(actions.sendingRequest(action.name, true))

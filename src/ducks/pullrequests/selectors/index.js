@@ -36,32 +36,27 @@ type StateType = {
   }
 }
 
-export const isFetching =
+export const getPageFetchStatus =
   (state: StateType): boolean => isFetchingSelector(types.FETCH_PULL_REQUESTS)(state)
-export const error =
+export const getPageFetchError =
   (state: StateType): Object => errorSelector(types.FETCH_PULL_REQUESTS)(state)
 
-export const isPullRequestFetching =
+export const getPullRequestFetchStatus =
   (state: StateType): boolean => isFetchingSelector(types.FETCH_PULL_REQUEST)(state)
-export const pullRequestError =
+export const getPullRequestFetchError =
   (state: StateType): Object => errorSelector(types.FETCH_PULL_REQUEST)(state)
 
-export const isOwnedFetching =
+export const getOwnedFetchStatus =
   (state: StateType): boolean => isFetchingSelector(types.FETCH_USER_PULL_REQUESTS)(state)
-export const ownedError =
+export const getOwnedFetchError =
   (state: StateType): Object => errorSelector(types.FETCH_USER_PULL_REQUESTS)(state)
 
-export const isAssignedFetching =
+export const getAssignedFetchStatus =
   (state: StateType): boolean => isFetchingSelector(types.FETCH_USER_ASSIGNED_PULL_REQUESTS)(state)
-export const assignedError =
+export const getAssignedError =
   (state: StateType): Object => errorSelector(types.FETCH_USER_ASSIGNED_PULL_REQUESTS)(state)
 
-export const isWatchingFetching =
-  (state: StateType): boolean => isFetchingSelector(types.FETCH_USER_WATCHING_PULL_REQUESTS)(state)
-export const watchingError =
-  (state: StateType): Object => errorSelector(types.FETCH_USER_WATCHING_PULL_REQUESTS)(state)
-
-export const pullRequestSelector =
+export const getPullRequest =
   (state: Object, props: Object): Object => state.pullrequests.entities[props.params.prid]
 
 export const getIds = (state: Object) => {
@@ -75,7 +70,7 @@ export const pullRequestsEntitiesSelector =
 export const pullRequestsIdsSelector =
   (state: Object, props: Object): Object => getIds(state.pullrequests)
 
-export const pullRequests = createSelector(
+export const getPullRequests = createSelector(
   pullRequestsEntitiesSelector, pullRequestsIdsSelector,
   (pullRequestsEntities, pullRequestsIds) =>
     _.values(_.pick(pullRequestsEntities, pullRequestsIds))

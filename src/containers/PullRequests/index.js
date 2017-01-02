@@ -9,10 +9,10 @@ import PullRequestContainer from 'containers/PullRequestContainer'
 import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/pullrequests'
 import { pullRequestsOwned, pullRequestsAssigned } from 'ducks/session/selectors'
 import {
-  isOwnedFetching,
-  ownedError,
-  isAssignedFetching,
-  assignedError,
+  getOwnedFetchStatus,
+  getOwnedFetchError,
+  getAssignedFetchStatus,
+  getAssignedError,
 } from 'ducks/pullrequests/selectors'
 import './styles.css'
 
@@ -29,8 +29,8 @@ const mapStateToPropsOwned = (state, props) => ({
   pageSize: 3,
   activePage: state.session.pullRequestsOwned.pagination.currentPage,
   total: state.session.pullRequestsOwned.pagination.total,
-  isFetching: isOwnedFetching(state),
-  error: ownedError(state),
+  isFetching: getOwnedFetchStatus(state),
+  error: getOwnedFetchError(state),
   items: pullRequestsOwned(state) || [],
   orderBy: state.session.pullRequestsOwned.orderBy,
 })
@@ -41,8 +41,8 @@ const mapStateToPropsAssigned = (state, props) => ({
   pageSize: 3,
   activePage: state.session.pullRequestsAssigned.pagination.currentPage,
   total: state.session.pullRequestsAssigned.pagination.total,
-  isFetching: isAssignedFetching(state),
-  error: assignedError(state),
+  isFetching: getAssignedFetchStatus(state),
+  error: getAssignedError(state),
   items: pullRequestsAssigned(state) || [],
   orderBy: state.session.pullRequestsAssigned.orderBy,
 })

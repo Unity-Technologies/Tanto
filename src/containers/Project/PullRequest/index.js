@@ -6,9 +6,9 @@ import Helmet from 'react-helmet'
 import { DEVELOPER_PERSONA } from 'ducks/session'
 import { fetchPullRequest } from 'ducks/pullrequests'
 import {
-  pullRequestSelector,
-  isPullRequestFetching,
-  pullRequestError,
+  getPullRequest,
+  getPullRequestFetchStatus,
+  getPullRequestFetchError,
 } from 'ducks/pullrequests/selectors'
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 import LoadingIcon from 'components/LoadingIcon'
@@ -96,10 +96,10 @@ class PullRequest extends Component {
 
 export default connect(
   (state, props) => ({
-    error: pullRequestError(state),
-    isFetching: isPullRequestFetching(state),
+    error: getPullRequestFetchError(state),
+    isFetching: getPullRequestFetchStatus(state),
     params: props.params,
     persona: state.session.persona,
-    pullRequest: pullRequestSelector(state, props),
+    pullRequest: getPullRequest(state, props),
   })
 )(PullRequest)

@@ -1,5 +1,5 @@
 /* @flow */
-/* eslint-disable import/no-extraneous-dependencies */
+
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -24,7 +24,7 @@ export type Props = {
   repo: string,
   orderBy: OrderByType,
   fetchData: Function,
-  showRepoSelect: boolean,
+  hideRepoSelect: boolean,
 }
 
 const selectBoxStyle = { minWidth: '200px', maxWidth: '250px', marginRight: '5px' }
@@ -78,6 +78,7 @@ class PullRequestContainer extends Component {
     this.props.dispatch(this.props.fetchData(args))
   }
 
+  // FIXME: add handler here when API is ready
   handleRemove = (id) => {
 
   }
@@ -94,7 +95,7 @@ class PullRequestContainer extends Component {
             backgroundColor: 'rgb(242, 242, 242)',
           }}
         >
-          {!this.props.showRepoSelect &&
+          {!this.props.hideRepoSelect &&
             <div style={selectBoxStyle}>
               <RepoSelect
                 onSelect={this.handleRepoSelect}

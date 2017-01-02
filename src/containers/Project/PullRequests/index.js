@@ -5,7 +5,10 @@ import Helmet from 'react-helmet'
 
 import PullRequestContainer from 'containers/PullRequestContainer'
 import { fetchPullRequests } from 'ducks/pullrequests'
-import { isFetching, error, pullRequests } from 'ducks/pullrequests/selectors'
+import {
+  getPageFetchStatus,
+  getPageFetchError,
+  getPullRequests } from 'ducks/pullrequests/selectors'
 
 export type Props = {
   project_pullrequests: Array<any>,
@@ -20,9 +23,9 @@ const mapStateToProps = (state, props) => ({
   pageSize: 10,
   activePage: state.pullrequests.pagination.currentPage,
   total: state.pullrequests.pagination.total,
-  isFetching: isFetching(state),
-  error: error(state),
-  items: pullRequests(state) || [],
+  isFetching: getPageFetchStatus(state),
+  error: getPageFetchError(state),
+  items: getPullRequests(state) || [],
   orderBy: state.session.pullRequestsOwned.orderBy,
 })
 
