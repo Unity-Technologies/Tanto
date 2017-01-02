@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
-import { DEVELOPER_PERSONA } from 'ducks/session'
+import { DEVELOPER_PERSONA, MANAGER_PERSONA, GUARDIAN_PERSONA } from 'ducks/session'
 import { fetchPullRequest } from 'ducks/pullrequests'
 import {
   getPullRequest,
@@ -73,14 +73,14 @@ class PullRequest extends Component {
       rootPath = rootPath.replace(new RegExp(`/${params.category}$`), '')
     }
 
-    const defaultCategory = persona === DEVELOPER_PERSONA ? 'summary' : 'guardian'
+    const defaultCategory = (!persona || persona === DEVELOPER_PERSONA) ? 'summary' : 'guardian'
     const currentCategory = params.category || defaultCategory
 
     return (
       <div>
         <Helmet title={`Pull Request: ${pullRequest.title}`} />
         <ActionBar />
-        {currentCategory === 'guardian' || currentCategory === 'manager' ?
+        {currentCategory === MANAGER_PERSONA || currentCategory === GUARDIAN_PERSONA ?
           <LayoutGuardian pullRequest={pullRequest} />
         :
           <LayoutDeveloper
