@@ -5,7 +5,7 @@ import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import Tabs from 'react-bootstrap/lib/Tabs'
 import Tab from 'react-bootstrap/lib/Tab'
-import PullRequestContainer from 'containers/PullRequestContainer'
+import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/pullrequests'
 import { pullRequestsOwned, pullRequestsAssigned } from 'ducks/session/selectors'
 import {
@@ -66,7 +66,7 @@ function PullRequests(props: Props) {
             className="tab"
             title={tabTitle('Pull requests on review', totalAssigned)}
           >
-            <PullRequestContainer
+            <PullRequestsPaginated
               mapStateToProps={mapStateToPropsAssigned}
               fetchData={fetchUserAssignedPullRequests}
             />
@@ -77,7 +77,7 @@ function PullRequests(props: Props) {
             className="tab"
             title={tabTitle('My pull requests', totalOwned)}
           >
-            <PullRequestContainer
+            <PullRequestsPaginated
               mapStateToProps={mapStateToPropsOwned}
               fetchData={fetchUserPullRequests}
             />

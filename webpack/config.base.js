@@ -61,6 +61,7 @@ const config = {
       services: 'services',
       'graphql-queries': 'api/graphql/queries',
       universal: 'universal',
+      pages: 'pages',
     },
   },
 }
