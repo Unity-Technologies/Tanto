@@ -19,8 +19,8 @@ import cookieParser from 'cookie-parser'
 import expressPromise from 'express-promise'
 import uuid from 'uuid'
 import { routes } from 'universal/constants'
-import Html from './pages/Html'
-import Login from './pages/Login'
+import Html from 'client/pages/Html'
+import Login from 'client/pages/Login'
 import passportConfig from './passport'
 import env from './config'
 
@@ -44,12 +44,12 @@ const sessionOptions = {
 
 app.set('port', env.PORT)
 app.use(expressStatusMonitor())
-app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')))
+app.use(favicon(path.join(__dirname, '../..', 'static', 'favicon.ico')))
 app.use(compression())
 app.use(logger('dev'))
 app.use(expressValidator())
 app.use(expressPromise())
-app.use(Express.static(path.join(__dirname, '..', 'static')))
+app.use(Express.static(path.join(__dirname, '../..', 'static')))
 app.use(cookieParser(sessionOptions.secret))
 app.use(session(sessionOptions))
 app.use(passport.initialize())
