@@ -1,24 +1,23 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import {
-  App,
-  Home,
-  Projects,
-  PullRequests,
-} from 'containers'
+
 import { types } from 'ducks/session'
 
-import File from 'containers/Project/File'
-import Files from 'containers/Project/Files'
-import Project from 'containers/Project/Project'
-import Changelog from 'containers/Project/Changelog'
-import Overview from 'containers/Project/Overview'
-import Changeset from 'containers/Project/Changeset'
-import ProjectPullRequests from 'containers/Project/PullRequests'
-import Issues from 'containers/Project/Issues'
-import Statistics from 'containers/Project/Statistics'
-import PullRequest from 'containers/Project/PullRequest'
-import NewPullRequest from 'containers/Project/NewPullRequest'
+import App from 'pages/App'
+import Home from 'pages/Home'
+import Projects from 'pages/Projects'
+import PullRequests from 'pages/PullRequests'
+import File from 'pages/Project/File'
+import Files from 'pages/Project/Files'
+import Project from 'pages/Project/Project'
+import Changelog from 'pages/Project/Changelog'
+import Overview from 'pages/Project/Overview'
+import Changeset from 'pages/Project/Changeset'
+import ProjectPullRequests from 'pages/Project/PullRequests'
+import Issues from 'pages/Project/Issues'
+import Statistics from 'pages/Project/Statistics'
+import PullRequest from 'pages/Project/PullRequest'
+import NewPullRequest from 'pages/Project/NewPullRequest'
 
 import { app, project, pullrequest, changeset } from 'containers/SideBar/SideBarConfig'
 

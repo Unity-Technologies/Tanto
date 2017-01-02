@@ -3,7 +3,7 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 
-import PullRequestContainer from 'containers/PullRequestContainer'
+import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchPullRequests } from 'ducks/pullrequests'
 import {
   getPageFetchStatus,
@@ -33,7 +33,7 @@ function PullRequests(props: Props) {
   return (
     <div>
       <Helmet title="Project Pull Requests" />
-      <PullRequestContainer
+      <PullRequestsPaginated
         hideRepoSelect
         mapStateToProps={mapStateToProps}
         fetchData={fetchPullRequests}

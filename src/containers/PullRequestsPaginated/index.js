@@ -29,7 +29,7 @@ export type Props = {
 
 const selectBoxStyle = { minWidth: '200px', maxWidth: '250px', marginRight: '5px' }
 
-class PullRequestContainer extends Component {
+class PullRequestsPaginated extends Component {
   componentDidMount() {
     const args = this.getArguments()
     this.props.dispatch(this.props.fetchData(args))
@@ -128,5 +128,5 @@ class PullRequestContainer extends Component {
   }
 }
 
-export default connect((state, props) => props.mapStateToProps(state, props))(PullRequestContainer)
+export default connect((state, props) => props.mapStateToProps(state, props))(PullRequestsPaginated)
 
