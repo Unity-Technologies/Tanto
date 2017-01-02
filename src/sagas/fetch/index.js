@@ -38,5 +38,4 @@ export function* fetchAnythingSaga(action: Object): Generator<any, any, any> {
   return null
 }
 
-
 export default fetchSaga

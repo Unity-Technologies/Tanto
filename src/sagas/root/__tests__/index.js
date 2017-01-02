@@ -1,30 +1,23 @@
-// /* eslint-disable max-len */
-// import { takeLatest } from 'redux-saga'
-// import { fork } from 'redux-saga/effects'
-// import fetchCurrentUserProfile from 'sagas/session'
-// import { types as sessionTypes } from 'ducks/session'
-// import { types as prTypes } from 'ducks/pullrequests'
-// import {
-//   fetchCurrentUserPullRequests,
-//   fetchCurrentUserAssignedPullRequests,
-//   fetchCurrentUserWatchingPullRequests,
-// } from 'sagas/pullrequests'
+/* eslint-disable max-len */
+import { takeLatest, takeEvery } from 'redux-saga'
+import { fork } from 'redux-saga/effects'
 
-// import rootSaga from 'sagas'
+import { types as repoTypes } from 'ducks/repositories'
+import { searchRepository } from 'sagas/repositories'
+import { types as fetchTypes } from 'ducks/fetch'
+import { fetchAnythingSaga } from 'sagas/fetch'
 
-// const expect = require('chai').expect
+import rootSaga from 'sagas'
+
+const expect = require('chai').expect
 
 
-// describe('root saga', () => {
-//   it('flow', () => {
-//     const generator = rootSaga()
-//     expect(generator.next().value).to.deep.equal(
-//       fork(takeLatest, sessionTypes.FETCH_USER_PROFILE, fetchCurrentUserProfile))
-//     expect(generator.next().value).to.deep.equal(
-//       fork(takeLatest, prTypes.FETCH_USER_PULL_REQUESTS, fetchCurrentUserPullRequests))
-//     expect(generator.next().value).to.deep.equal(
-//       fork(takeLatest, prTypes.FETCH_USER_ASSIGNED_PULL_REQUESTS, fetchCurrentUserAssignedPullRequests))
-//     expect(generator.next().value).to.deep.equal(
-//       fork(takeLatest, prTypes.FETCH_USER_WATCHING_PULL_REQUESTS, fetchCurrentUserWatchingPullRequests))
-//   })
-// })
+describe('root saga', () => {
+  it('flow', () => {
+    const generator = rootSaga()
+    expect(generator.next().value).to.deep.equal(
+      fork(takeEvery, fetchTypes.FETCH_DATA, fetchAnythingSaga))
+    expect(generator.next().value).to.deep.equal(
+      fork(takeLatest, repoTypes.SEARCH_REPOSITORY, searchRepository))
+  })
+})

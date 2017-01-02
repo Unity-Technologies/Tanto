@@ -9,7 +9,7 @@ import {
   parseAllRepositoriesNames,
 } from 'services/ono/queries/repositories'
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export function* searchRepository(action: Object): Generator<any, any, any> {
   yield call(delay, 300)
