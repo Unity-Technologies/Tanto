@@ -4,8 +4,7 @@ import reducer,
 {
   actions,
   types,
-  DEVELOPER_PERSONA,
-  sessionEntities, filters, repo, branch } from '../index'
+  sessionEntities, repo, branch } from '../index'
 import { receivePage } from 'ducks/pagination'
 import { DIRECTION } from 'ducks/order'
 import _ from 'lodash'

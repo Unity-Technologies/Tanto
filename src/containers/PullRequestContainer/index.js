@@ -35,8 +35,6 @@ class PullRequestContainer extends Component {
     this.props.dispatch(this.props.fetchData(args))
   }
 
-  props: Props
-
   getArguments = (): Object => ({
     pageSize: this.props.pageSize,
     first: this.props.pageSize,
@@ -46,6 +44,8 @@ class PullRequestContainer extends Component {
     branch: this.props.branch,
     repo: this.props.repo,
   })
+
+  props: Props
 
   handlePageSelect = (page) => {
     const args = this.getArguments()

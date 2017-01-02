@@ -54,7 +54,7 @@ export type StateType = {
 }
 
 
-export const groups = (state: Object= {}, action: Object): Object => {
+export const groupsReducer = (state: Object= {}, action: Object): Object => {
   switch (action.type) {
     case types.SET_GROUPS:
       return mergeEntities(state, entitiesActions.setEntities(action.nodes))
@@ -63,13 +63,13 @@ export const groups = (state: Object= {}, action: Object): Object => {
   }
 }
 
-export const names = (state: Array<Object> = [], action: Object): Array<Object> => (
+export const namesReducer = (state: Array<Object> = [], action: Object): Array<Object> => (
   action.type === types.SET_REPOSITORIES_NAMES ? action.nodes : state)
 
 export const entitiesReducer = combineReducers({
   entities,
-  groups,
-  names,
+  groups: groupsReducer,
+  names: namesReducer,
 })
 
 /**

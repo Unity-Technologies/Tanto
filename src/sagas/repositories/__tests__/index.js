@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { put, call } from 'redux-saga/effects'
 import { setRepositoriesNames } from 'ducks/repositories'
 import fetchSaga from 'sagas/fetch'

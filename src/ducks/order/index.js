@@ -15,7 +15,8 @@ export type OrderByType = {
   field: string
 }
 
-export const direction = (state: DirectionType = DIRECTION.ASC, action: Object = {}): DirectionType =>
+export const direction =
+  (state: DirectionType = DIRECTION.ASC, action: Object = {}): DirectionType =>
   (action.orderBy ? action.orderBy.direction : state)
 
 export const field = (state: string = '', action: Object = {}): string =>

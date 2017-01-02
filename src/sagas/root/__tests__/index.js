@@ -1,4 +1,5 @@
-/* eslint-disable max-len */
+/* @flow */
+
 import { takeLatest, takeEvery } from 'redux-saga'
 import { fork } from 'redux-saga/effects'
 
@@ -7,7 +8,7 @@ import { searchRepository } from 'sagas/repositories'
 import { types as fetchTypes } from 'ducks/fetch'
 import { fetchAnythingSaga } from 'sagas/fetch'
 
-import rootSaga from 'sagas'
+import rootSaga from '../../index'
 
 const expect = require('chai').expect
 

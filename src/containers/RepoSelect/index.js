@@ -5,7 +5,10 @@ import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
 import { searchRepository } from 'ducks/repositories'
-import { isSearchingRepository, searchRepositoryError, repositoriesNames } from 'ducks/repositories/selectors'
+import {
+  isSearchingRepository,
+  searchRepositoryError,
+  repositoriesNames } from 'ducks/repositories/selectors'
 
 type SelectItemType = {
   label: string,
@@ -26,6 +29,12 @@ class RepoSelect extends Component {
     this.state = { repo: null }
   }
 
+  state: {
+    repo: ?SelectItemType,
+  }
+
+  props: RepoProps
+
   handleRepoInputChange = (value): void => {
     if (value) {
       this.props.dispatch(searchRepository(`%${value}%`, 5))
@@ -38,11 +47,6 @@ class RepoSelect extends Component {
     if (this.props.onSelect) {
       this.props.onSelect(repoId)
     }
-  }
-
-  props: RepoProps
-  state: {
-    repo: ?SelectItemType,
   }
 
   render() {

@@ -139,7 +139,8 @@ export const fetchUserPullRequests = (args: FetchPullRequestArgs): Object =>
     })
 
 export const fetchUserAssignedPullRequests = (args: FetchPullRequestArgs): Object =>
-  fetchActionCreator(types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, queries.USER_ASSIGNED_PULL_REQUESTS,
+  fetchActionCreator(
+    types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, queries.USER_ASSIGNED_PULL_REQUESTS,
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parsers.parseCurrentUserAssignedPullRequests(data)
       return [

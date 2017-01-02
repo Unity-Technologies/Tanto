@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import { DEVELOPER_PERSONA } from 'ducks/session'
 import { pullRequestsOwned, pullRequestsAssigned, pullRequestsWatching } from '../index'
 

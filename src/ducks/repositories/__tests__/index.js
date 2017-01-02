@@ -1,7 +1,7 @@
 
 import chai from 'chai'
 import reducer, {
-  names,
+  namesReducer,
   types,
 } from '../index'
 
@@ -197,7 +197,7 @@ describe('repositories names reducer', () => {
       nodes,
     }
 
-    expect(names([], action)).to.eql(nodes)
+    expect(namesReducer([], action)).to.eql(nodes)
   })
 
   it('should not handle not recognized action', () => {
@@ -220,6 +220,6 @@ describe('repositories names reducer', () => {
       nodes,
     }
 
-    expect(names(nodes, action)).to.eql(nodes)
+    expect(namesReducer(nodes, action)).to.eql(nodes)
   })
 })

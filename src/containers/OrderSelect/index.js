@@ -44,6 +44,13 @@ class OrderSelect extends Component {
     this.state = { field: null, order: DIRECTION.ASC }
   }
 
+  state: {
+    field: ?SelectItemType,
+    order: DirectionType
+  }
+
+  props: OrderProps
+
   handleFieldChange = (field: SelectItemType): void => {
     this.setState({ field })
     if (this.props.onSelect) {
@@ -60,12 +67,6 @@ class OrderSelect extends Component {
 
   handleAscClick = () => this.handleOrderChange(DIRECTION.ASC)
   handleDescClick = () => this.handleOrderChange(DIRECTION.DESC)
-
-  props: OrderProps
-  state: {
-    field: ?SelectItemType,
-    order: DirectionType
-  }
 
   render() {
     return (

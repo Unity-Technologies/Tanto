@@ -4,22 +4,10 @@ import chai from 'chai'
 import reducer, {
   types,
   filters,
-  fetchPullRequests,
-  fetchPullRequest,
-  fetchUserPullRequests,
-  fetchUserAssignedPullRequests,
-  fetchUserWatchingPullRequests,
 } from '../index'
-import { fetchActionCreator } from 'ducks/fetch'
 
 import { pagination, receivePage } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
-
-import {
-  projectPullRequestsQuery,
-  parsePullRequests,
-} from 'services/ono/queries/pullrequests'
-import { types as fetchTypes } from 'ducks/fetch'
 
 
 const expect = chai.expect

@@ -26,6 +26,10 @@ class BranchSelect extends Component {
     this.state = { branch: null }
   }
 
+  state: {
+    branch: ?SelectItemType,
+  }
+
   componentDidMount() {
     if (this.props.repoId) {
       this.props.dispatch(fetchRepositoryBranches(this.props.repoId))
@@ -38,16 +42,13 @@ class BranchSelect extends Component {
     }
   }
 
+  props: BranchProps
+
   handleBranchChange = (branch: SelectItemType): void => {
     this.setState({ branch })
     if (this.props.onSelect) {
       this.props.onSelect(branch ? branch.value : '')
     }
-  }
-
-  props: BranchProps
-  state: {
-    branch: ?SelectItemType,
   }
 
   render() {
