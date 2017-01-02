@@ -5,11 +5,11 @@ import { routes } from 'universal/constants'
 import type { $Request, $Response, NextFunction } from 'express'
 
 import env from './config'
-import { checkHttpStatus } from './universal/requests'
+import { checkHttpStatus } from '../universal/requests'
 
 const passport = require('passport')
 const OAuth2Strategy = require('passport-oauth2')
-const User = require('./server/models/user')
+const User = require('./models/user')
 
 passport.serializeUser((user, done) => {
   done(null, user.id)

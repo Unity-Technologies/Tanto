@@ -14,9 +14,9 @@ const baseConfig = require('./config.base')
 module.exports = Object.assign({}, baseConfig.config, {
   entry: {
     main: [
-      'bootstrap-sass-loader!./src/theme/bootstrap.config.prod.js',
-      'font-awesome-webpack!./src/theme/font-awesome.config.prod.js',
-      './src/app.js',
+      'bootstrap-sass-loader!./src/client/theme/bootstrap.config.prod.js',
+      'font-awesome-webpack!./src/client/theme/font-awesome.config.prod.js',
+      './src/client/index.js',
     ],
   },
   output: {

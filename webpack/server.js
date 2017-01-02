@@ -2,7 +2,7 @@
 const Express = require('express')
 const webpack = require('webpack')
 
-const env = require('../src/config')
+const env = require('../src/server/config')
 const webpackConfig = require('./config.dev')
 const compiler = webpack(webpackConfig)
 

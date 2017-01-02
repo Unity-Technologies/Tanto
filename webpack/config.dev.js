@@ -16,9 +16,9 @@ module.exports = Object.assign({}, baseConfig.config, {
   entry: {
     main: [
       `webpack-hot-middleware/client?path=http://${host}:${port}/__webpack_hmr`,
-      'bootstrap-sass-loader!./src/theme/bootstrap.config.js',
-      'font-awesome-webpack!./src/theme/font-awesome.config.js',
-      './src/app.js',
+      'bootstrap-sass-loader!./src/client/theme/bootstrap.config.js',
+      'font-awesome-webpack!./src/client/theme/font-awesome.config.js',
+      './src/client/index.js',
     ],
   },
   output: {

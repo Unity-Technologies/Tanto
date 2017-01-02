@@ -22,5 +22,5 @@ if (__DEVELOPMENT__) {
 const WebpackIsomorphicTools = require('webpack-isomorphic-tools')
 global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('./webpack/isomorphic-tools'))
   .server(rootDir, () => {
-    require('./src/server')
+    require('./src/server/index')
   })
