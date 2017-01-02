@@ -7,7 +7,7 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
 
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
-import Reviewers from '../Reviewers'
+import Reviewers from './Reviewers'
 import UserAvatar from '../UserAvatar'
 
 import { prReviewers } from '../../api/testPullRequest'
@@ -45,11 +45,15 @@ const headerColumnStyle = {
   paddingTop: '10px',
 }
 
-type PullRequestHeaderProps = {
+type PullRequestSummaryProps = {
+  onAddReviewer: Function,
+  onToggleReviewers: Function,
   pullRequest: PullRequestGraphType,
+  toggleReviewers: boolean,
 }
 
-export const PullRequestHeader = ({ pullRequest } : PullRequestHeaderProps) =>
+
+export const PullRequestHeader = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
   <div style={{ display: 'inline-block' }}>
     <UserAvatar
       src={null}  // FIXME
@@ -67,12 +71,215 @@ export const PullRequestHeader = ({ pullRequest } : PullRequestHeaderProps) =>
   </div>
 
 
-type PullRequestSummaryProps = {
-  onAddReviewer: Function,
-  onToggleReviewers: Function,
-  pullRequest: PullRequestGraphType,
-  toggleReviewers: boolean,
-}
+export const ChangesSection = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
+  <ListGroupItem style={info}>
+    <Row>
+      <Col md={2}>
+        <div style={headerColumnStyle}>
+          Changes
+        </div>
+      </Col>
+      <Col md={3}>
+        <div>
+          <div>
+            {subHeader('Changes impact risk:')}
+            <div
+              style={{ color: 'rgb(142, 173, 181)', textTransform: 'uppercase' }}
+            >
+              High
+            </div>
+          </div>
+        </div>
+      </Col>
+      <Col md={6}>
+        <div>
+          {subHeader('Delta:')}
+          <span style={{ color: '#91942b' }}> ~ 219 </span>
+          <span style={{ color: '#d36a9a' }}> - 8684 </span>
+          <span style={{ color: 'rgb(47, 199, 137)' }}> + 885 </span>
+        </div>
+      </Col>
+      <Col md={1} />
+    </Row>
+  </ListGroupItem>
+
+
+export const RepositoriesSection = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
+  <ListGroupItem style={info}>
+    <Row>
+      <Col md={2}>
+        <div style={headerColumnStyle}>
+          Repositories
+        </div>
+      </Col>
+      <Col md={3}>
+        <div>
+          {subHeader('Phase:')}
+          <div style={{ color: 'rgb(142, 173, 181)', textTransform: 'uppercase' }}>
+            DRAFT
+          </div>
+          <div style={{ fontSize: '12px' }}>(or headed to release)</div>
+        </div>
+      </Col>
+      <Col md={6}>
+        <div>
+          <div>
+            {subHeader('Origin:')}
+            <a href="unity/unity#ai/navmesh/builder-disabled">
+              unity/unity#ai/navmesh/builder-disabled
+            </a>
+          </div>
+          <div>
+            {subHeader('Target:')}
+            <a href="unity/unity#trunk">unity/unity#trunk</a>
+          </div>
+        </div>
+      </Col>
+      <Col md={1}>
+        <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }}>
+          <i className="fa fa-pencil" aria-hidden="true" />
+        </div>
+      </Col>
+    </Row>
+  </ListGroupItem>
+
+
+export const ReviewersSection = (props: PullRequestSummaryProps) =>
+  <ListGroupItem style={inProgress}>
+    <Row>
+      <Col md={2}>
+        <div style={headerColumnStyle}>
+          Code review
+        </div>
+      </Col>
+      <Col md={3}>
+        {subHeader('Status:')}
+        <div style={{ color: inProgressColor, textTransform: 'uppercase' }}>
+          in progress
+        </div>
+        <div style={{ fontSize: '12px' }}>(4 pending responses)</div>
+      </Col>
+      <Col md={6}>
+        {subHeader('Reviewers:')}
+        <Row>
+          <Col md={1}>
+            <span style={{ color: approvedColor, fontSize: '16px', marginRight: '10px' }}>
+              <i className="fa fa-check" aria-hidden="true" />
+            </span>
+          </Col>
+          <Col md={11}>
+            <div style={{ fontSize: '13px' }}>
+              Alexey Zakharov, Scott Bilas, Aras Pranckevičius, Tim Cooper
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={1}>
+            <span
+              style={{ color: 'rgb(128, 154, 206)', fontSize: '16px', marginRight: '10px' }}
+            >
+              <i className="fa fa-circle-o-notch fa-spin fa-fw" />
+            </span>
+          </Col>
+          <Col md={11}>
+            <div style={{ fontSize: '13px' }}>
+              Ante Ilic, Alex Lian
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={1}>
+            <span style={{ color: 'grey', fontSize: '16px', marginRight: '10px' }}>
+              <i className="fa fa-question" aria-hidden="true" />
+            </span>
+          </Col>
+          <Col md={11}>
+            <div style={{ fontSize: '13px' }}>
+              {props.pullRequest.reviewers.map(r => r.user.fullName).join(', ')}
+            </div>
+          </Col>
+        </Row>
+        {props.toggleReviewers &&
+          <Row style={{ paddingTop: '20px', paddingLeft: '50px' }}>
+            <Reviewers reviewers={prReviewers} onAdded={props.onAddReviewer} />
+          </Row>
+        }
+      </Col>
+      <Col md={1}>
+        <div
+          onClick={props.onToggleReviewers}
+          style={{ color: '#dbdedf', float: 'right', fontSize: '20px', cursor: 'pointer' }}
+        >
+          <i className="fa fa-pencil" aria-hidden="true" />
+        </div>
+      </Col>
+    </Row>
+  </ListGroupItem>
+
+
+export const BuildSection = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
+  <ListGroupItem style={success}>
+    <Row>
+      <Col md={2}>
+        <div style={headerColumnStyle}>
+          Katana build
+        </div>
+      </Col>
+      <Col md={3}>
+        {subHeader('Status:')}
+        <div>
+          <div style={{ color: approvedColor, textTransform: 'uppercase' }}>
+            Passed
+          </div>
+          <div style={{ fontSize: '12px' }}>(5 hours ago)</div>
+        </div>
+      </Col>
+      <Col md={6}>
+        <div>
+          <div>
+            {subHeader('Latest:')}
+            <a href="#">ABV-48147</a>
+            <div style={{ fontSize: '12px' }}>(5 builds in total)</div>
+          </div>
+        </div>
+      </Col>
+      <Col md={1} />
+    </Row>
+  </ListGroupItem>
+
+
+export const IssuesSection = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
+  <ListGroupItem style={danger}>
+    <Row>
+      <Col md={2}>
+        <div style={headerColumnStyle}>
+          PR Issues
+        </div>
+      </Col>
+      <Col md={3}>
+        {subHeader('Status:')}
+        <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
+          UNRESOLVED
+        </div>
+        <div style={{ fontSize: '12px' }}>(12 issue)</div>
+      </Col>
+      <Col md={6}>
+        <div>
+          <div>
+            {subHeader('Unresolved:')}
+            <div><a href="#"># Rename to MdFourGenerator_Deprecated</a></div>
+            <div><a href="#"># Template typename TValue, typename TNode</a></div>
+          </div>
+        </div>
+      </Col>
+      <Col md={1}>
+        <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }}>
+          <i className="fa fa-pencil" aria-hidden="true" />
+        </div>
+      </Col>
+    </Row>
+  </ListGroupItem>
+
 
 const PullRequestSummary = (props: PullRequestSummaryProps) =>
   <div name="summary" id="summary">
@@ -80,345 +287,11 @@ const PullRequestSummary = (props: PullRequestSummaryProps) =>
     <Row>
       <Col md={12}>
         <ListGroup style={{ marginTop: '20px', fontSize: '13px' }}>
-          <ListGroupItem style={info}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  Changes
-                </div>
-              </Col>
-              <Col md={3}>
-                <div>
-                  <div>
-                    {subHeader('Changes impact risk:')}
-                    <div
-                      style={{ color: 'rgb(142, 173, 181)', textTransform: 'uppercase' }}
-                    >
-                      High
-                    </div>
-                  </div>
-                </div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  {subHeader('Delta:')}
-                  <span style={{ color: '#91942b' }}> ~ 219 </span>
-                  <span style={{ color: '#d36a9a' }}> - 8684 </span>
-                  <span style={{ color: 'rgb(47, 199, 137)' }}> + 885 </span>
-                </div>
-              </Col>
-              <Col md={1} />
-            </Row>
-          </ListGroupItem>
-          <ListGroupItem style={success}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  Feature
-                </div>
-              </Col>
-              <Col md={3}>
-                {subHeader('Status:')}
-                <div style={{ color: approvedColor, textTransform: 'uppercase' }}>
-                  APPROVED
-                </div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  <div>
-                    {subHeader('ForBugs link:')}
-                    <a href="#">#123345 feature description here</a>
-                  </div>
-                </div>
-              </Col>
-              <Col md={1}>
-                <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }} active>
-                  <i className="fa fa-pencil" aria-hidden="true" />
-                </div>
-              </Col>
-            </Row>
-          </ListGroupItem>
-          <ListGroupItem style={info}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  Repositories
-                </div>
-              </Col>
-              <Col md={3}>
-                <div>
-                  {subHeader('Phase:')}
-                  <div style={{ color: 'rgb(142, 173, 181)', textTransform: 'uppercase' }}>
-                    DRAFT
-                  </div>
-                  <div style={{ fontSize: '12px' }}>(or headed to release)</div>
-                </div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  <div>
-                    {subHeader('Origin:')}
-                    <a href="unity/unity#ai/navmesh/builder-disabled">
-                      unity/unity#ai/navmesh/builder-disabled
-                    </a>
-                  </div>
-                  <div>
-                    {subHeader('Target:')}
-                    <a href="unity/unity#trunk">unity/unity#trunk</a>
-                  </div>
-                </div>
-              </Col>
-              <Col md={1}>
-                <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }} active>
-                  <i className="fa fa-pencil" aria-hidden="true" />
-                </div>
-              </Col>
-            </Row>
-          </ListGroupItem>
-          <ListGroupItem style={inProgress}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  Code review
-                </div>
-              </Col>
-              <Col md={3}>
-                {subHeader('Status:')}
-                <div style={{ color: inProgressColor, textTransform: 'uppercase' }}>
-                  in progress
-                </div>
-                <div style={{ fontSize: '12px' }}>(4 pending responses)</div>
-              </Col>
-              <Col md={6}>
-                {subHeader('Reviewers:')}
-                <Row>
-                  <Col md={1}>
-                    <span style={{ color: approvedColor, fontSize: '16px', marginRight: '10px' }}>
-                      <i className="fa fa-check" aria-hidden="true" />
-                    </span>
-                  </Col>
-                  <Col md={11}>
-                    <div style={{ fontSize: '13px' }}>
-                      Alexey Zakharov, Scott Bilas, Aras Pranckevičius, Tim Cooper
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={1}>
-                    <span
-                      style={{ color: 'rgb(128, 154, 206)', fontSize: '16px', marginRight: '10px' }}
-                    >
-                      <i className="fa fa-circle-o-notch fa-spin fa-fw" />
-                    </span>
-                  </Col>
-                  <Col md={11}>
-                    <div style={{ fontSize: '13px' }}>
-                      Ante Ilic, Alex Lian
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={1}>
-                    <span style={{ color: 'grey', fontSize: '16px', marginRight: '10px' }}>
-                      <i className="fa fa-question" aria-hidden="true" />
-                    </span>
-                  </Col>
-                  <Col md={11}>
-                    <div style={{ fontSize: '13px' }}>
-                      {props.pullRequest.reviewers.map(r => r.user.fullName).join(', ')}
-                    </div>
-                  </Col>
-                </Row>
-                {props.toggleReviewers &&
-                  <Row style={{ paddingTop: '20px', paddingLeft: '50px' }}>
-                    <Reviewers reviewers={prReviewers} onAdded={props.onAddReviewer} />
-                  </Row>
-                }
-              </Col>
-              <Col md={1}>
-                <div
-                  onClick={props.onToggleReviewers}
-                  style={{ color: '#dbdedf', float: 'right', fontSize: '20px', cursor: 'pointer' }}
-                >
-                  <i className="fa fa-pencil" aria-hidden="true" />
-                </div>
-              </Col>
-            </Row>
-          </ListGroupItem>
-          <ListGroupItem style={danger}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  Tests
-                </div>
-              </Col>
-              <Col md={3}>
-                {subHeader('Test status:')}
-                <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
-                  No tests created
-                </div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  <div>
-                    {subHeader('Test type:')} unit tests
-                  </div>
-                </div>
-              </Col>
-              <Col md={1}>
-                <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }} active>
-                  <i className="fa fa-pencil" aria-hidden="true" />
-                </div>
-              </Col>
-            </Row>
-          </ListGroupItem>
-          <ListGroupItem style={inProgress}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  QA Verification
-                </div>
-              </Col>
-              <Col md={3}>
-                {subHeader('Status:')}
-                <div style={{ color: inProgressColor, textTransform: 'uppercase' }}>
-                  In progress ...
-                </div>
-                <div style={{ fontSize: '12px' }}>(found 1 critical, 3 minor)</div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  <div>
-                    {subHeader('ForBugs links:')}
-                    <div><a href="#">#23456 Some critical issue descriprion</a></div>
-                    <div><a href="#">#23457 The fist minor issue description</a></div>
-                    <div><a href="#">#23458 The second minor issue description</a></div>
-                    <div><a href="#">#23454 The third minor issue description</a> </div>
-                  </div>
-                </div>
-              </Col>
-              <Col md={1}>
-                <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }} active>
-                  <i className="fa fa-pencil" aria-hidden="true" />
-                </div>
-              </Col>
-            </Row>
-          </ListGroupItem>
-          <ListGroupItem style={success}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  Katana build
-                </div>
-              </Col>
-              <Col md={3}>
-                {subHeader('Status:')}
-                <div>
-                  <div style={{ color: approvedColor, textTransform: 'uppercase' }}>
-                    Passed
-                  </div>
-                  <div style={{ fontSize: '12px' }}>(5 hours ago)</div>
-                </div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  <div>
-                    {subHeader('Latest:')}
-                    <a href="#">ABV-48147</a>
-                    <div style={{ fontSize: '12px' }}>(5 builds in total)</div>
-                  </div>
-                </div>
-              </Col>
-              <Col md={1} />
-            </Row>
-          </ListGroupItem>
-          <ListGroupItem style={danger}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  PR Issues
-                </div>
-              </Col>
-              <Col md={3}>
-                {subHeader('Status:')}
-                <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
-                  UNRESOLVED
-                </div>
-                <div style={{ fontSize: '12px' }}>(12 issue)</div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  <div>
-                    {subHeader('Unresolved:')}
-                    <div><a href="#"># Rename to MdFourGenerator_Deprecated</a></div>
-                    <div><a href="#"># Template typename TValue, typename TNode</a></div>
-                  </div>
-                </div>
-              </Col>
-              <Col md={1}>
-                <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }} active>
-                  <i className="fa fa-pencil" aria-hidden="true" />
-                </div>
-              </Col>
-            </Row>
-          </ListGroupItem>
-          <ListGroupItem style={info}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  User test
-                </div>
-              </Col>
-              <Col md={3}>
-                {subHeader('Status:')}
-                <div style={{ textTransform: 'uppercase', color: '#8eadb5' }}>
-                  undefined
-                </div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  <div>
-                    {subHeader('Build:')}
-                    <a href="#">build48147</a>
-                  </div>
-                </div>
-              </Col>
-              <Col md={1}>
-                <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }} active>
-                  <i className="fa fa-pencil" aria-hidden="true" />
-                </div>
-              </Col>
-            </Row>
-          </ListGroupItem>
-          <ListGroupItem style={info}>
-            <Row>
-              <Col md={2}>
-                <div style={headerColumnStyle}>
-                  Release notes
-                </div>
-              </Col>
-              <Col md={3}>
-                {subHeader('Status:')}
-                <div style={{ textTransform: 'uppercase', color: '#8eadb5' }}>
-                  Exist
-                </div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  <div>
-                    {subHeader('Links:')}
-                    <div><a href="#">Release note 1</a></div>
-                    <div><a href="#">Release note 2</a></div>
-                  </div>
-                </div>
-              </Col>
-              <Col md={1}>
-                <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }} active>
-                  <i className="fa fa-pencil" aria-hidden="true" />
-                </div>
-              </Col>
-            </Row>
-          </ListGroupItem>
+          <ChangesSection {...props} />
+          <RepositoriesSection {...props} />
+          <ReviewersSection {...props} />
+          <BuildSection {...props} />
+          <IssuesSection {...props} />
         </ListGroup>
       </Col>
     </Row>

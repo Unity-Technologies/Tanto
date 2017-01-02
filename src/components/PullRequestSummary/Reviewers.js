@@ -21,9 +21,7 @@ class Reviewers extends Component {
 
   constructor(props: Props) {
     super(props)
-    this.state = { search: null, reviewers: this.props.reviewers };
-
-    (this:any).addReviewer = this.addReviewer.bind(this)
+    this.state = { search: null, reviewers: this.props.reviewers }
   }
 
   props: Props
@@ -33,7 +31,7 @@ class Reviewers extends Component {
     reviewers: Array<Reviewer>
   }
 
-  addReviewer(value: Reviewer) {
+  addReviewer = (value: Reviewer) => {
     const list = this.state.reviewers
 
     if (this.props.onAdded) {
@@ -73,7 +71,6 @@ class Reviewers extends Component {
           {this.state.reviewers.length !== 0 &&
             <div
               style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }}
-              active
             >
               Some modified files do not have a reviewer, potential additional reviewers:
             </div>
