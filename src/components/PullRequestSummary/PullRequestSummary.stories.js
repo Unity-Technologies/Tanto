@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint-disable max-len */
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import { muiTheme } from 'storybook-addon-material-ui'
@@ -27,7 +28,46 @@ const pullRequestFixture = {
       username: 'sharron',
     },
   }],
-  files: [],
+  origin: {
+    url: 'unity/unity#my-pr',
+    branch: 'bar',
+    repository: {
+      name: 'foo',
+    },
+  },
+  target: {
+    url: 'unity/unity#trunk',
+    branch: 'bar',
+    repository: {
+      name: 'foo',
+    },
+  },
+  files: [
+    {
+      id: 'C--04c6e90faac2',
+      name: 'README.md',
+      oldName: 'README.md',
+      diff: 'diff --git a/README.md b/README.md\n--- a/README.md\n+++ b/README.md\n@@ -1,1 +1,3 @@\n Foo bar\n+\n+!\n',
+      stats: {
+        added: 2,
+        deleted: 0,
+        binary: false,
+      },
+      operation: 'M',
+      comments: [],
+    },
+  ],
+}
+
+const pathsFixture = {
+  origin: {
+    url: '/unity/unity#my-pr',
+    label: 'unity/unity#my-pr',
+  },
+  target: {
+    url: '/unity/unity#trunk',
+    label: 'unity/unity#trunk',
+  },
 }
 
 storiesOf('PullRequestSummary', module)
@@ -36,6 +76,7 @@ storiesOf('PullRequestSummary', module)
     <PullRequestSummary
       onAddReviewer={action('onAddReviewer')}
       onToggleReviewers={action('onToggleReviewers')}
+      paths={pathsFixture}
       pullRequest={pullRequestFixture}
       toggleReviewers={false}
     />
@@ -58,6 +99,7 @@ storiesOf('PullRequestSummary Items', module)
   ))
   .add('RepositoriesSection', () => (
     <RepositoriesSection
+      paths={pathsFixture}
       pullRequest={pullRequestFixture}
     />
   ))
@@ -65,6 +107,7 @@ storiesOf('PullRequestSummary Items', module)
     <ReviewersSection
       onAddReviewer={action('onAddReviewer')}
       onToggleReviewers={action('onToggleReviewers')}
+      paths={pathsFixture}
       pullRequest={pullRequestFixture}
       toggleReviewers={false}
     />
@@ -73,6 +116,7 @@ storiesOf('PullRequestSummary Items', module)
     <ReviewersSection
       onAddReviewer={action('onAddReviewer')}
       onToggleReviewers={action('onToggleReviewers')}
+      paths={pathsFixture}
       pullRequest={pullRequestFixture}
       toggleReviewers
     />

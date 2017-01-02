@@ -25,12 +25,12 @@ describe('routes helpers', () => {
 
   it('buildPullRequestLink', () => {
     expect(helpers.buildPullRequestLink('projectname', '1234'))
-      .equals('/projectname/pullrequests/1234')
+      .equals('/project/projectname/pullrequests/1234')
   })
 
   it('buildProjectLink', () => {
     expect(helpers.buildProjectLink('projectname', 'testbranch'))
-      .equals('/projectname?branch=testbranch')
+      .equals('/project/projectname?branch=testbranch')
   })
 
   it('buildProjectsLink', () => {

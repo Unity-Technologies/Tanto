@@ -9,6 +9,7 @@ import ListGroup from 'react-bootstrap/lib/ListGroup'
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 import Reviewers from './Reviewers'
 import UserAvatar from '../UserAvatar'
+import { pluralizedText } from 'utils/text'
 
 import { prReviewers } from '../../api/testPullRequest'
 
@@ -42,16 +43,26 @@ const dangerColor = '#e96666'
 const headerColumnStyle = {
   textTransform: 'uppercase',
   color: '#10121b',
-  paddingTop: '10px',
+}
+
+export type PullRequestSummaryPaths = {
+  origin: {
+    url: string,
+    label: string,
+  },
+  target: {
+    url: string,
+    label: string,
+  }
 }
 
 type PullRequestSummaryProps = {
   onAddReviewer: Function,
   onToggleReviewers: Function,
+  paths: PullRequestSummaryPaths,
   pullRequest: PullRequestGraphType,
   toggleReviewers: boolean,
 }
-
 
 export const PullRequestHeader = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
   <div style={{ display: 'inline-block' }}>
@@ -65,7 +76,7 @@ export const PullRequestHeader = ({ pullRequest } : { pullRequest: PullRequestGr
       </div>
       <span style={{ color: 'grey', fontSize: '13px' }}>
         created {moment(pullRequest.created).fromNow()}
-        by {pullRequest.owner.fullName} ({pullRequest.owner.username})
+        {' '} by {pullRequest.owner.fullName} ({pullRequest.owner.username})
       </span>
     </div>
   </div>
@@ -74,70 +85,43 @@ export const PullRequestHeader = ({ pullRequest } : { pullRequest: PullRequestGr
 export const ChangesSection = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
   <ListGroupItem style={info}>
     <Row>
-      <Col md={2}>
+      <Col md={5}>
         <div style={headerColumnStyle}>
           Changes
         </div>
       </Col>
-      <Col md={3}>
+      <Col md={7}>
         <div>
-          <div>
-            {subHeader('Changes impact risk:')}
-            <div
-              style={{ color: 'rgb(142, 173, 181)', textTransform: 'uppercase' }}
-            >
-              High
-            </div>
-          </div>
+          {/* TODO: additions/deletions could be moved to backend */}
+          <span>{pluralizedText('file', 'files', pullRequest.files.length)} changed</span><br />
+          <span style={{ color: '#55a532' }}>
+            + {pullRequest.files.reduce((sum, f) => sum + f.stats.added, 0)}
+          </span>
+          <span style={{ color: '#bd2c00' }}>
+            {' '}− {pullRequest.files.reduce((sum, f) => sum + f.stats.deleted, 0)}
+          </span>
         </div>
       </Col>
-      <Col md={6}>
-        <div>
-          {subHeader('Delta:')}
-          <span style={{ color: '#91942b' }}> ~ 219 </span>
-          <span style={{ color: '#d36a9a' }}> - 8684 </span>
-          <span style={{ color: 'rgb(47, 199, 137)' }}> + 885 </span>
-        </div>
-      </Col>
-      <Col md={1} />
     </Row>
   </ListGroupItem>
 
 
-export const RepositoriesSection = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
+export const RepositoriesSection = ({ pullRequest, paths } : {
+    paths: PullRequestSummaryPaths,
+    pullRequest: PullRequestGraphType
+}) =>
   <ListGroupItem style={info}>
     <Row>
-      <Col md={2}>
+      <Col md={5}>
         <div style={headerColumnStyle}>
           Repositories
         </div>
       </Col>
-      <Col md={3}>
+      <Col md={7}>
         <div>
-          {subHeader('Phase:')}
-          <div style={{ color: 'rgb(142, 173, 181)', textTransform: 'uppercase' }}>
-            DRAFT
-          </div>
-          <div style={{ fontSize: '12px' }}>(or headed to release)</div>
-        </div>
-      </Col>
-      <Col md={6}>
-        <div>
-          <div>
-            {subHeader('Origin:')}
-            <a href="unity/unity#ai/navmesh/builder-disabled">
-              unity/unity#ai/navmesh/builder-disabled
-            </a>
-          </div>
-          <div>
-            {subHeader('Target:')}
-            <a href="unity/unity#trunk">unity/unity#trunk</a>
-          </div>
-        </div>
-      </Col>
-      <Col md={1}>
-        <div style={{ color: '#dbdedf', float: 'right', fontSize: '20px' }}>
-          <i className="fa fa-pencil" aria-hidden="true" />
+          Origin: <a href={paths.origin.url}>{paths.origin.label}</a>
+          <br />
+          Target: <a href={paths.target.url}>{paths.target.label}</a>
         </div>
       </Col>
     </Row>
@@ -282,11 +266,11 @@ export const IssuesSection = ({ pullRequest } : { pullRequest: PullRequestGraphT
 
 
 const PullRequestSummary = (props: PullRequestSummaryProps) =>
-  <div name="summary" id="summary">
+  <div className="PullRequestSummary">
     <PullRequestHeader pullRequest={props.pullRequest} />
     <Row>
       <Col md={12}>
-        <ListGroup style={{ marginTop: '20px', fontSize: '13px' }}>
+        <ListGroup style={{ marginTop: '20px' }}>
           <ChangesSection {...props} />
           <RepositoriesSection {...props} />
           <ReviewersSection {...props} />
