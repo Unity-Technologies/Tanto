@@ -19,6 +19,18 @@ query ($id: Int!) {
         username
       }
     }
+    origin {
+      branch
+      repository {
+        name
+      }
+    }
+    target {
+      branch
+      repository {
+        name
+      }
+    }
     files {
       id
       name
@@ -96,5 +108,17 @@ export type PullRequestGraphType = {
   created: string,
   owner: PullRequestUserType,
   reviewers: Array<PullRequestReviewerType>,
+  origin: {
+    branch: string,
+    repository: {
+      name: string,
+    },
+  },
+  target: {
+    branch: string,
+    repository: {
+      name: string,
+    },
+  },
   files: Array<File>,
 }

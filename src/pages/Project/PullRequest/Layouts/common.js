@@ -10,6 +10,8 @@ import PullRequestSummary from 'components/PullRequestSummary'
 
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 
+import { buildProjectLink } from 'routes/helpers'
+
 import {
   PullRequestData, prChangesetList, prIssues,
 } from '../../../../api/testPullRequest'
@@ -21,36 +23,51 @@ type Props = {
   pullRequest: PullRequestGraphType,
 }
 
+const getPath = originOrTarget => ({
+  url: buildProjectLink(originOrTarget.repository.name, originOrTarget.branch),
+  label: `${originOrTarget.repository.name}#${originOrTarget.branch}`,
+})
+
+
 /**
  * An attempt to share logic between developer and guardian layout.
  */
-const CategoryModule = ({ type, pullRequest }: Props) =>
-  <div>
-    {type === 'summary' &&
-      <PullRequestSummary
-        onAddReviewer={noop}
-        onToggleReviewers={noop}
-        pullRequest={pullRequest}
-        toggleReviewers={false}
-      />
-    }
-    {type === 'discussion' &&
-      <PullRequestDiscussion
-        onSaveComment={noop}
-      />
-    }
-    {type === 'files' &&
-      <ChangesetFileList files={pullRequest.files} />
-    }
-    {type === 'changesets' &&
-      <ChangesetGroupedList accordion={false} data={prChangesetList} />
-    }
-    {type === 'issues' &&
-      <IssuesList issues={prIssues} />
-    }
-    {type === 'diff' &&
-      <CodeDiffView files={PullRequestData} />
-    }
-  </div>
+const CategoryModule = ({ type, pullRequest }: Props) => {
+  const paths = {
+    origin: getPath(pullRequest.origin),
+    target: getPath(pullRequest.target),
+  }
+
+  return (
+    <div>
+      {type === 'summary' &&
+        <PullRequestSummary
+          onAddReviewer={noop}
+          onToggleReviewers={noop}
+          paths={paths}
+          pullRequest={pullRequest}
+          toggleReviewers={false}
+        />
+      }
+      {type === 'discussion' &&
+        <PullRequestDiscussion
+          onSaveComment={noop}
+        />
+      }
+      {type === 'files' &&
+        <ChangesetFileList files={pullRequest.files} />
+      }
+      {type === 'changesets' &&
+        <ChangesetGroupedList accordion={false} data={prChangesetList} />
+      }
+      {type === 'issues' &&
+        <IssuesList issues={prIssues} />
+      }
+      {type === 'diff' &&
+        <CodeDiffView files={PullRequestData} />
+      }
+    </div>
+  )
+}
 
 export default CategoryModule

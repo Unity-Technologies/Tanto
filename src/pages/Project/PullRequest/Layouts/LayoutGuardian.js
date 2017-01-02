@@ -14,7 +14,6 @@ export type Props = {
   pullRequest: PullRequestGraphType,
 }
 
-// TODO: should be seperate URL from developer (simpel redirect if guardian)
 const LayoutGuardian = ({ pullRequest }: Props) =>
   <div style={{ padding: '0 20px' }}>
     <Element name="page-top" className="element" />
