@@ -60,10 +60,10 @@ const initialState = {
 }
 
 export const repo = (state: string = '', action: Object = {}): string =>
-  (action.payload && action.payload.repo ? action.payload.repo : state)
+  (action.repo ? action.repo : state)
 
 export const branch = (state: string = '', action: Object = {}): string =>
-  (action.payload && action.payload.branch ? action.payload.branch : state)
+  (action.branch ? action.branch : state)
 
 export const filters = combineReducers({
   branch,
@@ -100,11 +100,6 @@ export default (state: Object = initialState, action: Object): Object => {
       return {
         ...state,
         pullRequestsAssigned: sessionEntities(state.pullRequestsAssigned, receivePage(action)),
-      }
-    case types.SET_PULL_REQUESTS_WATCHING:
-      return {
-        ...state,
-        pullRequestsWatching: sessionEntities(state.pullRequestsWatching, receivePage(action)),
       }
     default:
       return state

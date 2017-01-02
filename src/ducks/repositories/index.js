@@ -117,14 +117,3 @@ export const fetchRepositories = (name: string): Object =>
       ]
     }
   )
-
-/**
- * Actions
- */
-export const actions = {
-  setRepository,
-  setRepositoriesNames,
-  fetchRepositories,
-  searchRepository,
-  fetchRepositoryBranches,
-}

@@ -3,18 +3,23 @@
 import chai from 'chai'
 import reducer, {
   types,
-  entitiesReducer,
-  setPullRequests,
+  filters,
   fetchPullRequests,
   fetchPullRequest,
   fetchUserPullRequests,
   fetchUserAssignedPullRequests,
   fetchUserWatchingPullRequests,
 } from '../index'
+import { fetchActionCreator } from 'ducks/fetch'
 
-import { requestPage } from 'ducks/pagination'
-import { DIRECTION } from 'ducks/order'
-import { reduceArrayToObj } from 'ducks/normalizer'
+import { pagination, receivePage } from 'ducks/pagination'
+import { orderBy, DIRECTION } from 'ducks/order'
+
+import {
+  projectPullRequestsQuery,
+  parsePullRequests,
+} from 'services/ono/queries/pullrequests'
+import { types as fetchTypes } from 'ducks/fetch'
 
 
 const expect = chai.expect
@@ -157,96 +162,7 @@ const pr5 = {
 }
 
 describe('pull request actions', () => {
-  it('fetch pull requests', () => {
-    const page = 1
-    const pageSize = 12
-    const action = {
-      type: types.FETCH_PULL_REQUESTS,
-      page,
-      pageSize,
-    }
-    expect(fetchPullRequests(page, pageSize)).to.eql(action)
-  })
 
-  it('fetch pull request', () => {
-    const id = 12
-    const action = {
-      type: types.FETCH_PULL_REQUEST,
-      id,
-    }
-    expect(fetchPullRequest(id)).to.eql(action)
-  })
-
-  it('set request', () => {
-    const nodes = [pr1, pr2, pr3]
-    const page = 1
-
-    const action = {
-      type: types.SET_PULL_REQUESTS,
-      page,
-      nodes,
-    }
-    expect(setPullRequests(page, nodes)).to.eql(action)
-  })
-
-  it('fetch user pull request', () => {
-    const page = 1
-    const pageSize = 12
-    const branch = 'testbranch'
-    const repo = 'testrepo'
-    const orderBy = {
-      direction: DIRECTION.DESC,
-      field: 'testfield',
-    }
-    const args = {
-      page, pageSize, branch, repo, orderBy,
-    }
-
-    const action = {
-      type: types.FETCH_USER_PULL_REQUESTS,
-      ...args,
-    }
-
-    expect(fetchUserPullRequests(args)).to.eql(action)
-  })
-
-  it('fetch user assigned pull request', () => {
-    const page = 1
-    const pageSize = 12
-    const branch = 'testbranch'
-    const repo = 'testrepo'
-    const orderBy = {
-      direction: DIRECTION.DESC,
-      field: 'testfield',
-    }
-    const args = {
-      page, pageSize, branch, repo, orderBy,
-    }
-    const action = {
-      type: types.FETCH_USER_ASSIGNED_PULL_REQUESTS,
-      ...args,
-    }
-    expect(fetchUserAssignedPullRequests(args)).to.eql(action)
-  })
-
-  it('fetch user watching pull request', () => {
-    const page = 1
-    const pageSize = 12
-    const branch = 'testbranch'
-    const repo = 'testrepo'
-    const orderBy = {
-      direction: DIRECTION.DESC,
-      field: 'testfield',
-    }
-    const args = {
-      page, pageSize, branch, repo, orderBy,
-    }
-    const action = {
-      type: types.FETCH_USER_WATCHING_PULL_REQUESTS,
-      ...args,
-    }
-    expect(fetchUserWatchingPullRequests(args)).to.eql(action)
-  })
 })
 
 
@@ -272,31 +188,85 @@ describe('pullrequests reducer', () => {
         direction: DIRECTION.ASC,
         field: '',
       },
+      filters: {
+        branch: '',
+      },
     }
     expect(reducer(undefined, {})).to.eql(initialState)
   })
 
   it('should handle SET_PULL_REQUESTS', () => {
-    const nodes = [pr1, pr2, pr3, pr4, pr5]
-    const page = 1
-    const state = {
-      entities: reduceArrayToObj(nodes),
+    const nodes = [pr1, pr2, pr3, pr5]
+
+    const initialState = {
+      entities: {
+        [pr4.id]: pr4,
+      },
     }
-    expect(reducer({}, setPullRequests(page, nodes))).to.containSubset(state)
+
+    const action = {
+      type: types.SET_PULL_REQUESTS,
+      nodes,
+    }
+    const expectedState = {
+      entities: {
+        [pr1.id]: pr1,
+        [pr2.id]: pr2,
+        [pr3.id]: pr3,
+        [pr4.id]: pr4,
+        [pr5.id]: pr5,
+      },
+    }
+    expect(reducer(initialState, action)).to.eql(expectedState)
   })
 
-  it('should handle FETCH_PULL_REQUESTS', () => {
+  it('should handle SET_PULL_REQUESTS_PAGE', () => {
     const nodes = [pr1, pr2, pr3, pr4, pr5]
     const page = 1
     const pageSize = 12
+    const total = 15
+    const order = {
+      direction: DIRECTION.DESC,
+      field: 'testField',
+    }
+    const filtersValues = {
+      branch: 'testbranch',
+    }
     const action = {
-      type: types.FETCH_PULL_REQUESTS,
+      type: types.SET_PULL_REQUESTS_PAGE,
       page,
       nodes,
+      total,
       pageSize,
+      orderBy: order,
+      filters: filtersValues,
     }
-    const state = entitiesReducer({}, requestPage(action))
+    const initialState = {
+      entities: {
+        [pr5.id]: pr5,
+      },
+      pagination: {
+        total: 0,
+        pages: {},
+        pageSize: 0,
+        currentPage: 0,
+      },
+      orderBy: {
+        direction: DIRECTION.ASC,
+        field: '',
+      },
+      filters: {
+        branch: '',
+      },
+    }
 
-    expect(reducer({}, fetchPullRequests(page, pageSize))).to.eql(state)
+    const state = {
+      ...initialState,
+      pagination: pagination(initialState.pagination, receivePage(action)),
+      orderBy: orderBy(initialState.orderBy, action),
+      filters: filters(initialState.filters, action),
+    }
+
+    expect(reducer(initialState, action)).to.eql(state)
   })
 })

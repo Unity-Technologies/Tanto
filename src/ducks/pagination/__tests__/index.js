@@ -2,10 +2,8 @@ import chai from 'chai'
 import {
   pages,
   total,
-  requestPage,
   pageSize,
   receivePage,
-  REQUEST_PAGE,
   RECEIVE_PAGE,
   currentPage,
   pagination,
@@ -13,20 +11,20 @@ import {
 const expect = chai.expect
 
 describe('pagination actions', () => {
-  it('request page action', () => {
-    const payload = { value: 'test ' }
-    const action = {
-      type: REQUEST_PAGE,
-      payload,
-    }
-    expect(requestPage(payload)).to.eql(action)
-  })
-
   it('receive page action', () => {
     const payload = { value: 'test ' }
     const action = {
       type: RECEIVE_PAGE,
-      payload,
+      ...payload,
+    }
+    expect(receivePage(payload)).to.eql(action)
+  })
+
+  it('receive page action with type in payload', () => {
+    const payload = { type: 'SOME_OTHER_ACTION', value: 'test' }
+    const action = {
+      type: RECEIVE_PAGE,
+      value: 'test',
     }
     expect(receivePage(payload)).to.eql(action)
   })
@@ -38,7 +36,7 @@ describe('pagination reducers', () => {
     const payload = { page: 11 }
     const action = {
       type: RECEIVE_PAGE,
-      payload,
+      ...payload,
     }
     expect(currentPage(0, action)).to.eql(payload.page)
   })
@@ -47,7 +45,7 @@ describe('pagination reducers', () => {
     const payload = { pageSize: 100 }
     const action = {
       type: RECEIVE_PAGE,
-      payload,
+      ...payload,
     }
     expect(pageSize(0, action)).to.eql(payload.pageSize)
   })
@@ -56,16 +54,9 @@ describe('pagination reducers', () => {
     const payload = { total: 121 }
     const action = {
       type: RECEIVE_PAGE,
-      payload,
+      ...payload,
     }
     expect(total(0, action)).to.eql(payload.total)
-  })
-
-  it('pages request page', () => {
-    const payload = { page: 21 }
-    const action = requestPage(payload)
-    const state = { 21: [] }
-    expect(pages({}, action)).to.eql(state)
   })
 
   it('pages receive page', () => {
@@ -78,23 +69,12 @@ describe('pagination reducers', () => {
 })
 
 describe('pagination combine reducer', () => {
-  it('should handle REQUEST_PAGE', () => {
-    const payload = { page: 11 }
-    const action = {
-      type: REQUEST_PAGE,
-      payload,
-    }
-
-    const state = { pages: { 11: [] }, currentPage: 0, pageSize: 15, total: 0 }
-    expect(pagination({}, action)).to.eql(state)
-  })
-
   it('should receive page', () => {
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
     const payload = { page: 11, pageSize: 12, total: 120, nodes }
     const action = {
       type: RECEIVE_PAGE,
-      payload,
+      ...payload,
     }
 
     const state = { pages: { 11: nodes.map(x => x.id) }, currentPage: 11, pageSize: 12, total: 120 }

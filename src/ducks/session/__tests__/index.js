@@ -1,7 +1,11 @@
 /* eslint-disable max-len */
 
-import reducer, { actions, types, DEVELOPER_PERSONA } from '../index'
-import { sessionEntities } from 'ducks/session'
+import reducer,
+{
+  actions,
+  types,
+  DEVELOPER_PERSONA,
+  sessionEntities, filters, repo, branch } from '../index'
 import { receivePage } from 'ducks/pagination'
 import { DIRECTION } from 'ducks/order'
 import _ from 'lodash'
@@ -21,71 +25,13 @@ describe('session actions', () => {
     expect(actions.setProfile(profile)).to.eql(action)
   })
 
-  it('fetch profile', () => {
+  it('set persona', () => {
+    const persona = 'testpersona'
     const action = {
-      type: types.FETCH_USER_PROFILE,
+      type: types.SET_USER_PERSONA,
+      persona,
     }
-    expect(actions.fetchProfile()).to.eql(action)
-  })
-
-  it('set user pull requests owned', () => {
-    const total = 3
-    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const page = 1
-    const pageSize = 12
-    const repo = 'testrepo'
-    const branch = 'testbranch'
-    const action = {
-      type: types.SET_PULL_REQUESTS_OWNED,
-      page,
-      pageSize,
-      nodes,
-      total,
-      branch,
-      repo,
-    }
-
-    expect(actions.setPullRequestsOwned(page, nodes, total, pageSize, repo, branch)).to.eql(action)
-  })
-
-  it('set user pull requests assigned ids', () => {
-    const total = 3
-    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const page = 1
-    const pageSize = 12
-    const repo = 'testrepo'
-    const branch = 'testbranch'
-    const action = {
-      type: types.SET_PULL_REQUESTS_ASSIGNED,
-      page,
-      pageSize,
-      nodes,
-      total,
-      branch,
-      repo,
-    }
-
-    expect(actions.setPullRequestsAssigned(page, nodes, total, pageSize, repo, branch)).to.eql(action)
-  })
-
-  it('set user pull requests watching ids', () => {
-    const total = 3
-    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const page = 1
-    const pageSize = 12
-    const repo = 'testrepo'
-    const branch = 'testbranch'
-    const action = {
-      type: types.SET_PULL_REQUESTS_WATCHING,
-      page,
-      pageSize,
-      nodes,
-      total,
-      branch,
-      repo,
-    }
-
-    expect(actions.setPullRequestsWatching(page, nodes, total, pageSize, repo, branch)).to.eql(action)
+    expect(actions.setPersona(persona)).to.eql(action)
   })
 })
 
@@ -141,7 +87,8 @@ describe('session reducer', () => {
     const page = 3
     const pageSize = 12
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const action = actions.setPullRequestsOwned(page, nodes, total, pageSize)
+    const action = {
+      type: types.SET_PULL_REQUESTS_OWNED, page, nodes, total, pageSize }
     expect(reducer({}, action)).to.eql({ pullRequestsOwned: sessionEntities({}, receivePage(action)) })
   })
 
@@ -150,16 +97,29 @@ describe('session reducer', () => {
     const page = 3
     const pageSize = 12
     const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const action = actions.setPullRequestsAssigned(page, nodes, total, pageSize)
+    const action = {
+      type: types.SET_PULL_REQUESTS_ASSIGNED, page, nodes, total, pageSize,
+    }
     expect(reducer({}, action)).to.eql({ pullRequestsAssigned: sessionEntities({}, receivePage(action)) })
   })
+})
 
-  it('should handle SET_PULL_REQUESTS_WATCHING', () => {
-    const total = 12
-    const page = 3
-    const pageSize = 12
-    const nodes = [{ id: 1, title: 'test1' }, { id: 4, title: 'test41' }, { id: 3, title: 'test3' }]
-    const action = actions.setPullRequestsWatching(page, nodes, total, pageSize)
-    expect(reducer({}, action)).to.eql({ pullRequestsWatching: sessionEntities({}, receivePage(action)) })
+describe('session filters reducers', () => {
+  it('branch reducer', () => {
+    const branchName = 'testbranch'
+    const action = {
+      type: 'ANY',
+      branch: branchName,
+    }
+    expect(branch('', action)).to.eql(branchName)
+  })
+
+  it('repo reducer', () => {
+    const repoName = 'testrepo'
+    const action = {
+      type: 'ANY',
+      repo: repoName,
+    }
+    expect(repo('', action)).to.eql(repoName)
   })
 })
