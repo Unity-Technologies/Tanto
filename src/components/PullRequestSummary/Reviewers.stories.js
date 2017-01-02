@@ -6,7 +6,7 @@ import { muiTheme } from 'storybook-addon-material-ui'
 
 import Reviewers from './Reviewers.js'
 
-storiesOf('Reviewers', module)
+storiesOf('PullRequestSummary Reviewers', module)
   .addDecorator(muiTheme())
   .add('default', () => (
     <Reviewers
