@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Helmet from 'react-helmet'
-
+import { connect } from 'react-redux'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchPullRequests } from 'ducks/pullrequests'
 import {
@@ -10,11 +10,14 @@ import {
   getPageFetchError,
   getPullRequests } from 'ducks/pullrequests/selectors'
 
+import { getRepositoryId } from 'ducks/repositories/selectors'
+
 export type Props = {
   project_pullrequests: Array<any>,
   params: {
     id: string,
   },
+  repo: string,
   items: Array<any>,
 }
 
@@ -37,10 +40,15 @@ function PullRequests(props: Props) {
         hideRepoSelect
         mapStateToProps={mapStateToProps}
         fetchData={fetchPullRequests}
-        repo={props.params.id}
+        repo={props.repo}
       />
     </div>
   )
 }
 
-export default PullRequests
+export default connect(
+  (state, props) => ({
+    repo: getRepositoryId(state, props),
+  })
+)(PullRequests)
+

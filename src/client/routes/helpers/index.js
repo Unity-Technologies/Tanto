@@ -16,18 +16,19 @@ export const breadcrumbItems = (pathname: string): Array<LinkType> => {
 
 export const groupPathFromPath = (path: string): string => path.replace(/^\/projects(\/)?/, '')
 export const buildPullRequestLink =
-  (projectName: string, id: string): string => (`/project/${projectName}/pullrequests/${id}`)
+  (projectName: string, id: string): string => (`/project/${projectName}/pullrequest/${id}`)
 export const buildProjectLink =
-  (projectName: string, branch: string): string => (`/project/${projectName}?branch=${branch}`)
-export const buildProjectLinkNoBranch =
-  (projectName: string): string => (`/project/${projectName}`)
+  (name: string, groupPath: string, branch: string = ''): string => {
+    const branchQuery = branch ? `?branch=${branch}` : ''
+    const projectName = groupPath ? `${groupPath}/${name}` : name
+    return `/project/${projectName}${branchQuery}`
+  }
 export const buildProjectsLink =
   (suffix: string): string => (`/projects/${suffix}`)
 
 export const helpers = {
   buildPullRequestLink,
   buildProjectLink,
-  buildProjectLinkNoBranch,
   buildProjectsLink,
   groupPathFromPath,
   breadcrumbItems,

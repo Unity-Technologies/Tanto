@@ -1,5 +1,6 @@
 import React from 'react'
-import { Route, IndexRoute } from 'react-router'
+import Route from 'react-router/lib/Route'
+import IndexRoute from 'react-router/lib/IndexRoute'
 
 import { types } from 'ducks/session'
 
@@ -15,7 +16,6 @@ import Overview from 'pages/Project/Overview'
 import Changeset from 'pages/Project/Changeset'
 import ProjectPullRequests from 'pages/Project/PullRequests'
 import Issues from 'pages/Project/Issues'
-import Statistics from 'pages/Project/Statistics'
 import PullRequest from 'pages/Project/PullRequest'
 import NewPullRequest from 'pages/Project/NewPullRequest'
 
@@ -27,11 +27,11 @@ export default (store) => {
     store.dispatch({ type: types.FETCH_USER_PROFILE })
   }
   const onProjectEnter = (nextState) => {
-    project(store, nextState.params.id)
+    project(store, nextState.params.splat)
   }
 
   const onPullRequestEnter = (nextState) => {
-    pullrequest(store, nextState.params.id, nextState.params.prid)
+    pullrequest(store, nextState.params.splat, nextState.params.prid)
   }
 
   const onChangesetEnter = (nextState) => {
@@ -48,21 +48,22 @@ export default (store) => {
       </Route>
 
       <Route onEnter={onProjectEnter}>
-        <Route path="/project/:id" component={Project}>
+        <Route path="/project" component={Project}>
           <IndexRoute component={Overview} />
-          <Route path="files/(**/)*.*" component={File} />
-          <Route path="files(/**)" component={Files} />
-          <Route path="changelog" component={Changelog} />
-          <Route path="pullrequests" component={ProjectPullRequests} />
+          <Route path="**/files/(**/)*.*" component={File} />
+          <Route path="**/files(/**)" component={Files} />
+          <Route path="**/changelog" component={Changelog} />
+          <Route path="**/pullrequests" component={ProjectPullRequests} />
+
           <Route onEnter={onPullRequestEnter}>
-            <Route path="pullrequest/:prid(/:category)" component={PullRequest} />
+            <Route path="**/pullrequest/:prid(/:category)" component={PullRequest} />
           </Route>
           <Route onEnter={onChangesetEnter}>
-            <Route path="changeset/:hash" component={Changeset} />
+            <Route path="**/changeset/:hash" component={Changeset} />
           </Route>
-          <Route path="issues" component={Issues} />
-          <Route path="newpullrequest" component={NewPullRequest} />
-          <Route path="statistics" component={Statistics} />
+          <Route path="**/issues" component={Issues} />
+          <Route path="**/newpullrequest" component={NewPullRequest} />
+          <Route path="**" component={Overview} />
         </Route>
       </Route>
     </Route>

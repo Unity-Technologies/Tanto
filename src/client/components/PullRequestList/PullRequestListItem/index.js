@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-
+import { buildPullRequestLink, buildProjectLink } from 'routes/helpers'
 import TestAvatar from 'components/TestAvatar'
 import { Link } from 'react-router'
 import { fromNow } from 'utils/datetime'
@@ -45,7 +45,11 @@ class PullRequestListItem extends Component {
             <div style={{ display: 'table' }}>
               <TestAvatar />
               <div style={{ paddingLeft: '10px', display: 'table' }}>
-                <Link to={pullRequest.link}>{pullRequest.title}</Link>
+                <Link
+                  to={buildPullRequestLink(pullRequest.target.repository.fullName, pullRequest.id)}
+                >
+                  {pullRequest.title}
+                </Link>
                 <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
                   <strong>{pullRequest.owner.fullName}</strong>
                   <span> updated {fromNow(pullRequest.updated)}</span>
@@ -59,7 +63,9 @@ class PullRequestListItem extends Component {
               <div>
                 <Link
                   style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
-                  to={pullRequest.originLink}
+                  to={{
+                    pathname: buildProjectLink(pullRequest.origin.repository.fullName),
+                    query: { branch: pullRequest.origin.branch } }}
                 >
                   {pullRequest.origin.repository.name}
                   <span style={{ color: '#8ea7b6' }}>#</span>{pullRequest.origin.branch}
@@ -73,7 +79,7 @@ class PullRequestListItem extends Component {
               <div style={{ overflowWrap: 'break-word' }}>
                 <Link
                   style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
-                  to={pullRequest.targetLink}
+                  to={buildProjectLink(pullRequest.target.repository.fullName)}
                 >
                   {pullRequest.target.repository.name}
                 </Link>

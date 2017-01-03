@@ -61,3 +61,10 @@ export const repositoriesNames = createSelector(
   repoNames => repoNames.map(x => ({ label: x.fullName, value: x.id }))
 )
 
+export const repoNameSelector = (state: Object, props: Object): any =>
+  _.findKey(state.repositories.entities, { fullName: props.params.splat })
+
+export const getRepositoryId = createSelector(
+  repoNameSelector,
+  repoName => repoName
+)

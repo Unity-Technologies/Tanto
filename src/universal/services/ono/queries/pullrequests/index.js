@@ -16,6 +16,7 @@ const subQuery = `
         repository {
           id
           name
+          fullName
         }
       }
       target {
@@ -23,6 +24,7 @@ const subQuery = `
         repository {
           id
           name
+          fullName
         }
       }
       owner {
@@ -58,6 +60,7 @@ export const projectPullRequestsQuery = `
             repository {
               id
               name
+              fullName
             }
           }
           target {
@@ -65,6 +68,7 @@ export const projectPullRequestsQuery = `
             repository {
               id
               name
+              fullName
             }
           }
           owner {

@@ -22,14 +22,14 @@ export const app = (store) => {
   store.dispatch({ type: SIDE_BAR_SUBITEMS, subitems })
 }
 
-export const project = (store, id) => {
+export const project = (store, name) => {
   const items = [
     { title: 'Home', route: '/', icon: 'home' },
-    { title: 'Project', route: `/project/${id}`, icon: 'folder' },
-    { title: 'Files', route: `/project/${id}/files`, icon: 'files-o' },
-    { title: 'Changelog', route: `/project/${id}/changelog`, icon: 'calendar' },
-    { title: 'Pull Requests', route: `/project/${id}/pullrequests`, icon: 'tasks' },
-    { title: 'Statistics', route: `/project/${id}/statistics`, icon: 'bar-chart' },
+    { title: 'Project', route: `/project/${name}`, icon: 'folder' },
+    { title: 'Files', route: `/project/${name}/files`, icon: 'files-o' },
+    { title: 'Changelog', route: `/project/${name}/changelog`, icon: 'calendar' },
+    { title: 'Pull Requests', route: `/project/${name}/pullrequests`, icon: 'tasks' },
+    { title: 'Statistics', route: `/project/${name}/statistics`, icon: 'bar-chart' },
   ]
 
   store.dispatch({ type: SIDE_BAR_ITEMS, items })
