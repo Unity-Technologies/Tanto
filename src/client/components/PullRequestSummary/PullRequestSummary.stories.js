@@ -21,13 +21,15 @@ const pullRequestFixture = {
     fullName: 'Kateryna Musina',
     username: 'kateryna',
   },
-  reviewers: [{
-    status: null,
-    user: {
-      fullName: 'Sharron Bronson',
-      username: 'sharron',
+  reviewers: [
+    {
+      status: 'not_reviewed',
+      user: {
+        fullName: 'Sharron Bronson',
+        username: 'sharron',
+      },
     },
-  }],
+  ],
   origin: {
     url: 'unity/unity#my-pr',
     branch: 'bar',
@@ -103,15 +105,114 @@ storiesOf('PullRequestSummary Items', module)
       pullRequest={pullRequestFixture}
     />
   ))
-  .add('ReviewersSection', () => (
-    <ReviewersSection
-      onAddReviewer={action('onAddReviewer')}
-      onToggleReviewers={action('onToggleReviewers')}
-      paths={pathsFixture}
-      pullRequest={pullRequestFixture}
-      toggleReviewers={false}
-    />
-  ))
+  .add('ReviewersSection (no reviewers)', () => {
+    const pullRequestFixture2 = Object.assign({}, pullRequestFixture, {
+      reviewers: [],
+    })
+    return (
+      <ReviewersSection
+        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewers={action('onToggleReviewers')}
+        paths={pathsFixture}
+        pullRequest={pullRequestFixture2}
+        toggleReviewers={false}
+      />
+    )
+  })
+  .add('ReviewersSection (mixed)', () => {
+    const pullRequestFixture2 = Object.assign({}, pullRequestFixture, {
+      reviewers: [
+        {
+          status: 'not_reviewed',
+          user: {
+            fullName: 'Sharron Bronson',
+            username: 'sharron',
+          },
+        },
+        {
+          status: 'approved',
+          user: {
+            fullName: 'Josephine Gulbranson',
+            username: 'josephine',
+          },
+        },
+        {
+          status: 'rejected',
+          user: {
+            fullName: 'Michael Jordan',
+            username: 'mjordan',
+          },
+        },
+        {
+          status: 'under_review',
+          user: {
+            fullName: 'Colby Ricotta',
+            username: 'colby',
+          },
+        },
+      ],
+    })
+    return (
+      <ReviewersSection
+        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewers={action('onToggleReviewers')}
+        paths={pathsFixture}
+        pullRequest={pullRequestFixture2}
+        toggleReviewers={false}
+      />
+    )
+  })
+  .add('ReviewersSection (approved)', () => {
+    const pullRequestFixture2 = Object.assign({}, pullRequestFixture, {
+      reviewers: [
+        {
+          status: 'approved',
+          user: {
+            fullName: 'Sharron Bronson',
+            username: 'sharron',
+          },
+        },
+        {
+          status: 'approved',
+          user: {
+            fullName: 'Josephine Gulbranson',
+            username: 'josephine',
+          },
+        },
+      ],
+    })
+    return (
+      <ReviewersSection
+        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewers={action('onToggleReviewers')}
+        paths={pathsFixture}
+        pullRequest={pullRequestFixture2}
+        toggleReviewers={false}
+      />
+    )
+  })
+  .add('ReviewersSection (rejected)', () => {
+    const pullRequestFixture2 = Object.assign({}, pullRequestFixture, {
+      reviewers: [
+        {
+          status: 'rejected',
+          user: {
+            fullName: 'Sharron Bronson',
+            username: 'sharron',
+          },
+        },
+      ],
+    })
+    return (
+      <ReviewersSection
+        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewers={action('onToggleReviewers')}
+        paths={pathsFixture}
+        pullRequest={pullRequestFixture2}
+        toggleReviewers={false}
+      />
+    )
+  })
   .add('ReviewersSection (toggled)', () => (
     <ReviewersSection
       onAddReviewer={action('onAddReviewer')}
