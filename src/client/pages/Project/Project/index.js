@@ -1,7 +1,9 @@
 /* @flow */
 
-import React from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
+import { connect } from 'react-redux'
+import { fetchRepository } from 'ducks/repositories'
 
 export type Props = {
   params: {
@@ -9,22 +11,46 @@ export type Props = {
   },
   children?: Object,
   theme?: Object,
-};
-
-function Project(props: Props) {
-  const { theme } = props
-  const childrenWithProps = React.Children.map(props.children,
-    child => React.cloneElement(child, {
-      theme,
-    })
-  )
-
-  return (
-    <div>
-      <Helmet title={`Project ${props.params.id}`} />
-      {childrenWithProps}
-    </div>
-  )
+  name: string,
 }
 
-export default Project
+export const REPOSITORY_QUERY = `
+query($name: String!) {
+	repository(name: $name) {
+    id
+    name,
+    fullName,
+    branches {
+      name
+      revision
+    }
+  }
+}`
+
+class Project extends Component {
+  componentDidMount() {
+    this.props.dispatch(fetchRepository(this.props.name, REPOSITORY_QUERY))
+  }
+
+  render() {
+    const childrenWithProps = React.Children.map(this.props.children,
+      child => React.cloneElement(child, {
+        theme: this.props.theme,
+      })
+    )
+
+    return (
+      <div>
+        <Helmet title={`Project ${this.props.name}`} />
+        {childrenWithProps}
+      </div>
+    )
+  }
+}
+
+export default connect(
+  (state, props) => ({
+    name: props.params.splat,
+  })
+)(Project)
+

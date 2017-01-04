@@ -4,6 +4,7 @@ import {
   repositories,
   groupsEntitiesSelector,
   groups,
+  getRepositoryId,
 } from '../index'
 
 const expect = chai.expect
@@ -319,5 +320,54 @@ describe('projects selectors', () => {
     }
 
     expect(groups(state, props)).to.eql([node1])
+  })
+
+  it('getRepositoryId selector', () => {
+    const node1 = {
+      id: 1,
+      name: 'name1',
+      description: 'description1',
+      fullName: 'group/name1',
+
+    }
+    const node2 = {
+      id: 2,
+      name: 'name2',
+      description: 'description2',
+      fullName: 'group/name2',
+
+    }
+    const node3 = {
+      id: 3,
+      name: 'name3',
+      description: 'description3',
+      fullName: 'group/name3',
+
+    }
+
+    const state = {
+      repositories: {
+        entities: {
+          1: node1,
+          2: node2,
+          3: node3,
+        },
+      },
+    }
+
+    const props = {
+      params: {
+        splat: 'group/name3',
+      },
+    }
+
+    expect(getRepositoryId(state, props)).to.equal('3')
+
+    const props2 = {
+      params: {
+      },
+    }
+
+    expect(getRepositoryId(state, props2)).to.equal(undefined)
   })
 })

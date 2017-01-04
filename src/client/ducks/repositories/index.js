@@ -25,6 +25,7 @@ export const types = {
   SET_REPOSITORIES_NAMES: 'REPOSITORIES/SET_REPOSITORIES_NAMES',
   SET_GROUPS: 'REPOSITORIES/SET_GROUPS',
   FETCH_REPOSITORIES: 'REPOSITORIES/FETCH_REPOSITORIES',
+  FETCH_REPOSITORY: 'REPOSITORIES/FETCH_REPOSITORY',
   SEARCH_REPOSITORY: 'REPOSITORIES/SEARCH_REPOSITORY',
   FETCH_REPOSITORY_BRANCHES: 'REPOSITORIES/FETCH_REPOSITORY_BRANCHES',
 }
@@ -100,6 +101,10 @@ export const searchRepository =
   (filter: string, first: number): Object =>
     ({ type: types.SEARCH_REPOSITORY, filter, first })
 
+export const fetchRepository = (name: string, queryStr: string): Object =>
+  fetchActionCreator(types.FETCH_REPOSITORY, { name }, queryStr,
+    (data: Object, cbArgs: Object): Array<Object> =>
+      [{ type: types.SET_REPOSITORY, node: parseRepository(data) }])
 
 export const fetchRepositoryBranches = (id: number): Object =>
   fetchActionCreator(types.FETCH_REPOSITORY_BRANCHES, { id }, REPOSITORY_BRANCHES,

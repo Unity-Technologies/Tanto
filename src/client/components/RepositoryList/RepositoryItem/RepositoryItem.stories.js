@@ -7,6 +7,7 @@ import RepositoryItem from './index'
 
 const repository = {
   name: 'Some-Repository',
+  groupPath: 'group/subgroup',
   description: 'Testing out the list item',
   id: '5',
   owner: { fullName: 'William Sprent' },

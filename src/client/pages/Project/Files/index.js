@@ -50,7 +50,7 @@ class Files extends Component {
   updateCurrentNode = (nextProps) => {
     const { params: { splat } } = nextProps
     if (splat) {
-      const nestedItem = this.findChild(nextProps.data, splat.split('/'))
+      const nestedItem = this.findChild(nextProps.data, splat[0].split('/'))
       if (nestedItem) {
         this.setState({ currentNode: nestedItem.children })
       }

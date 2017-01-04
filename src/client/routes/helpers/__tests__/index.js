@@ -25,16 +25,22 @@ describe('routes helpers', () => {
 
   it('buildPullRequestLink', () => {
     expect(helpers.buildPullRequestLink('projectname', '1234'))
-      .equals('/project/projectname/pullrequests/1234')
+      .equals('/project/projectname/pullrequest/1234')
   })
 
-  it('buildProjectLink', () => {
-    expect(helpers.buildProjectLink('projectname', 'testbranch'))
-      .equals('/project/projectname?branch=testbranch')
+  it('buildProjectLink with group', () => {
+    expect(helpers.buildProjectLink('projectname', 'group1/subgroup'))
+      .equals('/project/group1/subgroup/projectname')
   })
 
-  it('buildProjectsLink', () => {
-    expect(helpers.buildProjectsLink('projectname'))
+  it('buildProjectLink with group and branch', () => {
+    expect(helpers.buildProjectLink('projectname', 'group1/subgroup', 'testbranch'))
+      .equals('/project/group1/subgroup/projectname?branch=testbranch')
+  })
+
+
+  it('buildProjectsLink with empty group', () => {
+    expect(helpers.buildProjectsLink('projectname', null))
       .equals('/projects/projectname')
   })
 

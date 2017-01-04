@@ -1,6 +1,5 @@
 /* @flow */
 
-
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FiltersFields } from 'ducks/pullrequests'
@@ -10,6 +9,7 @@ import PullRequestList from 'components/PullRequestList'
 import BranchSelect from 'containers/BranchSelect'
 import RepoSelect from 'containers/RepoSelect'
 import OrderSelect from 'containers/OrderSelect'
+import Alert from 'react-bootstrap/lib/Alert'
 import type { OrderByType, DirectionType } from 'ducks/order'
 
 export type Props = {
@@ -84,6 +84,7 @@ class PullRequestsPaginated extends Component {
   }
 
   render() {
+    const pullRequestsExists = !!this.props.total
     return (
       <div>
         <div
@@ -118,11 +119,20 @@ class PullRequestsPaginated extends Component {
         </div>
         {this.props.isFetching && <LinearProgress />}
         {this.props.error && <ErrorMessage error={this.props.error} />}
-        <PullRequestList
-          showRemoveButton
-          onPageSelect={this.handlePageSelect}
-          onRemoveClick={this.handleRemove} {...this.props}
-        />
+        {!pullRequestsExists && !this.props.isFetching && !this.props.error &&
+          <Alert bsStyle="warning" style={{ fontSize: '13px' }}>
+            <strong>
+              <i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong>
+                 There is no pull request
+          </Alert>
+        }
+        {pullRequestsExists &&
+          <PullRequestList
+            showRemoveButton
+            onPageSelect={this.handlePageSelect}
+            onRemoveClick={this.handleRemove} {...this.props}
+          />
+        }
       </div>
     )
   }

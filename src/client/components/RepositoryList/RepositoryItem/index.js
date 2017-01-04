@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { Link } from 'react-router'
 import { fromNow } from 'utils/datetime'
-import { buildProjectLinkNoBranch } from 'routes/helpers'
+import { buildProjectLink } from 'routes/helpers'
 
 const subHeader = text => (
   <div className="sub-header">
@@ -17,6 +17,7 @@ const subHeader = text => (
 export type RepositoryType = {
   name: string,
   description: ?string,
+  groupPath: string,
   id: string,
   owner: { fullName: string },
   updated: string,
@@ -39,7 +40,11 @@ function RepositoryItem(props: Props) {
           </div>
           <div style={{ display: 'table' }}>
             <div style={{ paddingLeft: '10px', display: 'table' }}>
-              <Link to={buildProjectLinkNoBranch(repository.id)}>{repository.name}</Link>
+              <Link
+                to={buildProjectLink(repository.name, repository.groupPath)}
+              >
+                {repository.name}
+              </Link>
               <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
                 {repository.description}
               </div>
