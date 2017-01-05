@@ -14,6 +14,7 @@ import type {
 import Reviewers from './Reviewers'
 import UserAvatar from '../UserAvatar'
 import { pluralizedText } from 'utils/text'
+import constants from 'universal/constants'
 
 import { prReviewers } from '../../api/testPullRequest'
 
@@ -161,10 +162,10 @@ export const ReviewersSection = (props: PullRequestSummaryProps) => {
   // Lodash groupBy is not really what we want here, all groups should be represented.
   type GroupsType = { [key: PullRequestReviewerStatusType]: Array<PullRequestReviewerType> }
   const reviewerGroups : GroupsType = {
-    not_reviewed: reviewers.filter(r => r.status === 'not_reviewed'),
-    approved: reviewers.filter(r => r.status === 'approved'),
-    rejected: reviewers.filter(r => r.status === 'rejected'),
-    under_review: reviewers.filter(r => r.status === 'under_review'),
+    not_reviewed: reviewers.filter(r => r.status === constants.PR_NOT_REVIEWED),
+    approved: reviewers.filter(r => r.status === constants.PR_APPROVED),
+    rejected: reviewers.filter(r => r.status === constants.PR_REJECTED),
+    under_review: reviewers.filter(r => r.status === constants.PR_UNDER_REVIEW),
   }
 
   let status
