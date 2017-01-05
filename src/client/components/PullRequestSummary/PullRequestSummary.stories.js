@@ -21,13 +21,15 @@ const pullRequestFixture = {
     fullName: 'Kateryna Musina',
     username: 'kateryna',
   },
-  reviewers: [{
-    status: null,
-    user: {
-      fullName: 'Sharron Bronson',
-      username: 'sharron',
+  reviewers: [
+    {
+      status: 'not_reviewed',
+      user: {
+        fullName: 'Sharron Bronson',
+        username: 'sharron',
+      },
     },
-  }],
+  ],
   origin: {
     url: 'unity/unity#my-pr',
     branch: 'bar',
@@ -103,21 +105,104 @@ storiesOf('PullRequestSummary Items', module)
       pullRequest={pullRequestFixture}
     />
   ))
-  .add('ReviewersSection', () => (
+  .add('ReviewersSection (no reviewers)', () => (
     <ReviewersSection
       onAddReviewer={action('onAddReviewer')}
       onToggleReviewers={action('onToggleReviewers')}
-      paths={pathsFixture}
-      pullRequest={pullRequestFixture}
+      reviewers={[]}
       toggleReviewers={false}
     />
   ))
+  .add('ReviewersSection (mixed)', () => {
+    const reviewers = [
+      {
+        status: 'not_reviewed',
+        user: {
+          fullName: 'Sharron Bronson',
+          username: 'sharron',
+        },
+      },
+      {
+        status: 'approved',
+        user: {
+          fullName: 'Josephine Gulbranson',
+          username: 'josephine',
+        },
+      },
+      {
+        status: 'rejected',
+        user: {
+          fullName: 'Michael Jordan',
+          username: 'mjordan',
+        },
+      },
+      {
+        status: 'under_review',
+        user: {
+          fullName: 'Colby Ricotta',
+          username: 'colby',
+        },
+      },
+    ]
+    return (
+      <ReviewersSection
+        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewers={action('onToggleReviewers')}
+        reviewers={reviewers}
+        toggleReviewers={false}
+      />
+    )
+  })
+  .add('ReviewersSection (approved)', () => {
+    const reviewers = [
+      {
+        status: 'approved',
+        user: {
+          fullName: 'Sharron Bronson',
+          username: 'sharron',
+        },
+      },
+      {
+        status: 'approved',
+        user: {
+          fullName: 'Josephine Gulbranson',
+          username: 'josephine',
+        },
+      },
+    ]
+    return (
+      <ReviewersSection
+        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewers={action('onToggleReviewers')}
+        reviewers={reviewers}
+        toggleReviewers={false}
+      />
+    )
+  })
+  .add('ReviewersSection (rejected)', () => {
+    const reviewers = [
+      {
+        status: 'rejected',
+        user: {
+          fullName: 'Sharron Bronson',
+          username: 'sharron',
+        },
+      },
+    ]
+    return (
+      <ReviewersSection
+        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewers={action('onToggleReviewers')}
+        reviewers={reviewers}
+        toggleReviewers={false}
+      />
+    )
+  })
   .add('ReviewersSection (toggled)', () => (
     <ReviewersSection
       onAddReviewer={action('onAddReviewer')}
       onToggleReviewers={action('onToggleReviewers')}
-      paths={pathsFixture}
-      pullRequest={pullRequestFixture}
+      reviewers={pullRequestFixture.reviewers}
       toggleReviewers
     />
   ))

@@ -72,8 +72,14 @@ export type PullRequestUserType = {
   fullName: string,
 }
 
+export type PullRequestReviewerStatusType =
+    'not_reviewed'
+  | 'approved'
+  | 'rejected'
+  | 'under_review'
+
 export type PullRequestReviewerType = {
-  status: ?string,
+  status: PullRequestReviewerStatusType,
   user: PullRequestUserType,
 }
 

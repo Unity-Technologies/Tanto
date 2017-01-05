@@ -5,11 +5,17 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
+import Tooltip from 'react-bootstrap/lib/Tooltip'
 
-import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
+import type {
+  PullRequestGraphType, PullRequestReviewerStatusType, PullRequestReviewerType,
+} from 'services/ono/queries/pullRequest'
 import Reviewers from './Reviewers'
 import UserAvatar from '../UserAvatar'
 import { pluralizedText } from 'utils/text'
+import constants from 'universal/constants'
+import pureComponent from 'universal/react-pure-render'
 
 import { prReviewers } from '../../api/testPullRequest'
 
@@ -38,6 +44,7 @@ const success = {
 
 const inProgressColor = 'rgb(198, 149, 10)'
 const approvedColor = '#3f855b'
+const rejectedColor = '#e96666'
 const dangerColor = '#e96666'
 
 const headerColumnStyle = {
@@ -54,14 +61,6 @@ export type PullRequestSummaryPaths = {
     url: string,
     label: string,
   }
-}
-
-type PullRequestSummaryProps = {
-  onAddReviewer: Function,
-  onToggleReviewers: Function,
-  paths: PullRequestSummaryPaths,
-  pullRequest: PullRequestGraphType,
-  toggleReviewers: boolean,
 }
 
 export const PullRequestHeader = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
@@ -106,10 +105,11 @@ export const ChangesSection = ({ pullRequest } : { pullRequest: PullRequestGraph
   </ListGroupItem>
 
 
-export const RepositoriesSection = ({ pullRequest, paths } : {
-    paths: PullRequestSummaryPaths,
-    pullRequest: PullRequestGraphType
-}) =>
+type RepositoriesSectionProps = {
+  paths: PullRequestSummaryPaths,
+}
+
+export const RepositoriesSection = (props: RepositoriesSectionProps) =>
   <ListGroupItem style={info}>
     <Row>
       <Col md={5}>
@@ -119,86 +119,131 @@ export const RepositoriesSection = ({ pullRequest, paths } : {
       </Col>
       <Col md={7}>
         <div>
-          Origin: <a href={paths.origin.url}>{paths.origin.label}</a>
+          Origin: <a href={props.paths.origin.url}>{props.paths.origin.label}</a>
           <br />
-          Target: <a href={paths.target.url}>{paths.target.label}</a>
+          Target: <a href={props.paths.target.url}>{props.paths.target.label}</a>
         </div>
       </Col>
     </Row>
   </ListGroupItem>
 
 
-export const ReviewersSection = (props: PullRequestSummaryProps) =>
-  <ListGroupItem style={inProgress}>
-    <Row>
-      <Col md={2}>
-        <div style={headerColumnStyle}>
-          Code review
-        </div>
-      </Col>
-      <Col md={3}>
-        {subHeader('Status:')}
-        <div style={{ color: inProgressColor, textTransform: 'uppercase' }}>
-          in progress
-        </div>
-        <div style={{ fontSize: '12px' }}>(4 pending responses)</div>
-      </Col>
-      <Col md={6}>
-        {subHeader('Reviewers:')}
-        <Row>
-          <Col md={1}>
-            <span style={{ color: approvedColor, fontSize: '16px', marginRight: '10px' }}>
-              <i className="fa fa-check" aria-hidden="true" />
-            </span>
-          </Col>
-          <Col md={11}>
-            <div style={{ fontSize: '13px' }}>
-              Alexey Zakharov, Scott Bilas, Aras Pranckevičius, Tim Cooper
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={1}>
-            <span
-              style={{ color: 'rgb(128, 154, 206)', fontSize: '16px', marginRight: '10px' }}
-            >
-              <i className="fa fa-circle-o-notch fa-spin fa-fw" />
-            </span>
-          </Col>
-          <Col md={11}>
-            <div style={{ fontSize: '13px' }}>
-              Ante Ilic, Alex Lian
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={1}>
-            <span style={{ color: 'grey', fontSize: '16px', marginRight: '10px' }}>
-              <i className="fa fa-question" aria-hidden="true" />
-            </span>
-          </Col>
-          <Col md={11}>
-            <div style={{ fontSize: '13px' }}>
-              {props.pullRequest.reviewers.map(r => r.user.fullName).join(', ')}
-            </div>
-          </Col>
-        </Row>
-        {props.toggleReviewers &&
-          <Row style={{ paddingTop: '20px', paddingLeft: '50px' }}>
-            <Reviewers reviewers={prReviewers} onAdded={props.onAddReviewer} />
-          </Row>
-        }
-      </Col>
-      <Col md={1}>
-        <div
-          onClick={props.onToggleReviewers}
-          style={{ color: '#dbdedf', float: 'right', fontSize: '20px', cursor: 'pointer' }}
-        >
-          <i className="fa fa-pencil" aria-hidden="true" />
-        </div>
-      </Col>
-    </Row>
-  </ListGroupItem>
+const ReviewerList = ({ reviewers, icon, tooltip }) => {
+  if (reviewers.length === 0) {
+    return null
+  }
+  const tooltipOverlay = <Tooltip id="tooltip">{tooltip}</Tooltip>
+  return (
+    <li>
+      <span>
+        <OverlayTrigger placement="left" overlay={tooltipOverlay}>
+          <i
+            style={{ marginRight: '12px', width: '12px', marginBottom: '6px' }}
+            className={`fa ${icon}`}
+          />
+        </OverlayTrigger>
+        {reviewers.map(r => r.user.fullName).join(', ')}
+      </span>
+    </li>
+  )
+}
+
+type ReviewersSectionProps = {
+  reviewers: Array<PullRequestReviewerType>,
+  onAddReviewer: Function,
+  onToggleReviewers: Function,
+  toggleReviewers: boolean,
+}
+
+export const ReviewersSection = (props: ReviewersSectionProps) => {
+  const { reviewers, onAddReviewer, onToggleReviewers, toggleReviewers } = props
+
+  // Lodash groupBy is not really what we want here, all groups should be represented.
+  type GroupsType = { [key: PullRequestReviewerStatusType]: Array<PullRequestReviewerType> }
+  const reviewerGroups : GroupsType = {
+    not_reviewed: reviewers.filter(r => r.status === constants.PR_NOT_REVIEWED),
+    approved: reviewers.filter(r => r.status === constants.PR_APPROVED),
+    rejected: reviewers.filter(r => r.status === constants.PR_REJECTED),
+    under_review: reviewers.filter(r => r.status === constants.PR_UNDER_REVIEW),
+  }
+
+  let status
+  let statusColor
+  let statusExtraText
+  if (reviewers.length === 0) {
+    status = 'no reviewers'
+    statusColor = inProgressColor
+  } else if (reviewerGroups.approved.length === reviewers.length) {
+    status = 'approved'
+    statusColor = approvedColor
+  } else if (reviewerGroups.rejected.length === reviewers.length) {
+    status = 'rejected'
+    statusColor = rejectedColor
+  } else {
+    status = 'in progress'
+    statusColor = inProgressColor
+    const pendingReviewCount =
+      reviewerGroups.under_review.length + reviewerGroups.not_reviewed.length
+    statusExtraText = `(${pendingReviewCount} pending responses)`
+  }
+
+  return (
+    <ListGroupItem style={inProgress}>
+      <Row>
+        <Col md={2}>
+          <div style={headerColumnStyle}>
+            Code review
+          </div>
+        </Col>
+        <Col md={3}>
+          {subHeader('Status:')}
+          <div style={{ color: statusColor, textTransform: 'uppercase' }}>
+            {status}
+          </div>
+          <div style={{ fontSize: '12px' }}>{statusExtraText}</div>
+        </Col>
+        <Col md={6}>
+          {subHeader('Reviewers:')}
+          <ul style={{ listStyleType: 'none', padding: 0, margin: 0, fontSize: '13px' }}>
+            <ReviewerList
+              reviewers={reviewerGroups.not_reviewed}
+              icon={'fa-envelope-o'}
+              tooltip={'Not reviewed yet'}
+            />
+            <ReviewerList
+              reviewers={reviewerGroups.under_review}
+              icon={'fa-envelope-open-o'}
+              tooltip={'Under review'}
+            />
+            <ReviewerList
+              reviewers={reviewerGroups.approved}
+              icon={'fa-thumbs-o-up'}
+              tooltip={'Approved'}
+            />
+            <ReviewerList
+              reviewers={reviewerGroups.rejected}
+              icon={'fa-thumbs-o-down'}
+              tooltip={'Rejected'}
+            />
+          </ul>
+          {toggleReviewers &&
+            <Row style={{ paddingTop: '20px', paddingLeft: '50px' }}>
+              <Reviewers reviewers={prReviewers} onAdded={onAddReviewer} />
+            </Row>
+          }
+        </Col>
+        <Col md={1}>
+          <div
+            onClick={onToggleReviewers}
+            style={{ color: '#dbdedf', float: 'right', fontSize: '20px', cursor: 'pointer' }}
+          >
+            <i className="fa fa-pencil" aria-hidden="true" />
+          </div>
+        </Col>
+      </Row>
+    </ListGroupItem>
+  )
+}
 
 
 export const BuildSection = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
@@ -265,15 +310,24 @@ export const IssuesSection = ({ pullRequest } : { pullRequest: PullRequestGraphT
   </ListGroupItem>
 
 
+type PullRequestSummaryProps = {
+  pullRequest: PullRequestGraphType,
+} & ReviewersSectionProps & RepositoriesSectionProps
+
 const PullRequestSummary = (props: PullRequestSummaryProps) =>
   <div className="PullRequestSummary">
     <PullRequestHeader pullRequest={props.pullRequest} />
     <Row>
       <Col md={12}>
         <ListGroup style={{ marginTop: '20px' }}>
-          <ChangesSection {...props} />
-          <RepositoriesSection {...props} />
-          <ReviewersSection {...props} />
+          <ChangesSection pullRequest={props.pullRequest} />
+          <RepositoriesSection paths={props.paths} />
+          <ReviewersSection
+            onAddReviewer={props.onAddReviewer}
+            onToggleReviewers={props.onToggleReviewers}
+            reviewers={props.pullRequest.reviewers}
+            toggleReviewers={props.toggleReviewers}
+          />
           <BuildSection {...props} />
           <IssuesSection {...props} />
         </ListGroup>
@@ -281,5 +335,4 @@ const PullRequestSummary = (props: PullRequestSummaryProps) =>
     </Row>
   </div>
 
-
-export default PullRequestSummary
+export default pureComponent(PullRequestSummary)

@@ -114,7 +114,8 @@ class Reviewers extends Component {
                       </div>
                     </Col>
                   </Row>
-                </ListGroupItem>))}
+                </ListGroupItem>
+            ))}
             </ListGroup>
           </Col>
         </Row>
