@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react'
+import { createSelector } from 'reselect'
 
 import ChangesetFileList from 'components/ChangesetFileList'
 import ChangesetGroupedList from 'components/ChangesetGroupedList'
@@ -28,15 +29,20 @@ const getPath = originOrTarget => ({
   label: `${originOrTarget.repository.name}#${originOrTarget.branch}`,
 })
 
+const pathsSelector = createSelector(
+  pullRequest => pullRequest,
+  pullRequest => ({
+    origin: getPath(pullRequest.origin),
+    target: getPath(pullRequest.target),
+  })
+)
+
 
 /**
  * An attempt to share logic between developer and guardian layout.
  */
 const CategoryModule = ({ type, pullRequest }: Props) => {
-  const paths = {
-    origin: getPath(pullRequest.origin),
-    target: getPath(pullRequest.target),
-  }
+  const paths = pathsSelector(pullRequest)
 
   return (
     <div>

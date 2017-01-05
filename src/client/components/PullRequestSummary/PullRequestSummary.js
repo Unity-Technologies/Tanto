@@ -15,6 +15,7 @@ import Reviewers from './Reviewers'
 import UserAvatar from '../UserAvatar'
 import { pluralizedText } from 'utils/text'
 import constants from 'universal/constants'
+import pureComponent from 'universal/react-pure-render'
 
 import { prReviewers } from '../../api/testPullRequest'
 
@@ -327,5 +328,4 @@ const PullRequestSummary = (props: PullRequestSummaryProps) =>
     </Row>
   </div>
 
-
-export default PullRequestSummary
+export default pureComponent(PullRequestSummary)
