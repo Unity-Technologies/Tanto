@@ -45,7 +45,6 @@ const success = {
 const inProgressColor = 'rgb(198, 149, 10)'
 const approvedColor = '#3f855b'
 const rejectedColor = '#e96666'
-
 const dangerColor = '#e96666'
 
 const headerColumnStyle = {
@@ -62,14 +61,6 @@ export type PullRequestSummaryPaths = {
     url: string,
     label: string,
   }
-}
-
-type PullRequestSummaryProps = {
-  onAddReviewer: Function,
-  onToggleReviewers: Function,
-  paths: PullRequestSummaryPaths,
-  pullRequest: PullRequestGraphType,
-  toggleReviewers: boolean,
 }
 
 export const PullRequestHeader = ({ pullRequest } : { pullRequest: PullRequestGraphType }) =>
@@ -114,10 +105,11 @@ export const ChangesSection = ({ pullRequest } : { pullRequest: PullRequestGraph
   </ListGroupItem>
 
 
-export const RepositoriesSection = ({ pullRequest, paths } : {
-    paths: PullRequestSummaryPaths,
-    pullRequest: PullRequestGraphType
-}) =>
+type RepositoriesSectionProps = {
+  paths: PullRequestSummaryPaths,
+}
+
+export const RepositoriesSection = (props: RepositoriesSectionProps) =>
   <ListGroupItem style={info}>
     <Row>
       <Col md={5}>
@@ -127,9 +119,9 @@ export const RepositoriesSection = ({ pullRequest, paths } : {
       </Col>
       <Col md={7}>
         <div>
-          Origin: <a href={paths.origin.url}>{paths.origin.label}</a>
+          Origin: <a href={props.paths.origin.url}>{props.paths.origin.label}</a>
           <br />
-          Target: <a href={paths.target.url}>{paths.target.label}</a>
+          Target: <a href={props.paths.target.url}>{props.paths.target.label}</a>
         </div>
       </Col>
     </Row>
@@ -156,9 +148,15 @@ const ReviewerList = ({ reviewers, icon, tooltip }) => {
   )
 }
 
+type ReviewersSectionProps = {
+  reviewers: Array<PullRequestReviewerType>,
+  onAddReviewer: Function,
+  onToggleReviewers: Function,
+  toggleReviewers: boolean,
+}
 
-export const ReviewersSection = (props: PullRequestSummaryProps) => {
-  const { reviewers } = props.pullRequest
+export const ReviewersSection = (props: ReviewersSectionProps) => {
+  const { reviewers, onAddReviewer, onToggleReviewers, toggleReviewers } = props
 
   // Lodash groupBy is not really what we want here, all groups should be represented.
   type GroupsType = { [key: PullRequestReviewerStatusType]: Array<PullRequestReviewerType> }
@@ -228,15 +226,15 @@ export const ReviewersSection = (props: PullRequestSummaryProps) => {
               tooltip={'Rejected'}
             />
           </ul>
-          {props.toggleReviewers &&
+          {toggleReviewers &&
             <Row style={{ paddingTop: '20px', paddingLeft: '50px' }}>
-              <Reviewers reviewers={prReviewers} onAdded={props.onAddReviewer} />
+              <Reviewers reviewers={prReviewers} onAdded={onAddReviewer} />
             </Row>
           }
         </Col>
         <Col md={1}>
           <div
-            onClick={props.onToggleReviewers}
+            onClick={onToggleReviewers}
             style={{ color: '#dbdedf', float: 'right', fontSize: '20px', cursor: 'pointer' }}
           >
             <i className="fa fa-pencil" aria-hidden="true" />
@@ -312,15 +310,24 @@ export const IssuesSection = ({ pullRequest } : { pullRequest: PullRequestGraphT
   </ListGroupItem>
 
 
+type PullRequestSummaryProps = {
+  pullRequest: PullRequestGraphType,
+} & ReviewersSectionProps & RepositoriesSectionProps
+
 const PullRequestSummary = (props: PullRequestSummaryProps) =>
   <div className="PullRequestSummary">
     <PullRequestHeader pullRequest={props.pullRequest} />
     <Row>
       <Col md={12}>
         <ListGroup style={{ marginTop: '20px' }}>
-          <ChangesSection {...props} />
-          <RepositoriesSection {...props} />
-          <ReviewersSection {...props} />
+          <ChangesSection pullRequest={props.pullRequest} />
+          <RepositoriesSection paths={props.paths} />
+          <ReviewersSection
+            onAddReviewer={props.onAddReviewer}
+            onToggleReviewers={props.onToggleReviewers}
+            reviewers={props.pullRequest.reviewers}
+            toggleReviewers={props.toggleReviewers}
+          />
           <BuildSection {...props} />
           <IssuesSection {...props} />
         </ListGroup>
