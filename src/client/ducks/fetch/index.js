@@ -7,13 +7,19 @@ export const types = {
   FETCH_DATA: 'FETCH/FETCH_DATA',
 }
 
+export const sendingRequest = (name: string, sending: boolean): Object =>
+  ({ type: types.SENDING_REQUEST, sending, name })
+
+export const requestError = (name: string, error: string): Object =>
+  ({ type: types.REQUEST_ERROR, error, name })
+
+export const clearError = (name: string): Object =>
+({ type: types.CLEAR_ERROR, name })
+
 export const actions = {
-  sendingRequest: (name: string, sending: boolean): Object =>
-    ({ type: types.SENDING_REQUEST, sending, name }),
-  requestError: (name: string, error: string): Object =>
-    ({ type: types.REQUEST_ERROR, error, name }),
-  clearError: (name: string): Object =>
-    ({ type: types.CLEAR_ERROR, name }),
+  sendingRequest,
+  requestError,
+  clearError,
 }
 
 export const fetchStatus = (state: Object = {}, action: Object): Object => {
@@ -73,12 +79,16 @@ export type FetchAction = {
 
 }
 
+
 export const fetchActionCreator =
-  (type: string, args: Object, query: string, callback: Function): FetchAction => ({
-    type: types.FETCH_DATA,
-    name: type,
-    query,
-    args,
-    callback,
-  })
+  (type: string,
+    query: string,
+    args: Object = {},
+    callback: (data: Object, cbArgs: Object) => Array<Object>): FetchAction => ({
+      type: types.FETCH_DATA,
+      name: type,
+      query,
+      args,
+      callback,
+    })
 

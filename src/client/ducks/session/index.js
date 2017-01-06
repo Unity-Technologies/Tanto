@@ -108,7 +108,7 @@ export default (state: Object = initialState, action: Object): Object => {
 
 
 export const fetchProfile = (): Object =>
-  fetchActionCreator(types.FETCH_USER_PROFILE, { }, USER_PROFILE_QUERY,
+  fetchActionCreator(types.FETCH_USER_PROFILE, USER_PROFILE_QUERY, { },
     (data: Object, cbArgs: Object): Array<Object> =>
       [{ type: types.SET_USER_PROFILE, profile: data.data.me }])
 

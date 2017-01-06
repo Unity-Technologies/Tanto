@@ -6,6 +6,7 @@ import {
   fetchSelector,
   isFetchingSelector,
   errorSelector,
+  fetchActionCreator,
 } from '../index'
 
 const expect = chai.expect
@@ -144,5 +145,22 @@ describe('fetch selectors', () => {
     const error = { message: 'some error' }
     const state = { fetch: { [key]: { error } } }
     expect(errorSelector(key)(state)).to.eql(error)
+  })
+})
+
+describe('fetchActionCreator', () => {
+  it('fetchActionCreator should convert any action to FETCH_DATA action', () => {
+    const type = 'SOME_ACTOIN_TYPE'
+    const query = 'query {test query}'
+    const args = { id: 'testid', first: 123 }
+    const callback = (data: Object, cbArgs: Object) => 'some callback here'
+    expect(fetchActionCreator(type, query, args, callback))
+      .to.eql({
+        type: types.FETCH_DATA,
+        name: type,
+        query,
+        args,
+        callback,
+      })
   })
 })

@@ -149,9 +149,8 @@ const pr5 = {
   },
 }
 
-describe('pull request actions', () => {
-
-})
+// describe('pull request actions', () => {
+// })
 
 
 describe('pullrequests reducer', () => {
