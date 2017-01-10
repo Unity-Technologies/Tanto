@@ -3,15 +3,19 @@ import chai from 'chai'
 import reducer, {
   namesReducer,
   types,
+  searchRepository,
+  fetchRepository,
+  fetchRepositoryBranches,
+  fetchRepositories,
 } from '../index'
+import { types as fetchTypes } from 'ducks/fetch'
 
 import { reduceArrayToObj } from 'ducks/normalizer'
+import storeMock from '../../../tests/mocks/storeMock'
+import fetchMock from 'fetch-mock'
 
 const expect = chai.expect
 
-describe('repositories actions', () => {
-
-})
 
 describe('repositories reducer', () => {
   it('should return initial state', () => {

@@ -1,14 +1,15 @@
 /* eslint-disable max-len */
 
+import fetchMock from 'fetch-mock'
 import reducer,
 {
   actions,
   types,
-  sessionEntities, repo, branch } from '../index'
+  sessionEntities, repo, branch, fetchProfile } from '../index'
 import { receivePage } from 'ducks/pagination'
 import { DIRECTION } from 'ducks/order'
 import _ from 'lodash'
-
+import configureStore from '../../../store'
 const expect = require('chai').expect
 
 describe('session actions', () => {
@@ -122,3 +123,4 @@ describe('session filters reducers', () => {
     expect(repo('', action)).to.eql(repoName)
   })
 })
+

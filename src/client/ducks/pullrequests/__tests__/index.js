@@ -1,10 +1,15 @@
 /* eslint-disable max-len */
 
 import chai from 'chai'
+
 import reducer, {
   types,
   filters,
 } from '../index'
+
+
+import 'isomorphic-fetch'
+
 
 import { pagination, receivePage } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
@@ -148,9 +153,6 @@ const pr5 = {
     },
   },
 }
-
-// describe('pull request actions', () => {
-// })
 
 
 describe('pullrequests reducer', () => {
