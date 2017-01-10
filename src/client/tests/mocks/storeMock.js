@@ -15,16 +15,17 @@ const expect = chai.expect
 export const storeMock =
   (initialState: Object, expectedActions: Array<Object>, done: Function, middleware: Array<Object> = []): Object => {
     let actions = []
-
+    let errorCatched = false
     let i = 0
 
     const actionLogger = st => next => action => {
       actions.push(action)
+
+      // console.log('------------Start--------------')
+      // console.log(action)
+      // console.log(expectedActions[i])
+      // console.log('------------End--------------')
       try {
-        console.log('------------Start--------------')
-        console.log(action)
-        console.log(expectedActions[i])
-        console.log('------------End--------------')
         if (action.type === fetchTypes.FETCH_DATA) {
           expect(action).to.containSubset(expectedActions[i])
         } else {
@@ -32,8 +33,9 @@ export const storeMock =
         }
       } catch (err) {
         done(err)
+        errorCatched = true
       }
-      if (i === expectedActions.length - 1) {
+      if (!errorCatched && i === expectedActions.length - 1) {
         done()
       }
       i++
