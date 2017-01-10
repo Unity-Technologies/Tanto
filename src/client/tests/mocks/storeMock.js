@@ -21,10 +21,6 @@ export const storeMock =
     const actionLogger = st => next => action => {
       actions.push(action)
 
-      // console.log('------------Start--------------')
-      // console.log(action)
-      // console.log(expectedActions[i])
-      // console.log('------------End--------------')
       try {
         if (action.type === fetchTypes.FETCH_DATA) {
           expect(action).to.containSubset(expectedActions[i])

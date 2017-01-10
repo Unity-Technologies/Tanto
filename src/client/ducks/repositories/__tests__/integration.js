@@ -1,5 +1,3 @@
-
-
 import {
   types,
   searchRepository,
@@ -11,9 +9,7 @@ import { types as fetchTypes } from 'ducks/fetch'
 
 import {
   query,
-  parseRepositories,
   REPOSITORY_BRANCHES,
-  parseRepository,
 } from 'services/ono/queries/repositories'
 
 
