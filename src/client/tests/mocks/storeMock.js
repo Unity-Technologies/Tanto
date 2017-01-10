@@ -1,10 +1,10 @@
-/* @flow */
+/* eslint-disable max-len */
 
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
-import rootReducer from 'ducks'
-import rootSaga from 'sagas'
+import rootReducer from 'ducks/index'
+import rootSaga from 'sagas/index'
 
 import chai from 'chai'
 

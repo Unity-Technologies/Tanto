@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import {
   types,
   fetchPullRequest,

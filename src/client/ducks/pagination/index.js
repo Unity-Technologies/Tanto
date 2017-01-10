@@ -21,13 +21,13 @@ export type PaginationType = {
 export const receivePage = (payload: PagePayload) => ({ ...payload, type: RECEIVE_PAGE })
 
 export const currentPage = (state: number = 0, action: Object = {}): number =>
-  (action.type === RECEIVE_PAGE ? action.page : state)
+  (action.type === RECEIVE_PAGE && action.page ? action.page : state)
 
 export const pageSize = (state: number = 15, action: Object= {}): number =>
-  (action.type === RECEIVE_PAGE ? action.pageSize : state)
+  (action.type === RECEIVE_PAGE && action.pageSize ? action.pageSize : state)
 
 export const total = (state: number = 0, action: Object= {}): number =>
-  (action.type === RECEIVE_PAGE ? action.total : state)
+  (action.type === RECEIVE_PAGE && action.total ? action.total : state)
 
 export const pages = (state: Object= {}, action: Object = {}): Object => {
   switch (action.type) {

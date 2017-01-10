@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import {
   types,
   searchRepository,
@@ -66,7 +68,6 @@ describe('repository actions', () => {
 
   it('fetchRepository success', (done) => {
     const repositoryName = 'test/repo'
-    const query = 'test query'
     const repo = {
       repository: {
         id: 1,
@@ -240,24 +241,7 @@ describe('repository actions', () => {
   it('fetchRepositories failure', (done) => {
     const name = ''
     const error = new Error('some error')
-    const data = {
-      repositories: {
-        nodes: [
-          {
-            id: 1,
-            name: 'testrepo',
-            branches: [{
-              name: 'testbranch',
-              revision: 12,
-            }],
-          },
-        ],
-      },
-      groups: [{
-        id: 1, name: 'group1',
-      },
-      { id: 2, name: 'group2' }],
-    }
+
     const expectedActions = [
       { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, args: { name }, query: query(name) },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORIES },
