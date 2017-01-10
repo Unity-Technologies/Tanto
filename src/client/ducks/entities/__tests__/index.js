@@ -153,5 +153,16 @@ describe('entities reducer', () => {
     }
     expect(entities(state, action)).to.eql(expected)
   })
+
+  it('should not create new instance of state object', () => {
+    const node = { id: 1, title: 'test1', user: 'testuser2', description: 'test description1' }
+    const action = actions.setEntity(node)
+
+    const state = {
+      1: { id: 1, title: 'test1', user: 'testuser2', description: 'test description1' },
+    }
+
+    expect(entities(state, action)).to.equal(state)
+  })
 })
 

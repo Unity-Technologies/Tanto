@@ -5,27 +5,6 @@ import { isFetchingSelector, errorSelector } from 'ducks/fetch'
 import { createSelector } from 'reselect'
 import _ from 'lodash'
 
-export const computePullRequestLink = (pullrequest: Object, fn: Function): Object => (
-  { ...pullrequest, link: fn(pullrequest.origin.name, pullrequest.id) }
-)
-
-export const computePullRequestOriginLink = (pullrequest: Object, fn: Function): Object => (
-  { ...pullrequest,
-    originLink: fn(pullrequest.target.name, pullrequest.origin.branch || ''),
-  }
-)
-
-export const computePullRequestTargetLink = (pullrequest: Object, fn: Function): Object => (
-  { ...pullrequest, targetLink: fn(pullrequest.target.name, pullrequest.target.branch || '') }
-)
-
-export const computePullRequest = (pullrequest: Object): any => (
-  fn1 => (
-    fn2 => (
-            computePullRequestTargetLink(
-              computePullRequestOriginLink(
-                computePullRequestLink(pullrequest, fn1), fn2), fn2)))
-)
 
 type StateType = {
   fetch: {
@@ -59,7 +38,7 @@ export const getAssignedError =
 export const getPullRequest =
   (state: Object, props: Object): Object => state.pullrequests.entities[props.params.prid]
 
-export const getIds = (state: Object) => {
+export const getIds = (state: Object): Array<Number> => {
   const { pagination: { pages, currentPage } } = state
   return pages[currentPage]
 }
@@ -68,7 +47,7 @@ export const pullRequestsEntitiesSelector =
   (state: Object, props: Object): Object => state.pullrequests.entities
 
 export const pullRequestsIdsSelector =
-  (state: Object, props: Object): Object => getIds(state.pullrequests)
+  (state: Object, props: Object): Array<Number> => getIds(state.pullrequests)
 
 export const getPullRequests = createSelector(
   pullRequestsEntitiesSelector, pullRequestsIdsSelector,

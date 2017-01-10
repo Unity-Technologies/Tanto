@@ -8,7 +8,6 @@ import reducer,
 import { receivePage } from 'ducks/pagination'
 import { DIRECTION } from 'ducks/order'
 import _ from 'lodash'
-
 const expect = require('chai').expect
 
 describe('session actions', () => {
@@ -122,3 +121,4 @@ describe('session filters reducers', () => {
     expect(repo('', action)).to.eql(repoName)
   })
 })
+

@@ -12,11 +12,15 @@ export type ErrorType = {
   message: string
 }
 
+export const setEntities = (nodes: Array<Object>, idAttribute: string = 'id'): Object =>
+  ({ type: types.SET_ENTITIES, nodes, idAttribute })
+
+export const setEntity = (node: Object, idAttribute: string = 'id'): Object =>
+({ type: types.SET_ENTITY, node, idAttribute })
+
 export const actions = {
-  setEntities: (nodes: Array<Object>, idAttribute: string = 'id'): Object =>
-    ({ type: types.SET_ENTITIES, nodes, idAttribute }),
-  setEntity: (node: Object, idAttribute: string = 'id'): Object =>
-    ({ type: types.SET_ENTITY, node, idAttribute }),
+  setEntities,
+  setEntity,
 }
 
 export const merge = (state: Object, entity: Object): Object => {

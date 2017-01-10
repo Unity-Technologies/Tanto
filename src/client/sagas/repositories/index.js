@@ -15,6 +15,8 @@ export function* searchRepository(action: Object): Generator<any, any, any> {
   const response = yield call(
     fetchSaga, action.type, ALL_REPOSITORIES_QUERY, { first: action.first, filter: action.filter })
   const names = parseAllRepositoriesNames(response)
-  yield put(setRepositoriesNames(names))
+  if (names.length) {
+    yield put(setRepositoriesNames(names))
+  }
 }
 

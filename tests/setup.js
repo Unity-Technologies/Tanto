@@ -16,3 +16,4 @@ global.localStorage = {
    * @type {Boolean}
    */
 global.__SERVER__ = true
+

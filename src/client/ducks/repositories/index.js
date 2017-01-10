@@ -102,17 +102,17 @@ export const searchRepository =
     ({ type: types.SEARCH_REPOSITORY, filter, first })
 
 export const fetchRepository = (name: string, queryStr: string): Object =>
-  fetchActionCreator(types.FETCH_REPOSITORY, { name }, queryStr,
+  fetchActionCreator(types.FETCH_REPOSITORY, queryStr, { name },
     (data: Object, cbArgs: Object): Array<Object> =>
       [{ type: types.SET_REPOSITORY, node: parseRepository(data) }])
 
 export const fetchRepositoryBranches = (id: number): Object =>
-  fetchActionCreator(types.FETCH_REPOSITORY_BRANCHES, { id }, REPOSITORY_BRANCHES,
+  fetchActionCreator(types.FETCH_REPOSITORY_BRANCHES, REPOSITORY_BRANCHES, { id },
     (data: Object, cbArgs: Object): Array<Object> =>
       [{ type: types.SET_REPOSITORY, node: parseRepository(data) }])
 
 export const fetchRepositories = (name: string): Object =>
-  fetchActionCreator(types.FETCH_REPOSITORIES, { name }, query(name),
+  fetchActionCreator(types.FETCH_REPOSITORIES, query(name), { name },
     (data: Object, cbArgs: Object): Array<Object> => {
       const { groups, repositories } = parseRepositories(data)
       return [

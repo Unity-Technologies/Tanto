@@ -5,10 +5,7 @@ import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
 import { searchRepository } from 'ducks/repositories'
-import {
-  isSearchingRepository,
-  searchRepositoryError,
-  repositoriesNames } from 'ducks/repositories/selectors'
+import { getSearchRepoResultState } from 'ducks/repositories/selectors'
 
 type SelectItemType = {
   label: string,
@@ -65,10 +62,4 @@ class RepoSelect extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    isFetching: isSearchingRepository(state),
-    error: searchRepositoryError(state),
-    options: repositoriesNames(state),
-  })
-)(RepoSelect)
+export default connect(getSearchRepoResultState)(RepoSelect)

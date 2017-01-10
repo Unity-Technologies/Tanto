@@ -6,12 +6,8 @@ import reducer, {
 } from '../index'
 
 import { reduceArrayToObj } from 'ducks/normalizer'
-
 const expect = chai.expect
 
-describe('repositories actions', () => {
-
-})
 
 describe('repositories reducer', () => {
   it('should return initial state', () => {

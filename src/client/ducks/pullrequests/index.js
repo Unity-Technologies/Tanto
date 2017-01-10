@@ -113,14 +113,14 @@ export type FetchPullRequestArgs = {
 export const FiltersFields = ['updated']
 
 export const fetchPullRequest = (id: number): Object =>
-  fetchActionCreator(types.FETCH_PULL_REQUEST, { id }, PULL_REQUEST_QUERY,
+  fetchActionCreator(types.FETCH_PULL_REQUEST, PULL_REQUEST_QUERY, { id },
     (data: Object, cbArgs: Object): Array<Object> => {
       const node = pullRequestQuery(data)
       return [{ type: types.SET_PULL_REQUEST, node }]
     })
 
 export const fetchPullRequests = (args: FetchPullRequestArgs): Object =>
-  fetchActionCreator(types.FETCH_PULL_REQUESTS, args, projectPullRequestsQuery,
+  fetchActionCreator(types.FETCH_PULL_REQUESTS, projectPullRequestsQuery, args,
   (data: Object, cbArgs: Object): Array<Object> => {
     const { nodes, total } = parsePullRequests(data)
     return [
@@ -129,7 +129,7 @@ export const fetchPullRequests = (args: FetchPullRequestArgs): Object =>
   })
 
 export const fetchUserPullRequests = (args: FetchPullRequestArgs): Object =>
-  fetchActionCreator(types.FETCH_USER_PULL_REQUESTS, args, queries.USER_PULL_REQUESTS,
+  fetchActionCreator(types.FETCH_USER_PULL_REQUESTS, queries.USER_PULL_REQUESTS, args,
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parsers.parseCurrentUserPullRequests(data)
       return [
@@ -140,7 +140,7 @@ export const fetchUserPullRequests = (args: FetchPullRequestArgs): Object =>
 
 export const fetchUserAssignedPullRequests = (args: FetchPullRequestArgs): Object =>
   fetchActionCreator(
-    types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, queries.USER_ASSIGNED_PULL_REQUESTS,
+    types.FETCH_USER_ASSIGNED_PULL_REQUESTS, queries.USER_ASSIGNED_PULL_REQUESTS, args,
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parsers.parseCurrentUserAssignedPullRequests(data)
       return [

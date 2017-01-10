@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
 import { fetchRepositoryBranches } from 'ducks/repositories'
-import { branchesSelector } from 'ducks/repositories/selectors'
+import { getRepositoryBranches } from 'ducks/repositories/selectors'
 
 type SelectItemType = {
   label: string,
@@ -67,6 +67,6 @@ class BranchSelect extends Component {
 
 export default connect(
   (state, props) => ({
-    options: branchesSelector(state, props),
+    options: getRepositoryBranches(state, props),
   })
 )(BranchSelect)

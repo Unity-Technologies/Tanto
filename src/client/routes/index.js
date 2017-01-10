@@ -2,7 +2,7 @@ import React from 'react'
 import Route from 'react-router/lib/Route'
 import IndexRoute from 'react-router/lib/IndexRoute'
 
-import { types } from 'ducks/session'
+import { fetchProfile } from 'ducks/session'
 
 import App from 'pages/App'
 import Home from 'pages/Home'
@@ -19,12 +19,14 @@ import Issues from 'pages/Project/Issues'
 import PullRequest from 'pages/Project/PullRequest'
 import NewPullRequest from 'pages/Project/NewPullRequest'
 
+
 import { app, project, pullrequest, changeset } from 'containers/SideBar/SideBarConfig'
 
 export default (store) => {
+  store.dispatch(store.dispatch(fetchProfile()))
+
   const onAppEnter = () => {
     app(store)
-    store.dispatch({ type: types.FETCH_USER_PROFILE })
   }
   const onProjectEnter = (nextState) => {
     project(store, nextState.params.splat)
