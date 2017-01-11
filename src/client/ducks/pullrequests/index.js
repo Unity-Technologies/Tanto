@@ -107,7 +107,7 @@ export default (
 export type FetchPullRequestArgs = {
   page: number,
   pageSize: number,
-  target: PullRequestSourceReference,
+  target: PullRequestSource,
   repo: string,
   orderBy: OrderByType,
 }
