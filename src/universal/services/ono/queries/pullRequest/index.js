@@ -20,13 +20,13 @@ query ($id: Int!) {
       }
     }
     origin {
-      branch
+      name
       repository {
         name
       }
     }
     target {
-      branch
+      name
       repository {
         name
       }
@@ -115,13 +115,13 @@ export type PullRequestGraphType = {
   owner: PullRequestUserType,
   reviewers: Array<PullRequestReviewerType>,
   origin: {
-    branch: string,
+    name: string,
     repository: {
       name: string,
     },
   },
   target: {
-    branch: string,
+    name: string,
     repository: {
       name: string,
     },

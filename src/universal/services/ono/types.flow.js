@@ -93,7 +93,7 @@ export type PullRequestOrigin = {
 
 export type PullRequests = {
   total: number,
-  first: number,
+  limit: number,
   offset: number,
   nodes: Array<PullRequest>,
 }
@@ -101,7 +101,7 @@ export type PullRequests = {
 
 export type Repositories = {
   total: number,
-  first: number,
+  limit: number,
   offset: number,
   nodes: Array<Repository>,
 }

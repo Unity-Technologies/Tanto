@@ -2,6 +2,8 @@
 
 import chai from 'chai'
 
+import { PullRequestSource } from 'services/ono/queries/pullrequests'
+
 import reducer, {
   types,
   filters,
@@ -178,7 +180,10 @@ describe('pullrequests reducer', () => {
         field: '',
       },
       filters: {
-        branch: '',
+        target: {
+          name: '',
+          type: PullRequestSource.BRANCH,
+        },
       },
     }
     expect(reducer(undefined, {})).to.eql(initialState)
@@ -245,7 +250,10 @@ describe('pullrequests reducer', () => {
         field: '',
       },
       filters: {
-        branch: '',
+        target: {
+          name: '',
+          type: PullRequestSource.BRANCH,
+        },
       },
     }
 

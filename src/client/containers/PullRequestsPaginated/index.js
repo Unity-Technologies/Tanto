@@ -11,6 +11,7 @@ import RepoSelect from 'containers/RepoSelect'
 import OrderSelect from 'containers/OrderSelect'
 import Alert from 'react-bootstrap/lib/Alert'
 import type { OrderByType, DirectionType } from 'ducks/order'
+import { PullRequestSource } from 'services/ono/queries/pullrequests'
 
 export type Props = {
   dispatch: Function,
@@ -37,7 +38,7 @@ class PullRequestsPaginated extends Component {
 
   getArguments = (): Object => ({
     pageSize: this.props.pageSize,
-    first: this.props.pageSize,
+    limit: this.props.pageSize,
     offset: this.props.pageSize * (this.props.activePage - 1),
     page: this.props.activePage,
     orderBy: this.props.orderBy,
@@ -68,7 +69,10 @@ class PullRequestsPaginated extends Component {
 
   handleBranchSelect = (branch: string): void => {
     const args = this.getArguments()
-    args.branch = branch
+    args.target = {
+      name: branch,
+      type: PullRequestSource.BRANCH,
+    }
     this.props.dispatch(this.props.fetchData(args))
   }
 

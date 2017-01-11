@@ -77,7 +77,7 @@ export const repoBranchesSelector =
 
 export const getRepositoryBranches = createSelector(
   repoBranchesSelector,
-  repoBranches => repoBranches.map(x => ({ label: x.name, value: x.revision }))
+  repoBranches => repoBranches.map(x => ({ label: x.name, value: x.name }))
 )
 
 export const repoIdSelector = (state: Object, props: Object): any =>

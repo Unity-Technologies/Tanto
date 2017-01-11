@@ -4,11 +4,12 @@ import reducer,
 {
   actions,
   types,
-  sessionEntities, repo, branch } from '../index'
+  sessionEntities, repo } from '../index'
 import { receivePage } from 'ducks/pagination'
 import { DIRECTION } from 'ducks/order'
 import _ from 'lodash'
 const expect = require('chai').expect
+import { PullRequestSource } from 'services/ono/queries/pullrequests'
 
 describe('session actions', () => {
   it('set profile', () => {
@@ -40,7 +41,10 @@ describe('session reducer', () => {
       field: '',
     },
     filters: {
-      branch: '',
+      target: {
+        name: '',
+        type: PullRequestSource.BRANCH,
+      },
       repo: '',
     },
     pagination: {
@@ -103,15 +107,6 @@ describe('session reducer', () => {
 })
 
 describe('session filters reducers', () => {
-  it('branch reducer', () => {
-    const branchName = 'testbranch'
-    const action = {
-      type: 'ANY',
-      branch: branchName,
-    }
-    expect(branch('', action)).to.eql(branchName)
-  })
-
   it('repo reducer', () => {
     const repoName = 'testrepo'
     const action = {
