@@ -54,12 +54,14 @@ export const projectPullRequestsQuery = `
           origin {
             revision
             name
+            type
             repository {
               name
             }
           }
           target {
             name
+            type
             repository {
               name
             }
@@ -106,11 +108,11 @@ export type RepositoryGraphType = {
 }
 
 export const PullRequestSource = {
-  BRANCH: 'branch',
-  REV: 'rev',
+  BRANCH: 'BRANCH',
+  REVISION: 'REVISION',
 }
 
-export type PullRequestSourceReferenceType = PullRequestSource.BRANCH | PullRequestSource.REV
+export type PullRequestSourceReferenceType = PullRequestSource.BRANCH | PullRequestSource.REVISION
 
 export type PullRequestSourceReference = {
   type: PullRequestSourceReferenceType,

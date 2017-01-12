@@ -33,6 +33,7 @@ const pullRequestFixture = {
   origin: {
     url: 'unity/unity#my-pr',
     name: 'bar',
+    type: 'BRANCH',
     repository: {
       name: 'foo',
     },
@@ -40,6 +41,7 @@ const pullRequestFixture = {
   target: {
     url: 'unity/unity#trunk',
     name: 'bar',
+    type: 'BRANCH',
     repository: {
       name: 'foo',
     },
