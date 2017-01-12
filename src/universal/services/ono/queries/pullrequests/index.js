@@ -22,6 +22,7 @@ const subQuery = `
         name
         repository {
           name
+          fullName
         }
       }
       owner {
@@ -64,6 +65,7 @@ export const projectPullRequestsQuery = `
             type
             repository {
               name
+              fullName
             }
           }
           owner {
