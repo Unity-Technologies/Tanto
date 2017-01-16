@@ -32,14 +32,16 @@ const pullRequestFixture = {
   ],
   origin: {
     url: 'unity/unity#my-pr',
-    branch: 'bar',
+    name: 'bar',
+    type: 'BRANCH',
     repository: {
       name: 'foo',
     },
   },
   target: {
     url: 'unity/unity#trunk',
-    branch: 'bar',
+    name: 'bar',
+    type: 'BRANCH',
     repository: {
       name: 'foo',
     },

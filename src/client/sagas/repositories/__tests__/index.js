@@ -32,7 +32,7 @@ describe('search repositories names saga', () => {
   it('searchRepository', () => {
     const action = {
       type: 'SOME_TYPE',
-      first: 12,
+      limit: 12,
       filter: 'titl',
     }
     const repos = [repo1, repo2, repo3]
@@ -43,7 +43,7 @@ describe('search repositories names saga', () => {
       .to.deep.equal(call(delay, 300))
     expect(generator.next().value)
       .to.deep.equal(
-        call(fetchSaga, action.type, ALL_REPOSITORIES_QUERY, { first: action.first, filter: action.filter }))
+        call(fetchSaga, action.type, ALL_REPOSITORIES_QUERY, { limit: action.limit, filter: action.filter }))
     expect(generator.next(testResponse).value).to.deep.equal(put(setRepositoriesNames(repos)))
   })
 })

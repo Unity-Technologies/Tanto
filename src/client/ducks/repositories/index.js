@@ -98,8 +98,8 @@ export const setRepositoriesNames =
   (nodes: Array<Object>): Object => ({ type: types.SET_REPOSITORIES_NAMES, nodes })
 
 export const searchRepository =
-  (filter: string, first: number): Object =>
-    ({ type: types.SEARCH_REPOSITORY, filter, first })
+  (filter: string, limit: number): Object =>
+    ({ type: types.SEARCH_REPOSITORY, filter, limit })
 
 export const fetchRepository = (name: string, queryStr: string): Object =>
   fetchActionCreator(types.FETCH_REPOSITORY, queryStr, { name },

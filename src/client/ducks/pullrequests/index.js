@@ -5,9 +5,11 @@ import {
   parsePullRequests,
   queries,
   parsers,
+  PullRequestSource,
 } from 'services/ono/queries/pullrequests'
 import { entities, actions as entitiesActions } from 'ducks/entities'
 import PULL_REQUEST_QUERY, { pullRequestQuery } from 'services/ono/queries/pullRequest'
+import { target } from 'ducks/filters'
 
 import { pagination, receivePage } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
@@ -47,7 +49,10 @@ const initialState = {
     field: '',
   },
   filters: {
-    branch: '',
+    target: {
+      name: '',
+      type: PullRequestSource.BRANCH,
+    },
   },
 }
 
@@ -62,11 +67,8 @@ export type PullRequestsStateType = {
   filters: Object
 }
 
-export const branch = (state: string = '', action: Object = {}): string =>
-  (action && action.branch ? action.branch : state)
-
 export const filters = combineReducers({
-  branch,
+  target,
 })
 
 
@@ -105,7 +107,7 @@ export default (
 export type FetchPullRequestArgs = {
   page: number,
   pageSize: number,
-  branch: string,
+  target: PullRequestSource,
   repo: string,
   orderBy: OrderByType,
 }

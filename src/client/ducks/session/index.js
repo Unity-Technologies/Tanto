@@ -6,6 +6,8 @@ import { combineReducers } from 'redux'
 import USER_PROFILE_QUERY from 'services/ono/queries/users'
 import _ from 'lodash'
 import { fetchActionCreator } from 'ducks/fetch'
+import { target } from 'ducks/filters'
+import { PullRequestSource } from 'services/ono/queries/pullrequests'
 
 /**
  * Action types
@@ -37,7 +39,10 @@ const prState = {
     field: '',
   },
   filters: {
-    branch: '',
+    target: {
+      name: '',
+      type: PullRequestSource.BRANCH,
+    },
     repo: '',
   },
   pagination: {
@@ -62,11 +67,8 @@ const initialState = {
 export const repo = (state: string = '', action: Object = {}): string =>
   (action.repo ? action.repo : state)
 
-export const branch = (state: string = '', action: Object = {}): string =>
-  (action.branch ? action.branch : state)
-
 export const filters = combineReducers({
-  branch,
+  target,
   repo,
 })
 

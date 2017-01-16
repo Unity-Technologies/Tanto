@@ -1,7 +1,7 @@
 /* @flow */
 export const TOPLEVEL_REPOSITORIES_QUERY = `
 query {
-	repositories {
+	repositories(limit: 50) {
     nodes {
       id
       name
@@ -26,7 +26,7 @@ query {
 export const REPOSITORIES_QUERY = `
 query($name: String!) {
 	group(name: $name) {
-    repositories {
+    repositories(limit: 50) {
       nodes {
         id
         name
@@ -50,8 +50,8 @@ query($name: String!) {
 }`
 
 export const ALL_REPOSITORIES_QUERY = `
-query($filter: String, $first: Int) {
-	repositories(all: true, filter: $filter, first: $first) {
+query($filter: String, $limit: Int) {
+	repositories(all: true, filter: $filter, limit: $limit) {
     nodes {
       id
       fullName

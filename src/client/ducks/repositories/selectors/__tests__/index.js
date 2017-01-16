@@ -577,9 +577,9 @@ describe('repositories selectors', () => {
     }
 
     const expected = [
-      { label: 'default', value: '3452345' },
-      { label: 'test', value: 'te456356st' },
-      { label: 'unity', value: 'tes24524t' },
+      { label: 'default', value: 'default' },
+      { label: 'test', value: 'test' },
+      { label: 'unity', value: 'unity' },
     ]
 
     expect(getRepositoryBranches(state, props)).to.eql(expected)

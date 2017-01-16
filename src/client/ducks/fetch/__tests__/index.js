@@ -61,11 +61,13 @@ describe('fetch error reducer', () => {
     const state = {
       [name]: {
         error: { message: 'test error' },
+        isFetching: false,
       },
     }
     const updatedState = {
       [name]: {
         error: null,
+        isFetching: false,
       },
     }
     expect(fetchStatus(state, action)).to.eql(updatedState)
@@ -87,11 +89,13 @@ describe('fetch error reducer', () => {
     const state = {
       [name]: {
         isFetching: true,
+        error: null,
       },
     }
     expect(fetchStatus(state, action)).to.eql({
       [name]: {
         isFetching: false,
+        error: null,
       },
     })
   })
@@ -152,7 +156,7 @@ describe('fetchActionCreator', () => {
   it('fetchActionCreator should convert any action to FETCH_DATA action', () => {
     const type = 'SOME_ACTOIN_TYPE'
     const query = 'query {test query}'
-    const args = { id: 'testid', first: 123 }
+    const args = { id: 'testid', limit: 123 }
     const callback = (data: Object, cbArgs: Object) => 'some callback here'
     expect(fetchActionCreator(type, query, args, callback))
       .to.eql({

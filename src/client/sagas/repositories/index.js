@@ -13,10 +13,9 @@ export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve
 export function* searchRepository(action: Object): Generator<any, any, any> {
   yield call(delay, 300)
   const response = yield call(
-    fetchSaga, action.type, ALL_REPOSITORIES_QUERY, { first: action.first, filter: action.filter })
+    fetchSaga, action.type, ALL_REPOSITORIES_QUERY, { limit: action.limit, filter: action.filter })
   const names = parseAllRepositoriesNames(response)
-  if (names.length) {
-    yield put(setRepositoriesNames(names))
-  }
+
+  yield put(setRepositoriesNames(names))
 }
 

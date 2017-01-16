@@ -22,14 +22,14 @@ describe('repository actions', () => {
   afterEach(() => fetchMock.restore())
 
   it('seachRepository success', (done) => {
-    const first = 2
+    const limit = 2
     const filter = 'uni'
 
     const nodes = [
       'unity', 'unity2', 'unify',
     ]
     const actionsList = [
-      { type: types.SEARCH_REPOSITORY, first, filter },
+      { type: types.SEARCH_REPOSITORY, limit, filter },
       { type: fetchTypes.CLEAR_ERROR, name: types.SEARCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: true },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: false },
@@ -42,28 +42,29 @@ describe('repository actions', () => {
 
     const store = storeMock({}, actionsList, done)
 
-    store.dispatch(searchRepository(filter, first))
+    store.dispatch(searchRepository(filter, limit))
   })
 
   it('seachRepository failure', (done) => {
-    const first = 2
+    const limit = 2
     const filter = 'uni'
 
     const error = new Error('some error')
 
     const actionsList = [
-      { type: types.SEARCH_REPOSITORY, first, filter },
+      { type: types.SEARCH_REPOSITORY, limit, filter },
       { type: fetchTypes.CLEAR_ERROR, name: types.SEARCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.SEARCH_REPOSITORY, error },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: false },
+      { type: types.SET_REPOSITORIES_NAMES, nodes: [] },
     ]
 
     fetchMock.mock('*', { throws: error, status: 503 })
 
     const store = storeMock({}, actionsList, done)
 
-    store.dispatch(searchRepository(filter, first))
+    store.dispatch(searchRepository(filter, limit))
   })
 
   it('fetchRepository success', (done) => {

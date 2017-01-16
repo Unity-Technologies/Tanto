@@ -1,4 +1,5 @@
 /* flow */
+/* eslint-disable max-len */
 
 import _ from 'lodash'
 
@@ -11,18 +12,15 @@ const subQuery = `
       updated
       status
       origin {
-        branch
         revision
+        name
         repository {
-          id
           name
-          fullName
         }
       }
       target {
-        branch
+        name
         repository {
-          id
           name
           fullName
         }
@@ -35,18 +33,18 @@ const subQuery = `
 `
 
 export const userPullRequestsQuery = name => `
-  query ($first: Int, $offset: Int, $branch: String, $repo: String, $orderBy: Ordering) {
+  query ($limit: Int, $offset: Int, $target: PullRequestSourceReference, $repo: String, $orderBy: Ordering) {
     me {
-      ${name}(first: $first, offset: $offset, repo: $repo, branch: $branch, orderBy: $orderBy) {
+      ${name}(limit: $limit, offset: $offset, repo: $repo, target: $target, orderBy: $orderBy) {
         ${subQuery}
       }
     }
   }`
 
 export const projectPullRequestsQuery = `
-  query ($first: Int, $offset: Int, $branch: String, $repo: Int, $orderBy: Ordering) {
+  query ($limit: Int, $offset: Int, $target: PullRequestSourceReference, $repo: Int, $orderBy: Ordering) {
     repository(id: $repo) {
-      pullRequests(first: $first, offset: $offset, branch: $branch, orderBy: $orderBy) {
+      pullRequests(limit: $limit, offset: $offset, target: $target, orderBy: $orderBy) {
         total
         nodes {
           id
@@ -55,18 +53,17 @@ export const projectPullRequestsQuery = `
           updated
           status
           origin {
-            branch
             revision
+            name
+            type
             repository {
-              id
               name
-              fullName
             }
           }
           target {
-            branch
+            name
+            type
             repository {
-              id
               name
               fullName
             }
@@ -112,18 +109,36 @@ export type RepositoryGraphType = {
   name: string
 }
 
+export const PullRequestSource = {
+  BRANCH: 'BRANCH',
+  REVISION: 'REVISION',
+  TAG: 'TAG',
+  BOOK: 'BOOK',
+}
+
+export type PullRequestSourceReferenceType =
+    PullRequestSource.BRANCH
+  | PullRequestSource.REVISION
+  | PullRequestSource.TAG
+  | PullRequestSource.BOOK
+
+export type PullRequestSourceReference = {
+  type: PullRequestSourceReferenceType,
+  name: string
+}
+
 export type PullRequestUserType = {
   username: string,
   fullName: string,
 }
 
 export type TargetGraphType = {
-  branch: string,
+  name: string,
   repository: RepositoryGraphType,
 }
 
 export type OriginGraphType = {
-  branch: string,
+  name: string,
   revision: string,
   repository: RepositoryGraphType,
 }
@@ -141,4 +156,3 @@ export type PullRequestGraphType = {
 }
 
 export const OrderFields = ['updated']
-
