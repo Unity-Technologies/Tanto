@@ -44,7 +44,7 @@ query ($id: Int!) {
       operation
       comments {
         text
-        line
+        lineNumber
         created
         modified
         author {
