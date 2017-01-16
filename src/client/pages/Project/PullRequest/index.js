@@ -18,7 +18,7 @@ import ActionBar from './ActionBar'
 
 type Props = {
   dispatch: Function,
-  error: ?string,
+  error: ?{message: string},
   isFetching: boolean,
   params: {
     id: string,
@@ -56,7 +56,7 @@ class PullRequest extends Component {
           <h3>
             Fetching the pull request failed!
           </h3>
-          <h4>{`${error}`}</h4>
+          <h4>{`${error.message}`}</h4>
         </div>
       )
     }

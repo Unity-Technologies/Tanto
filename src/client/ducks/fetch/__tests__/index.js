@@ -61,11 +61,13 @@ describe('fetch error reducer', () => {
     const state = {
       [name]: {
         error: { message: 'test error' },
+        isFetching: false,
       },
     }
     const updatedState = {
       [name]: {
         error: null,
+        isFetching: false,
       },
     }
     expect(fetchStatus(state, action)).to.eql(updatedState)
@@ -87,11 +89,13 @@ describe('fetch error reducer', () => {
     const state = {
       [name]: {
         isFetching: true,
+        error: null,
       },
     }
     expect(fetchStatus(state, action)).to.eql({
       [name]: {
         isFetching: false,
+        error: null,
       },
     })
   })
