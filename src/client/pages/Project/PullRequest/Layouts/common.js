@@ -7,7 +7,7 @@ import ChangesetGroupedList from 'components/ChangesetGroupedList'
 import CodeDiffView from 'components/CodeDiffView'
 import IssuesList from 'components/IssuesList'
 import PullRequestDiscussion from 'components/PullRequestDiscussion'
-import PullRequestSummary from 'components/PullRequestSummary'
+import PullRequestSummary from 'containers/PullRequestSummary'
 
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 
@@ -36,7 +36,6 @@ const pathsSelector = createSelector(
     target: getPath(pullRequest.target),
   })
 )
-
 
 /**
  * An attempt to share logic between developer and guardian layout.

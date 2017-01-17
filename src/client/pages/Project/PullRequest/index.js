@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { DEVELOPER_PERSONA, MANAGER_PERSONA, GUARDIAN_PERSONA } from 'ducks/session'
-import { fetchPullRequest } from 'ducks/pullrequests'
+import { fetchPullRequestData } from 'ducks/pullrequests'
 import {
   getPullRequest,
   getPullRequestFetchStatus,
@@ -38,7 +38,7 @@ class PullRequest extends Component {
   componentDidMount() {
     const { dispatch, params } = this.props
     const pullRequestId = parseInt(params.prid, 10)
-    dispatch(fetchPullRequest(pullRequestId))
+    dispatch(fetchPullRequestData(pullRequestId))
   }
 
   props: Props

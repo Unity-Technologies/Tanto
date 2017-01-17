@@ -18,4 +18,12 @@ export const general = {
   PR_REJECTED: 'rejected',
 }
 
+export const IssueStatus = {
+  NEW: 'new',
+  LATER: 'later',
+  AVAILABLE: 'available',
+  OBSOLETE: 'obsolete',
+  NEXT: 'next',
+}
+
 export default general

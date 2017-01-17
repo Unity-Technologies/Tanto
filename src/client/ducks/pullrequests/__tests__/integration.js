@@ -2,7 +2,7 @@
 
 import {
   types,
-  fetchPullRequest,
+  fetchPullRequestData,
   fetchPullRequests,
   fetchUserPullRequests,
   fetchUserAssignedPullRequests,
@@ -46,7 +46,7 @@ describe('pullrequests actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchPullRequest(id))
+    store.dispatch(fetchPullRequestData(id))
   })
 
   it('fetchPullRequest failure', (done) => {
@@ -65,7 +65,7 @@ describe('pullrequests actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchPullRequest(id))
+    store.dispatch(fetchPullRequestData(id))
   })
 
   it('fetchPullRequests success(default filters)', (done) => {

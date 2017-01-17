@@ -114,8 +114,8 @@ export type FetchPullRequestArgs = {
 
 export const FiltersFields = ['updated']
 
-export const fetchPullRequest = (id: number): Object =>
-  fetchActionCreator(types.FETCH_PULL_REQUEST, PULL_REQUEST_QUERY, { id },
+export const fetchPullRequestData = (id: number, graphQuery: string = PULL_REQUEST_QUERY): Object =>
+  fetchActionCreator(types.FETCH_PULL_REQUEST, graphQuery, { id },
     (data: Object, cbArgs: Object): Array<Object> => {
       const node = pullRequestQuery(data)
       return [{ type: types.SET_PULL_REQUEST, node }]

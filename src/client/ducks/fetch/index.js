@@ -76,7 +76,6 @@ export type FetchAction = {
   query: string,
   args: Object,
   callback: Function
-
 }
 
 
