@@ -94,10 +94,7 @@ class ChangesetFileList extends React.Component {
     this.state = {
       filesAfterSearch: this.props.files,
       query: '',
-    };
-
-    // flow workaround:
-    (this: any).onQueryChange = this.onQueryChange.bind(this)
+    }
   }
 
   props: Props
@@ -106,7 +103,7 @@ class ChangesetFileList extends React.Component {
     query: string,
   }
 
-  onQueryChange(event: SyntheticInputEvent) {
+  onQueryChange = (event: SyntheticInputEvent) => {
     const query = event.target.value
     let filesAfterSearch
 
