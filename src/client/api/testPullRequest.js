@@ -1291,11 +1291,32 @@ export const prIssues = [
   },
 ]
 
-export const prReviewers = [
-  {name: 'Gabriele Farina', type: '*.bindings'},
-  {name: 'Adriano Verona', type: '*.bindings'},
-  {name: 'Steen Lund', type:  'configuration'},
-  {name: 'Vladimir Andreev', type: 'Editor/Src/AssetPipeline/ShaderImporting' },
+export const prReviewers = new Set([
+  'fkenney', 'kc',
+])
+
+export const prUsers = [
+  { fullName: 'Sonja Bark', username: 'sbark' },
+  { fullName: 'Hattie Hinchman', username: 'hinchman' },
+  { fullName: 'Felicidad Kenney', username: 'fkenney' },
+  { fullName: 'Lynsey Castello', username: 'castello' },
+  { fullName: 'Kazuko Cournoyer', username: 'kc' },
+  { fullName: 'Julietta Pfannenstiel', username: 'julietta' },
+  { fullName: 'Tom Oleary', username: 'oleary' },
+  { fullName: 'Yvonne Chiodo', username: 'yvonne' },
+  { fullName: 'Elaina Brake', username: 'brake' },
+  { fullName: 'Librada Wojtczak', username: 'wojtczak' },
+  { fullName: 'Debby Arms', username: 'arms' },
+  { fullName: 'Harriet Buth', username: 'special-username' },
+  { fullName: 'Brandy Lanphear', username: 'brandylanphear' },
+  { fullName: 'Kori Hamburg', username: 'hamburg' },
+  { fullName: 'Deloras Gorby', username: 'gorby' },
+  { fullName: 'Kortney Bustamante', username: 'kbustamante' },
+  { fullName: 'Delicia Bigler', username: 'dbigler' },
+  { fullName: 'Heriberto Cannon', username: 'cannon' },
+  { fullName: 'Launa Sesco', username: 'lsesco' },
+  { fullName: 'Agnus Raven', username: 'raven' },
+  { fullName: 'Lynette Stiller', username: 'lynettestiller' },
 ]
 
 export const PullRequestsDataList = [
