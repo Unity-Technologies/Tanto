@@ -78,7 +78,7 @@ storiesOf('PullRequestSummary', module)
   .addDecorator(muiTheme())
   .add('enabled', () => (
     <PullRequestSummary
-      onAddReviewer={action('onAddReviewer')}
+      onToggleReviewer={action('onToggleReviewer')}
       onToggleReviewers={action('onToggleReviewers')}
       paths={pathsFixture}
       pullRequest={pullRequestFixture}
@@ -109,7 +109,7 @@ storiesOf('PullRequestSummary Items', module)
   ))
   .add('ReviewersSection (no reviewers)', () => (
     <ReviewersSection
-      onAddReviewer={action('onAddReviewer')}
+      onToggleReviewer={action('onToggleReviewer')}
       onToggleReviewers={action('onToggleReviewers')}
       reviewers={[]}
       toggleReviewers={false}
@@ -148,7 +148,7 @@ storiesOf('PullRequestSummary Items', module)
     ]
     return (
       <ReviewersSection
-        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewer={action('onToggleReviewer')}
         onToggleReviewers={action('onToggleReviewers')}
         reviewers={reviewers}
         toggleReviewers={false}
@@ -174,7 +174,7 @@ storiesOf('PullRequestSummary Items', module)
     ]
     return (
       <ReviewersSection
-        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewer={action('onToggleReviewer')}
         onToggleReviewers={action('onToggleReviewers')}
         reviewers={reviewers}
         toggleReviewers={false}
@@ -193,7 +193,7 @@ storiesOf('PullRequestSummary Items', module)
     ]
     return (
       <ReviewersSection
-        onAddReviewer={action('onAddReviewer')}
+        onToggleReviewer={action('onToggleReviewer')}
         onToggleReviewers={action('onToggleReviewers')}
         reviewers={reviewers}
         toggleReviewers={false}
@@ -202,7 +202,7 @@ storiesOf('PullRequestSummary Items', module)
   })
   .add('ReviewersSection (toggled)', () => (
     <ReviewersSection
-      onAddReviewer={action('onAddReviewer')}
+      onToggleReviewer={action('onToggleReviewer')}
       onToggleReviewers={action('onToggleReviewers')}
       reviewers={pullRequestFixture.reviewers}
       toggleReviewers

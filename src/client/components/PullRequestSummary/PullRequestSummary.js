@@ -11,13 +11,13 @@ import Tooltip from 'react-bootstrap/lib/Tooltip'
 import type {
   PullRequestGraphType, PullRequestReviewerStatusType, PullRequestReviewerType,
 } from 'services/ono/queries/pullRequest'
-import Reviewers from './Reviewers'
+import ReviewerSelection from './ReviewerSelection'
 import UserAvatar from '../UserAvatar'
 import { pluralizedText } from 'utils/text'
 import constants from 'universal/constants'
 import pureComponent from 'universal/react-pure-render'
 
-import { prReviewers } from '../../api/testPullRequest'
+import { prReviewers, prUsers } from '../../api/testPullRequest'
 
 
 const subHeader = text => (
@@ -150,13 +150,13 @@ const ReviewerList = ({ reviewers, icon, tooltip }) => {
 
 type ReviewersSectionProps = {
   reviewers: Array<PullRequestReviewerType>,
-  onAddReviewer: Function,
+  onToggleReviewer: Function,
   onToggleReviewers: Function,
   toggleReviewers: boolean,
 }
 
 export const ReviewersSection = (props: ReviewersSectionProps) => {
-  const { reviewers, onAddReviewer, onToggleReviewers, toggleReviewers } = props
+  const { reviewers, onToggleReviewer, onToggleReviewers, toggleReviewers } = props
 
   // Lodash groupBy is not really what we want here, all groups should be represented.
   type GroupsType = { [key: PullRequestReviewerStatusType]: Array<PullRequestReviewerType> }
@@ -228,7 +228,11 @@ export const ReviewersSection = (props: ReviewersSectionProps) => {
           </ul>
           {toggleReviewers &&
             <Row style={{ paddingTop: '20px', paddingLeft: '50px' }}>
-              <Reviewers reviewers={prReviewers} onAdded={onAddReviewer} />
+              <ReviewerSelection
+                onToggleReviewer={onToggleReviewer}
+                reviewers={prReviewers}
+                users={prUsers}
+              />
             </Row>
           }
         </Col>
@@ -323,7 +327,7 @@ const PullRequestSummary = (props: PullRequestSummaryProps) =>
           <ChangesSection pullRequest={props.pullRequest} />
           <RepositoriesSection paths={props.paths} />
           <ReviewersSection
-            onAddReviewer={props.onAddReviewer}
+            onToggleReviewer={props.onToggleReviewer}
             onToggleReviewers={props.onToggleReviewers}
             reviewers={props.pullRequest.reviewers}
             toggleReviewers={props.toggleReviewers}
