@@ -44,7 +44,7 @@ query ($id: Int!) {
       operation
       comments {
         text
-        line
+        lineNumber
         created
         modified
         author {
@@ -95,7 +95,7 @@ export type InlineComment = {
   created: string,
   modified: string,
   author: PullRequestUserType,
-  line: string,
+  lineNumber: string,
 }
 
 export type File = {

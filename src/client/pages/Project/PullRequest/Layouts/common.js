@@ -47,7 +47,7 @@ const CategoryModule = ({ type, pullRequest }: Props) => {
     <div>
       {type === 'summary' &&
         <PullRequestSummary
-          onAddReviewer={noop}
+          onToggleReviewer={noop}
           onToggleReviewers={noop}
           paths={paths}
           pullRequest={pullRequest}

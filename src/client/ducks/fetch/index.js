@@ -28,6 +28,7 @@ export const fetchStatus = (state: Object = {}, action: Object): Object => {
       return {
         ...state,
         [action.name]: {
+          ...state[action.name],
           isFetching: action.sending,
         },
       }
@@ -35,6 +36,7 @@ export const fetchStatus = (state: Object = {}, action: Object): Object => {
       return {
         ...state,
         [action.name]: {
+          ...state[action.name],
           error: action.error,
         },
       }
@@ -42,6 +44,7 @@ export const fetchStatus = (state: Object = {}, action: Object): Object => {
       return {
         ...state,
         [action.name]: {
+          ...state[action.name],
           error: null,
         },
       }
@@ -90,4 +93,3 @@ export const fetchActionCreator =
       args,
       callback,
     })
-

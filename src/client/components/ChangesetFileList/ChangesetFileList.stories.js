@@ -11,7 +11,7 @@ const fixtureComment = () => (
   {
     id: '2',
     text: 'hi im a line comment',
-    line: 'n2',
+    lineNumber: 'n2',
     created: '2016-12-07 15:35:56.335115',
     modified: '2016-12-07 15:35:56.335127',
     author: {

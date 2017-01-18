@@ -10,7 +10,8 @@ import ChangesSection from 'components/PullRequestMetadata/ChangesSection'
 import Header from 'components/PullRequestMetadata/Header'
 import IssuesSection from 'components/PullRequestMetadata/IssuesSection'
 import RepositoriesSection from 'components/PullRequestMetadata/RepositoriesSection'
-import ReviewersSection from 'components/PullRequestMetadata/ReviewersSection'
+import ReviewerSection from 'components/PullRequestMetadata/ReviewerSection'
+import { prReviewers, prUsers } from '../../api/testPullRequest'
 
 
 class PullRequestSummary extends Component {
@@ -18,6 +19,8 @@ class PullRequestSummary extends Component {
     // dispatch(fetchPullRequestMetadata())
   }
   render() {
+    const { reviewers, onToggleReviewer, onToggleReviewers, toggleReviewers } = props
+
     return (
       <div className="PullRequestSummary">
         <Header />
@@ -26,7 +29,12 @@ class PullRequestSummary extends Component {
             <ListGroup style={{ marginTop: '20px' }}>
               <ChangesSection />
               <RepositoriesSection />
-              <ReviewersSection />
+              <ReviewerSelection
+                onToggleReviewer={onToggleReviewer}
+                reviewers={prReviewers}
+                users={prUsers}
+              />
+
               <BuildSection />
               <IssuesSection />
             </ListGroup>

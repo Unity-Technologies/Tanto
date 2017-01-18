@@ -112,9 +112,15 @@ export type RepositoryGraphType = {
 export const PullRequestSource = {
   BRANCH: 'BRANCH',
   REVISION: 'REVISION',
+  TAG: 'TAG',
+  BOOK: 'BOOK',
 }
 
-export type PullRequestSourceReferenceType = PullRequestSource.BRANCH | PullRequestSource.REVISION
+export type PullRequestSourceReferenceType =
+    PullRequestSource.BRANCH
+  | PullRequestSource.REVISION
+  | PullRequestSource.TAG
+  | PullRequestSource.BOOK
 
 export type PullRequestSourceReference = {
   type: PullRequestSourceReferenceType,
@@ -150,4 +156,3 @@ export type PullRequestGraphType = {
 }
 
 export const OrderFields = ['updated']
-
