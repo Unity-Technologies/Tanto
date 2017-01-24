@@ -2,10 +2,11 @@
 import React from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
+import { connect } from 'react-redux'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import IssueStatus from 'universal/constants'
-
-import pureComponent from 'universal/react-pure-render'
+import { getPullRequest } from 'ducks/pullrequests/selectors'
+import { createSelector } from 'reselect'
+import type { IssueType } from 'universal/types'
 
 const subHeader = text => (
   <div style={{ color: '#8c8c8c', fontSize: '13px' }}>
@@ -24,18 +25,18 @@ const headerColumnStyle = {
   color: '#10121b',
 }
 
-type IssueStatusType = $Keys<typeof IssueStatus> // eslint-disable-line no-undef
-
-type IssueType = {
-  id: number,
-  title: string,
-  description: string,
-  status: IssueStatusType
-}
-
 type IssuesSectionProps = {
-  issues: Array<IssueType>
+  issues: Array<IssueType>,
+  id: string,
 }
+
+export const getIssues = (state: Object, props: Object): Object =>
+  createSelector(
+    getPullRequest,
+    pr => ({
+      issues: pr ? pr.issues : [],
+    })
+  )
 
 //  TODO: complete this component, now it's mockeed since no ono API available for it
 export const IssuesSection = (props: IssuesSectionProps) =>
@@ -71,4 +72,5 @@ export const IssuesSection = (props: IssuesSectionProps) =>
   </ListGroupItem>
 
 
-export default pureComponent(IssuesSection)
+export default connect(getIssues)(IssuesSection)
+

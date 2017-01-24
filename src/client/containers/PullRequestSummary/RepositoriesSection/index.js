@@ -3,8 +3,11 @@
 import React from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
+import { connect } from 'react-redux'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import pureComponent from 'universal/react-pure-render'
+import { getPullRequest } from 'ducks/pullrequests/selectors'
+import _ from 'lodash'
+import { createSelector } from 'reselect'
 
 const info = {
   borderLeft: '5px solid rgba(226, 231, 245, 0.62)',
@@ -18,7 +21,8 @@ const headerColumnStyle = {
 const noTargetMessage =
   "This is just a range of changesets and doesn't have a target or a real merge ancestor."
 
-type RepositoriesSectionProps = {
+export type RepositoriesPropsType = {
+  id: string,
   origin: {
     url: string,
     label: string,
@@ -29,7 +33,13 @@ type RepositoriesSectionProps = {
   }
 }
 
-export const RepositoriesSection = (props: RepositoriesSectionProps) =>
+export const getRepositoriesData = (state: Object, props: Object): RepositoriesPropsType =>
+  createSelector(
+    getPullRequest,
+    (pr) => _.pick('origin', 'target')
+  )
+
+export const RepositoriesSection = (props: RepositoriesPropsType) =>
   <ListGroupItem style={info}>
     <Row>
       <Col md={5}>
@@ -39,7 +49,7 @@ export const RepositoriesSection = (props: RepositoriesSectionProps) =>
       </Col>
       <Col md={7}>
         <div>
-          Origin: <a href={props.origin.url}>{props.origin.label}</a>
+          Origin: <a href={props.origin ? props.origin.url : ''}>{props.origin ? props.origin.label : ''}</a>
           <br />
           {/* NOTE: target is absent if PR created from created from changeset*/}
           {props.target}
@@ -51,5 +61,5 @@ export const RepositoriesSection = (props: RepositoriesSectionProps) =>
     </Row>
   </ListGroupItem>
 
+export default connect(getRepositoriesData)(RepositoriesSection)
 
-export default pureComponent(RepositoriesSection)

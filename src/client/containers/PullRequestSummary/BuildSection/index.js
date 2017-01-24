@@ -24,6 +24,7 @@ const headerColumnStyle = {
 const approvedColor = '#3f855b'
 
 type BuildPropsType = {
+  id: string,
   name: string,
   katanaLink: string,
   date: string,

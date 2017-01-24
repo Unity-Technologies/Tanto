@@ -5,32 +5,6 @@ const PULL_REQUEST_QUERY = `
 query ($id: Int!) {
   pullRequest(id: $id) {
     id
-    title
-    status
-    created
-    owner {
-      fullName
-      username
-    }
-    reviewers {
-      status
-      user {
-        fullName
-        username
-      }
-    }
-    origin {
-      name
-      repository {
-        name
-      }
-    }
-    target {
-      name
-      repository {
-        name
-      }
-    }
     files {
       id
       name

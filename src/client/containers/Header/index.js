@@ -19,10 +19,7 @@ const badgeStyle = {
 }
 
 export type Props = {
-  title?: string,
   showMenuIconButton?: boolean,
-  dispatch?: Function,
-  projectName?: string,
 }
 
 function Header(props: Props) {

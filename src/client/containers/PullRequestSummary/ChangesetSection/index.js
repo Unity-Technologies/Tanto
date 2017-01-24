@@ -19,6 +19,7 @@ on this little chunk
 */
 
 type ChangesSectionProps = {
+  id: string,
   added: number,
   deleted: number,
   filesCount: number,

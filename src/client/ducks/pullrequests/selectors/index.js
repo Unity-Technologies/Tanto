@@ -1,42 +1,34 @@
 /* @flow */
 
 import { types } from '../index'
-import { isFetchingSelector, errorSelector } from 'ducks/fetch'
+import { getFetchStatus } from 'ducks/fetch'
 import { createSelector } from 'reselect'
+import type { StatusType } from 'ducks/fetch'
+export type { StatusType } from 'ducks/fetch'
+
 import _ from 'lodash'
 
+export const getPRPageFetchStatus =
+  (state: Object): StatusType => getFetchStatus(state, types.FETCH_PULL_REQUESTS)
 
-type StateType = {
-  fetch: {
-    [key: string]: {
-      isFetching: boolean,
-      error: Object
-    }
-  }
-}
-
-export const getPageFetchStatus =
-  (state: StateType): boolean => isFetchingSelector(types.FETCH_PULL_REQUESTS)(state)
-export const getPageFetchError =
-  (state: StateType): Object => errorSelector(types.FETCH_PULL_REQUESTS)(state)
 
 export const getPullRequestFetchStatus =
-  (state: StateType): boolean => isFetchingSelector(types.FETCH_PULL_REQUEST)(state)
-export const getPullRequestFetchError =
-  (state: StateType): Object => errorSelector(types.FETCH_PULL_REQUEST)(state)
+  (state: Object): StatusType => getFetchStatus(state, types.FETCH_PULL_REQUEST)
+
 
 export const getOwnedFetchStatus =
-  (state: StateType): boolean => isFetchingSelector(types.FETCH_USER_PULL_REQUESTS)(state)
-export const getOwnedFetchError =
-  (state: StateType): Object => errorSelector(types.FETCH_USER_PULL_REQUESTS)(state)
+  (state: Object): StatusType => getFetchStatus(state, types.FETCH_USER_PULL_REQUESTS)
+
 
 export const getAssignedFetchStatus =
-  (state: StateType): boolean => isFetchingSelector(types.FETCH_USER_ASSIGNED_PULL_REQUESTS)(state)
-export const getAssignedError =
-  (state: StateType): Object => errorSelector(types.FETCH_USER_ASSIGNED_PULL_REQUESTS)(state)
+  (state: Object): StatusType => getFetchStatus(state, types.FETCH_USER_ASSIGNED_PULL_REQUESTS)
+
 
 export const getPullRequest =
-  (state: Object, props: Object): Object => state.pullrequests.entities[props.params.prid]
+  (state: Object, props: Object): Object => {
+    const id = props.params ? props.params.prid : props.pullRequestId || props.id
+    return state.pullrequests.entities[id]
+  }
 
 export const getIds = (state: Object): Array<Number> => {
   const { pagination: { pages, currentPage } } = state

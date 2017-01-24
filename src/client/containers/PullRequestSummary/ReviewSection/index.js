@@ -4,88 +4,39 @@ import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import fuzzy from 'fuzzy'
-import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
+import { connect } from 'react-redux'
+import ReviewerItem from './ReviewerItem'
+import type { UserType, ReviewType } from 'universal/types'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
-import pureComponent from 'universal/react-pure-render'
-
-type UserType = {
-  fullName: string,
-  username: string,
-}
-
-type ReviewerSelectionItemProps = {
-  isReviewer: boolean,
-  onToggleReviewer: (user: UserType) => void,
-  user: UserType,
-}
+import { getPullRequest } from 'ducks/pullrequests/selectors'
+import { createSelector, createStructuredSelector } from 'reselect'
 
 const whiteSpaceRegExp = /\s+/g
 
-class ReviewerSelectionItem extends Component {
-
-  onToggleReviewer = () => {
-    this.props.onToggleReviewer(this.props.user)
-  }
-
-  props: ReviewerSelectionItemProps
-
-  render() {
-    const { isReviewer, user } = this.props
-
-    return (
-      <ListGroupItem
-        onClick={this.onToggleReviewer}
-        style={{
-          padding: '2px 10px',
-          textDecoration: 'none',
-          outline: 'none',
-          border: 'none',
-          boxShadow: 'none',
-        }}
-      >
-        <div
-          style={{
-            float: 'left',
-            marginRight: '12px',
-          }}
-        >
-          <i
-            className="fa fa-check"
-            style={{
-              visibility: isReviewer ? 'inherit' : 'hidden',
-              display: 'inline-block',
-              fontSize: '16px',
-              lineHeight: '40px',
-              width: '40px',
-              height: '40px',
-              textAlign: 'center',
-              verticalAlign: 'bottom',
-            }}
-          />
-        </div>
-        <div>
-          <div style={{ fontSize: '14px' }}>
-            <strong>{user.fullName}</strong>
-          </div>
-          <span style={{ color: 'grey', fontSize: '11px' }}>{user.username}</span>
-        </div>
-      </ListGroupItem>
-    )
-  }
-}
-
-
-type ReviewersProps = {
-  reviewers: Set<string>,
+type ReviewProps = {
+  id: string,
+  reviews: Set<ReviewType>,
   users: Array<UserType>,
   onToggleReviewer: (user: UserType) => void,
 }
 
+export const getReviewsData = (state: Object, props: Object): Object =>
+  createSelector(
+    getPullRequest,
+    (pr) => pr.reviewers
+  )
 
-class ReviewerSelection extends Component {
+export const getUsersData = (state: Object): Array<UserType> => state.users
+
+export const getData = createStructuredSelector({
+  reviews: getReviewsData,
+  users: getUsersData,
+})
+
+class ReviewSection extends Component {
   /* eslint-disable react/sort-comp */
 
-  constructor(props: ReviewersProps) {
+  constructor(props: ReviewProps) {
     super(props)
     this.state = {
       usersAfterSearch: this.props.users,
@@ -93,7 +44,7 @@ class ReviewerSelection extends Component {
     }
   }
 
-  props: ReviewersProps
+  props: ReviewProps
 
   state: {
     usersAfterSearch: Array<UserType>,
@@ -102,7 +53,7 @@ class ReviewerSelection extends Component {
 
   onSearchQueryChange = (event: SyntheticInputEvent) => {
     const query = event.target.value
-    let usersAfterSearch
+    let usersAfterSearch = []
 
     if (query) {
       const queryWithoutWhitespace = query.replace(whiteSpaceRegExp, '')
@@ -110,7 +61,7 @@ class ReviewerSelection extends Component {
         // A bit quick and dirty to concat these, but does the job:
         extract: (el) => `${el.username} ${el.fullName}`,
       })
-      usersAfterSearch = matches.map(match => match.original)
+      usersAfterSearch = matches ? matches.map(match => match.original) : []
     } else {
       usersAfterSearch = this.props.users
     }
@@ -166,14 +117,14 @@ class ReviewerSelection extends Component {
                 overflowX: 'hidden',
               }}
             >
-              {usersAfterSearch.map(user => (
-                <ReviewerSelectionItem
+              {usersAfterSearch && usersAfterSearch.map(user => (
+                <ReviewerItem
                   user={user}
                   isReviewer={reviewers.has(user.username)}
                   onToggleReviewer={onToggleReviewer}
                   key={user.username}
                 />
-              ))}
+            ))}
             </ListGroup>
           </Col>
         </Row>
@@ -182,4 +133,4 @@ class ReviewerSelection extends Component {
   }
 }
 
-export default ReviewerSelection
+export default connect(getData)(ReviewSection)

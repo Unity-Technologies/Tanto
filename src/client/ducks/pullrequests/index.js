@@ -8,7 +8,8 @@ import {
   PullRequestSource,
 } from 'services/ono/queries/pullrequests'
 import { entities, actions as entitiesActions } from 'ducks/entities'
-import PULL_REQUEST_QUERY, { pullRequestQuery } from 'services/ono/queries/pullRequest'
+import PULL_REQUEST_QUERY,
+  { PULL_REQUEST_METADATA_QUERY, pullRequestQuery } from 'services/ono/queries/pullRequest'
 import { target } from 'ducks/filters'
 
 import { pagination, receivePage } from 'ducks/pagination'
@@ -31,6 +32,7 @@ export const types = {
   FETCH_USER_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_PULL_REQUESTS',
   FETCH_USER_ASSIGNED_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_ASSIGNED_PULL_REQUESTS',
   FETCH_USER_WATCHING_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_WATCHING_PULL_REQUESTS',
+  FETCH_PULL_REQUEST_METADATA: 'PULLREQUESTS/FETCH_PULL_REQUEST_METADATA',
 }
 
 /**
@@ -70,7 +72,6 @@ export type PullRequestsStateType = {
 export const filters = combineReducers({
   target,
 })
-
 
 /**
  * Pullrequests reducer
@@ -114,8 +115,9 @@ export type FetchPullRequestArgs = {
 
 export const FiltersFields = ['updated']
 
-export const fetchPullRequestData = (id: number, graphQuery: string = PULL_REQUEST_QUERY): Object =>
-  fetchActionCreator(types.FETCH_PULL_REQUEST, graphQuery, { id },
+export const fetchPullRequestData =
+  (actionType: string, graphQuery: string, args: Object = {}): Object =>
+    fetchActionCreator(actionType, graphQuery, args,
     (data: Object, cbArgs: Object): Array<Object> => {
       const node = pullRequestQuery(data)
       return [{ type: types.SET_PULL_REQUEST, node }]

@@ -48,14 +48,14 @@ const Header = ({ currentCategory, rootPath }) =>
 
 export type Props = {
   currentCategory: string,
-  pullRequest: PullRequestGraphType,
+  pullRequestId: PullRequestGraphType,
   rootPath: string,
 }
 
-const LayoutDeveloper = ({ currentCategory, pullRequest, rootPath } : Props) =>
+const LayoutDeveloper = ({ currentCategory, pullRequestId, rootPath } : Props) =>
   <div style={{ padding: '0 20px' }}>
     <Header currentCategory={currentCategory} rootPath={rootPath} />
-    <CategoryModule pullRequest={pullRequest} type={currentCategory} />
+    <CategoryModule pullRequestId={pullRequestId} type={currentCategory} />
   </div>
 
 export default LayoutDeveloper

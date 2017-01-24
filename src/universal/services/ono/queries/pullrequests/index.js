@@ -33,7 +33,7 @@ const subQuery = `
 `
 
 export const userPullRequestsQuery = name => `
-  query ($limit: Int, $offset: Int, $target: PullRequestSourceReference, $repo: String, $orderBy: Ordering) {
+  query ($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: Ordering) {
     me {
       ${name}(limit: $limit, offset: $offset, repo: $repo, target: $target, orderBy: $orderBy) {
         ${subQuery}
@@ -42,7 +42,7 @@ export const userPullRequestsQuery = name => `
   }`
 
 export const projectPullRequestsQuery = `
-  query ($limit: Int, $offset: Int, $target: PullRequestSourceReference, $repo: Int, $orderBy: Ordering) {
+  query ($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: Int, $orderBy: Ordering) {
     repository(id: $repo) {
       pullRequests(limit: $limit, offset: $offset, target: $target, orderBy: $orderBy) {
         total

@@ -10,6 +10,7 @@ import BranchSelect from 'containers/BranchSelect'
 import RepoSelect from 'containers/RepoSelect'
 import OrderSelect from 'containers/OrderSelect'
 import Alert from 'react-bootstrap/lib/Alert'
+import type { StatusType } from 'ducks/pullrequests/selectors'
 import type { OrderByType, DirectionType } from 'ducks/order'
 import { PullRequestSource } from 'services/ono/queries/pullrequests'
 
@@ -17,9 +18,8 @@ export type Props = {
   dispatch: Function,
   activePage: number,
   pageSize: number,
-  isFetching: boolean,
+  status: StatusType,
   total: number,
-  error: Object,
   items: Array<any>,
   branch: string,
   repo: string,
@@ -89,6 +89,7 @@ class PullRequestsPaginated extends Component {
 
   render() {
     const pullRequestsExists = !!this.props.total
+    const { status: { error, isFetching } } = this.props
     return (
       <div>
         <div
@@ -121,9 +122,9 @@ class PullRequestsPaginated extends Component {
             />
           </div>
         </div>
-        {this.props.isFetching && <LinearProgress />}
-        {this.props.error && <ErrorMessage error={this.props.error} />}
-        {!pullRequestsExists && !this.props.isFetching && !this.props.error &&
+        {isFetching && <LinearProgress />}
+        {error && <ErrorMessage error={error} />}
+        {!pullRequestsExists && !this.props.isFetching && !error &&
           <Alert bsStyle="warning" style={{ fontSize: '13px' }}>
             <strong>
               <i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong>

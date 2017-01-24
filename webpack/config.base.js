@@ -40,6 +40,11 @@ const loaders = [
     test: webpackIsomorphicToolsPlugin.regular_expression('images'),
     loader: 'url-loader?limit=10240',
   },
+  {
+    test: /\.(graphql|gql)$/,
+    exclude: /node_modules/,
+    loader: 'graphql-tag/loader',
+  },
 ]
 
 const config = {
