@@ -7,7 +7,6 @@ import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchPullRequests } from 'ducks/pullrequests'
 import {
   getPageFetchStatus,
-  getPageFetchError,
   getPullRequests } from 'ducks/pullrequests/selectors'
 
 import { getRepositoryId } from 'ducks/repositories/selectors'
@@ -26,8 +25,7 @@ const mapStateToProps = (state, props) => ({
   pageSize: 10,
   activePage: state.pullrequests.pagination.currentPage,
   total: state.pullrequests.pagination.total,
-  isFetching: getPageFetchStatus(state),
-  error: getPageFetchError(state),
+  status: getPageFetchStatus(state),
   items: getPullRequests(state) || [],
   orderBy: state.session.pullRequestsOwned.orderBy,
 })

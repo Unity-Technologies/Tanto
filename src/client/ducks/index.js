@@ -8,6 +8,7 @@ import pullrequests from './pullrequests'
 import session from './session'
 import fetchStatus from './fetch'
 import sidebar from './sidebar'
+import users from './users'
 
 export default combineReducers({
   pullrequests,
@@ -16,4 +17,5 @@ export default combineReducers({
   sidebar,
   repositories,
   fetch: fetchStatus,
+  users,
 })

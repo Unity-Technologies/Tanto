@@ -8,10 +8,8 @@ import {
   PullRequestSource,
 } from 'services/ono/queries/pullrequests'
 import { entities, actions as entitiesActions } from 'ducks/entities'
-import PULL_REQUEST_QUERY,
-  { PULL_REQUEST_METADATA_QUERY, pullRequestQuery } from 'services/ono/queries/pullRequest'
+import { pullRequestQuery } from 'services/ono/queries/pullRequest'
 import { target } from 'ducks/filters'
-
 import { pagination, receivePage } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
 import type { PaginationType } from 'ducks/pagination'

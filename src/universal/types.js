@@ -1,6 +1,8 @@
 import IssueStatus from 'universal/constants'
 
 export type UserType = {
+  id: string,
+  email: string,
   username: string,
   fullName: string
 }

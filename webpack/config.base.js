@@ -43,7 +43,7 @@ const loaders = [
   {
     test: /\.(graphql|gql)$/,
     exclude: /node_modules/,
-    loader: 'graphql-tag/loader',
+    loader: 'raw-loader',
   },
 ]
 

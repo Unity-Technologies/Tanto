@@ -8,7 +8,7 @@ export type { StatusType } from 'ducks/fetch'
 
 import _ from 'lodash'
 
-export const getPRPageFetchStatus =
+export const getPageFetchStatus =
   (state: Object): StatusType => getFetchStatus(state, types.FETCH_PULL_REQUESTS)
 
 

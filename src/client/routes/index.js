@@ -3,6 +3,7 @@ import Route from 'react-router/lib/Route'
 import IndexRoute from 'react-router/lib/IndexRoute'
 
 import { fetchProfile } from 'ducks/session'
+import { fetchUsers } from 'ducks/users'
 
 import App from 'pages/App'
 import Home from 'pages/Home'
@@ -22,8 +23,13 @@ import NewPullRequest from 'pages/Project/NewPullRequest'
 
 import { app, project, pullrequest, changeset } from 'containers/SideBar/SideBarConfig'
 
-export default (store) => {
+export const initialPrefetch = (store) => {
   store.dispatch(store.dispatch(fetchProfile()))
+  store.dispatch(store.dispatch(fetchUsers()))
+}
+
+export default (store) => {
+  initialPrefetch(store)
 
   const onAppEnter = () => {
     app(store)
