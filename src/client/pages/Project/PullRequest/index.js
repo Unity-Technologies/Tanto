@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { DEVELOPER_PERSONA, MANAGER_PERSONA, GUARDIAN_PERSONA } from 'ducks/session'
 import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
@@ -25,41 +25,38 @@ type Props = {
   pullRequest: ?PullRequestGraphType,
 }
 
-class PullRequest extends Component {
-  props: Props
+function PullRequest(props: Props) {
+  const { persona, params, location, title } = this.props
 
-  render() {
-    const { persona, params, location, title } = this.props
-
-    let rootPath = location.pathname
-    if (params.category) {
-      // TODO: I don't like this, but react-router is not handling
-      // relative URLs, so we need to strip the category part of the url...
-      // There might be a better way. Or just using query params?
-      rootPath = rootPath.replace(new RegExp(`/${params.category}$`), '')
-    }
-
-    const defaultCategory = (!persona || persona === DEVELOPER_PERSONA) ? 'summary' : 'guardian'
-    const currentCategory = params.category || defaultCategory
-
-    return (
-      <div>
-        <ActionBar />
-        <Helmet title={`Pull Request: ${title}`} />
-
-        {currentCategory === MANAGER_PERSONA || currentCategory === GUARDIAN_PERSONA ?
-          <LayoutGuardian pullRequestId={params.prid} />
-        :
-          <LayoutDeveloper
-            pullRequestId={params.prid}
-            currentCategory={currentCategory}
-            rootPath={rootPath}
-          />
-        }
-      </div>
-    )
+  let rootPath = location.pathname
+  if (params.category) {
+    // TODO: I don't like this, but react-router is not handling
+    // relative URLs, so we need to strip the category part of the url...
+    // There might be a better way. Or just using query params?
+    rootPath = rootPath.replace(new RegExp(`/${params.category}$`), '')
   }
+
+  const defaultCategory = (!persona || persona === DEVELOPER_PERSONA) ? 'summary' : 'guardian'
+  const currentCategory = params.category || defaultCategory
+
+  return (
+    <div>
+      <ActionBar />
+      <Helmet title={`Pull Request: ${title}`} />
+
+      {currentCategory === MANAGER_PERSONA || currentCategory === GUARDIAN_PERSONA ?
+        <LayoutGuardian pullRequestId={params.prid} />
+        :
+        <LayoutDeveloper
+          pullRequestId={params.prid}
+          currentCategory={currentCategory}
+          rootPath={rootPath}
+        />
+      }
+    </div>
+  )
 }
+
 
 export default connect(
   (state, props) => ({

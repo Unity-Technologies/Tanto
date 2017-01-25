@@ -3,8 +3,6 @@ import React from 'react'
 import Badge from 'react-bootstrap/lib/Badge'
 import { Link } from 'react-router'
 
-import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
-
 import CategoryModule from './common'
 
 
@@ -48,7 +46,7 @@ const Header = ({ currentCategory, rootPath }) =>
 
 export type Props = {
   currentCategory: string,
-  pullRequestId: PullRequestGraphType,
+  pullRequestId: string,
   rootPath: string,
 }
 

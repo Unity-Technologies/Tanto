@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { storiesOf } from '@kadira/storybook'
 import { muiTheme } from 'storybook-addon-material-ui'
 
-import ReviewerSelection from './ReviewerSelection'
+import ReviewerSelection from './index'
 
 const USERS = [
   { username: 'alfredp', fullName: 'Alfred Pennyworth ' },

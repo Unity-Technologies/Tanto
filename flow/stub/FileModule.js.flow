@@ -1,0 +1,4 @@
+/* @flow */
+
+declare export var query: string;
+declare export default string;

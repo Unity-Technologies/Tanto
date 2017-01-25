@@ -46,7 +46,7 @@ describe('pullrequests actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchPullRequestData(id))
+    store.dispatch(fetchPullRequestData(types.FETCH_PULL_REQUEST, PULL_REQUEST_QUERY, { id }))
   })
 
   it('fetchPullRequest failure', (done) => {
@@ -65,7 +65,7 @@ describe('pullrequests actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchPullRequestData(id))
+    store.dispatch(fetchPullRequestData(types.FETCH_PULL_REQUEST, PULL_REQUEST_QUERY, { id }))
   })
 
   it('fetchPullRequests success(default filters)', (done) => {

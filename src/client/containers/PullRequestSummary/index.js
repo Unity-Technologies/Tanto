@@ -34,7 +34,8 @@ export const getMetadata = createStructuredSelector({
 
 class PullRequestSummary extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchPullRequestData(action, pullRequestMetadataQuery, { id: this.props.pullRequestId }))
+    this.props.dispatch(
+      fetchPullRequestData(action, pullRequestMetadataQuery, { id: this.props.pullRequestId }))
   }
   props: PullRequestSummaryPropsType
 

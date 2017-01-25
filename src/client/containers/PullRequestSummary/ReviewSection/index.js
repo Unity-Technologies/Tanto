@@ -54,14 +54,20 @@ class ReviewSection extends Component {
     super(props)
     this.state = { toggleReviewers: false }
   }
-  props: ReviewersSectionProps
 
+  state: {
+    toggleReviewers: boolean
+  }
+
+  // TODO: aiting for API to add/remove reviewers
   onToggleReviewer = () => { }
 
   onToggleReviewers = () => {
     const newState = !this.state.toggleReviewers
     this.setState({ toggleReviewers: newState })
   }
+
+  props: ReviewersSectionProps
 
   render() {
     const { reviews, users } = this.props
@@ -149,7 +155,12 @@ class ReviewSection extends Component {
           <Col md={1}>
             <div
               onClick={this.onToggleReviewers}
-              style={{ color: 'rgb(159, 217, 237)', float: 'right', fontSize: '20px', cursor: 'pointer' }}
+              style={{
+                color: 'rgb(159, 217, 237)',
+                float: 'right',
+                fontSize: '20px',
+                cursor: 'pointer',
+              }}
             >
               <i className="fa fa-pencil" aria-hidden="true" />
             </div>

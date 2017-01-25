@@ -9,7 +9,7 @@ import React from 'react'
 // import PullRequestDiscussion from 'components/PullRequestDiscussion'
 import PullRequestSummary from 'containers/PullRequestSummary'
 
-import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
+// import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 
 // import { buildProjectLink } from 'routes/helpers'
 
@@ -17,7 +17,7 @@ import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 //   PullRequestData, prChangesetList, prIssues,
 // } from '../../../../api/testPullRequest'
 
-const noop = () => {}
+// const noop = () => {}
 
 type Props = {
   type: string,
@@ -42,14 +42,11 @@ type Props = {
  */
 const CategoryModule = ({ type, pullRequestId }: Props) =>
   // const paths = pathsSelector(pullRequest)
-   (
-    <div>
+  (<div>
       {type === 'summary' &&
         <PullRequestSummary pullRequestId={pullRequestId} />
       }
-
-    </div>
-  )
+  </div>)
 
 export default CategoryModule
 

@@ -17,11 +17,12 @@ export type HeaderPropsType = {
   }
 }
 
-export const getHeaderData = (state: Object, props: Object): HeaderPropsType => createSelector(
-  getPullRequest,
-  (pr) =>
-    _.pick(pr, ['title', 'created', 'owner']),
-)
+export const getHeaderData = (state: Object, props: Object): HeaderPropsType =>
+  createSelector(
+    getPullRequest,
+    (pr) =>
+      _.pick(pr, ['title', 'created', 'owner']),
+  )
 
 const Header = (props: HeaderPropsType) =>
   <div style={{ display: 'inline-block' }}>
@@ -35,7 +36,8 @@ const Header = (props: HeaderPropsType) =>
       </div>
       <span style={{ color: 'grey', fontSize: '13px' }}>
         created {moment(props.created).fromNow()}
-        {' '} by {props.owner ? props.owner.fullName : ''} ({props.owner ? props.owner.username : ''})
+        {' '} by {props.owner ? props.owner.fullName : ''}
+        ({props.owner ? props.owner.username : ''})
       </span>
     </div>
   </div>
