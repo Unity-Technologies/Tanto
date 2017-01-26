@@ -6,14 +6,12 @@ import _ from 'lodash'
 
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
-import Tab from 'react-bootstrap/lib/Tab'
-import Tabs from 'react-bootstrap/lib/Tabs'
+
 
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 
 import ChangesetFileList from '../ChangesetFileList'
-import CommentsList from '../CommentsList'
 
 import DiffHeader from './DiffHeader/DiffHeader'
 
@@ -24,6 +22,7 @@ const Element = Scroll.Element
 
 export type Props = {
   files: Array<any>,
+  loggedUsername: string,
   viewType?: number,
 }
 
@@ -103,6 +102,7 @@ class CodeDiffView extends Component {
       />
       <Code
         viewType={this.state.viewType}
+        loggedUsername={this.props.loggedUsername}
         collapseComments={this.state.collapsedComments}
         {...file}
       />
@@ -111,6 +111,9 @@ class CodeDiffView extends Component {
 
   render() {
     const { files } = this.props
+    if (!files) {
+      return null
+    }
     return (
       <div id="codeReviewContainer">
         <Row>

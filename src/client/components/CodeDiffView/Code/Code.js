@@ -20,12 +20,13 @@ export type Props = {
   comments?: Array<any>,
   collapseComments?: boolean,
   viewType?: string,
+  loggedUsername: string,
 };
 
 
 class Code extends Component {
   /* eslint-disable react/sort-comp */
-  asyncProcessCode({ type, viewType, diff }) {
+  asyncProcessCode = ({ type, viewType, diff }) => {
     const promise = new Promise((resolve) => {
       const html = Prism.highlight(diff, Prism.languages[type] || Prism.languages.clike)
       let lines = null
@@ -45,15 +46,15 @@ class Code extends Component {
     return promise
   }
 
-  getFileComments(fileComments, lineNumber, version) {
-    const lineComments = version ?
-      _.find(fileComments, { line: lineNumber, version }) :
-      _.find(fileComments, { line: lineNumber })
-    if (lineComments) {
-      return lineComments.comments
+  getFileComments = (fileComments, lineNumber, version) => {
+    if (!lineNumber) {
+      return []
     }
+    const prfx = version || ''
 
-    return []
+    const res = _.filter(fileComments, (x) => x.lineNumber.match(`${prfx}${lineNumber}`))
+
+    return res
   }
 
   constructor(props: Props) {
@@ -63,12 +64,6 @@ class Code extends Component {
       content: null,
       error: null,
     }
-
-
-    this.changeDiffViewType = this.changeDiffViewType.bind(this)
-    this.processCode = this.processCode.bind(this)
-    this.getFileComments = this.getFileComments.bind(this)
-    this.updateCode = this.updateCode.bind(this)
   }
 
   props: Props
@@ -77,20 +72,20 @@ class Code extends Component {
     this.asyncProcessCode(this.props).then(this.updateCode)
   }
 
-  updateCode(code) {
+  updateCode = (code) => {
     this.setState({
       content: code,
       ready: true,
     })
   }
 
-  changeDiffViewType(value) {
+  changeDiffViewType = (value) => {
     this.setState({ viewType: value })
   }
 
-  processCode() {
+  processCode = () => {
     const { content } = this.state
-    const { collapseComments, comments, viewType } = this.props
+    const { collapseComments, comments, viewType, loggedUsername } = this.props
     if (viewType === '0') {
       return (
         <table className="code-block diff-unified">
@@ -99,8 +94,9 @@ class Code extends Component {
               <UnifiedRow
                 key={_.uniqueId('_split_code_row')}
                 collapseComments={collapseComments}
+                loggedUsername={loggedUsername}
                 comments={
-                  this.getFileComments(comments, line.newLineNumber || line.oldLineNumber)}
+                  this.getFileComments(comments, line.newLineNumber || line.oldLineNumber, line.newLineNumber ? 'n' : 'o')}
                 {...line}
               />))}
           </tbody>
@@ -113,10 +109,11 @@ class Code extends Component {
             <SplitRow
               key={_.uniqueId('_split_code_row')}
               collapseComments={collapseComments}
+              loggedUsername={loggedUsername}
               leftComments={
-                this.getFileComments(comments, line.leftLineNumber, 'old')}
+                this.getFileComments(comments, line.leftLineNumber, 'o')}
               rightComments={
-                this.getFileComments(comments, line.rightLineNumber, 'new')}
+                this.getFileComments(comments, line.rightLineNumber, 'n')}
               {...line}
             />
             ))}</tbody>

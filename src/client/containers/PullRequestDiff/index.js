@@ -20,13 +20,14 @@ type Props = {
 const action = 'component/PULL_REQUEST_DIFF'
 
 export const fetchStatus = statusFetchCreator(action)
-
+export const getLoggedUser = (state: Object) => state.session.profile.username
 export const getData = (state: Object, props: Object): string =>
   createSelector(
-    getPullRequest, fetchStatus,
+    getPullRequest, fetchStatus, getLoggedUser,
     (pr, status, user) => ({
       files: pr ? pr.files : [],
       status,
+      loggedUsername: user,
     })
   )
 
@@ -41,7 +42,7 @@ class PullRequestDiff extends Component {
   render() {
     return (
       <LoadingComponent status={this.props.status}>
-        <CodeDiffView files={this.props.files} />
+        <CodeDiffView files={this.props.files} loggedUsername={this.props.loggedUsername} />
       </LoadingComponent>
     )
   }

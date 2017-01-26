@@ -16,6 +16,7 @@ export type Props = {
   comments?: Array<any>,
   collapseComments?: boolean,
   onComment?: Function,
+  loggedUsername: string,
 };
 
 class UnifiedRow extends Component {
@@ -78,6 +79,7 @@ class UnifiedRow extends Component {
       operation,
       isBreak,
       newLineNumber,
+      loggedUsername,
       oldLineNumber,
       comments,
     } = this.props
@@ -122,7 +124,8 @@ class UnifiedRow extends Component {
                 <Comment
                   simpleText
                   key={_.uniqueId('_code_comment')}
-                  {...comment}
+                  comment={comment}
+                  loggedUsername={loggedUsername}
                 />
               ))}
             {!this.state.commentState &&

@@ -100,7 +100,7 @@ export type InlineCommentType = {
   id: string,
   text: string,
   created: string,
-  created: string,
+  modified: string,
   author: UserType,
   lineNumber: number
 }

@@ -14,7 +14,8 @@ type LoadingComponentProps = {
 function LoadingComponent(props: LoadingComponentProps) {
   return (
     <div>
-      {props.status.error && <ErrorMessage error={props.status.error} />}
+      {props.status.error && !props.status.isFetching &&
+        <ErrorMessage error={props.status.error} />}
       <div>
         {props.children}
       </div>
