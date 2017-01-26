@@ -1,0 +1,28 @@
+query pullRequestFiles($id: Int!) {
+  pullRequest(id: $id) {
+    id
+    files {
+      stats {
+        added
+        deleted
+        binary
+      }
+      operation
+      oldName
+      name
+      diff
+      type
+      comments {
+        text
+        created
+        id
+        author {
+          username
+          fullName
+        }
+        lineNumber
+      }
+      id
+    }
+  }
+}

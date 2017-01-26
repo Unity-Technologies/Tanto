@@ -16,9 +16,7 @@ import ChangesetFileList from '../ChangesetFileList'
 import CommentsList from '../CommentsList'
 
 import DiffHeader from './DiffHeader/DiffHeader'
-import {
-  PullRequestData, PullRequestHistory2, PullRequestUnresolvedComments,
-} from '../../api/testPullRequest'
+
 import Code from './Code/Code'
 import './CodeDiffView.css'
 
@@ -130,18 +128,6 @@ class CodeDiffView extends Component {
               <i className="fa fa-th-list" aria-hidden="true" />
             </a>
 
-            <a
-              onClick={() => this.toggleCommentsList()}
-              className="btn"
-              style={{
-                color: 'white',
-                marginRight: '5px',
-                backgroundColor: this.state.showCommentsList ? '#71b8db' : 'lightgrey' }}
-              aria-label="Show comments list"
-            >
-              <i className="fa fa-comments" aria-hidden="true" />
-            </a>
-
           </Col>
           <Col md={4} style={{ float: 'right' }}>
             <div className="section">
@@ -151,7 +137,7 @@ class CodeDiffView extends Component {
                 name="form-field-name"
                 value={this.state.hash}
                 placeholder="Filter by changeset"
-                options={PullRequestHistory2}
+                options={[]}
                 onChange={this.handleHashChange}
                 valueRenderer={this.renderValue}
               />
@@ -159,44 +145,20 @@ class CodeDiffView extends Component {
           </Col>
         </Row>
         <Row style={{ marginTop: '15px' }}>
-          {this.state.showFileList && this.state.showCommentsList &&
+          {this.state.showFileList &&
             <Col md={3}>
-              <Tabs defaultActiveKey={1} id="code-diff-tabs">
-                <Tab style={{ padding: '10px 0' }} eventKey={1} title="Files">
-                  <ChangesetFileList
-                    files={PullRequestData}
-                    compact
-                    containerId="codeDiffContainerElement"
-                  />
-                </Tab>
-                <Tab style={{ padding: '10px 0' }} ventKey={2} title="Comments">
-                  <CommentsList
-                    comments={PullRequestUnresolvedComments}
-                    containerId="codeDiffContainerElement"
-                  />
-                </Tab>
-              </Tabs>
-            </Col>}
-          {this.state.showFileList && !this.state.showCommentsList &&
-            <Col md={3} style={{ height: this.state.height }}>
               <ChangesetFileList
-                files={PullRequestData}
+                files={this.props.files}
                 compact
                 containerId="codeDiffContainerElement"
               />
             </Col>}
-          {this.state.showCommentsList && !this.state.showFileList &&
-            <Col md={3} style={{ height: this.state.height }}>
-              <CommentsList
-                comments={PullRequestUnresolvedComments}
-                containerId="codeDiffContainerElement"
-              />
-            </Col>}
+
           <Col md={(this.state.showFileList || this.state.showCommentsList) ? 9 : 12}>
             <div
               id="codeDiffContainerElement"
               style={(this.state.showFileList || this.state.showCommentsList) ?
-              { height: this.state.height, overflow: 'auto', position: 'relative' } : {}}
+                { height: this.state.height, overflow: 'auto', position: 'relative' } : {}}
             >
               {files.map(file => this.renderFileDiff(file))}
             </div>

@@ -95,3 +95,22 @@ export type GeneralCommentType = {
   author: UserType,
   status: string
 }
+
+export type InlineCommentType = {
+  id: string,
+  text: string,
+  created: string,
+  created: string,
+  author: UserType,
+  lineNumber: number
+}
+
+export type FileType = {
+  id: string,
+  stats: Object,
+  operation: string,
+  oldName: string,
+  diff: string,
+  type: string,
+  comments: Array<InlineCommentType>
+}

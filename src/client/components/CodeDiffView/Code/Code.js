@@ -73,7 +73,7 @@ class Code extends Component {
 
   props: Props
 
-  componentWillMount() {
+  componentDidMount() {
     this.asyncProcessCode(this.props).then(this.updateCode)
   }
 
