@@ -2,7 +2,7 @@ import React from 'react'
 import Route from 'react-router/lib/Route'
 import IndexRoute from 'react-router/lib/IndexRoute'
 
-import { fetchProfile } from 'ducks/session'
+import { fetchProfile } from 'ducks/session/actions'
 import { fetchUsers } from 'ducks/users'
 
 import App from 'pages/App'

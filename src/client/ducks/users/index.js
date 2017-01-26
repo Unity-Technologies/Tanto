@@ -42,7 +42,7 @@ export default (
 export const parseUsers = (data: Object): Array<UserType> => data.data.users
 
 export const fetchUsers = (): Object =>
-  fetchActionCreator(types.FETCH_USERS, usersQuery, { },
+  fetchActionCreator(types.FETCH_USERS, usersQuery, { }, '',
     (data: Object, cbArgs: Object): Array<Object> => {
       const nodes = parseUsers(data)
       return [

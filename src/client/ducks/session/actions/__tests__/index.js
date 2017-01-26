@@ -5,13 +5,14 @@ import fetchMock from 'fetch-mock'
 import
 {
   types as sessionTypes,
-   fetchProfile,
+  fetchProfile,
+
 } from '../index'
 
 import { types as fetchTypes } from 'ducks/fetch'
-import USER_PROFILE_QUERY from 'services/ono/queries/users'
+import userProfileQuery from 'ducks/session/queries/me.graphql'
 
-import storeMock from '../../../tests/mocks/storeMock'
+import storeMock from 'tests/mocks/storeMock'
 
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
@@ -21,7 +22,7 @@ describe('session fetch actions', () => {
   afterEach(() => fetchMock.restore())
   it('should fetch profile', (done) => {
     const actionsList = [{
-      type: fetchTypes.FETCH_DATA, query: USER_PROFILE_QUERY,
+      type: fetchTypes.FETCH_DATA, query: userProfileQuery,
       name: sessionTypes.FETCH_USER_PROFILE, args: {},
     }, {
       type: fetchTypes.CLEAR_ERROR, name: sessionTypes.FETCH_USER_PROFILE,
@@ -46,7 +47,7 @@ describe('session fetch actions', () => {
     const error = new Error('some error')
     const fetchData = {
       type: fetchTypes.FETCH_DATA,
-      query: USER_PROFILE_QUERY,
+      query: userProfileQuery,
       name: sessionTypes.FETCH_USER_PROFILE,
       args: {},
     }

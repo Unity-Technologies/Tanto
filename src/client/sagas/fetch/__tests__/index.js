@@ -39,6 +39,7 @@ describe('fetch anything saga', () => {
     const actionName = 'testaction'
     const query = 'test query'
     const args = { arg1: '1' }
+    const operationName = 'testQuery'
     const callbackAction1 = 'CALLBACK_ACTION1'
     const callbackAction2 = 'CALLBACK_ACTION2'
     const callbackAction3 = 'CALLBACK_ACTION3'
@@ -62,6 +63,7 @@ describe('fetch anything saga', () => {
       query,
       args,
       callback,
+      operationName,
     }
     const generator = fetchAnythingSaga(action)
 
@@ -85,7 +87,7 @@ describe('fetch anything saga', () => {
     }
     expect(generator.next().value).to.deep.equal(put(actions.clearError(actionName)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, true)))
-    expect(generator.next().value).to.deep.equal(call(get, query, args))
+    expect(generator.next().value).to.deep.equal(call(get, query, args, operationName))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb1))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb2))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb3))
@@ -96,6 +98,7 @@ describe('fetch anything saga', () => {
     const actionName = 'testaction'
     const query = 'test query'
     const args = { arg1: '1' }
+    const operationName = 'testQuery'
     const callbackAction1 = 'CALLBACK_ACTION1'
     const callbackAction2 = 'CALLBACK_ACTION2'
     const callbackAction3 = 'CALLBACK_ACTION3'
@@ -119,6 +122,7 @@ describe('fetch anything saga', () => {
       query,
       args,
       callback,
+      operationName,
     }
     const generator = fetchAnythingSaga(action)
 
@@ -134,7 +138,7 @@ describe('fetch anything saga', () => {
 
     expect(generator.next().value).to.deep.equal(put(actions.clearError(actionName)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, true)))
-    expect(generator.next().value).to.deep.equal(call(get, query, args))
+    expect(generator.next().value).to.deep.equal(call(get, query, args, operationName))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb1))
     expect(generator.throw(error).value).to.deep.equal(put(actions.requestError(actionName, error)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, false)))

@@ -13,7 +13,7 @@ import {
   GUARDIAN_PERSONA,
   DEVELOPER_PERSONA,
   MANAGER_PERSONA,
-} from 'ducks/session'
+} from 'universal/constants'
 import More from 'material-ui/svg-icons/navigation/more-vert'
 
 export type Props = {

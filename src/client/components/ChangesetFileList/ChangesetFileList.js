@@ -7,7 +7,7 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import fuzzy from 'fuzzy'
 import { Link } from 'react-router'
 
-import type { File } from 'services/ono/queries/pullRequest'
+import type { File } from 'universal/types'
 import ChangesetDelta from '../ChangesetDelta'
 import { pluralizedText } from 'utils/text'
 

@@ -157,11 +157,13 @@ describe('fetchActionCreator', () => {
     const type = 'SOME_ACTOIN_TYPE'
     const query = 'query {test query}'
     const args = { id: 'testid', limit: 123 }
+    const operationName = 'someOperationName'
     const callback = (data: Object, cbArgs: Object) => 'some callback here'
-    expect(fetchActionCreator(type, query, args, callback))
+    expect(fetchActionCreator(type, query, args, operationName, callback))
       .to.eql({
         type: types.FETCH_DATA,
         name: type,
+        operationName,
         query,
         args,
         callback,

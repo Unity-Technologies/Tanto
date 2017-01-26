@@ -5,7 +5,6 @@ export const routes = {
   ONO_AUTH_ROUTE: '/auth/ono',
   ONO_AUTH_CALLBACK_ROUTE: '/auth/ono/callback',
   ONO_AUTH_LOGOUT_ROUTE: '/auth/logout',
-
   LOGIN_ROUTE: '/login',
 }
 
@@ -25,5 +24,22 @@ export const IssueStatus = {
   OBSOLETE: 'obsolete',
   NEXT: 'next',
 }
+
+export const PullRequestSource = {
+  BRANCH: 'BRANCH',
+  REVISION: 'REVISION',
+  TAG: 'TAG',
+  BOOK: 'BOOK',
+}
+
+export const PullRequestOrderFields = ['updated']
+
+/**
+ * Available user personas (for testing purposes only !!!)
+ */
+export const USER_PERSONA = 'USER_PERSONA'
+export const DEVELOPER_PERSONA = 'DEVELOPER_PERSONA'
+export const MANAGER_PERSONA = 'MANAGER_PERSONA'
+export const GUARDIAN_PERSONA = 'GUARDIAN_PERSONA'
 
 export default general

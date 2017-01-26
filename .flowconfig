@@ -26,5 +26,5 @@ module.name_mapper='^graphql-queries\/\(.*\)$' -> '<PROJECT_ROOT>/src/client/api
 module.name_mapper='^routes\/\(.*\)$' -> '<PROJECT_ROOT>/src/client/routes/\1'
 module.name_mapper='^sagas\/\(.*\)$' -> '<PROJECT_ROOT>/src/client/sagas/\1'
 module.name_mapper='^pages\/\(.*\)$' -> '<PROJECT_ROOT>/src/client/pages/\1'
-
+module.name_mapper='^tests\/\(.*\)$' -> '<PROJECT_ROOT>/src/client/tests/\1'
 module.name_mapper.extension='graphql' -> '<PROJECT_ROOT>/flow/stub/FileModule.js.flow'

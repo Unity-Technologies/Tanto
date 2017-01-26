@@ -1,27 +1,28 @@
 /* eslint-disable max-len */
-
+import chai from 'chai'
 import {
   types,
   fetchPullRequestData,
   fetchPullRequests,
   fetchUserPullRequests,
   fetchUserAssignedPullRequests,
+  operationNames,
+  parsePullRequest,
+  parseCurrentUserPullRequests,
+  parseCurrentUserAssignedPullRequests,
 } from '../index'
 import { types as fetchTypes } from 'ducks/fetch'
-import PULL_REQUEST_QUERY from 'services/ono/queries/pullRequest'
 import { DIRECTION } from 'ducks/order'
-import {
-  projectPullRequestsQuery,
-  queries,
-} from 'services/ono/queries/pullrequests'
-import storeMock from '../../../tests/mocks/storeMock'
+import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
+import storeMock from 'tests/mocks/storeMock'
 import fetchMock from 'fetch-mock'
-import { types as sessionTypes } from 'ducks/session'
+import { types as sessionTypes } from 'ducks/session/actions'
+const expect = chai.expect
 
 describe('pullrequests actions', () => {
   afterEach(() => fetchMock.restore())
 
-  it('fetchPullRequest success', (done) => {
+  it('fetchPullRequestData success', (done) => {
     const id = 2
     const pr = {
       pullRequest: {
@@ -32,8 +33,9 @@ describe('pullrequests actions', () => {
       },
     }
 
+    const testQuery = 'djhfkjshfjk'
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, args: { id }, query: PULL_REQUEST_QUERY },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, args: { id }, query: testQuery, operationName: '' },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST, sending: true },
       { type: types.SET_PULL_REQUEST, node: pr.pullRequest },
@@ -46,15 +48,15 @@ describe('pullrequests actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchPullRequestData(types.FETCH_PULL_REQUEST, PULL_REQUEST_QUERY, { id }))
+    store.dispatch(fetchPullRequestData(types.FETCH_PULL_REQUEST, testQuery, { id }))
   })
 
-  it('fetchPullRequest failure', (done) => {
+  it('fetchPullRequestData failure', (done) => {
     const id = 2
     const error = new Error('some error')
-
+    const testQuery = 'djhfkjshfjk'
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, args: { id }, query: PULL_REQUEST_QUERY },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, args: { id }, query: testQuery, operationName: '' },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUEST, error },
@@ -65,7 +67,7 @@ describe('pullrequests actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchPullRequestData(types.FETCH_PULL_REQUEST, PULL_REQUEST_QUERY, { id }))
+    store.dispatch(fetchPullRequestData(types.FETCH_PULL_REQUEST, testQuery, { id }))
   })
 
   it('fetchPullRequests success(default filters)', (done) => {
@@ -98,7 +100,7 @@ describe('pullrequests actions', () => {
 
     const args = { page, orderBy, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, args, query: projectPullRequestsQuery },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequests },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: types.SET_PULL_REQUESTS, nodes: data.repository.pullRequests.nodes },
@@ -145,7 +147,7 @@ describe('pullrequests actions', () => {
 
     const args = { page, orderBy, branch, repo, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, args, query: projectPullRequestsQuery },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequests },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: types.SET_PULL_REQUESTS, nodes: data.repository.pullRequests.nodes },
@@ -173,7 +175,7 @@ describe('pullrequests actions', () => {
 
     const args = { page, orderBy, branch, repo, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, args, query: projectPullRequestsQuery },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequests },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUESTS, error },
@@ -218,7 +220,7 @@ describe('pullrequests actions', () => {
 
     const args = { page, orderBy, branch, repo }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_PULL_REQUESTS, args, query: queries.USER_PULL_REQUESTS },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
       { type: types.SET_PULL_REQUESTS, nodes: data.me.pullRequestsOwned.nodes },
@@ -246,7 +248,7 @@ describe('pullrequests actions', () => {
 
     const args = { page, orderBy, branch, repo, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_PULL_REQUESTS, args, query: queries.USER_PULL_REQUESTS },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_USER_PULL_REQUESTS, error },
@@ -260,7 +262,7 @@ describe('pullrequests actions', () => {
     store.dispatch(fetchUserPullRequests(args))
   })
 
-  it('fetchUserPullRequests success', (done) => {
+  it('fetchUserAssignedPullRequests success', (done) => {
     const page = 1
     const repo = 'testrepo'
     const branch = 'default'
@@ -291,7 +293,7 @@ describe('pullrequests actions', () => {
 
     const args = { page, orderBy, branch, repo }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, query: queries.USER_ASSIGNED_PULL_REQUESTS },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: true },
       { type: types.SET_PULL_REQUESTS, nodes: data.me.pullRequestsAssigned.nodes },
@@ -306,7 +308,7 @@ describe('pullrequests actions', () => {
     store.dispatch(fetchUserAssignedPullRequests(args))
   })
 
-  it('fetchUserPullRequests failure ', (done) => {
+  it('fetchUserAssignedPullRequests failure ', (done) => {
     const page = 1
     const repo = 'testrepo'
     const branch = 'default'
@@ -318,7 +320,7 @@ describe('pullrequests actions', () => {
 
     const args = { page, orderBy, branch, repo }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, query: queries.USER_ASSIGNED_PULL_REQUESTS },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, error },
@@ -332,3 +334,79 @@ describe('pullrequests actions', () => {
     store.dispatch(fetchUserAssignedPullRequests(args))
   })
 })
+
+describe('parse pullRequest response', () => {
+  const node1 = {
+    id: 'UHVsbFJlcXVlc3Q6MQ==',
+    title: 'Some test pull request 1',
+    origin: {
+      revision: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+      branch: 'graphics/gi/bugfix/staging1',
+      repository: {
+        name: 'unity/unity',
+      },
+    },
+    target: {
+      branch: 'trunk',
+      repository: {
+        name: 'unity/unity',
+      },
+    },
+  }
+
+  const node2 = {
+    id: 'UHVsbFJlcXVlc3Q6NQ==',
+    title: 'Some test pull request 2',
+    origin_rev: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
+    origin_branch: 'graphics/gi/bugfix/staging2',
+    origin_repository: {
+      id: 'UmVwb3NpdG9yeTos',
+    },
+    dest_branch: 'trunk',
+    dest_repository: {
+      id: 'UmVwb3NpdG9yeTos',
+    },
+  }
+
+  const testnodes = [
+    {
+      node: node1,
+    },
+    {
+      node: node2,
+    },
+  ]
+
+  const testResponse = (property, pullrequests, total) => {
+    const response = {
+      data: {
+        me: {
+        },
+      },
+    }
+    response.data.me[property] = {
+      nodes: pullrequests,
+      total,
+    }
+
+    return response
+  }
+  it('pullRequestQuery parses response', () => {
+    const pullRequest = { id: 1, title: 'sdfas' }
+    const response = { data: { pullRequest } }
+    expect(parsePullRequest(response)).to.eql(pullRequest)
+  })
+
+  it('parseCurrentUserPullRequests', () => {
+    const response = testResponse('pullRequestsOwned', testnodes, 12)
+    expect(parseCurrentUserPullRequests(response))
+      .to.be.eql({ nodes: testnodes, total: 12 })
+  })
+
+  it('parseCurrentUserAssignedPullRequests', () => {
+    const response = testResponse('pullRequestsAssigned', testnodes, 10)
+    expect(parseCurrentUserAssignedPullRequests(response))
+      .to.be.eql({ nodes: testnodes, total: 10 })
+  })
+})
+

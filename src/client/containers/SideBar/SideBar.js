@@ -17,7 +17,7 @@ import Scroll from 'react-scroll'
 import SelectableList from 'components/SelectableList'
 import './SideBar.css'
 
-import { DEVELOPER_PERSONA } from 'ducks/session'
+import { DEVELOPER_PERSONA } from 'universal/constants'
 
 const Link = Scroll.Link
 

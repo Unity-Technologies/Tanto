@@ -2,7 +2,7 @@
 
 import { createSelector, createStructuredSelector } from 'reselect'
 import { isFetchingSelector, errorSelector } from 'ducks/fetch'
-import { types } from '../index'
+import { types } from '../actions'
 import _ from 'lodash'
 
 type StateType = {

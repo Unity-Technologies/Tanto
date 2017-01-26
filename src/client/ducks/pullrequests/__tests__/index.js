@@ -2,12 +2,13 @@
 
 import chai from 'chai'
 
-import { PullRequestSource } from 'services/ono/queries/pullrequests'
+import { PullRequestSource } from 'universal/constants'
 
 import reducer, {
-  types,
   filters,
 } from '../index'
+
+import { types } from '../actions'
 
 
 import 'isomorphic-fetch'

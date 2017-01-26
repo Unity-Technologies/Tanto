@@ -3,8 +3,7 @@
 import { takeLatest, takeEvery } from 'redux-saga'
 import { fork } from 'redux-saga/effects'
 
-import { types as repoTypes } from 'ducks/repositories'
-import { searchRepository } from 'sagas/repositories'
+import { types as repoTypes, searchRepository } from 'ducks/repositories/actions'
 import { types as fetchTypes } from 'ducks/fetch'
 import { fetchAnythingSaga } from 'sagas/fetch'
 

@@ -8,7 +8,7 @@ query pullRequestMetadata($id: Int!) {
       fullName
       username
     }
-    reviewers {
+    reviews {
       status
       user {
         id

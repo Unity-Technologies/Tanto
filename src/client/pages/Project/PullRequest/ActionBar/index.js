@@ -9,12 +9,13 @@ import DropdownButton from 'react-bootstrap/lib/DropdownButton'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 
 import { connect } from 'react-redux'
+
 import {
   GUARDIAN_PERSONA,
   DEVELOPER_PERSONA,
   MANAGER_PERSONA,
   USER_PERSONA,
-} from 'ducks/session'
+} from 'universal/constants'
 
 export type Props = {
   persona: string,

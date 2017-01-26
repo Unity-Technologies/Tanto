@@ -4,7 +4,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
-import { fetchPullRequests } from 'ducks/pullrequests'
+import { fetchPullRequests } from 'ducks/pullrequests/actions'
 import {
   getPageFetchStatus,
   getPullRequests } from 'ducks/pullrequests/selectors'

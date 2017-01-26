@@ -6,20 +6,25 @@ import {
   fetchRepository,
   fetchRepositoryBranches,
   fetchRepositories,
-} from '../index'
+  parseRepositories,
+  operationNames,
+} from 'ducks/repositories/actions'
+
 import { types as fetchTypes } from 'ducks/fetch'
 
-import {
-  query,
-  REPOSITORY_BRANCHES,
-} from 'services/ono/queries/repositories'
+import chai from 'chai'
 
+const expect = chai.expect
 
-import storeMock from '../../../tests/mocks/storeMock'
+import storeMock from 'tests/mocks/storeMock'
 import fetchMock from 'fetch-mock'
+
+import repositoriesQuery from 'ducks/repositories/queries/repositories.graphql'
+import repoBranchesQuery from 'ducks/repositories/queries/branches.graphql'
 
 describe('repository actions', () => {
   afterEach(() => fetchMock.restore())
+
 
   it('seachRepository success', (done) => {
     const limit = 2
@@ -63,12 +68,14 @@ describe('repository actions', () => {
     fetchMock.mock('*', { throws: error, status: 503 })
 
     const store = storeMock({}, actionsList, done)
+    console.log(searchRepository(filter, limit))
 
     store.dispatch(searchRepository(filter, limit))
   })
 
   it('fetchRepository success', (done) => {
     const repositoryName = 'test/repo'
+    const query = 'test'
     const repo = {
       repository: {
         id: 1,
@@ -128,7 +135,7 @@ describe('repository actions', () => {
       },
     }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY_BRANCHES, args: { id }, query: REPOSITORY_BRANCHES },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY_BRANCHES, args: { id }, query: repoBranchesQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY_BRANCHES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: true },
       { type: types.SET_REPOSITORY, node: repo.repository },
@@ -148,7 +155,7 @@ describe('repository actions', () => {
     const id = 2
     const error = new Error('some error')
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY_BRANCHES, args: { id }, query: REPOSITORY_BRANCHES },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY_BRANCHES, args: { id }, query: repoBranchesQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY_BRANCHES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_REPOSITORY_BRANCHES, error },
@@ -182,7 +189,11 @@ describe('repository actions', () => {
         { id: 2, name: 'group2' }],
     }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, args: { name }, query: query(name) },
+      {
+        type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, args: { name },
+        query: repositoriesQuery,
+        operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
+      },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORIES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: true },
       { type: types.SET_REPOSITORIES, nodes: data.repositories.nodes },
@@ -222,7 +233,11 @@ describe('repository actions', () => {
       },
     }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, args: { name }, query: query(name) },
+      {
+        type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, args: { name },
+        query: repositoriesQuery,
+        operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
+      },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORIES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: true },
       { type: types.SET_REPOSITORIES, nodes: data.group.repositories.nodes },
@@ -244,7 +259,11 @@ describe('repository actions', () => {
     const error = new Error('some error')
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, args: { name }, query: query(name) },
+      {
+        type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, args: { name },
+        query: repositoriesQuery,
+        operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
+      },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORIES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_REPOSITORIES, error },
@@ -256,5 +275,42 @@ describe('repository actions', () => {
     const store = storeMock({}, expectedActions, done)
 
     store.dispatch(fetchRepositories(name))
+  })
+})
+
+
+describe('services repositories query parsers', () => {
+  const repos = [
+    { id: 1, name: 'name1', description: 'description1' },
+    { id: 2, name: 'name2', description: 'description2' },
+    { id: 3, name: 'name3', description: 'description3' }]
+
+  const groups = [
+    { id: 11, name: 'group1', description: 'group1description1' },
+    { id: 12, name: 'group2', description: 'group2description2' },
+  ]
+
+  it('parseCurrentUserPullRequests should parse the first level group', () => {
+    const response = {
+      data:
+      {
+        group: {
+          repositories: { nodes: repos },
+          groups,
+        },
+      },
+    }
+    expect(parseRepositories(response)).to.be.eql({ repositories: repos, groups })
+  })
+
+  it('parseCurrentUserPullRequests should parse the nested level repositories and groups', () => {
+    const response = {
+      data:
+      {
+        repositories: { nodes: repos },
+        groups,
+      },
+    }
+    expect(parseRepositories(response)).to.be.eql({ repositories: repos, groups })
   })
 })

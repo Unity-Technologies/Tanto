@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
-import { fetchRepositoryBranches } from 'ducks/repositories'
+import { fetchRepositoryBranches } from 'ducks/repositories/actions'
 import { getRepositoryBranches } from 'ducks/repositories/selectors'
 
 type SelectItemType = {

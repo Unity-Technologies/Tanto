@@ -1,10 +1,8 @@
 /* eslint-disable max-len */
 import { put, call } from 'redux-saga/effects'
-import { setRepositoriesNames } from 'ducks/repositories'
+import { setRepositoriesNames } from 'ducks/repositories/actions'
 import fetchSaga from 'sagas/fetch'
-import {
-  ALL_REPOSITORIES_QUERY,
-} from 'services/ono/queries/repositories'
+import query from 'ducks/repositories/queries/search.graphql'
 
 import {
   delay,
@@ -43,7 +41,7 @@ describe('search repositories names saga', () => {
       .to.deep.equal(call(delay, 300))
     expect(generator.next().value)
       .to.deep.equal(
-        call(fetchSaga, action.type, ALL_REPOSITORIES_QUERY, { limit: action.limit, filter: action.filter }))
+      call(fetchSaga, action.type, query, { limit: action.limit, filter: action.filter }))
     expect(generator.next(testResponse).value).to.deep.equal(put(setRepositoriesNames(repos)))
   })
 })

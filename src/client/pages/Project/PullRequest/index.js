@@ -2,8 +2,12 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { DEVELOPER_PERSONA, MANAGER_PERSONA, GUARDIAN_PERSONA } from 'ducks/session'
-import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
+import {
+  GUARDIAN_PERSONA,
+  DEVELOPER_PERSONA,
+  MANAGER_PERSONA,
+} from 'universal/constants'
+import type { PullRequestGraphType } from 'universal/types'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
 import Helmet from 'react-helmet'
@@ -26,7 +30,7 @@ type Props = {
 }
 
 function PullRequest(props: Props) {
-  const { persona, params, location, title } = this.props
+  const { persona, params, location, title } = props
 
   let rootPath = location.pathname
   if (params.category) {

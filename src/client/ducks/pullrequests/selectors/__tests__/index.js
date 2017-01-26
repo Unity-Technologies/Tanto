@@ -8,7 +8,7 @@ import {
   pullRequestsIdsSelector,
 } from '../index'
 
-import { types } from 'ducks/pullrequests'
+import { types } from '../../actions'
 
 const expect = chai.expect
 

@@ -1,0 +1,9 @@
+query repositoryBranches($id: Int!) {
+	repository(id: $id) {
+    id
+    branches {
+      name
+      revision
+    }
+  }
+}

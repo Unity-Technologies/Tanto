@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FiltersFields } from 'ducks/pullrequests'
 import LinearProgress from 'material-ui/LinearProgress'
 import ErrorMessage from 'components/ErrorMessage'
 import PullRequestList from 'components/PullRequestList'
@@ -12,7 +11,7 @@ import OrderSelect from 'containers/OrderSelect'
 import Alert from 'react-bootstrap/lib/Alert'
 import type { StatusType } from 'ducks/pullrequests/selectors'
 import type { OrderByType, DirectionType } from 'ducks/order'
-import { PullRequestSource } from 'services/ono/queries/pullrequests'
+import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
 
 export type Props = {
   dispatch: Function,
@@ -116,7 +115,7 @@ class PullRequestsPaginated extends Component {
           </div>
           <div style={selectBoxStyle}>
             <OrderSelect
-              options={FiltersFields}
+              options={PullRequestOrderFields}
               onSelect={this.handleOrderFieldSelect}
               onOrderChange={this.handleOrderChange}
             />

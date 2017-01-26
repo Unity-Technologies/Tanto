@@ -5,11 +5,12 @@ import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import type { UserType } from 'universal/types'
-import { connect } from 'react-redux'
 import type {
-  PullRequestReviewerStatusType, PullRequestReviewerType,
-} from 'services/ono/queries/pullRequest'
+  UserType,
+  PullRequestReviewerStatusType,
+  PullRequestReviewerType,
+} from 'universal/types'
+import { connect } from 'react-redux'
 import ReviewerSelection from './ReviewerSelection'
 import constants from 'universal/constants'
 import { getPullRequest } from 'ducks/pullrequests/selectors'
@@ -19,7 +20,7 @@ import ReviewerList from './ReviewerList'
 
 export const getReviews = createSelector(
   getPullRequest,
-  (pr) => (pr ? pr.reviewers : [])
+  (pr) => (pr ? pr.reviews : [])
 )
 
 type ReviewersSectionProps = {

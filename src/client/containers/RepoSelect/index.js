@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 
 import Select from 'react-select'
 import { connect } from 'react-redux'
-import { searchRepository } from 'ducks/repositories'
+import { searchRepository } from 'ducks/repositories/actions'
 import { getSearchRepoResultState } from 'ducks/repositories/selectors'
 
 type SelectItemType = {

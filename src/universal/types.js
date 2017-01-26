@@ -1,4 +1,4 @@
-import IssueStatus from 'universal/constants'
+import { IssueStatus, PullRequestSource } from 'universal/constants'
 
 export type UserType = {
   id: string,
@@ -25,3 +25,64 @@ export type IssueType = {
   assignee: UserType
 }
 
+
+export type RepositoryGraphType = {
+  name: string
+}
+
+export type PullRequestSourceReferenceType =
+  PullRequestSource.BRANCH
+  | PullRequestSource.REVISION
+  | PullRequestSource.TAG
+  | PullRequestSource.BOOK
+
+export type PullRequestSourceReference = {
+  type: PullRequestSourceReferenceType,
+  name: string
+}
+
+export type PullRequestUserType = {
+  username: string,
+  fullName: string,
+}
+
+export type TargetGraphType = {
+  name: string,
+  repository: RepositoryGraphType,
+}
+
+export type OriginGraphType = {
+  name: string,
+  revision: string,
+  repository: RepositoryGraphType,
+}
+
+export type PullRequestGraphType = {
+  id: string,
+  title: string,
+  descroiption: string,
+  updated: string,
+  status: string,
+  created: string,
+  owner: PullRequestUserType,
+  origin: OriginGraphType,
+  target: TargetGraphType,
+}
+
+export type RepositoryType = {
+  name: string,
+  description: ?string,
+  id: string,
+  owner: { fullName: string },
+  branches?: {
+    name: string,
+    revision: string,
+  },
+  updated: string,
+}
+
+export type GroupType = {
+  name: string,
+  path: string,
+  description: ?string,
+}

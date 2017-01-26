@@ -1,6 +1,6 @@
 /* @flow */
 
-import { types } from '../index'
+import { types } from '../actions'
 import { getFetchStatus } from 'ducks/fetch'
 import { createSelector } from 'reselect'
 import type { StatusType } from 'ducks/fetch'

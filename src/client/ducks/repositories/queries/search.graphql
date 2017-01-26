@@ -1,0 +1,8 @@
+query searchRepositories($filter: String, $limit: Int) {
+	repositories(all: true, filter: $filter, limit: $limit) {
+    nodes {
+      id
+      fullName
+    }
+  }
+}
