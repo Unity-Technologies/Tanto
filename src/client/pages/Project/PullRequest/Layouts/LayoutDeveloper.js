@@ -9,8 +9,8 @@ import CategoryModule from './common'
 const CATEGORIES = [
   { url: 'summary', name: 'Summary' },
   { url: 'discussion', name: 'Discussion' },
-  { url: 'files', name: 'Files' },
-  { url: 'changesets', name: 'Changesets' },
+  { url: 'changes', name: 'Changes' },
+  { url: 'commits', name: 'Commits' },
   { url: 'issues', name: 'Issues' },
   { url: 'diff', name: 'Diff' },
 ]

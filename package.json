@@ -22,7 +22,7 @@
   },
   "betterScripts": {
     "start-prod": {
-      "command": "node ./server.js &",
+      "command": "forever start ./server.js &",
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "production",

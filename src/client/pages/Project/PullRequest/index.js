@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
   GUARDIAN_PERSONA,
@@ -12,6 +12,12 @@ import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
 import Helmet from 'react-helmet'
 import ActionBar from './ActionBar'
+import {
+  fetchPullRequestDiff,
+  fetchPullRequestMetadata,
+  fetchPullRequestDiscussion,
+} from 'ducks/pullrequests/actions'
+
 
 type Props = {
   dispatch: Function,
@@ -29,38 +35,48 @@ type Props = {
   pullRequest: ?PullRequestGraphType,
 }
 
-function PullRequest(props: Props) {
-  const { persona, params, location, title } = props
-
-  let rootPath = location.pathname
-  if (params.category) {
-    // TODO: I don't like this, but react-router is not handling
-    // relative URLs, so we need to strip the category part of the url...
-    // There might be a better way. Or just using query params?
-    rootPath = rootPath.replace(new RegExp(`/${params.category}$`), '')
+class PullRequest extends Component {
+  componentDidMount() {
+    const id = this.props.params.prid
+    this.props.dispatch(fetchPullRequestMetadata(id))
+    this.props.dispatch(fetchPullRequestDiscussion(id))
+    this.props.dispatch(fetchPullRequestDiff(id))
   }
 
-  const defaultCategory = (!persona || persona === DEVELOPER_PERSONA) ? 'summary' : 'guardian'
-  const currentCategory = params.category || defaultCategory
+  props: Props
 
-  return (
-    <div>
-      <ActionBar />
-      <Helmet title={`Pull Request: ${title}`} />
+  render() {
+    const { persona, params, location, title } = this.props
 
-      {currentCategory === MANAGER_PERSONA || currentCategory === GUARDIAN_PERSONA ?
-        <LayoutGuardian pullRequestId={params.prid} />
-        :
-        <LayoutDeveloper
-          pullRequestId={params.prid}
-          currentCategory={currentCategory}
-          rootPath={rootPath}
-        />
-      }
-    </div>
-  )
+    let rootPath = location.pathname
+    if (params.category) {
+      // TODO: I don't like this, but react-router is not handling
+      // relative URLs, so we need to strip the category part of the url...
+      // There might be a better way. Or just using query params?
+      rootPath = rootPath.replace(new RegExp(`/${params.category}$`), '')
+    }
+
+    const defaultCategory = (!persona || persona === DEVELOPER_PERSONA) ? 'summary' : 'guardian'
+    const currentCategory = params.category || defaultCategory
+
+    return (
+      <div>
+        <ActionBar />
+        <Helmet title={`Pull Request: ${title}`} />
+
+        {currentCategory === MANAGER_PERSONA || currentCategory === GUARDIAN_PERSONA ?
+          <LayoutGuardian pullRequestId={params.prid} />
+          :
+          <LayoutDeveloper
+            pullRequestId={params.prid}
+            currentCategory={currentCategory}
+            rootPath={rootPath}
+          />
+        }
+      </div>
+    )
+  }
 }
-
 
 export default connect(
   (state, props) => ({

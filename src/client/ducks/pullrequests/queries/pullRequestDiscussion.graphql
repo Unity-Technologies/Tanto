@@ -1,0 +1,23 @@
+query pullRequestIssues($id: Int!){
+  pullRequest(id: $id) {
+    id
+    issues {
+      id
+      title
+      description
+      status
+      assignee {
+        username
+        fullName
+
+      }
+      branch
+      owner {
+        username
+        fullName
+      }
+      updated
+      created
+    }
+  }
+}

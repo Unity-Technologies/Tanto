@@ -1,16 +1,15 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import moment from 'moment'
 import Row from 'react-bootstrap/lib/Row'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { fetchPullRequestData } from 'ducks/pullrequests/actions'
+import { types } from 'ducks/pullrequests/actions'
 import NewComment from 'components/NewComment/NewComment'
 import TestAvatar from 'components/TestAvatar/TestAvatar'
 import TextEditorBox from 'components/TextEditorBox/TextEditorBox'
-import pullRequestDiscussion from './pullRequestDiscussion.graphql'
 import type { GeneralCommentType, UserType } from 'universal/types'
 import type { StatusType } from 'ducks/fetch'
 import { statusFetchCreator } from 'ducks/fetch'
@@ -31,19 +30,17 @@ export type Props = {
   status: StatusType
 }
 
-const action = 'component/PULL_REQUEST_DISCUSSION'
-
-export const getFetchStatus = statusFetchCreator(action)
+export const getFetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_DISCUSSION)
 
 export const getLoggedUser = (state: Object) => state.session.profile.fullName
 export const getPullRequestDiscussion = (state: Object, props: Object): string =>
   createSelector(
     getPullRequest, getFetchStatus, getLoggedUser,
-      (pr, status, user) => ({
-        pullRequest: _.pick(pr, ['description', 'created', 'owner', 'comments']),
-        status,
-        user,
-      })
+    (pr, status, user) => ({
+      pullRequest: _.pick(pr, ['description', 'created', 'owner', 'comments']),
+      status,
+      user,
+    })
   )
 
 const renderHeadComment = ({ owner, description, created }) => {
@@ -110,48 +107,41 @@ const renderComments = ({ comments }) => {
   )
 }
 
-class PullRequestDiscussion extends Component {
-  componentDidMount() {
-    this.props.dispatch(
-      fetchPullRequestData(action, pullRequestDiscussion, { id: this.props.pullRequestId }))
+const PullRequestDiscussion = (props: Props) => {
+  if (!props.pullRequest) {
+    return null
   }
-  props: Props
-  render() {
-    if (!this.props.pullRequest) {
-      return null
-    }
-    return (
-      <LoadingComponent status={this.props.status}>
-        <div>
-          <Row>
-            <Col md={12}>
-              {renderHeadComment(this.props.pullRequest)}
-            </Col>
-          </Row>
-          <hr style={{ margin: '15px 0' }} />
-          <Row>
-            <Col md={12}>
-              {renderComments(this.props.pullRequest)}
-              <div name="discussion-last" id="discussion-last" style={{ marginTop: '20px' }}>
-                <NewComment
-                  author={this.props.user}
-                  headerStyle={{ borderRadius: '0px' }}
-                  style={{
-                    borderBottom: '1px solid lightgrey',
-                    borderRadius: '0px',
-                    marginBottom: '10px',
-                  }}
-                  // ref="newTextEditorBox"
-                  placeholder="Write comment here..."
-                  onComment={this.props.onSaveComment}
-                />
-              </div>
-            </Col>
-          </Row>
-        </div>
-      </LoadingComponent>
-    )
-  }
+  return (
+    <LoadingComponent status={props.status}>
+      <div>
+        <Row>
+          <Col md={12}>
+            {renderHeadComment(props.pullRequest)}
+          </Col>
+        </Row>
+        <hr style={{ margin: '15px 0' }} />
+        <Row>
+          <Col md={12}>
+            {renderComments(props.pullRequest)}
+            <div name="discussion-last" id="discussion-last" style={{ marginTop: '20px' }}>
+              <NewComment
+                author={props.user}
+                headerStyle={{ borderRadius: '0px' }}
+                style={{
+                  borderBottom: '1px solid lightgrey',
+                  borderRadius: '0px',
+                  marginBottom: '10px',
+                }}
+                // ref="newTextEditorBox"
+                placeholder="Write comment here..."
+                onComment={props.onSaveComment}
+              />
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </LoadingComponent>
+  )
 }
 
 
