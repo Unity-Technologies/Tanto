@@ -68,7 +68,6 @@ describe('repository actions', () => {
     fetchMock.mock('*', { throws: error, status: 503 })
 
     const store = storeMock({}, actionsList, done)
-    console.log(searchRepository(filter, limit))
 
     store.dispatch(searchRepository(filter, limit))
   })
