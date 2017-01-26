@@ -13,20 +13,21 @@ import { createStructuredSelector } from 'reselect'
 import IssuesSection from './IssuesSection'
 import RepositoriesSection from './RepositoriesSection'
 import ReviewSection from './ReviewSection'
-import { getFetchStatus } from 'ducks/fetch'
+import { statusFetchCreator } from 'ducks/fetch'
 import LoadingComponent from 'components/LoadingComponent'
 import pullRequestMetadataQuery from './pullRequestMetadata.graphql'
 
 const action = 'component/PULL_REQUEST_METADATA'
 
-export const fetchStatus =
-  (state: Object): StatusType => getFetchStatus(state, action)
+export const fetchStatus = statusFetchCreator(action)
 
 export type PullRequestSummaryPropsType = {
   status: StatusType,
   dispatch: Function,
   pullRequestId: string,
+  pullRequestExists: boolean,
 }
+
 
 export const getMetadata = createStructuredSelector({
   status: fetchStatus,

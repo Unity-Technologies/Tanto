@@ -24,22 +24,38 @@ export const getHeaderData = (state: Object, props: Object): HeaderPropsType =>
       _.pick(pr, ['title', 'created', 'owner']),
   )
 
-const Header = (props: HeaderPropsType) =>
-  <div style={{ display: 'inline-block' }}>
-    <UserAvatar
-      src={null}  // FIXME
-      style={{ float: 'left', display: 'table-column' }}
-    />
-    <div style={{ padding: '0 10px', display: 'table' }}>
-      <div style={{ fontSize: '16px' }}>
-        <strong>{props.title}</strong>
+const renderStub = () =>
+  <div style={{ height: '40px', borderRadius: '5px', backgroundColor: '#f6f5f5' }} />
+
+const renderTitle = ({ title, owner, created }) => {
+  if (!title || !owner || !created) {
+    return renderStub()
+  }
+
+  return (
+    <div>
+      <UserAvatar
+        src={null}  // FIXME
+        style={{ float: 'left', display: 'table-column' }}
+      />
+      <div style={{ padding: '0 10px', display: 'table' }}>
+        <div style={{ fontSize: '16px' }}>
+          <strong>{title}</strong>
+        </div>
+        <span style={{ color: 'grey', fontSize: '13px' }}>
+          created {moment(created).fromNow()}
+          {' '} by {owner.fullName}
+          ({owner.username})
+        </span>
       </div>
-      <span style={{ color: 'grey', fontSize: '13px' }}>
-        created {moment(props.created).fromNow()}
-        {' '} by {props.owner ? props.owner.fullName : ''}
-        ({props.owner ? props.owner.username : ''})
-      </span>
     </div>
-  </div>
+  )
+}
+
+const Header = (props: HeaderPropsType) => (
+  <div style={{ display: 'inline-block', width: '100%' }}>
+    {renderTitle(props)}
+  </div >
+)
 
 export default connect(getHeaderData)(Header)

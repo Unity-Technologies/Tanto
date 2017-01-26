@@ -129,6 +129,7 @@ class TextEditorBox extends Component {
       hideStyleControls,
       style,
       editorStyle,
+      author,
       styleControlsStyle,
     } = this.props
     return (
@@ -148,7 +149,7 @@ class TextEditorBox extends Component {
                 fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
               }}
             >
-              Bob Dou (author)
+              {author}
             </div>
           </div>
           <StyleControls
@@ -159,7 +160,7 @@ class TextEditorBox extends Component {
           />
         </div>
       }
-        <div style={{ paddingLeft: '55px' }}>
+        <div style={{ paddingTop: '5px' }}>
           <div
             className="RichEditor-editor"
             onClick={this.focus}

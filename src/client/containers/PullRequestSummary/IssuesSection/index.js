@@ -35,13 +35,13 @@ export const getIssues = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequest,
     pr => ({
-      issues: pr ? pr.issues.filter(x => x.status !== IssueStatus.OBSOLETE) : [],
+      issues: pr && pr.issues ? pr.issues.filter(x => x.status !== IssueStatus.OBSOLETE) : [],
     })
   )
 
 //  TODO: complete this component, now it's mockeed since no ono API available for it
 export const IssuesSection = (props: IssuesSectionProps) => (<div>
-  {props.issues.length &&
+  {props.issues &&
     <ListGroupItem style={danger}>
       <Row>
         <Col md={2}>
@@ -73,4 +73,3 @@ export const IssuesSection = (props: IssuesSectionProps) => (<div>
 
 
 export default connect(getIssues)(IssuesSection)
-

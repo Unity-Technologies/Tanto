@@ -9,6 +9,7 @@ export type Props = {
   onCancel?: Function,
   onComment?: Function,
   style?: Object,
+  author: string,
   headerStyle?: Object,
 }
 
@@ -39,7 +40,7 @@ class NewComment extends Component {
   }
 
   render() {
-    const { style, headerStyle } = this.props
+    const { style, headerStyle, author } = this.props
     const defaultCommentStyle = {
       border: '2px solid #d9edf7',
       borderRadius: '10px 10px 10px 10px',
@@ -52,6 +53,7 @@ class NewComment extends Component {
       <div>
         <div style={style || defaultCommentStyle}>
           <TextEditorBox
+            author={author}
             onTextChanged={(message) => { this.state.commentText = message }}
             ref={tb => (this.newTextEditorBox = tb)}
             styleControlsStyle={headerStyle || { borderRadius: '10px 10px 0 0' }}

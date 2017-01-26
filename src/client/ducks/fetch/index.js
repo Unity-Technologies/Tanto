@@ -89,6 +89,12 @@ export const getFetchStatus = (state: StateType, actionType: string): StatusType
   error: errorSelector(actionType)(state),
 })
 
+export const statusFetchCreator = (actionType: string) =>
+  (state: StateType): StatusType => ({
+    isFetching: isFetchingSelector(actionType)(state),
+    error: errorSelector(actionType)(state),
+  })
+
 export type FetchAction = {
   type: string,
   name: string,

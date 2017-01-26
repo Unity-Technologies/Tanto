@@ -6,7 +6,7 @@ import React from 'react'
 // import ChangesetGroupedList from 'components/ChangesetGroupedList'
 // import CodeDiffView from 'components/CodeDiffView'
 // import IssuesList from 'components/IssuesList'
-// import PullRequestDiscussion from 'components/PullRequestDiscussion'
+import PullRequestDiscussion from 'containers/PullRequestDiscussion'
 import PullRequestSummary from 'containers/PullRequestSummary'
 
 type Props = {
@@ -19,8 +19,8 @@ const CategoryModule = ({ type, pullRequestId }: Props) =>
     {type === 'summary' &&
       <PullRequestSummary pullRequestId={pullRequestId} />
     }
-    {/* {type === 'discussion' && <PullRequestDiscussion pullRequestId={pullRequestId} />}
-    {type === 'files' && <ChangesetFileList pullRequestId={pullRequestId} />}
+    {type === 'discussion' && <PullRequestDiscussion pullRequestId={pullRequestId} />}
+    {/* {type === 'files' && <ChangesetFileList pullRequestId={pullRequestId} />}
     {type === 'changesets' &&
       <ChangesetGroupedList accordion={false} pullRequestId={pullRequestId} />}
     {type === 'issues' && <IssuesList pullRequestId={pullRequestId} />}

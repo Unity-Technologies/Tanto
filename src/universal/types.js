@@ -86,3 +86,12 @@ export type GroupType = {
   path: string,
   description: ?string,
 }
+
+export type GeneralCommentType = {
+  id: string,
+  text: string,
+  modified: string,
+  created: string,
+  author: UserType,
+  status: string
+}
