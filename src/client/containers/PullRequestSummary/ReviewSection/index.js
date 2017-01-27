@@ -12,11 +12,12 @@ import type {
 } from 'universal/types'
 import { connect } from 'react-redux'
 import ReviewerSelection from './ReviewerSelection'
-import constants from 'universal/constants'
+
 import { getPullRequest } from 'ducks/pullrequests/selectors'
 import { getUsers } from 'ducks/users/selectors'
 import { createSelector } from 'reselect'
 import ReviewerList from './ReviewerList'
+import { ChangesetStatus } from 'universal/constants'
 
 export const getReviews = createSelector(
   getPullRequest,
@@ -77,26 +78,26 @@ class ReviewSection extends Component {
     type GroupsType = { [key: PullRequestReviewerStatusType]: Array<PullRequestReviewerType> }
     const reviewerGroups: GroupsType = {
       not_reviewed: reviews ?
-        reviews.filter(r => !r.status || r.status === constants.PR_NOT_REVIEWED) : [],
-      approved: reviews ? reviews.filter(r => r.status === constants.PR_APPROVED) : [],
-      rejected: reviews ? reviews.filter(r => r.status === constants.PR_REJECTED) : [],
-      under_review: reviews ? reviews.filter(r => r.status === constants.PR_UNDER_REVIEW) : [],
+        reviews.filter(r => !r.status || r.status === ChangesetStatus.NOT_REVIEWED) : [],
+      approved: reviews ? reviews.filter(r => r.status === ChangesetStatus.APPROVED) : [],
+      rejected: reviews ? reviews.filter(r => r.status === ChangesetStatus.REJECTED) : [],
+      under_review: reviews ? reviews.filter(r => r.status === ChangesetStatus.UNDER_REVIEW) : [],
     }
 
     let status
     let statusColor
     let statusExtraText
     if (reviews && reviews.length === 0) {
-      status = constants.PR_NOT_REVIEWED
+      status = ChangesetStatus.NOT_REVIEWED
       statusColor = inProgressColor
     } else if (reviewerGroups.approved.length === reviews.length) {
-      status = constants.PR_APPROVED
+      status = ChangesetStatus.APPROVED
       statusColor = approvedColor
     } else if (reviewerGroups.rejected.length === reviews.length) {
-      status = constants.PR_REJECTED
+      status = ChangesetStatus.REJECTED
       statusColor = rejectedColor
     } else {
-      status = constants.PR_UNDER_REVIEW
+      status = ChangesetStatus.UNDER_REVIEW
       statusColor = inProgressColor
       const pendingReviewCount =
         reviewerGroups.under_review.length + reviewerGroups.not_reviewed.length

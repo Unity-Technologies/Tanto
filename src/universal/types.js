@@ -1,4 +1,4 @@
-import { IssueStatus, PullRequestSource } from 'universal/constants'
+import { IssueStatus, PullRequestSource, ChangesetStatus } from 'universal/constants'
 
 export type UserType = {
   id: string,
@@ -12,7 +12,9 @@ export type ReviewType = {
   user: UserType,
 }
 
-type IssueStatusType = $Keys<typeof IssueStatus> // eslint-disable-line no-undef
+export type IssueStatusType = $Keys<typeof IssueStatus> // eslint-disable-line no-undef
+
+export type ChangesetStatusType = $Keys<typeof ChangesetStatus> // eslint-disable-line no-undef
 
 export type IssueType = {
   id: number,
@@ -113,4 +115,20 @@ export type FileType = {
   diff: string,
   type: string,
   comments: Array<InlineCommentType>
+}
+
+export type ChangesetType = {
+  id: string,
+  rawId: string,
+  branch: string,
+  message: string,
+  author: UserType,
+  date: string,
+  status: ChangesetStatusType,
+  files: {
+    stats: {
+      added: number,
+      deleted: number
+    }
+  }
 }

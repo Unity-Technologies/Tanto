@@ -8,13 +8,13 @@ export const routes = {
   LOGIN_ROUTE: '/login',
 }
 
-export const general = {
+export const ChangesetStatus = {
   TEST: 'test',
-  PR_NEW: 'new',
-  PR_NOT_REVIEWED: 'not_reviewed',
-  PR_UNDER_REVIEW: 'under_review',
-  PR_APPROVED: 'approved',
-  PR_REJECTED: 'rejected',
+  NEW: 'new',
+  NOT_REVIEWED: 'not_reviewed',
+  UNDER_REVIEW: 'under_review',
+  APPROVED: 'approved',
+  REJECTED: 'rejected',
 }
 
 export const IssueStatus = {
@@ -44,4 +44,3 @@ export const DEVELOPER_PERSONA = 'DEVELOPER_PERSONA'
 export const MANAGER_PERSONA = 'MANAGER_PERSONA'
 export const GUARDIAN_PERSONA = 'GUARDIAN_PERSONA'
 
-export default general

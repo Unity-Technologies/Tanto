@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react'
 import ChangesetFileList from 'components/ChangesetFileList'
-import ChangesetGroupedList from 'components/ChangesetGroupedList'
+import PullRequestCommits from 'containers/PullRequestCommits'
 import PullRequestDiff from 'containers/PullRequestDiff'
 import PullRequestIssues from 'containers/PullRequestIssues'
 import PullRequestDiscussion from 'containers/PullRequestDiscussion'
@@ -23,7 +23,7 @@ const CategoryModule = ({ type, pullRequestId }: Props) =>
       <ChangesetFileList pullRequestId={pullRequestId} />
     }
     {type === 'commits' &&
-      <ChangesetGroupedList accordion={false} pullRequestId={pullRequestId} />
+      <PullRequestCommits pullRequestId={pullRequestId} />
     }
     {type === 'issues' &&
       <PullRequestIssues pullRequestId={pullRequestId} />
