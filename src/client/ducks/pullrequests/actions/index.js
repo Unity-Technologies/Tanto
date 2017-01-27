@@ -5,11 +5,13 @@ import type { OrderByType } from 'ducks/order'
 import { fetchActionCreator } from 'ducks/fetch'
 import _ from 'lodash'
 import { types as sessionTypes } from 'ducks/session/actions'
+
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
 import pullRequestFiles from 'ducks/pullrequests/queries/pullRequestFiles.graphql'
 import pullRequestMetadataQuery from 'ducks/pullrequests/queries/pullRequestMetadata.graphql'
 import pullRequestDiscussion from 'ducks/pullrequests/queries/pullRequestDiscussion.graphql'
-
+import pullRequestIssues from 'ducks/pullrequests/queries/pullRequestIssues.graphql'
+import pullRequestChangeset from 'ducks/pullrequests/queries/pullRequestChangeset.graphql'
 /**
  * Action types
  */
@@ -19,6 +21,8 @@ export const types = {
   SET_PULL_REQUESTS_PAGE: 'PULLREQUESTSUSER/SET_PULL_REQUESTS_PAGE',
   FETCH_PULL_REQUEST_DIFF: 'PULLREQUESTS/FETCH_PULL_REQUEST_DIFF',
   FETCH_PULL_REQUESTS: 'PULLREQUESTS/FETCH_PULL_REQUESTS',
+  FETCH_PULL_REQUESTS_ISSUES: 'PULLREQUESTS/FETCH_PULL_REQUESTS_ISSUES',
+  FETCH_PULL_REQUESTS_CHANGESET: 'PULLREQUESTS/FETCH_PULL_REQUESTS_CHANGESET',
   FETCH_USER_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_PULL_REQUESTS',
   FETCH_USER_ASSIGNED_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_ASSIGNED_PULL_REQUESTS',
   FETCH_USER_WATCHING_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_WATCHING_PULL_REQUESTS',
@@ -77,6 +81,12 @@ export const fetchPullRequestMetadata = (id: string) =>
 
 export const fetchPullRequestDiscussion = (id: string) =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_DISCUSSION, pullRequestDiscussion, { id })
+
+export const fetchPullRequestIssues = (id: string) =>
+  fetchPullRequestData(types.FETCH_PULL_REQUEST_ISSUES, pullRequestIssues, { id })
+
+export const fetchPullRequestChangeset = (id: string) =>
+  fetchPullRequestData(types.FETCH_PULL_REQUEST_CHANGESET, pullRequestChangeset, { id })
 
 export const fetchPullRequests = (variables: FetchPullRequestVariables): Object =>
   fetchActionCreator(

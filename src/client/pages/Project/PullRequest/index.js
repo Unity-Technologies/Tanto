@@ -16,6 +16,8 @@ import {
   fetchPullRequestDiff,
   fetchPullRequestMetadata,
   fetchPullRequestDiscussion,
+  fetchPullRequestIssues,
+  fetchPullRequestChangeset,
 } from 'ducks/pullrequests/actions'
 
 
@@ -41,6 +43,8 @@ class PullRequest extends Component {
     this.props.dispatch(fetchPullRequestMetadata(id))
     this.props.dispatch(fetchPullRequestDiscussion(id))
     this.props.dispatch(fetchPullRequestDiff(id))
+    this.props.dispatch(fetchPullRequestIssues(id))
+    this.props.dispatch(fetchPullRequestChangeset(id))
   }
 
   props: Props

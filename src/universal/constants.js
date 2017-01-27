@@ -18,11 +18,13 @@ export const general = {
 }
 
 export const IssueStatus = {
-  NEW: 'new',
+  NONE: 'none',
+  NOW: 'now',
   LATER: 'later',
   AVAILABLE: 'available',
   OBSOLETE: 'obsolete',
   NEXT: 'next',
+  CONFIRMED: 'confirmed',
 }
 
 export const PullRequestSource = {

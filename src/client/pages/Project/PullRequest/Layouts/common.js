@@ -3,7 +3,7 @@ import React from 'react'
 import ChangesetFileList from 'components/ChangesetFileList'
 import ChangesetGroupedList from 'components/ChangesetGroupedList'
 import PullRequestDiff from 'containers/PullRequestDiff'
-import IssuesList from 'components/IssuesList'
+import PullRequestIssues from 'containers/PullRequestIssues'
 import PullRequestDiscussion from 'containers/PullRequestDiscussion'
 import PullRequestSummary from 'containers/PullRequestSummary'
 
@@ -26,7 +26,7 @@ const CategoryModule = ({ type, pullRequestId }: Props) =>
       <ChangesetGroupedList accordion={false} pullRequestId={pullRequestId} />
     }
     {type === 'issues' &&
-      <IssuesList pullRequestId={pullRequestId} />
+      <PullRequestIssues pullRequestId={pullRequestId} />
     }
   </div>)
 

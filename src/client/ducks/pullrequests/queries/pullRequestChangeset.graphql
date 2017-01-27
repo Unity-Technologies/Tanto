@@ -1,0 +1,13 @@
+query pullRequestCommits($id: Int!){
+  pullRequest(id: $id) {
+    id
+    changeset {
+      id
+      rawId
+      branch
+      message
+      date
+      status
+    }
+  }
+}
