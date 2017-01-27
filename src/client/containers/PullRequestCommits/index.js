@@ -42,7 +42,7 @@ export const getData = (state: Object, props: Object): string =>
 
 const PullRequestCommits = (props: Props) =>
   <LoadingComponent status={props.status}>
-    <ChangesetList commits={props.commits} />
+    <ChangesetList commits={props.commits} projectName={props.projectName} />
   </LoadingComponent>
 
 export default connect(getData)(PullRequestCommits)

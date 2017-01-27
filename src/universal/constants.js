@@ -39,8 +39,6 @@ export const PullRequestOrderFields = ['updated']
 /**
  * Available user personas (for testing purposes only !!!)
  */
-export const USER_PERSONA = 'USER_PERSONA'
 export const DEVELOPER_PERSONA = 'DEVELOPER_PERSONA'
-export const MANAGER_PERSONA = 'MANAGER_PERSONA'
 export const GUARDIAN_PERSONA = 'GUARDIAN_PERSONA'
 

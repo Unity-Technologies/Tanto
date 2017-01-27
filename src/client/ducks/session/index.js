@@ -5,8 +5,9 @@ import { orderBy, DIRECTION } from 'ducks/order'
 import { combineReducers } from 'redux'
 import _ from 'lodash'
 import { target } from 'ducks/filters'
-import { PullRequestSource } from 'universal/constants'
+import { PullRequestSource, DEVELOPER_PERSONA } from 'universal/constants'
 import { types } from 'ducks/session/actions'
+
 
 /**
  * Initial state
@@ -41,6 +42,7 @@ const initialState = {
     email: null,
     fullName: null,
   },
+  persona: DEVELOPER_PERSONA,
 }
 
 export const repo = (state: string = '', action: Object = {}): string =>

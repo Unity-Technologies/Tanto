@@ -17,13 +17,9 @@ const LayoutGuardian = ({ pullRequestId }: Props) =>
     <Element name="summary" className="element">
       <CategoryModule pullRequestId={pullRequestId} type={'summary'} />
     </Element>
-    <Element name="files" className="element">
-      <Divider text="Files" />
-      <CategoryModule pullRequestId={pullRequestId} type={'files'} />
-    </Element>
-    <Element name="changesets" className="element">
-      <Divider text="Changesets" />
-      <CategoryModule pullRequestId={pullRequestId} type={'changesets'} />
+    <Element name="commits" className="element">
+      <Divider text="Commits" />
+      <CategoryModule pullRequestId={pullRequestId} type={'commits'} />
     </Element>
     <Element name="issues" className="element">
       <Divider text="Issues" />

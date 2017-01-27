@@ -15,14 +15,6 @@ export const types = {
 }
 
 /**
- * TODO: Available user personas (should be moved to profile personalization level)
- */
-export const USER_PERSONA = 'USER_PERSONA'
-export const DEVELOPER_PERSONA = 'DEVELOPER_PERSONA'
-export const MANAGER_PERSONA = 'MANAGER_PERSONA'
-export const GUARDIAN_PERSONA = 'GUARDIAN_PERSONA'
-
-/**
  * Action creators
  */
 export const fetchProfile = (): Object =>

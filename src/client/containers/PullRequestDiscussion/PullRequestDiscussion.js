@@ -44,10 +44,13 @@ export const getPullRequestDiscussion = (state: Object, props: Object): string =
   )
 
 const renderHeadComment = ({ owner, description, created }) => {
-  if (!owner || !description || !created) {
+  if (!owner || !created) {
     return null
   }
+  const comment = {
+    text: description,
 
+  }
   return (
     <div>
       <div style={{ display: 'inline-flex', width: '100%' }}>
@@ -67,7 +70,7 @@ const renderHeadComment = ({ owner, description, created }) => {
           </div>
         </div>
       </div>
-      <TextEditorBox text={description} readOnly previewMode simpleText />
+      <TextEditorBox text={description || 'No description provided ...'} readOnly previewMode simpleText />
     </div>
   )
 }

@@ -124,7 +124,6 @@ class Comment extends Component {
       fontSize: '17px',
     }
 
-
     return (
       <div>
         <div style={style || defaultCommentStyle}>

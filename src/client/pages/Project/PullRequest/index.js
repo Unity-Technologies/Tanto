@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import {
   GUARDIAN_PERSONA,
   DEVELOPER_PERSONA,
-  MANAGER_PERSONA,
 } from 'universal/constants'
 import type { PullRequestGraphType } from 'universal/types'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
@@ -33,7 +32,7 @@ type Props = {
     pathname: string,
     query: Object,
   },
-  persona: 'DEVELOPER_PERSONA' | 'MANAGER_PERSONA' | 'GUARDIAN_PERSONA',
+  persona: DEVELOPER_PERSONA | GUARDIAN_PERSONA,
   pullRequest: ?PullRequestGraphType,
 }
 
@@ -68,7 +67,7 @@ class PullRequest extends Component {
         <ActionBar />
         <Helmet title={`Pull Request: ${title}`} />
 
-        {currentCategory === MANAGER_PERSONA || currentCategory === GUARDIAN_PERSONA ?
+        {persona === GUARDIAN_PERSONA ?
           <LayoutGuardian pullRequestId={params.prid} />
           :
           <LayoutDeveloper
