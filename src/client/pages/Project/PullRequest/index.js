@@ -32,7 +32,7 @@ type Props = {
     pathname: string,
     query: Object,
   },
-  persona: DEVELOPER_PERSONA | GUARDIAN_PERSONA,
+  persona: string,
   pullRequest: ?PullRequestGraphType,
 }
 

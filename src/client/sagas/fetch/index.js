@@ -26,11 +26,8 @@ type ActionType = {
   callback: Function
 }
 
-export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
 export function* fetchAnythingSaga(action: ActionType): Generator<any, any, any> {
   try {
-    yield call(delay, 300)
     yield put(actions.clearError(action.name))
     yield put(actions.sendingRequest(action.name, true))
     const response = yield call(get, action.query, action.args, action.operationName)

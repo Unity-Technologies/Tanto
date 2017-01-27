@@ -33,7 +33,7 @@ export type Props = {
 export const getFetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_DISCUSSION)
 
 export const getLoggedUser = (state: Object) => state.session.profile.fullName
-export const getPullRequestDiscussion = (state: Object, props: Object): string =>
+export const getPullRequestDiscussion = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequest, getFetchStatus, getLoggedUser,
     (pr, status, user) => ({
@@ -47,10 +47,7 @@ const renderHeadComment = ({ owner, description, created }) => {
   if (!owner || !created) {
     return null
   }
-  const comment = {
-    text: description,
 
-  }
   return (
     <div>
       <div style={{ display: 'inline-flex', width: '100%' }}>
@@ -70,7 +67,10 @@ const renderHeadComment = ({ owner, description, created }) => {
           </div>
         </div>
       </div>
-      <TextEditorBox text={description || 'No description provided ...'} readOnly previewMode simpleText />
+      <TextEditorBox
+        text={description || 'No description provided ...'}
+        readOnly previewMode simpleText
+      />
     </div>
   )
 }
@@ -147,6 +147,5 @@ const PullRequestDiscussion = (props: Props) => {
   )
 }
 
-
+/* flow-disable */
 export default connect(getPullRequestDiscussion)(PullRequestDiscussion)
-

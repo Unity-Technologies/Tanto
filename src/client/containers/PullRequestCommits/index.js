@@ -1,4 +1,3 @@
-/* @flow */
 
 import React from 'react'
 import type { FileType } from 'universal/types'
@@ -15,9 +14,10 @@ type Props = {
   commits: Array<FileType>,
   pullRequestId: string,
   status: StatusType,
+  projectName: string
 }
 
-export const fetchStatus = statusFetchCreator(types.FETCH_PULL_REQUESTS_CHANGESET)
+export const fetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_CHANGESET)
 
 // TODO: if we get displaying groups of commits
 // export const reduceCommitsByRawId = (commits) =>
@@ -30,7 +30,7 @@ export const fetchStatus = statusFetchCreator(types.FETCH_PULL_REQUESTS_CHANGESE
 //     return groups
 //   }, {})
 
-export const getData = (state: Object, props: Object): string =>
+export const getData = (state: Object, props: Object): void =>
   createSelector(
     getPullRequest, fetchStatus,
     (pr, status, user) => ({
@@ -45,4 +45,6 @@ const PullRequestCommits = (props: Props) =>
     <ChangesetList commits={props.commits} projectName={props.projectName} />
   </LoadingComponent>
 
+
 export default connect(getData)(PullRequestCommits)
+

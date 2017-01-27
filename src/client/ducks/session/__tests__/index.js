@@ -7,7 +7,7 @@ import { receivePage } from 'ducks/pagination'
 import { DIRECTION } from 'ducks/order'
 import _ from 'lodash'
 const expect = require('chai').expect
-import { PullRequestSource } from 'universal/constants'
+import { PullRequestSource, DEVELOPER_PERSONA } from 'universal/constants'
 
 
 describe('session reducer', () => {
@@ -40,6 +40,7 @@ describe('session reducer', () => {
       email: null,
       fullName: null,
     },
+    persona: DEVELOPER_PERSONA,
   }
 
   it('should return initial state', () => {

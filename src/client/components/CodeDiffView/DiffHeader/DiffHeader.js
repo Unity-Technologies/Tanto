@@ -7,7 +7,7 @@ import View from 'material-ui/svg-icons/action/view-module'
 import Nav from 'react-bootstrap/lib/Nav'
 import NavItem from 'react-bootstrap/lib/NavItem'
 import Navbar from 'react-bootstrap/lib/Navbar'
-
+import ChangesetDelta from 'components/ChangesetDelta'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 
@@ -21,6 +21,10 @@ const navbarStyle = {
 
 export type Props = {
   title: string,
+  stats: {
+    added: number,
+    deleted: number
+  },
   onViewChangeClick: Function,
   selectedValue: string,
   onCollapse?: Function,
@@ -73,13 +77,19 @@ class DiffHeader extends Component {
   }
 
   render() {
-    const { title } = this.props
+    const { title, stats } = this.props
 
     return (
       <Navbar style={navbarStyle} fluid>
         <Nav>
           <NavItem>
-            {title}
+            <div style={{ width: '150px', display: 'flex' }}>
+              <div
+                style={{ float: 'left', width: '120px', marginTop: '2px', marginRight: '5px' }}
+              >
+                <ChangesetDelta {...stats} /></div>
+              <div>{title}</div>
+            </div>
           </NavItem>
         </Nav>
         <Nav pullRight>

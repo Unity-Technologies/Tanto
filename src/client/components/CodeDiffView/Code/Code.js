@@ -96,7 +96,8 @@ class Code extends Component {
                 collapseComments={collapseComments}
                 loggedUsername={loggedUsername}
                 comments={
-                  this.getFileComments(comments, line.newLineNumber || line.oldLineNumber, line.newLineNumber ? 'n' : 'o')}
+                  this.getFileComments(comments,
+                    line.newLineNumber || line.oldLineNumber, line.newLineNumber ? 'n' : 'o')}
                 {...line}
               />))}
           </tbody>

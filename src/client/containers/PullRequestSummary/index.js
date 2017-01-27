@@ -1,4 +1,5 @@
-/* @flow */
+/* flow */
+
 import React from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
@@ -46,6 +47,7 @@ const PullRequestSummary = (props: PullRequestSummaryPropsType) =>
       </Row>
     </div>
   </LoadingComponent>
+
 
 export default connect(getMetadata)(PullRequestSummary)
 

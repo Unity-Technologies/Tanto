@@ -96,6 +96,7 @@ class CodeDiffView extends Component {
       <DiffHeader
         comments={file.comments.length > 0}
         title={file.name}
+        stats={file.stats}
         onViewChangeClick={this.changeDiffViewType}
         onCollapse={this.onCollapseComments}
         selectedValue={this.state.viewType}

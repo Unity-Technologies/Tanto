@@ -14,11 +14,12 @@ import { createSelector } from 'reselect'
 type Props = {
   files: Array<FileType>,
   status: StatusType,
+  loggedUsername: string,
 }
 
 export const fetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_DIFF)
 export const getLoggedUser = (state: Object) => state.session.profile.username
-export const getData = (state: Object, props: Object): string =>
+export const getData = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequest, fetchStatus, getLoggedUser,
     (pr, status, user) => ({
@@ -33,4 +34,5 @@ const PullRequestDiff = (props: Props) =>
     <CodeDiffView files={props.files} loggedUsername={props.loggedUsername} />
   </LoadingComponent>
 
+/* flow-disable */
 export default connect(getData)(PullRequestDiff)

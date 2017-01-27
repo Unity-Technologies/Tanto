@@ -20,6 +20,7 @@ export type Props = {
   persona: string,
   username: string,
   logoutRoute: string,
+  dispatch: Function
 }
 
 

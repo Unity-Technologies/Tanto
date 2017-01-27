@@ -14,7 +14,7 @@ import MenuItem from 'material-ui/MenuItem'
 import Button from 'react-bootstrap/lib/Button'
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 import moment from 'moment'
-import type { InlineCommentType } from 'universal/comments'
+import type { InlineCommentType } from 'universal/comments' //eslint-disable-line
 
 export type Props = {
   loggedUsername: string,

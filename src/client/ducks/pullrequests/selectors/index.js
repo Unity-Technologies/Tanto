@@ -12,10 +12,6 @@ export const getPageFetchStatus =
   (state: Object): StatusType => getFetchStatus(state, types.FETCH_PULL_REQUESTS)
 
 
-export const getPullRequestFetchStatus =
-  (state: Object): StatusType => getFetchStatus(state, types.FETCH_PULL_REQUEST)
-
-
 export const getOwnedFetchStatus =
   (state: Object): StatusType => getFetchStatus(state, types.FETCH_USER_PULL_REQUESTS)
 
