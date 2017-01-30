@@ -10,7 +10,7 @@ import {
   getPullRequestFetchStatus,
   getPullRequestFetchError,
 } from 'ducks/pullrequests/selectors'
-import type { PullRequestGraphType, PullRequestSourceReference } from 'services/ono/queries/pullRequest'
+import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 import LoadingIcon from 'components/LoadingIcon'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
