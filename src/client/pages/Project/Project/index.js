@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
-import { fetchRepository } from 'ducks/repositories'
+import { fetchRepository } from 'ducks/repositories/actions'
 
 export type Props = {
   params: {

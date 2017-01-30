@@ -23,8 +23,12 @@ export const buildProjectLink =
     const projectName = groupPath ? `${groupPath}/${name}` : name
     return `/project/${projectName}${branchQuery}`
   }
+
 export const buildProjectsLink =
   (suffix: string): string => (`/projects/${suffix}`)
+
+export const buildChangesetLink =
+  (projectName: string, id: string): string => (`/project/${projectName}/changeset/${id}`)
 
 export const helpers = {
   buildPullRequestLink,

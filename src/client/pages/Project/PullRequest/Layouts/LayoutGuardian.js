@@ -2,43 +2,36 @@
 
 import React from 'react'
 import Scroll from 'react-scroll'
-
 import Divider from 'components/Divider'
-import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
 import CategoryModule from './common'
-
 
 const Element = Scroll.Element
 
 export type Props = {
-  pullRequest: PullRequestGraphType,
+  pullRequestId: string,
 }
 
-const LayoutGuardian = ({ pullRequest }: Props) =>
+const LayoutGuardian = ({ pullRequestId }: Props) =>
   <div style={{ padding: '0 20px' }}>
     <Element name="page-top" className="element" />
     <Element name="summary" className="element">
-      <CategoryModule pullRequest={pullRequest} type={'summary'} />
+      <CategoryModule pullRequestId={pullRequestId} type={'summary'} />
     </Element>
-    <Element name="files" className="element">
-      <Divider text="Files" />
-      <CategoryModule pullRequest={pullRequest} type={'files'} />
-    </Element>
-    <Element name="changesets" className="element">
-      <Divider text="Changesets" />
-      <CategoryModule pullRequest={pullRequest} type={'changesets'} />
+    <Element name="commits" className="element">
+      <Divider text="Commits" />
+      <CategoryModule pullRequestId={pullRequestId} type={'commits'} />
     </Element>
     <Element name="issues" className="element">
       <Divider text="Issues" />
-      <CategoryModule pullRequest={pullRequest} type={'issues'} />
+      <CategoryModule pullRequestId={pullRequestId} type={'issues'} />
     </Element>
     <Element name="discussion" className="element">
       <Divider text="Discussion" />
-      <CategoryModule pullRequest={pullRequest} type={'discussion'} />
+      <CategoryModule pullRequestId={pullRequestId} type={'discussion'} />
     </Element>
     <Element name="diff" className="element">
       <Divider text="Diff" />
-      <CategoryModule pullRequest={pullRequest} type={'diff'} />
+      <CategoryModule pullRequestId={pullRequestId} type={'diff'} />
     </Element>
     <Element name="page-bottom" />
   </div>

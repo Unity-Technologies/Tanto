@@ -6,13 +6,11 @@ import { connect } from 'react-redux'
 import Tabs from 'react-bootstrap/lib/Tabs'
 import Tab from 'react-bootstrap/lib/Tab'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
-import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/pullrequests'
+import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/pullrequests/actions'
 import { pullRequestsOwned, pullRequestsAssigned } from 'ducks/session/selectors'
 import {
   getOwnedFetchStatus,
-  getOwnedFetchError,
   getAssignedFetchStatus,
-  getAssignedError,
 } from 'ducks/pullrequests/selectors'
 import './styles.css'
 
@@ -29,8 +27,7 @@ const mapStateToPropsOwned = (state, props) => ({
   pageSize: 3,
   activePage: state.session.pullRequestsOwned.pagination.currentPage,
   total: state.session.pullRequestsOwned.pagination.total,
-  isFetching: getOwnedFetchStatus(state),
-  error: getOwnedFetchError(state),
+  status: getOwnedFetchStatus(state),
   items: pullRequestsOwned(state) || [],
   orderBy: state.session.pullRequestsOwned.orderBy,
 })
@@ -41,8 +38,7 @@ const mapStateToPropsAssigned = (state, props) => ({
   pageSize: 3,
   activePage: state.session.pullRequestsAssigned.pagination.currentPage,
   total: state.session.pullRequestsAssigned.pagination.total,
-  isFetching: getAssignedFetchStatus(state),
-  error: getAssignedError(state),
+  status: getAssignedFetchStatus(state),
   items: pullRequestsAssigned(state) || [],
   orderBy: state.session.pullRequestsAssigned.orderBy,
 })

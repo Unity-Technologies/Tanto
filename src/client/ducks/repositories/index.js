@@ -1,34 +1,11 @@
 /* @flow */
-
-import type { RepositoryType } from 'services/ono/queries/repositories'
-export type { RepositoryType } from 'services/ono/queries/repositories'
 import {
   entities,
   actions as entitiesActions,
   mergeEntities } from 'ducks/entities'
 import { combineReducers } from 'redux'
-import { fetchActionCreator } from 'ducks/fetch'
+import { types } from './actions'
 
-import {
-  query,
-  parseRepositories,
-  REPOSITORY_BRANCHES,
-  parseRepository,
-} from 'services/ono/queries/repositories'
-
-/**
- * Action types
- */
-export const types = {
-  SET_REPOSITORIES: 'REPOSITORIES/SET_REPOSITORIES',
-  SET_REPOSITORY: 'REPOSITORIES/SET_REPOSITORY',
-  SET_REPOSITORIES_NAMES: 'REPOSITORIES/SET_REPOSITORIES_NAMES',
-  SET_GROUPS: 'REPOSITORIES/SET_GROUPS',
-  FETCH_REPOSITORIES: 'REPOSITORIES/FETCH_REPOSITORIES',
-  FETCH_REPOSITORY: 'REPOSITORIES/FETCH_REPOSITORY',
-  SEARCH_REPOSITORY: 'REPOSITORIES/SEARCH_REPOSITORY',
-  FETCH_REPOSITORY_BRANCHES: 'REPOSITORIES/FETCH_REPOSITORY_BRANCHES',
-}
 
 /**
  * Initial state
@@ -91,33 +68,6 @@ export default (
 }
 
 
-export const setRepository =
-  (node: RepositoryType): Object => ({ type: types.SET_REPOSITORY, node })
-
-export const setRepositoriesNames =
-  (nodes: Array<Object>): Object => ({ type: types.SET_REPOSITORIES_NAMES, nodes })
-
 export const searchRepository =
   (filter: string, limit: number): Object =>
     ({ type: types.SEARCH_REPOSITORY, filter, limit })
-
-export const fetchRepository = (name: string, queryStr: string): Object =>
-  fetchActionCreator(types.FETCH_REPOSITORY, queryStr, { name },
-    (data: Object, cbArgs: Object): Array<Object> =>
-      [{ type: types.SET_REPOSITORY, node: parseRepository(data) }])
-
-export const fetchRepositoryBranches = (id: number): Object =>
-  fetchActionCreator(types.FETCH_REPOSITORY_BRANCHES, REPOSITORY_BRANCHES, { id },
-    (data: Object, cbArgs: Object): Array<Object> =>
-      [{ type: types.SET_REPOSITORY, node: parseRepository(data) }])
-
-export const fetchRepositories = (name: string): Object =>
-  fetchActionCreator(types.FETCH_REPOSITORIES, query(name), { name },
-    (data: Object, cbArgs: Object): Array<Object> => {
-      const { groups, repositories } = parseRepositories(data)
-      return [
-        { type: types.SET_REPOSITORIES, nodes: repositories },
-        { type: types.SET_GROUPS, nodes: groups },
-      ]
-    }
-  )

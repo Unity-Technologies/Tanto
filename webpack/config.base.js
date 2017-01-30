@@ -40,6 +40,11 @@ const loaders = [
     test: webpackIsomorphicToolsPlugin.regular_expression('images'),
     loader: 'url-loader?limit=10240',
   },
+  {
+    test: /\.(graphql|gql)$/,
+    exclude: /node_modules/,
+    loader: 'raw-loader',
+  },
 ]
 
 const config = {
@@ -59,11 +64,13 @@ const config = {
       ducks: 'client/ducks',
       sagas: 'client/sagas',
       services: 'universal/services',
+      // TODO: obsolete, should br removed after removing dependencies on mocked data
       'graphql-queries': 'client/api/graphql/queries',
       universal: 'universal',
       pages: 'client/pages',
       utils: 'client/utils',
       routes: 'client/routes',
+      tests: 'client/tests',
     },
   },
 }

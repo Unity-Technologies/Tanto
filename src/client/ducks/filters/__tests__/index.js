@@ -1,6 +1,6 @@
 import { target } from '../index'
 
-import { PullRequestSource } from 'services/ono/queries/pullrequests'
+import { PullRequestSource } from 'universal/constants'
 const expect = require('chai').expect
 
 

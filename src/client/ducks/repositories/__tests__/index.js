@@ -2,8 +2,9 @@
 import chai from 'chai'
 import reducer, {
   namesReducer,
-  types,
 } from '../index'
+
+import { types } from '../actions'
 
 import { reduceArrayToObj } from 'ducks/normalizer'
 const expect = chai.expect

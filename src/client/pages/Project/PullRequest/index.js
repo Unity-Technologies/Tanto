@@ -2,24 +2,27 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Helmet from 'react-helmet'
-import { DEVELOPER_PERSONA, MANAGER_PERSONA, GUARDIAN_PERSONA } from 'ducks/session'
-import { fetchPullRequest } from 'ducks/pullrequests'
 import {
-  getPullRequest,
-  getPullRequestFetchStatus,
-  getPullRequestFetchError,
-} from 'ducks/pullrequests/selectors'
-import type { PullRequestGraphType } from 'services/ono/queries/pullRequest'
-import LoadingIcon from 'components/LoadingIcon'
+  GUARDIAN_PERSONA,
+  DEVELOPER_PERSONA,
+} from 'universal/constants'
+import type { PullRequestGraphType } from 'universal/types'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
+import Helmet from 'react-helmet'
 import ActionBar from './ActionBar'
+import {
+  fetchPullRequestDiff,
+  fetchPullRequestMetadata,
+  fetchPullRequestDiscussion,
+  fetchPullRequestIssues,
+  fetchPullRequestChangeset,
+} from 'ducks/pullrequests/actions'
+
 
 type Props = {
   dispatch: Function,
-  error: ?{message: string},
-  isFetching: boolean,
+  title: string,
   params: {
     id: string,
     prid: string,
@@ -29,41 +32,24 @@ type Props = {
     pathname: string,
     query: Object,
   },
-  persona: 'DEVELOPER_PERSONA' | 'MANAGER_PERSONA' | 'GUARDIAN_PERSONA',
+  persona: string,
   pullRequest: ?PullRequestGraphType,
-};
+}
 
 class PullRequest extends Component {
-
   componentDidMount() {
-    const { dispatch, params } = this.props
-    const pullRequestId = parseInt(params.prid, 10)
-    dispatch(fetchPullRequest(pullRequestId))
+    const id = this.props.params.prid
+    this.props.dispatch(fetchPullRequestMetadata(id))
+    this.props.dispatch(fetchPullRequestDiscussion(id))
+    this.props.dispatch(fetchPullRequestDiff(id))
+    this.props.dispatch(fetchPullRequestIssues(id))
+    this.props.dispatch(fetchPullRequestChangeset(id))
   }
 
   props: Props
 
   render() {
-    const { isFetching, error, pullRequest, persona, params, location } = this.props
-
-    if (isFetching) {
-      return <LoadingIcon />
-    }
-
-    if (error) {
-      return (
-        <div>
-          <h3>
-            Fetching the pull request failed!
-          </h3>
-          <h4>{`${error.message}`}</h4>
-        </div>
-      )
-    }
-
-    if (!pullRequest) {
-      return <div>The requested pull request was not found...</div>
-    }
+    const { persona, params, location, title } = this.props
 
     let rootPath = location.pathname
     if (params.category) {
@@ -78,14 +64,15 @@ class PullRequest extends Component {
 
     return (
       <div>
-        <Helmet title={`Pull Request: ${pullRequest.title}`} />
         <ActionBar />
-        {currentCategory === MANAGER_PERSONA || currentCategory === GUARDIAN_PERSONA ?
-          <LayoutGuardian pullRequest={pullRequest} />
-        :
+        <Helmet title={`Pull Request: ${title}`} />
+
+        {persona === GUARDIAN_PERSONA ?
+          <LayoutGuardian pullRequestId={params.prid} />
+          :
           <LayoutDeveloper
+            pullRequestId={params.prid}
             currentCategory={currentCategory}
-            pullRequest={pullRequest}
             rootPath={rootPath}
           />
         }
@@ -96,10 +83,7 @@ class PullRequest extends Component {
 
 export default connect(
   (state, props) => ({
-    error: getPullRequestFetchError(state),
-    isFetching: getPullRequestFetchStatus(state),
     params: props.params,
     persona: state.session.persona,
-    pullRequest: getPullRequest(state, props),
   })
 )(PullRequest)

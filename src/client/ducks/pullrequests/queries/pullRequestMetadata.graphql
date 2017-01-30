@@ -1,0 +1,48 @@
+query pullRequestMetadata($id: Int!) {
+  pullRequest(id: $id) {
+    id
+    title
+    status
+    created
+    owner {
+      fullName
+      username
+    }
+    reviews {
+      status
+      user {
+        id
+        fullName
+        username
+      }
+    }
+    origin {
+      name
+      repository {
+        name
+      }
+    }
+    target {
+      name
+      repository {
+        name
+      }
+    }
+    issues {
+      id
+      title
+      description
+      status
+      updated
+      branch
+      owner {
+        username
+        fullName
+      }
+      assignee {
+        username
+        fullName
+      }
+    }
+  }
+}

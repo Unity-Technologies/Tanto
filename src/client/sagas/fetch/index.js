@@ -22,6 +22,7 @@ type ActionType = {
   name: string,
   query: string,
   args: Object,
+  operationName: string,
   callback: Function
 }
 
@@ -29,7 +30,7 @@ export function* fetchAnythingSaga(action: ActionType): Generator<any, any, any>
   try {
     yield put(actions.clearError(action.name))
     yield put(actions.sendingRequest(action.name, true))
-    const response = yield call(get, action.query, action.args)
+    const response = yield call(get, action.query, action.args, action.operationName)
     if (action.callback) {
       const callbacks = action.callback(response, action.args)
       while (callbacks.length) {

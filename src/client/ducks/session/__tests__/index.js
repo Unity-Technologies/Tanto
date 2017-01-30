@@ -1,38 +1,14 @@
 /* eslint-disable max-len */
 
 import reducer,
-{
-  actions,
-  types,
-  sessionEntities, repo } from '../index'
+{ sessionEntities, repo } from '../index'
+import { types, setPersona, setProfile } from '../actions'
 import { receivePage } from 'ducks/pagination'
 import { DIRECTION } from 'ducks/order'
 import _ from 'lodash'
 const expect = require('chai').expect
-import { PullRequestSource } from 'services/ono/queries/pullrequests'
+import { PullRequestSource, DEVELOPER_PERSONA } from 'universal/constants'
 
-describe('session actions', () => {
-  it('set profile', () => {
-    const profile = {
-      username: 'testusername',
-      email: 'test@test.test',
-    }
-    const action = {
-      type: types.SET_USER_PROFILE,
-      profile,
-    }
-    expect(actions.setProfile(profile)).to.eql(action)
-  })
-
-  it('set persona', () => {
-    const persona = 'testpersona'
-    const action = {
-      type: types.SET_USER_PERSONA,
-      persona,
-    }
-    expect(actions.setPersona(persona)).to.eql(action)
-  })
-})
 
 describe('session reducer', () => {
   const prState = {
@@ -64,6 +40,7 @@ describe('session reducer', () => {
       email: null,
       fullName: null,
     },
+    persona: DEVELOPER_PERSONA,
   }
 
   it('should return initial state', () => {
@@ -76,12 +53,12 @@ describe('session reducer', () => {
       email: 'test@test.test',
     }
 
-    expect(reducer({}, actions.setProfile(profile))).to.eql({ profile })
+    expect(reducer({}, setProfile(profile))).to.eql({ profile })
   })
 
   it('should handle SET_USER_PERSONA', () => {
     const persona = 'test persona'
-    expect(reducer({}, actions.setPersona(persona))).to.eql({ persona })
+    expect(reducer({}, setPersona(persona))).to.eql({ persona })
   })
 
   it('should handle SET_PULL_REQUESTS_OWNED', () => {

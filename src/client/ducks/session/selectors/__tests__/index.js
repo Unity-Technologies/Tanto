@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-import { DEVELOPER_PERSONA } from 'ducks/session'
+import { DEVELOPER_PERSONA } from 'universal/constants'
 import { pullRequestsOwned, pullRequestsAssigned, pullRequestsWatching } from '../index'
 
 const expect = require('chai').expect

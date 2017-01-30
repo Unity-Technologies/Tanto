@@ -1,0 +1,42 @@
+query repositoriesNested($name: String!) {
+  group(name: $name) {
+    repositories(limit: 50) {
+      ...repo
+    }
+    groups {
+      ...group
+    }
+  }
+}
+
+query repositoriesTopLevel {
+  repositories(limit: 50) {
+    ...repo
+  }
+  groups{
+    ...group
+  }
+}
+
+fragment repo on Repositories {
+  nodes {
+    id
+    name
+    owner {
+      fullName
+    }
+    groupPath
+    groupName
+    description
+    updated
+  }
+}
+
+fragment group on RepositoryGroup {
+    id
+    name
+    path
+    parentGroupName
+    description
+}
+

@@ -25,13 +25,18 @@ import { checkHttpStatus, checkForGraphQlErrors, parseJSON } from 'universal/req
  * @param  {[type]} query - accepts the FormData object
  * @return {[type]}      [description]
  */
-export function get(query: string, variables: any) {
+export function get(query: string, variables: any, operationName: string) {
   const encodedQuery = encodeURIComponent(query)
   let variablesPostFix = ''
+  let operationNamePostFix = ''
   if (variables) {
     variablesPostFix = `&variables=${encodeURIComponent(JSON.stringify(variables))}`
   }
-  const url = `${routes.ONO_API_ROUTE}?query=${encodedQuery}${variablesPostFix}`
+  if (operationName) {
+    operationNamePostFix = `&operationName=${encodeURIComponent(operationName)}`
+  }
+  const url =
+    `${routes.ONO_API_ROUTE}?query=${encodedQuery}${variablesPostFix}${operationNamePostFix}`
   return fetch(url, { credentials: 'same-origin' })
     .then(checkHttpStatus)
     .then(parseJSON)

@@ -14,7 +14,7 @@ import {
   repoIdSelector,
 } from '../index'
 
-import { types } from 'ducks/repositories'
+import { types } from 'ducks/repositories/actions'
 
 const expect = chai.expect
 

@@ -73,13 +73,35 @@ export const errorSelector =
     return fetchState && fetchState.hasOwnProperty('error') ? fetchState.error : null
   }
 
+export type StatusType = {
+  isFetching: boolean,
+  error: Object
+}
+
+export type StateType = {
+  fetch: {
+    [key: string]: StatusType
+  }
+}
+
+export const getFetchStatus = (state: StateType, actionType: string): StatusType => ({
+  isFetching: isFetchingSelector(actionType)(state),
+  error: errorSelector(actionType)(state),
+})
+
+export const statusFetchCreator = (actionType: string) =>
+  (state: StateType): StatusType => ({
+    isFetching: isFetchingSelector(actionType)(state),
+    error: errorSelector(actionType)(state),
+  })
+
 export type FetchAction = {
   type: string,
   name: string,
   query: string,
+  operationName: string,
   args: Object,
   callback: Function
-
 }
 
 
@@ -87,8 +109,10 @@ export const fetchActionCreator =
   (type: string,
     query: string,
     args: Object = {},
+    operationName: string = '',
     callback: (data: Object, cbArgs: Object) => Array<Object>): FetchAction => ({
       type: types.FETCH_DATA,
+      operationName,
       name: type,
       query,
       args,

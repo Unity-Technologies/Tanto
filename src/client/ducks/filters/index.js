@@ -2,11 +2,9 @@
 
 import type {
   PullRequestSourceReference,
-} from 'services/ono/queries/pullrequests'
+} from 'universal/types'
 
-import {
-  PullRequestSource,
-} from 'services/ono/queries/pullrequests'
+import { PullRequestSource } from 'universal/constants'
 
 const initialState = { name: '', type: PullRequestSource.BRANCH }
 

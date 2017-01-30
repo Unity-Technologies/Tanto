@@ -9,7 +9,7 @@ import { buildPullRequestLink, buildProjectLink } from 'routes/helpers'
 import TestAvatar from 'components/TestAvatar'
 import { Link } from 'react-router'
 import { fromNow } from 'utils/datetime'
-import { PullRequestGraphType } from 'services/ono/queries/pullrequests'
+import { PullRequestGraphType } from 'universal/types'
 
 import './styles.css'
 

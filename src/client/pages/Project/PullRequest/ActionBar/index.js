@@ -7,14 +7,13 @@ import Button from 'react-bootstrap/lib/Button'
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 import DropdownButton from 'react-bootstrap/lib/DropdownButton'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
-
+import { setPersona } from 'ducks/session/actions'
 import { connect } from 'react-redux'
+
 import {
   GUARDIAN_PERSONA,
   DEVELOPER_PERSONA,
-  MANAGER_PERSONA,
-  USER_PERSONA,
-} from 'ducks/session'
+} from 'universal/constants'
 
 export type Props = {
   persona: string,
@@ -25,7 +24,7 @@ class ActionBar extends Component {
   props: Props
 
   changePersona(persona) {
-    this.props.dispatch({ type: USER_PERSONA, persona })
+    this.props.dispatch(setPersona(persona))
   }
 
   render() {
@@ -101,16 +100,6 @@ class ActionBar extends Component {
                       }
                     </div>
                     <div style={{ margin: '5px 15px' }}>Guardian persona</div>
-                  </div>
-                </MenuItem>
-                <MenuItem eventKey="3" onClick={() => this.changePersona(MANAGER_PERSONA)}>
-                  <div style={{ display: 'inline-block' }}>
-                    <div style={{ margin: '5px -9px', float: 'left' }}>
-                      {persona === MANAGER_PERSONA &&
-                        <i className="fa fa-check" aria-hidden="true" />
-                      }
-                    </div>
-                    <div style={{ margin: '5px 15px' }}>Manager persona</div>
                   </div>
                 </MenuItem>
               </DropdownButton>

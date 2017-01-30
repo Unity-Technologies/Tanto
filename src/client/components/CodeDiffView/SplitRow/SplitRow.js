@@ -190,7 +190,8 @@ class SplitRow extends Component {
                 <Comment
                   simpleText
                   key={_.uniqueId('_code_comment')}
-                  {...comment}
+                  comment={comment}
+                  loggedUsername={this.props.loggedUsername}
                 />
               ))}
               {!this.state.leftCommentState &&
@@ -259,7 +260,8 @@ class SplitRow extends Component {
                 <Comment
                   simpleText
                   key={_.uniqueId('_code_comment')}
-                  {...comment}
+                  comment={comment}
+                  loggedUsername={this.props.loggedUsername}
                 />
               ))}
               {!this.state.rightCommentState &&

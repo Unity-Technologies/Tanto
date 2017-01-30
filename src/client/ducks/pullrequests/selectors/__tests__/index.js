@@ -1,74 +1,70 @@
 import chai from 'chai'
 import {
   getPageFetchStatus,
-  getPageFetchError,
   getOwnedFetchStatus,
   getAssignedFetchStatus,
-  getOwnedFetchError,
-  getAssignedError,
   getPullRequest,
   pullRequestsEntitiesSelector,
   pullRequestsIdsSelector,
 } from '../index'
 
-import { types } from 'ducks/pullrequests'
-
+import { types } from '../../actions'
 
 const expect = chai.expect
 
 describe('fetch status', () => {
   it('getPageFetchStatus for pull requests', () => {
     const state = { fetch: { [types.FETCH_PULL_REQUESTS]: { isFetching: false } } }
-    expect(getPageFetchStatus(state)).equals(false)
+    expect(getPageFetchStatus(state)).to.eql({ error: null, isFetching: false })
 
     const state2 = { fetch: { [types.FETCH_PULL_REQUESTS]: { isFetching: true } } }
-    expect(getPageFetchStatus(state2)).equals(true)
+    expect(getPageFetchStatus(state2)).to.eql({ error: null, isFetching: true })
 
-    expect(getPageFetchStatus({ fetch: {} })).equals(false)
+    expect(getPageFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
 
   it('getOwnedFetchStatus for owned pull requests', () => {
     const state = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { isFetching: false } } }
-    expect(getOwnedFetchStatus(state)).equals(false)
+    expect(getOwnedFetchStatus(state)).to.eql({ error: null, isFetching: false })
 
     const state2 = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { isFetching: true } } }
-    expect(getOwnedFetchStatus(state2)).equals(true)
+    expect(getOwnedFetchStatus(state2)).to.eql({ error: null, isFetching: true })
 
-    expect(getOwnedFetchStatus({ fetch: {} })).equals(false)
+    expect(getOwnedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
 
   it('getAssignedFetchStatus for owned pull requests', () => {
     const state = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { isFetching: false } } }
-    expect(getAssignedFetchStatus(state)).equals(false)
+    expect(getAssignedFetchStatus(state)).to.eql({ error: null, isFetching: false })
 
     const state2 = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { isFetching: true } } }
-    expect(getAssignedFetchStatus(state2)).equals(true)
+    expect(getAssignedFetchStatus(state2)).to.eql({ error: null, isFetching: true })
 
-    expect(getAssignedFetchStatus({ fetch: {} })).equals(false)
+    expect(getAssignedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
 
-  it('getPageFetchError for pull requests', () => {
+  it('getPageFetchStatus error for pull requests', () => {
     const testerror = { text: 'error message' }
     const state = { fetch: { [types.FETCH_PULL_REQUESTS]: { error: testerror } } }
-    expect(getPageFetchError(state)).equals(testerror)
+    expect(getPageFetchStatus(state)).to.eql({ error: testerror, isFetching: false })
 
-    expect(getPageFetchError({ fetch: {} })).equals(null)
+    expect(getPageFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
 
-  it('getOwnedFetchError for owned pull requests', () => {
+  it('getOwnedFetchStatus error for owned pull requests', () => {
     const testerror = { text: 'error message' }
     const state = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { error: testerror } } }
-    expect(getOwnedFetchError(state)).equals(testerror)
+    expect(getOwnedFetchStatus(state)).to.eql({ error: testerror, isFetching: false })
 
-    expect(getOwnedFetchError({ fetch: {} })).equals(null)
+    expect(getOwnedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
 
   it('getAssignedError for assigned pull requests', () => {
     const testerror = { text: 'error message' }
     const state = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { error: testerror } } }
-    expect(getAssignedError(state)).equals(testerror)
+    expect(getAssignedFetchStatus(state)).to.eql({ error: testerror, isFetching: false })
 
-    expect(getAssignedError({ fetch: {} })).equals(null)
+    expect(getAssignedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
 })
 

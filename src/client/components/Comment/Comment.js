@@ -13,18 +13,16 @@ import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Button from 'react-bootstrap/lib/Button'
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
+import moment from 'moment'
+import type { InlineCommentType } from 'universal/comments' //eslint-disable-line
 
 export type Props = {
-  id?: string,
-  user?: string,
-  author?: string,
-  message?: any,
-  postDate?: string,
+  loggedUsername: string,
+  comment: InlineCommentType,
   simpleText?: boolean,
   style?: Object,
   headerStyle?: Object,
   buttonGroupStyle?: Object,
-  issue?: boolean,
   niceToHave?: boolean,
   codeStyle?: boolean,
   hideSettings?: boolean,
@@ -38,23 +36,12 @@ class Comment extends Component {
     this.state = {
       editMode: false,
       commentText: '',
-      niceToHave: this.props.niceToHave,
-      issue: this.props.issue,
-      codeStyle: this.props.codeStyle,
-      voting: {
-        niceToHave: [],
-        issue: [],
-        codeStyle: [],
-      },
     }
-    this.onCommentEdit = this.onCommentEdit.bind(this)
-    this.onCommentSave = this.onCommentSave.bind(this)
-    this.handleChange = this.handleChange.bind(this)
   }
 
   props: Props
 
-  onCommentEdit() {
+  onCommentEdit= () => {
     this.setState({ editMode: true })
   }
 
@@ -62,47 +49,47 @@ class Comment extends Component {
   //   // TODO: dispatch reducer action to delete comment
   // }
 
-  onCommentSave() {
+  onCommentSave = () => {
     this.setState({ editMode: false })
       // TODO: dispatch reducer action to save edited comment
   }
 
-  handleChange(event, value) {
-    switch (value) {
-      case '1':
-        this.setState({
-          issue: !this.state.issue,
-        })
-        return
-      case '2':
-        this.setState({
-          niceToHave: !this.state.niceToHave,
-        })
-        return
-      case '3':
-        this.setState({
-          codeStyle: !this.state.codeStyle,
-        })
-        return
-      default:
-        return
-    }
-  }
+  // handleChange(event, value) {
+  //   switch (value) {
+  //     case '1':
+  //       this.setState({
+  //         issue: !this.state.issue,
+  //       })
+  //       return
+  //     case '2':
+  //       this.setState({
+  //         niceToHave: !this.state.niceToHave,
+  //       })
+  //       return
+  //     case '3':
+  //       this.setState({
+  //         codeStyle: !this.state.codeStyle,
+  //       })
+  //       return
+  //     default:
+  //       return
+  //   }
+  // }
 
   render() {
+    if (!this.props.comment) {
+      return null
+    }
     const {
-      id,
-      user,
-      author,
-      message,
-      postDate,
+      loggedUsername,
+      comment,
       style,
       simpleText,
       headerStyle,
       buttonGroupStyle,
     } = this.props
     const { editMode } = this.state
-    const isAuthor = user === author
+    const isAuthor = loggedUsername === comment.author.username
     const iconButtonStyle = {
       padding: 0,
       width: '30px',
@@ -142,10 +129,11 @@ class Comment extends Component {
         <div style={style || defaultCommentStyle}>
           {!editMode &&
             <div style={{ overflow: 'auto', padding: '3px' }}>
-              <div style={{ float: 'left', padding: '6px 6px', fontFamily: 'Lato' }}>
+              <div style={{ float: 'left', padding: '6px 6px', fontFamily: 'sans-serif' }}>
                 <TestAvatar />
                 <div style={headerStyle || commentHeaderStyle}>
-                  <strong style={{ color: '#31708f' }}>{author}</strong> commented {postDate}
+                  <strong style={{ color: '#31708f' }}>{comment.author.fullName}</strong>
+                  <span> commented {moment(comment.created).fromNow()}</span>
                 </div>
               </div>
             {isAuthor &&
@@ -166,9 +154,9 @@ class Comment extends Component {
                     <MenuItem
                       value="1"
                       primaryText="Mark as issue"
-                      checked={this.state.issue}
+                      checked={!!comment.issue}
                     />
-                    <MenuItem
+                    {/* <MenuItem
                       value="2"
                       primaryText="Mark as nice to have"
                       checked={this.state.niceToHave}
@@ -177,7 +165,7 @@ class Comment extends Component {
                       value="3"
                       primaryText="Mark as code style"
                       checked={this.state.codeStyle}
-                    />
+                    /> */}
                   </IconMenu>
                 }
                 <IconButton
@@ -203,14 +191,16 @@ class Comment extends Component {
             }
             </div>
           }
-          <TextEditorBox
-            onTextChanged={(value) => { this.state.commentText = value }}
-            ref={id}
-            text={message}
-            readOnly={!editMode}
-            simpleText={simpleText}
-            styleControlsStyle={{ borderRadius: '10px 10px 0 0' }}
-          />
+          <div style={{ margin: '0px 10px 10px' }}>
+            <TextEditorBox
+              onTextChanged={(value) => { this.state.commentText = value }}
+              ref={comment.id}
+              text={comment.text}
+              readOnly={!editMode}
+              simpleText={simpleText}
+              styleControlsStyle={{ borderRadius: '10px 10px 0 0' }}
+            />
+          </div>
         {!this.props.hideSettings &&
          (this.state.issue || this.state.niceToHave || this.state.codeStyle) &&
           <div style={buttonGroupStyle || { overflow: 'auto' }}>

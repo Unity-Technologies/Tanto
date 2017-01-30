@@ -5,7 +5,6 @@ import './ChangesetDelta.css'
 type ChangesetDeltaProps = {
   deleted: number,
   added: number,
-  changed: number,
   showDetails?: boolean,
 }
 
@@ -13,12 +12,10 @@ function getPercent(sum: number, value: number) {
   return sum > 0 ? Math.round((100 * value) / sum) : 0
 }
 
-const ChangesetDelta = ({ added, deleted, changed, showDetails }: ChangesetDeltaProps) => {
-  const sum = deleted + added + changed
-
+const ChangesetDelta = ({ added, deleted, showDetails }: ChangesetDeltaProps) => {
+  const sum = deleted + added
   const deletedPercent = getPercent(sum, deleted)
   const addedPercent = getPercent(sum, added)
-  const changedPercent = getPercent(sum, changed)
 
   return (
     <div className="changeset-delta">
@@ -35,13 +32,6 @@ const ChangesetDelta = ({ added, deleted, changed, showDetails }: ChangesetDelta
           style={{ width: `${addedPercent}%` }}
         >
           {showDetails && <span style={{ color: 'black' }}>{added}</span>}
-        </div>}
-      {changedPercent > 0 &&
-        <div
-          className="changeset-chunk changeset-changed"
-          style={{ width: `${changedPercent}%` }}
-        >
-          {showDetails && <span style={{ color: 'black' }}>{changed}</span>}
         </div>}
     </div>
   )

@@ -11,7 +11,7 @@ pre {
 }
 
 .RichEditor-root {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
     font-size: 12px;
     overflow: auto;
 }

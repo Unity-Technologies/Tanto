@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FiltersFields } from 'ducks/pullrequests'
 import LinearProgress from 'material-ui/LinearProgress'
 import ErrorMessage from 'components/ErrorMessage'
 import PullRequestList from 'components/PullRequestList'
@@ -10,16 +9,16 @@ import BranchSelect from 'containers/BranchSelect'
 import RepoSelect from 'containers/RepoSelect'
 import OrderSelect from 'containers/OrderSelect'
 import Alert from 'react-bootstrap/lib/Alert'
+import type { StatusType } from 'ducks/pullrequests/selectors'
 import type { OrderByType, DirectionType } from 'ducks/order'
-import { PullRequestSource } from 'services/ono/queries/pullrequests'
+import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
 
 export type Props = {
   dispatch: Function,
   activePage: number,
   pageSize: number,
-  isFetching: boolean,
+  status: StatusType,
   total: number,
-  error: Object,
   items: Array<any>,
   branch: string,
   repo: string,
@@ -89,6 +88,7 @@ class PullRequestsPaginated extends Component {
 
   render() {
     const pullRequestsExists = !!this.props.total
+    const { status: { error, isFetching } } = this.props
     return (
       <div>
         <div
@@ -115,15 +115,15 @@ class PullRequestsPaginated extends Component {
           </div>
           <div style={selectBoxStyle}>
             <OrderSelect
-              options={FiltersFields}
+              options={PullRequestOrderFields}
               onSelect={this.handleOrderFieldSelect}
               onOrderChange={this.handleOrderChange}
             />
           </div>
         </div>
-        {this.props.isFetching && <LinearProgress />}
-        {this.props.error && <ErrorMessage error={this.props.error} />}
-        {!pullRequestsExists && !this.props.isFetching && !this.props.error &&
+        {isFetching && <LinearProgress />}
+        {error && <ErrorMessage error={error} />}
+        {!pullRequestsExists && !this.props.isFetching && !error &&
           <Alert bsStyle="warning" style={{ fontSize: '13px' }}>
             <strong>
               <i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong>
