@@ -124,7 +124,7 @@ export type PullRequestSourceReferenceType =
 
 export type PullRequestSourceReference = {
   type: PullRequestSourceReferenceType,
-  name: string
+  name: string,
 }
 
 export type PullRequestUserType = {
@@ -146,7 +146,7 @@ export type OriginGraphType = {
 export type PullRequestGraphType = {
   id: string,
   title: string,
-  descroiption: string,
+  description: string,
   updated: string,
   status: string,
   created: string,

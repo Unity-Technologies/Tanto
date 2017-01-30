@@ -6,6 +6,7 @@ import {
   queries,
   parsers,
   PullRequestSource,
+  PullRequestSourceReference
 } from 'services/ono/queries/pullrequests'
 import { entities, actions as entitiesActions } from 'ducks/entities'
 import PULL_REQUEST_QUERY, { pullRequestQuery } from 'services/ono/queries/pullRequest'
