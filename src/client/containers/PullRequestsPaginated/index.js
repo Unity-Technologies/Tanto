@@ -87,7 +87,10 @@ class PullRequestsPaginated extends Component {
   }
 
   render() {
-    const pullRequestsExists = !!this.props.total
+    if (!this.props.items) {
+      return null
+    }
+
     const { status: { error, isFetching } } = this.props
     return (
       <div>
@@ -123,20 +126,19 @@ class PullRequestsPaginated extends Component {
         </div>
         {isFetching && <LinearProgress />}
         {error && <ErrorMessage error={error} />}
-        {!pullRequestsExists && !this.props.isFetching && !error &&
+        {!this.props.isFetching && !error &&
           <Alert bsStyle="warning" style={{ fontSize: '13px' }}>
             <strong>
               <i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong>
-                 There is no pull request
+            There is no pull request
           </Alert>
         }
-        {pullRequestsExists &&
-          <PullRequestList
-            showRemoveButton
-            onPageSelect={this.handlePageSelect}
-            onRemoveClick={this.handleRemove} {...this.props}
-          />
-        }
+        <PullRequestList
+          showRemoveButton
+          onPageSelect={this.handlePageSelect}
+          onRemoveClick={this.handleRemove} {...this.props}
+        />
+
       </div>
     )
   }

@@ -176,12 +176,86 @@ describe('session selectors', () => {
     expect(pullRequestsOwned(state)).to.eql([pr1, pr4])
   })
 
+  it('get user pull requests - empty pull requests entities ', () => {
+    const emptyState = {
+      session: sessionState,
+      pullrequests: {
+        entities: {},
+      },
+    }
+    expect(pullRequestsOwned(emptyState)).to.eql([])
+  })
+
+  it('get user pull requests - empty session page', () => {
+    const emptyState = {
+      session: {
+        pullRequestsOwned: {
+          pagination: {
+            pages: [],
+          },
+        },
+      },
+      pullrequests: pullrequstsState,
+    }
+    expect(pullRequestsOwned(emptyState)).to.eql([])
+  })
+
+
+  it('get user assigned pull requests - empty pull requests list', () => {
+    const emptyState = {
+      session: sessionState,
+      pullrequests: {
+        entities: {},
+      },
+    }
+    expect(pullRequestsAssigned(emptyState)).to.eql([])
+  })
+
+  it('get user assigned pull requests - empty session page', () => {
+    const emptyState = {
+      session: {
+        pullRequestsAssigned: {
+          pagination: {
+            pages: [],
+          },
+        },
+      },
+      pullrequests: pullrequstsState,
+    }
+    expect(pullRequestsAssigned(emptyState)).to.eql([])
+  })
+
+
   it('get user pull assigned requests', () => {
     expect(pullRequestsAssigned(state)).to.eql([pr1, pr3])
   })
 
   it('get user pull watching requests', () => {
     expect(pullRequestsWatching(state)).to.eql([pr2, pr1])
+  })
+
+  it('get user watching pull requests - empty pull requests list', () => {
+    const emptyState = {
+      session: sessionState,
+      pullrequests: {
+        entities: {},
+      },
+    }
+    expect(pullRequestsWatching(emptyState)).to.eql([])
+  })
+
+  it('get user watching pull requests - empty session page', () => {
+    const emptyState = {
+      session: {
+        pullRequestsWatching: {
+          pagination: {
+            pages: [],
+          },
+        },
+      },
+      pullrequests: pullrequstsState,
+    }
+    expect(pullRequestsWatching(emptyState)).to.eql([])
   })
 })
 
