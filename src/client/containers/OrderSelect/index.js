@@ -5,10 +5,9 @@ import type { DirectionType } from 'ducks/order'
 import { DIRECTION } from 'ducks/order'
 import Select from 'react-select'
 
-
 type SelectItemType = {
   label: string,
-  value: string,
+  value: ?string,
 }
 
 type OrderProps = {
@@ -42,12 +41,13 @@ const SwitchOrderButton = (props: SwitchButtonProps) => (
 class OrderSelect extends Component {
   constructor(props: OrderProps) {
     super(props)
-    const defaultOption = this.props.defaultOption ? { label: this.props.defaultOption } : null
-    this.state = { field: defaultOption, order: DIRECTION.ASC }
+    const defaultValue =
+      { label: this.props.defaultOption || '' }
+    this.state = { field: defaultValue, order: DIRECTION.ASC }
   }
 
   state: {
-    field: ?SelectItemType,
+    field: Object,
     order: DirectionType
   }
 
