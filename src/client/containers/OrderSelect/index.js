@@ -14,6 +14,7 @@ type SelectItemType = {
 type OrderProps = {
   options: Array<string>,
   onSelect: Function,
+  defaultOption: string,
   onOrderChange: Function,
 }
 
@@ -41,7 +42,8 @@ const SwitchOrderButton = (props: SwitchButtonProps) => (
 class OrderSelect extends Component {
   constructor(props: OrderProps) {
     super(props)
-    this.state = { field: null, order: DIRECTION.ASC }
+    const defaultOption = this.props.defaultOption ? { label: this.props.defaultOption } : null
+    this.state = { field: defaultOption, order: DIRECTION.ASC }
   }
 
   state: {
