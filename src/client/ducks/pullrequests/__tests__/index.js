@@ -2,7 +2,7 @@
 
 import chai from 'chai'
 
-import { PullRequestSource } from 'universal/constants'
+import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
 
 import reducer, {
   filters,
@@ -178,7 +178,7 @@ describe('pullrequests reducer', () => {
       },
       orderBy: {
         direction: DIRECTION.ASC,
-        field: '',
+        field: PullRequestOrderFields.UPDATED,
       },
       filters: {
         target: {
