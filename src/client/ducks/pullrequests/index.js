@@ -1,6 +1,6 @@
 /* @flow */
 
-import { PullRequestSource } from 'universal/constants'
+import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
 import { entities, actions as entitiesActions } from 'ducks/entities'
 import { target } from 'ducks/filters'
 import { pagination, receivePage } from 'ducks/pagination'
@@ -29,7 +29,7 @@ const initialState = {
   },
   orderBy: {
     direction: DIRECTION.ASC,
-    field: '',
+    field: PullRequestOrderFields.UPDATED,
   },
   filters: {
     target: {

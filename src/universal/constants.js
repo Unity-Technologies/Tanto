@@ -34,7 +34,11 @@ export const PullRequestSource = {
   BOOK: 'BOOK',
 }
 
-export const PullRequestOrderFields = ['updated']
+
+export const PullRequestOrderFields = {
+  UPDATED: 'UPDATED',
+  CREATED: 'CREATED',
+}
 
 /**
  * Available user personas (for testing purposes only !!!)
