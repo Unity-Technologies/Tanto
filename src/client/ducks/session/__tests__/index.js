@@ -7,14 +7,14 @@ import { receivePage } from 'ducks/pagination'
 import { DIRECTION } from 'ducks/order'
 import _ from 'lodash'
 const expect = require('chai').expect
-import { PullRequestSource, DEVELOPER_PERSONA } from 'universal/constants'
+import { PullRequestSource, DEVELOPER_PERSONA, PullRequestOrderFields } from 'universal/constants'
 
 
 describe('session reducer', () => {
   const prState = {
     orderBy: {
       direction: DIRECTION.ASC,
-      field: '',
+      field: PullRequestOrderFields.UPDATED,
     },
     filters: {
       target: {

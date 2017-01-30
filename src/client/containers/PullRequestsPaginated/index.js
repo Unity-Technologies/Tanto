@@ -38,7 +38,7 @@ class PullRequestsPaginated extends Component {
   getArguments = (): Object => ({
     pageSize: this.props.pageSize,
     limit: this.props.pageSize,
-    offset: this.props.pageSize * (this.props.activePage - 1),
+    offset: this.props.activePage > 0 ? this.props.pageSize * (this.props.activePage - 1) : 0,
     page: this.props.activePage,
     orderBy: this.props.orderBy,
     branch: this.props.branch,
@@ -50,7 +50,7 @@ class PullRequestsPaginated extends Component {
   handlePageSelect = (page) => {
     const args = this.getArguments()
     args.page = page
-    args.offset = args.pageSize * (page - 1)
+    args.offset = page > 1 ? args.pageSize * (page - 1) : 0
     this.props.dispatch(this.props.fetchData(args))
   }
 
@@ -118,7 +118,8 @@ class PullRequestsPaginated extends Component {
           </div>
           <div style={selectBoxStyle}>
             <OrderSelect
-              options={PullRequestOrderFields}
+              options={Object.keys(PullRequestOrderFields)}
+              defaultOption={PullRequestOrderFields.UPDATED}
               onSelect={this.handleOrderFieldSelect}
               onOrderChange={this.handleOrderChange}
             />
