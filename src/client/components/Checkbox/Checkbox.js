@@ -17,8 +17,7 @@ class Checkbox extends Component {
     super(props)
     this.state = {
       checked: this.props.checked,
-    };
-    (this:any).handleClick = this.handleClick.bind(this)
+    }
   }
 
   state: {
@@ -27,12 +26,10 @@ class Checkbox extends Component {
 
   props: Props
 
-  handleClick(e: SyntheticInputEvent) {
-    if (this.props.onChange) {
-      this.setState({
-        checked: e.target.checked,
-      })
-    }
+  handleClick = (e: SyntheticInputEvent) => {
+    this.setState({
+      checked: e.target.checked,
+    })
   }
 
   // TODO: apply material-ui  styling here
@@ -46,7 +43,7 @@ class Checkbox extends Component {
           value={value}
           checked={this.state.checked}
           disabled={disabled}
-          onChange={this.handleClick}
+          onChange={(this.props.onChange) ? this.handleClick : null}
           className="checkbox-box"
         />
         <label htmlFor={name} />
