@@ -7,31 +7,30 @@ import './Checkbox.css'
 export type Props = {
   checked: boolean,
   value: any,
-  onChange?: (e: SyntheticInputEvent, value: boolean) => any,
+  onChange?: (e: SyntheticInputEvent) => void,
   name: string,
   disabled?: boolean,
-}
-
-type State = {
-  checked: boolean,
 }
 
 class Checkbox extends Component {
   constructor(props: Props) {
     super(props)
     this.state = {
-      checked: (this.props.checked !== undefined) ? this.props.checked : false,
-    }
+      checked: this.props.checked,
+    };
+    (this:any).handleClick = this.handleClick.bind(this)
   }
 
-  state: State
+  state: {
+    checked: boolean,
+  }
 
   props: Props
 
   handleClick(e: SyntheticInputEvent) {
     if (this.props.onChange) {
       this.setState({
-        checked: (e.target.checked === undefined) ? this.state.checked : e.target.checked,
+        checked: e.target.checked,
       })
     }
   }
