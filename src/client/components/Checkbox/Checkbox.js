@@ -12,22 +12,27 @@ export type Props = {
   disabled?: boolean,
 }
 
+type State = {
+  checked: boolean,
+}
+
 class Checkbox extends Component {
-  /* eslint-disable react/sort-comp */
   constructor(props: Props) {
-    super(props);
-    this.state = { checked: this.props.checked };
-    (this:any).handleClick = this.handleClick.bind(this)
+    super(props)
+    this.state = {
+      checked: (this.props.checked !== undefined) ? this.props.checked : false,
+    }
   }
+
+  state: State
 
   props: Props
 
   handleClick(e: SyntheticInputEvent) {
     if (this.props.onChange) {
       this.setState({
-        checked: e.target.checked,
+        checked: (e.target.checked === undefined) ? this.state.checked : e.target.checked,
       })
-      this.props.onChange(e, e.target.checked)
     }
   }
 
