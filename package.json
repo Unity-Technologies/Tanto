@@ -60,7 +60,7 @@
       }
     },
     "test": {
-      "command": "mocha-webpack --webpack-config webpack/config.test.js --recursive 'src/**/__tests__/*.js' --full-trace --require source-map-support/register --colors",
+      "command": "mocha-webpack --webpack-config webpack/config.test.js --recursive \"src/**/__tests__/*.js\" --full-trace --require source-map-support/register --colors",
       "env": {
         "NODE_ENV": "test"
       }
