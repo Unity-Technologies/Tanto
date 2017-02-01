@@ -4,7 +4,7 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 
 import repositories from './repositories'
-import pullrequests from './pullrequests'
+import pullrequests, { pullRequestsReducer } from './pullrequests'
 import session from './session'
 import fetchStatus from './fetch'
 import sidebar from './sidebar'
@@ -18,4 +18,7 @@ export default combineReducers({
   repositories,
   fetch: fetchStatus,
   users,
+  app: combineReducers({
+    pullrequests: pullRequestsReducer,
+  }),
 })

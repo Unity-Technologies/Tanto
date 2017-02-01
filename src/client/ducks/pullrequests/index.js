@@ -3,12 +3,13 @@
 import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
 import { entities, actions as entitiesActions } from 'ducks/entities'
 import { target } from 'ducks/filters'
-import { pagination, receivePage } from 'ducks/pagination'
+import { pagination, receivePage, createPaginator } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
 import type { PaginationType } from 'ducks/pagination'
 import { combineReducers } from 'redux'
 import type { OrderByType } from 'ducks/order'
-import { types } from './actions'
+import { createReducer } from '../createReducer'
+import { types, namespace } from './actions'
 
 export const operationNames = {
   pullRequestsOwned: 'pullRequestsOwned',
@@ -21,6 +22,25 @@ export const operationNames = {
  */
 const initialState = {
   entities: {},
+  // pagination: {
+  //   total: 0,
+  //   pages: {},
+  //   pageSize: 0,
+  //   currentPage: 0,
+  // },
+  // orderBy: {
+  //   direction: DIRECTION.ASC,
+  //   field: PullRequestOrderFields.UPDATED,
+  // },
+  // filters: {
+  //   target: {
+  //     name: '',
+  //     type: PullRequestSource.BRANCH,
+  //   },
+  // },
+}
+
+const defaultValue = {
   pagination: {
     total: 0,
     pages: {},
@@ -45,7 +65,7 @@ export type PullRequestDictionary = {
 
 export type PullRequestsStateType = {
   entities: PullRequestDictionary,
-  pagination: PaginationType,
+  // pagination: PaginationType,
   orderBy: OrderByType,
   filters: Object
 }
@@ -53,6 +73,14 @@ export type PullRequestsStateType = {
 export const filters = combineReducers({
   target,
 })
+
+
+export const pullRequestsReducer = createReducer(namespace, combineReducers({
+  filters,
+  orderBy,
+  pagination,
+}), defaultValue)
+
 
 /**
  * Pullrequests reducer
@@ -65,13 +93,13 @@ export default (
         ...state,
         entities: entities(state.entities, entitiesActions.setEntities(action.nodes)),
       }
-    case types.SET_PULL_REQUESTS_PAGE:
-      return {
-        ...state,
-        pagination: pagination(state.pagination, receivePage(action)),
-        orderBy: orderBy(state.orderBy, action),
-        filters: filters(state.filters, action),
-      }
+    // case types.SET_PULL_REQUESTS_PAGE:
+    //   return {
+    //     ...state,
+    //     pagination: pagination(state.pagination, receivePage(action)),
+    //     orderBy: orderBy(state.orderBy, action),
+    //     filters: filters(state.filters, action),
+    //   }
     case types.SET_PULL_REQUEST:
       return {
         ...state,

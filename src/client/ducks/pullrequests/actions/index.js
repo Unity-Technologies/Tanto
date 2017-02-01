@@ -5,6 +5,7 @@ import type { OrderByType } from 'ducks/order'
 import { fetchActionCreator } from 'ducks/fetch'
 import _ from 'lodash'
 import { types as sessionTypes } from 'ducks/session/actions'
+import { RECEIVE_PAGE } from 'ducks/pagination'
 
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
 import pullRequestFiles from 'ducks/pullrequests/queries/pullRequestFiles.graphql'
@@ -95,7 +96,8 @@ export const fetchPullRequests = (variables: FetchPullRequestVariables): Object 
       const { nodes, total } = parsePullRequests(data)
       return [
         { type: types.SET_PULL_REQUESTS, nodes },
-        { type: types.SET_PULL_REQUESTS_PAGE, nodes, total, ...cbArgs }]
+        { type: types.SET_PULL_REQUESTS_PAGE, nodes, total, ...cbArgs },
+        { type: RECEIVE_PAGE, namespace: 'pullRequests', nodes, total, ...cbArgs }]
     })
 
 export const fetchUserPullRequests = (variables: FetchPullRequestVariables): Object =>
@@ -107,6 +109,7 @@ export const fetchUserPullRequests = (variables: FetchPullRequestVariables): Obj
       return [
         { type: types.SET_PULL_REQUESTS, nodes },
         { type: sessionTypes.SET_PULL_REQUESTS_OWNED, nodes, total, ...cbArgs },
+        { type: RECEIVE_PAGE, namespace: 'pullRequestsOwned', nodes, total, ...cbArgs },
       ]
     })
 
@@ -119,6 +122,7 @@ export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariabl
       return [
         { type: types.SET_PULL_REQUESTS, nodes },
         { type: sessionTypes.SET_PULL_REQUESTS_ASSIGNED, nodes, total, ...cbArgs },
+        { type: RECEIVE_PAGE, namespace: 'pullRequestsAssigned', nodes, total, ...cbArgs },
       ]
     })
 
