@@ -7,7 +7,7 @@ import IconMenu from 'material-ui/IconMenu'
 import Divider from 'material-ui/Divider'
 import IconButton from 'material-ui/IconButton'
 import { setPersona } from 'ducks/session/actions'
-
+import { getLoggedUsername, getPersona } from 'ducks/session/selectors'
 import TestAvatar from 'components/TestAvatar'
 
 import {
@@ -86,7 +86,7 @@ class Logout extends Component {
 
 export default connect(
   state => ({
-    persona: state.session.persona,
-    username: state.session.profile.username || '',
+    persona: getPersona(state),
+    username: getLoggedUsername(state),
   })
 )(Logout)

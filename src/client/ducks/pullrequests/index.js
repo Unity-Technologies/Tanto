@@ -3,9 +3,8 @@
 import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
 import { entities, actions as entitiesActions } from 'ducks/entities'
 import { target } from 'ducks/filters'
-import { pagination, receivePage, createPaginator } from 'ducks/pagination'
+import { pagination } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
-import type { PaginationType } from 'ducks/pagination'
 import { combineReducers } from 'redux'
 import type { OrderByType } from 'ducks/order'
 import { createReducer } from '../createReducer'
@@ -75,7 +74,7 @@ export const filters = combineReducers({
 })
 
 
-export const pullRequestsReducer = createReducer(namespace, combineReducers({
+export const pullRequests = createReducer(namespace, combineReducers({
   filters,
   orderBy,
   pagination,

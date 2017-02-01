@@ -41,6 +41,4 @@ class Home extends Component {
   }
 }
 
-export default connect(state => ({
-  profile: state.session.profile,
-}))(Home)
+export default Home

@@ -1,7 +1,6 @@
 /* @flow */
 
 import React from 'react'
-import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 
 export type Props = {
@@ -19,8 +18,4 @@ function Statistics({ params: { prid } }: Props) {
   )
 }
 
-export default connect(
-  state => ({
-    isFetching: state.session.isFetching,
-  })
-)(Statistics)
+export default Statistics

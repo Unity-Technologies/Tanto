@@ -7,11 +7,17 @@ import Tabs from 'react-bootstrap/lib/Tabs'
 import Tab from 'react-bootstrap/lib/Tab'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/pullrequests/actions'
-import { pullRequestsOwned, pullRequestsAssigned } from 'ducks/session/selectors'
+import {
+  getPullRequestsOwned,
+  getPullRequestsAssigned,
+  getPullRequestsOwnedTotal,
+  getPullRequestsAssignedTotal,
+} from 'ducks/session/selectors'
 import {
   getOwnedFetchStatus,
   getAssignedFetchStatus,
 } from 'ducks/pullrequests/selectors'
+
 import './styles.css'
 
 const tabTitle = (text, badge) => (
@@ -28,7 +34,7 @@ const mapStateToPropsOwned = (state, props) => ({
   activePage: state.session.pullRequestsOwned.pagination.currentPage,
   total: state.session.pullRequestsOwned.pagination.total,
   status: getOwnedFetchStatus(state),
-  items: pullRequestsOwned(state) || [],
+  items: getPullRequestsOwned(state) || [],
   orderBy: state.session.pullRequestsOwned.orderBy,
 })
 
@@ -39,7 +45,7 @@ const mapStateToPropsAssigned = (state, props) => ({
   activePage: state.session.pullRequestsAssigned.pagination.currentPage,
   total: state.session.pullRequestsAssigned.pagination.total,
   status: getAssignedFetchStatus(state),
-  items: pullRequestsAssigned(state) || [],
+  items: getPullRequestsAssigned(state) || [],
   orderBy: state.session.pullRequestsAssigned.orderBy,
 })
 
@@ -86,8 +92,8 @@ function PullRequests(props: Props) {
 
 export default connect(
   state => ({
-    totalOwned: state.session.pullRequestsOwned.total,
-    totalAssigned: state.session.pullRequestsAssigned.total,
+    totalOwned: getPullRequestsOwnedTotal(state),
+    totalAssigned: getPullRequestsAssignedTotal(state),
   })
 )(PullRequests)
 

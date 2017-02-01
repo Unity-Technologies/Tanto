@@ -10,6 +10,7 @@ import { statusFetchCreator } from 'ducks/fetch'
 import LoadingComponent from 'components/LoadingComponent'
 import { getPullRequest } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
+import { getLoggedUsername } from 'ducks/session/selectors'
 
 type Props = {
   files: Array<FileType>,
@@ -18,10 +19,9 @@ type Props = {
 }
 
 export const fetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_DIFF)
-export const getLoggedUser = (state: Object) => state.session.profile.username
 export const getData = (state: Object, props: Object): Object =>
   createSelector(
-    getPullRequest, fetchStatus, getLoggedUser,
+    getPullRequest, fetchStatus, getLoggedUsername,
     (pr, status, user) => ({
       files: pr ? pr.files : [],
       status,

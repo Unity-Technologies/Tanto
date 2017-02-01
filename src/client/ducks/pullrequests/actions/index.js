@@ -63,6 +63,8 @@ export const parsePullRequest = (response: Object) => (
   _.get(response, ['data', 'pullRequest'])
 )
 
+export const namespace = 'pullRequests'
+
 /**
  *Action creators
  */

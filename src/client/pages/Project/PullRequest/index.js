@@ -10,6 +10,7 @@ import type { PullRequestGraphType } from 'universal/types'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import LayoutGuardian from './Layouts/LayoutGuardian'
 import Helmet from 'react-helmet'
+import { getPersona } from 'ducks/session/selectors'
 import ActionBar from './ActionBar'
 import {
   fetchPullRequestDiff,
@@ -84,6 +85,6 @@ class PullRequest extends Component {
 export default connect(
   (state, props) => ({
     params: props.params,
-    persona: state.session.persona,
+    persona: getPersona(state),
   })
 )(PullRequest)
