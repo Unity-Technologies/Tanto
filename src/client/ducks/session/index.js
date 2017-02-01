@@ -44,12 +44,6 @@ export const filters = combineReducers({
   repo,
 })
 
-// export const sessionEntities = combineReducers({
-//   pagination,
-//   orderBy,
-//   filters,
-// })
-
 export const pullRequestsAssigned = createReducer('pullRequestsAssigned', combineReducers({
   filters,
   orderBy,

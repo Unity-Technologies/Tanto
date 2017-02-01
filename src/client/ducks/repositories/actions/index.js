@@ -10,10 +10,6 @@ import repository from '../queries/repository.graphql'
  * Action types
  */
 export const types = {
-  SET_REPOSITORIES: 'REPOSITORIES/SET_REPOSITORIES',
-  SET_REPOSITORY: 'REPOSITORIES/SET_REPOSITORY',
-  SET_REPOSITORIES_NAMES: 'REPOSITORIES/SET_REPOSITORIES_NAMES',
-  SET_GROUPS: 'REPOSITORIES/SET_GROUPS',
   FETCH_REPOSITORIES: 'REPOSITORIES/FETCH_REPOSITORIES',
   FETCH_REPOSITORY: 'REPOSITORIES/FETCH_REPOSITORY',
   SEARCH_REPOSITORY: 'REPOSITORIES/SEARCH_REPOSITORY',
@@ -49,13 +45,6 @@ export function parseRepository(data: any): Object {
 /**
  * Action creators
  */
-
-export const setRepository =
-  (node: RepositoryType): Object => ({ type: types.SET_REPOSITORY, node })
-
-export const setRepositoriesNames =
-  (nodes: Array<Object>): Object => ({ type: types.SET_REPOSITORIES_NAMES, nodes })
-
 export const searchRepository =
   (filter: string, limit: number): Object =>
     ({ type: types.SEARCH_REPOSITORY, filter, limit })
@@ -68,12 +57,5 @@ export const fetchRepositoryBranches = (id: number): Object =>
 
 export const fetchRepositories = (name: string): Object =>
   fetchActionCreator(types.FETCH_REPOSITORIES, repositoriesQuery, { name },
-    name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
-    (data: Object, cbArgs: Object): Array<Object> => {
-      const { groups, repositories } = parseRepositories(data)
-      return [
-        { type: types.SET_REPOSITORIES, nodes: repositories },
-        { type: types.SET_GROUPS, nodes: groups },
-      ]
-    }
+    name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel
   )
