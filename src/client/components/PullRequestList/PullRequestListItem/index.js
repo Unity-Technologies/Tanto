@@ -79,9 +79,13 @@ class PullRequestListItem extends Component {
               <div style={{ overflowWrap: 'break-word' }}>
                 <Link
                   style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
-                  to={buildProjectLink(pullRequest.target.repository.fullName)}
+                  to={{
+                    pathname: buildProjectLink(pullRequest.target.repository.fullName),
+                    query: { branch: pullRequest.target.name }
+                  }}
                 >
                   {pullRequest.target.repository.name}
+                  <span style={{ color: '#8ea7b6' }}>#</span>{pullRequest.target.name}
                 </Link>
               </div>
             </div>
