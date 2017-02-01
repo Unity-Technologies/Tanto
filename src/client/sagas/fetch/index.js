@@ -29,19 +29,23 @@ type ActionType = {
   callback: Function
 }
 
+export function* normalizeSaga(data) {
+  const { entities } = normalize(data, schema)
+  // NOTE: This is a hack due to ono graphql me scheme design
+  if (entities.me) {
+    entities.me = entities.me.undefined
+  }
+
+  yield (put({ type: types.SET_NORMALIZED_ENTITIES, entities }))
+}
+
 export function* fetchAnythingSaga(action: ActionType): Generator<any, any, any> {
   try {
     yield put(actions.clearError(action.name))
     yield put(actions.sendingRequest(action.name, true))
     const response = yield call(get, action.query, action.args, action.operationName)
 
-    const { entities } = normalize(response.data, schema)
-    // NOTE: This is a hack due to ono graphql me scheme design
-    if (entities.me) {
-      entities.me = entities.me.undefined
-    }
-
-    yield (put({ type: types.SET_NORMALIZED_ENTITIES, entities }))
+    yield call(normalizeSaga, response.data)
 
     if (action.callback) {
       const callbacks = action.callback(response, action.args)

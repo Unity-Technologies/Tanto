@@ -22,7 +22,7 @@ export const getAssignedFetchStatus =
 export const getPullRequest =
   (state: Object, props: Object): Object => {
     const id = props.params ? props.params.prid : props.pullRequestId || props.id
-    return state.pullrequests.entities[id]
+    return state.entities.pullRequests[id]
   }
 
 export const getIds = (state: Object): Array<Number> => {
@@ -31,10 +31,10 @@ export const getIds = (state: Object): Array<Number> => {
 }
 
 export const pullRequestsEntitiesSelector =
-  (state: Object, props: Object): Object => state.pullrequests.entities
+  (state: Object, props: Object): Object => state.entities.pullRequests
 
 export const pullRequestsIdsSelector =
-  (state: Object, props: Object): Array<Number> => getIds(state.pullrequests)
+  (state: Object, props: Object): Array<Number> => getIds(state.session.pullRequests)
 
 export const getPullRequests = createSelector(
   pullRequestsEntitiesSelector, pullRequestsIdsSelector,

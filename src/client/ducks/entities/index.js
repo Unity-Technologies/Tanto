@@ -1,6 +1,4 @@
 /* @flow */
-
-import { reduceArrayToObj, reduceObjById } from 'ducks/normalizer'
 import _ from 'lodash'
 
 export const types = {
@@ -12,6 +10,39 @@ export const types = {
 export type ErrorType = {
   message: string
 }
+
+/* @flow */
+
+/**
+ * Transforms object to the object with the ID property(state normalizaton)
+ * Example:
+ * const obj = { id: 'kdhfkjsa', name: 'Test name', title: 'Tests title' }
+ * to be transformed to
+ * const objNormalized = { 'kdhfkjsa': { id: 'kdhfkjsa', name: 'Test name', title: 'Tests title' } }
+ */
+export const reduceObjById = (obj: Object, idAttribute: string = 'id'): Object => {
+  const res = {}
+  res[obj[idAttribute]] = obj
+  return res
+}
+
+/**
+ * Transforms object to the object with the ID property(state normalizaton)
+ * Example:
+ * const obj = { id: 'kdhfkjsa', name: 'Test name', title: 'Tests title' }
+ * to be transformed to
+ * const objNormalized = { 'kdhfkjsa': { id: 'kdhfkjsa', name: 'Test name', title: 'Tests title' } }
+ */
+export const reduceArrayToObj = (arr: Array<Object>, idAttribute: string = 'id'): Object => {
+  const res = {}
+
+  for (const x of arr) {
+    res[x[idAttribute]] = x
+  }
+
+  return res
+}
+
 
 export const setEntities = (nodes: Array<Object>, idAttribute: string = 'id'): Object =>
   ({ type: types.SET_ENTITIES, nodes, idAttribute })

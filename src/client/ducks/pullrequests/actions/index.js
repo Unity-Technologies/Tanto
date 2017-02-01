@@ -97,8 +97,6 @@ export const fetchPullRequests = (variables: FetchPullRequestVariables): Object 
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parsePullRequests(data)
       return [
-        { type: types.SET_PULL_REQUESTS, nodes },
-        { type: types.SET_PULL_REQUESTS_PAGE, nodes, total, ...cbArgs },
         { type: RECEIVE_PAGE, namespace: 'pullRequests', nodes, total, ...cbArgs }]
     })
 
@@ -109,8 +107,6 @@ export const fetchUserPullRequests = (variables: FetchPullRequestVariables): Obj
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parseCurrentUserPullRequests(data)
       return [
-        { type: types.SET_PULL_REQUESTS, nodes },
-        { type: sessionTypes.SET_PULL_REQUESTS_OWNED, nodes, total, ...cbArgs },
         { type: RECEIVE_PAGE, namespace: 'pullRequestsOwned', nodes, total, ...cbArgs },
       ]
     })
@@ -122,8 +118,6 @@ export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariabl
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parseCurrentUserAssignedPullRequests(data)
       return [
-        { type: types.SET_PULL_REQUESTS, nodes },
-        { type: sessionTypes.SET_PULL_REQUESTS_ASSIGNED, nodes, total, ...cbArgs },
         { type: RECEIVE_PAGE, namespace: 'pullRequestsAssigned', nodes, total, ...cbArgs },
       ]
     })

@@ -17,7 +17,7 @@ type StateType = {
 
 export const repoEntitiesSelector = (state : Object, props: Object): Object => {
   const parentGroupName = props.params.splat || null
-  return _.pickBy(state.repositories.entities, repo => (repo.groupPath === parentGroupName))
+  return _.pickBy(state.entities.repositories, repo => (repo.groupPath === parentGroupName))
 }
 
 export const getRepositories = createSelector(
@@ -27,7 +27,7 @@ export const getRepositories = createSelector(
 
 export const groupsEntitiesSelector = (state: Object, props: Object): Object => {
   const parentGroupName = props.params.splat || null
-  return _.pickBy(state.repositories.groups, group => (group.parentGroupName === parentGroupName))
+  return _.pickBy(state.entities.groups, group => (group.parentGroupName === parentGroupName))
 }
 
 export const getGroups = createSelector(
@@ -57,10 +57,10 @@ export const getSearchRepoStatus =
 export const getSearchRepoError =
   (state: StateType): Object => errorSelector(types.SEARCH_REPOSITORY)(state)
 
-export const repoNamesSelector = (state: Object): Array<Object> => state.repositories.names
+export const repoNamesSelector = (state: Object): Array<Object> => state.entities.repositories || []
 export const getRepositoriesNames = createSelector(
   repoNamesSelector,
-  repoNames => repoNames.map(x => ({ label: x.fullName, value: x.id }))
+  repoNames => _.values(repoNames).map(x => ({ label: x.fullName, value: x.id }))
 )
 
 export const getSearchRepoResultState = createStructuredSelector({
@@ -71,7 +71,7 @@ export const getSearchRepoResultState = createStructuredSelector({
 
 export const repoBranchesSelector =
   (state: Object, props: Object): Array<Object> => {
-    const repo = state.repositories.entities[props.repoId]
+    const repo = _.get(state, ['entities', 'repositories'], {})[props.repoId]
     return repo && repo.branches ? repo.branches : []
   }
 
@@ -81,7 +81,7 @@ export const getRepositoryBranches = createSelector(
 )
 
 export const repoIdSelector = (state: Object, props: Object): any =>
-  _.findKey(state.repositories.entities, { fullName: props.params.splat })
+  _.findKey(state.entities.repositories, { fullName: props.params.splat })
 
 export const getRepositoryId = createSelector(
   repoIdSelector,

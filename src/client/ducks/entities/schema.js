@@ -44,12 +44,6 @@ pullRequest.define({
     user,
   }],
   comments: [comment],
-  origin: {
-    repository,
-  },
-  target: {
-    repository,
-  },
 })
 
 const profile = new schema.Entity('me', {

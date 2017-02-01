@@ -6,30 +6,28 @@ export const getIds = (state) => {
   return pages[currentPage]
 }
 
+export const entitiesSelector = state => state.entities
+
 export const pullRequestsOwnedIdsSelector = state => getIds(state.session.pullRequestsOwned)
 export const pullRequestsAssignedIdsSelector = state => getIds(state.session.pullRequestsAssigned)
 export const pullRequestsWatchingIdsSelector = state => getIds(state.session.pullRequestsWatching)
 export const pullRequestsSelector = state => state.entities.pullRequests
 
+export const pullRequestsComputation = (pullRequests, ids) => (
+  _.isEmpty(pullRequests) || !ids ? [] :
+    _.values(_.pick(pullRequests, ids))
+)
+
 export const getPullRequestsOwned = createSelector(
-  pullRequestsSelector, pullRequestsOwnedIdsSelector,
-  (pullRequests, pullRequestsOwnedIds) =>
-    (_.isEmpty(pullRequests) || !pullRequestsOwnedIds ? [] :
-    _.values(_.pick(pullRequests, pullRequestsOwnedIds)))
+  pullRequestsSelector, pullRequestsOwnedIdsSelector, pullRequestsComputation
 )
 
 export const getPullRequestsAssigned = createSelector(
-  pullRequestsSelector, pullRequestsAssignedIdsSelector,
-  (pullRequests, pullRequestsAssignedIds) =>
-    (_.isEmpty(pullRequests) || !pullRequestsAssignedIds ? [] :
-    _.values(_.pick(pullRequests, pullRequestsAssignedIds)))
+  pullRequestsSelector, pullRequestsAssignedIdsSelector, pullRequestsComputation
 )
 
 export const getPullRequestsWatching = createSelector(
-  pullRequestsSelector, pullRequestsWatchingIdsSelector,
-  (pullRequests, pullRequestsWatchingIds) =>
-    (_.isEmpty(pullRequests) ? [] :
-    _.values(_.pick(pullRequests, pullRequestsWatchingIds)))
+  pullRequestsSelector, pullRequestsWatchingIdsSelector, pullRequestsComputation
 )
 
 export const getPersona = state => _.get(state, ['session', 'profile', 'persona'], null)

@@ -14,22 +14,9 @@ export type Props = {
   name: string,
 }
 
-export const REPOSITORY_QUERY = `
-query($name: String!) {
-	repository(name: $name) {
-    id
-    name,
-    fullName,
-    branches {
-      name
-      revision
-    }
-  }
-}`
-
 class Project extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchRepository(this.props.name, REPOSITORY_QUERY))
+    this.props.dispatch(fetchRepository(this.props.name))
   }
 
   render() {

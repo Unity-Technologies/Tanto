@@ -21,13 +21,13 @@ export type Props = {
 }
 
 const mapStateToProps = (state, props) => ({
-  branch: state.pullrequests.filters.branch,
+  branch: state.session.pullRequests.filters.branch,
   pageSize: 10,
-  activePage: state.pullrequests.pagination.currentPage,
-  total: state.pullrequests.pagination.total,
+  activePage: state.session.pullRequests.pagination.currentPage,
+  total: state.session.pullRequests.pagination.total,
   status: getPageFetchStatus(state),
   items: getPullRequests(state) || [],
-  orderBy: state.session.pullRequestsOwned.orderBy,
+  orderBy: state.session.pullRequests.orderBy,
 })
 
 function PullRequests(props: Props) {
