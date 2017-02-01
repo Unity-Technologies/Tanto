@@ -5,6 +5,7 @@ import _ from 'lodash'
 
 export const types = {
   SET_ENTITIES: 'ENTITIES/SET_ENTITIES',
+  SET_NORMALIZED_ENTITIES: 'ENTITIES/SET_NORMALIZED_ENTITIES',
   SET_ENTITY: 'ENTITIES/SET_ENTITY',
 }
 
@@ -36,10 +37,13 @@ export const mergeEntities = (state: Object = {}, action: Object): Object => {
   return state
 }
 
+
 export const entities = (state: Object = {}, action: Object): Object => {
   switch (action.type) {
     case types.SET_ENTITIES:
       return mergeEntities(state, action)
+    case types.SET_NORMALIZED_ENTITIES:
+      return merge(state, action.entities)
     case types.SET_ENTITY:
       return merge(state, reduceObjById(action.node))
     default:

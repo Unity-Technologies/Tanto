@@ -1,4 +1,4 @@
-query pullRequestsOwned($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: Ordering) {
+query pullRequestsOwned($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: PullRequestOrdering) {
   me {
     pullRequestsOwned(limit: $limit, offset: $offset, repo: $repo, target: $target, orderBy: $orderBy) {
       ...pullRequestMetadata
@@ -6,7 +6,7 @@ query pullRequestsOwned($limit: Int, $offset: Int, $target: PullRequestTargetArg
   }
 }
 
-query pullRequestsAssigned($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: Ordering) {
+query pullRequestsAssigned($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: PullRequestOrdering) {
   me {
     pullRequestsAssigned(limit: $limit, offset: $offset, repo: $repo, target: $target, orderBy: $orderBy) {
       ...pullRequestMetadata
@@ -14,7 +14,7 @@ query pullRequestsAssigned($limit: Int, $offset: Int, $target: PullRequestTarget
   }
 }
 
-query pullRequests($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: Int, $orderBy: Ordering) {
+query pullRequests($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: Int, $orderBy: PullRequestOrdering) {
   repository(id: $repo) {
       pullRequests(limit: $limit, offset: $offset, target: $target, orderBy: $orderBy) {
       ...pullRequestMetadata
@@ -34,17 +34,20 @@ fragment pullRequestMetadata on PullRequests {
       revision
       name
       repository {
+        id
         name
       }
     }
     target {
       name
       repository {
+        id
         name
         fullName
       }
     }
     owner {
+      id
       username
       fullName
     }

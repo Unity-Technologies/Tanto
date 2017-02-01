@@ -9,8 +9,10 @@ import session from './session'
 import fetchStatus from './fetch'
 import sidebar from './sidebar'
 import users from './users'
+import { entities } from './entities'
 
 export default combineReducers({
+  entities,
   pullrequests,
   routing: routerReducer,
   session,

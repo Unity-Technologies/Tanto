@@ -1,5 +1,6 @@
 query repositoriesNested($name: String!) {
   group(name: $name) {
+    id
     repositories(limit: 50) {
       ...repo
     }
@@ -24,6 +25,8 @@ fragment repo on Repositories {
     name
     owner {
       fullName
+      username
+      id
     }
     groupPath
     groupName

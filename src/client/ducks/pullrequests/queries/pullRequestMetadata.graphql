@@ -5,6 +5,7 @@ query pullRequestMetadata($id: Int!) {
     status
     created
     owner {
+      id
       fullName
       username
     }
@@ -19,12 +20,14 @@ query pullRequestMetadata($id: Int!) {
     origin {
       name
       repository {
+        id
         name
       }
     }
     target {
       name
       repository {
+        id
         name
       }
     }
@@ -36,10 +39,12 @@ query pullRequestMetadata($id: Int!) {
       updated
       branch
       owner {
+        id
         username
         fullName
       }
       assignee {
+        id
         username
         fullName
       }
