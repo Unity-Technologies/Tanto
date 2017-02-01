@@ -29,7 +29,6 @@ export const project = (store, name) => {
     { title: 'Files', route: `/project/${name}/files`, icon: 'files-o' },
     { title: 'Changelog', route: `/project/${name}/changelog`, icon: 'calendar' },
     { title: 'Pull Requests', route: `/project/${name}/pullrequests`, icon: 'tasks' },
-    { title: 'Statistics', route: `/project/${name}/statistics`, icon: 'bar-chart' },
   ]
 
   store.dispatch({ type: SIDE_BAR_ITEMS, items })
