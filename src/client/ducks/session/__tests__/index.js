@@ -13,7 +13,7 @@ import { PullRequestSource, DEVELOPER_PERSONA, PullRequestOrderFields } from 'un
 describe('session reducer', () => {
   const prState = {
     orderBy: {
-      direction: DIRECTION.ASC,
+      direction: DIRECTION.DESC,
       field: PullRequestOrderFields.UPDATED,
     },
     filters: {
