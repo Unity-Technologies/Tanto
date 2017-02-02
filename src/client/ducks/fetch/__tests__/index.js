@@ -156,16 +156,16 @@ describe('fetchActionCreator', () => {
   it('fetchActionCreator should convert any action to FETCH_DATA action', () => {
     const type = 'SOME_ACTOIN_TYPE'
     const query = 'query {test query}'
-    const args = { id: 'testid', limit: 123 }
+    const variables = { id: 'testid', limit: 123 }
     const operationName = 'someOperationName'
-    const callback = (data: Object, cbArgs: Object) => 'some callback here'
-    expect(fetchActionCreator(type, query, args, operationName, callback))
+    const callback = (data: Object, cbvariables: Object) => 'some callback here'
+    expect(fetchActionCreator(type, query, variables, operationName, callback))
       .to.eql({
         type: types.FETCH_DATA,
         name: type,
         operationName,
         query,
-        args,
+        variables,
         callback,
       })
   })

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-import { repo, profile, pullRequestsAssigned, pullRequestsOwned } from '../index'
+import { profile } from '../index'
 import { types } from '../actions'
 const expect = require('chai').expect
 import { DEVELOPER_PERSONA } from 'universal/constants'

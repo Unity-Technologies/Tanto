@@ -1,6 +1,6 @@
 /* @flow */
 
-import { fetchActionCreator } from 'ducks/fetch'
+import { fetchActionCreator, fetchAction } from 'ducks/fetch'
 import repositoriesQuery from '../queries/repositories.graphql'
 import repoBranchesQuery from '../queries/branches.graphql'
 import repository from '../queries/repository.graphql'
@@ -28,12 +28,17 @@ export const searchRepository =
     ({ type: types.SEARCH_REPOSITORY, filter, limit })
 
 export const fetchRepository = (name: string): Object =>
-  fetchActionCreator(types.FETCH_REPOSITORY, repository, { name })
+  fetchAction({ type: types.FETCH_REPOSITORY, query: repository, variables: { name } })
 
 export const fetchRepositoryBranches = (id: number): Object =>
-  fetchActionCreator(types.FETCH_REPOSITORY_BRANCHES, repoBranchesQuery, { id })
+  fetchAction({
+    type: types.FETCH_REPOSITORY_BRANCHES, query: repoBranchesQuery, variables: { id },
+  })
 
 export const fetchRepositories = (name: string): Object =>
-  fetchActionCreator(types.FETCH_REPOSITORIES, repositoriesQuery, { name },
-    name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel
-  )
+  fetchAction({
+    type: types.FETCH_REPOSITORIES,
+    query: repositoriesQuery,
+    variables: { name },
+    operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
+  })

@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Helmet from 'react-helmet'
-import { connect } from 'react-redux'
 
 import NotificationList from 'components/NotificationList'
 

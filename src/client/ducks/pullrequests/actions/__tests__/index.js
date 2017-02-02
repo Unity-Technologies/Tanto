@@ -34,7 +34,7 @@ describe('pullrequests actions', () => {
 
     const testQuery = 'djhfkjshfjk'
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, args: { id }, query: testQuery, operationName: '' },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery, operationName: '' },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST, sending: true },
       { type: SET_NORMALIZED_ENTITIES, entities: normalize(pr, schema).entities },
@@ -55,7 +55,7 @@ describe('pullrequests actions', () => {
     const error = new Error('some error')
     const testQuery = 'djhfkjshfjk'
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, args: { id }, query: testQuery, operationName: '' },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery, operationName: '' },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUEST, error },
@@ -78,34 +78,33 @@ describe('pullrequests actions', () => {
     }
     const total = 123
     const data = {
-      data: {
-        repository: {
-          pullRequests: {
-            total,
-            nodes: [{
-              id: 1,
-              name: 'testpr1',
-              title: 'test pr title1',
-              description: 'test pr description1',
-            },
-              {
-                id: 2,
-                name: 'testpr2',
-                title: 'test pr title2',
-                description: 'test pr description2',
-              }],
+      repository: {
+        pullRequests: {
+          total,
+          nodes: [{
+            id: 1,
+            name: 'testpr1',
+            title: 'test pr title1',
+            description: 'test pr description1',
           },
+            {
+              id: 2,
+              name: 'testpr2',
+              title: 'test pr title2',
+              description: 'test pr description2',
+            }],
         },
       },
+
     }
 
-    const args = { page, orderBy, pageSize }
+    const variables = { page, orderBy, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, args, query: pullRequestList, operationName },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: SET_NORMALIZED_ENTITIES, entities: normalize(data, schema).entities },
-      { type: RECEIVE_PAGE, namespace: operationName, nodes: data.data.repository.pullRequests, total, ...args },
+      { type: RECEIVE_PAGE, namespace: operationName, nodes: data.repository.pullRequests.nodes, total, ...variables },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: false },
     ]
 
@@ -113,7 +112,7 @@ describe('pullrequests actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchPullRequests(args))
+    store.dispatch(fetchPullRequests(variables))
   })
 
   it('fetchPullRequests success(with filters)', (done) => {
@@ -127,34 +126,33 @@ describe('pullrequests actions', () => {
     }
     const total = 123
     const data = {
-      data: {
-        repository: {
-          pullRequests: {
-            total,
-            nodes: [{
-              id: 1,
-              name: 'testpr1',
-              title: 'test pr title1',
-              description: 'test pr description1',
-            },
-              {
-                id: 2,
-                name: 'testpr2',
-                title: 'test pr title2',
-                description: 'test pr description2',
-              }],
+      repository: {
+        pullRequests: {
+          total,
+          nodes: [{
+            id: 1,
+            name: 'testpr1',
+            title: 'test pr title1',
+            description: 'test pr description1',
           },
+            {
+              id: 2,
+              name: 'testpr2',
+              title: 'test pr title2',
+              description: 'test pr description2',
+            }],
         },
       },
+
     }
 
-    const args = { page, orderBy, branch, repo, pageSize }
+    const variables = { page, orderBy, branch, repo, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, args, query: pullRequestList, operationName },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: SET_NORMALIZED_ENTITIES, entities: normalize(data, schema).entities },
-      { type: RECEIVE_PAGE, namespace: operationName, nodes: data.data.repository.pullRequests, total, ...args },
+      { type: RECEIVE_PAGE, namespace: operationName, nodes: data.repository.pullRequests.nodes, total, ...variables },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: false },
     ]
 
@@ -162,7 +160,7 @@ describe('pullrequests actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchPullRequests(args))
+    store.dispatch(fetchPullRequests(variables))
   })
 
   it('fetchPullRequests failure ', (done) => {
@@ -176,9 +174,9 @@ describe('pullrequests actions', () => {
       field: 'name',
     }
 
-    const args = { page, orderBy, branch, repo, pageSize }
+    const variables = { page, orderBy, branch, repo, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, args, query: pullRequestList, operationName },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUESTS, error },
@@ -189,7 +187,7 @@ describe('pullrequests actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchPullRequests(args))
+    store.dispatch(fetchPullRequests(variables))
   })
 })
 

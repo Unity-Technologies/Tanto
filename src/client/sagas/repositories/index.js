@@ -12,6 +12,6 @@ export function* searchRepository(action: Object): Generator<any, any, any> {
   const response = yield call(
     fetchSaga, action.type, query, { limit: action.limit, filter: action.filter })
 
-  yield call(normalizeSaga, response.data)
+  yield call(normalizeSaga, response.data || response)
 }
 

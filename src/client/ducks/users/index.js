@@ -8,4 +8,4 @@ export const types = {
 }
 
 export const fetchUsers = (): Object =>
-  fetchActionCreator(types.FETCH_USERS, usersQuery, { })
+  fetchActionCreator(types.FETCH_USERS, usersQuery, { }, '', null)

@@ -3,7 +3,6 @@
 import type { PullRequestSource } from 'universal/types'
 import type { OrderByType } from 'ducks/order'
 import { fetchActionCreator } from 'ducks/fetch'
-import _ from 'lodash'
 
 import { RECEIVE_PAGE } from 'ducks/pagination'
 
@@ -37,13 +36,9 @@ export type FetchPullRequestVariables = {
 
 /** Response parsers */
 
-export const parsePullRequests = (response: Object) => (
-  _.get(response, ['data', 'repository', 'pullRequests'])
-)
+export const parsePullRequests = (response: Object) => response.data.repository.pullRequests
 
-export const parsePullRequest = (response: Object) => (
-  _.get(response, ['data', 'pullRequest'])
-)
+export const parsePullRequest = (response: Object) => response.data.pullRequest
 
 export const namespace = 'pullRequests'
 
@@ -52,25 +47,21 @@ export const namespace = 'pullRequests'
  */
 export const fetchPullRequestData =
   (actionType: string, query: string, variables: Object = {}): Object =>
-    fetchActionCreator(actionType, query, variables, '',
-      (data: Object, cbArgs: Object): Array<Object> => {
-        const node = parsePullRequest(data)
-        return [{ type: types.SET_PULL_REQUEST, node }]
-      })
+    fetchActionCreator(actionType, query, variables)
 
-export const fetchPullRequestDiff = (id: string) =>
+export const fetchPullRequestDiff = (id: string): Object =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_DIFF, pullRequestFiles, { id })
 
 export const fetchPullRequestMetadata = (id: string) =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_METADATA, pullRequestMetadataQuery, { id })
 
-export const fetchPullRequestDiscussion = (id: string) =>
+export const fetchPullRequestDiscussion = (id: string): Object =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_DISCUSSION, pullRequestDiscussion, { id })
 
-export const fetchPullRequestIssues = (id: string) =>
+export const fetchPullRequestIssues = (id: string): Object =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_ISSUES, pullRequestIssues, { id })
 
-export const fetchPullRequestChangeset = (id: string) =>
+export const fetchPullRequestChangeset = (id: string): Object =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_CHANGESET, pullRequestChangeset, { id })
 
 export const fetchPullRequests = (variables: FetchPullRequestVariables): Object =>

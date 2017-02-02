@@ -8,15 +8,9 @@ import {
   pullRequests,
 } from '../index'
 
-import { types } from '../actions'
-
-
 import 'isomorphic-fetch'
 
-
-import { pagination, receivePage } from 'ducks/pagination'
-import { orderBy, DIRECTION } from 'ducks/order'
-
+import { DIRECTION } from 'ducks/order'
 
 const expect = chai.expect
 const chaiSubset = require('chai-subset')

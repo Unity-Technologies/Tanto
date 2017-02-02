@@ -37,7 +37,7 @@ describe('session fetch actions', () => {
     expected.me = expected.me.undefined
     const actionsList = [{
       type: fetchTypes.FETCH_DATA, query: userProfileQuery,
-      name: types.FETCH_USER_PROFILE, args: {},
+      name: types.FETCH_USER_PROFILE, variables: {},
     }, {
       type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PROFILE,
     }, {
@@ -59,7 +59,7 @@ describe('session fetch actions', () => {
       type: fetchTypes.FETCH_DATA,
       query: userProfileQuery,
       name: types.FETCH_USER_PROFILE,
-      args: {},
+      variables: {},
     }
 
     const clearError = {
@@ -125,11 +125,11 @@ describe('session fetch actions', () => {
       },
     }
 
-    const args = { page, orderBy, branch, repo }
+    const variables = { page, orderBy, branch, repo }
     const expected = normalize(data, schema).entities
     expected.me = expected.me.undefined
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
       { type: SET_NORMALIZED_ENTITIES, entities: expected },
@@ -141,7 +141,7 @@ describe('session fetch actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchUserPullRequests(args))
+    store.dispatch(fetchUserPullRequests(variables))
   })
 
   it('fetchUserPullRequests failure ', (done) => {
@@ -155,9 +155,9 @@ describe('session fetch actions', () => {
       field: 'name',
     }
 
-    const args = { page, orderBy, branch, repo, pageSize }
+    const variables = { page, orderBy, branch, repo, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_USER_PULL_REQUESTS, error },
@@ -168,7 +168,7 @@ describe('session fetch actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchUserPullRequests(args))
+    store.dispatch(fetchUserPullRequests(variables))
   })
 
   it('fetchUserAssignedPullRequests success', (done) => {
@@ -200,11 +200,11 @@ describe('session fetch actions', () => {
       },
     }
 
-    const args = { page, orderBy, branch, repo }
+    const variables = { page, orderBy, branch, repo }
     const expected = normalize(data, schema).entities
     expected.me = expected.me.undefined
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: true },
       { type: SET_NORMALIZED_ENTITIES, entities: expected },
@@ -216,7 +216,7 @@ describe('session fetch actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchUserAssignedPullRequests(args))
+    store.dispatch(fetchUserAssignedPullRequests(variables))
   })
 
   it('fetchUserAssignedPullRequests failure ', (done) => {
@@ -229,9 +229,9 @@ describe('session fetch actions', () => {
       field: 'name',
     }
 
-    const args = { page, orderBy, branch, repo }
+    const variables = { page, orderBy, branch, repo }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, args, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, error },
@@ -242,7 +242,7 @@ describe('session fetch actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchUserAssignedPullRequests(args))
+    store.dispatch(fetchUserAssignedPullRequests(variables))
   })
 })
 

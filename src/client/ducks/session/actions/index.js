@@ -57,7 +57,11 @@ export const fetchUserPullRequests = (variables: FetchPullRequestVariables): Obj
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parseCurrentUserPullRequests(data)
       return [
-        { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes, total, ...cbArgs },
+        {
+          type: RECEIVE_PAGE,
+          namespace: operationNames.pullRequestsOwned, nodes, total,
+          ...cbArgs,
+        },
       ]
     })
 
@@ -69,6 +73,9 @@ export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariabl
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parseCurrentUserAssignedPullRequests(data)
       return [
-        { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsAssigned, nodes, total, ...cbArgs },
+        {
+          type: RECEIVE_PAGE,
+          namespace: operationNames.pullRequestsAssigned, nodes, total, ...cbArgs,
+        },
       ]
     })
