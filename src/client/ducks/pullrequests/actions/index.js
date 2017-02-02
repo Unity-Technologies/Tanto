@@ -2,8 +2,8 @@
 
 import type { PullRequestSource } from 'universal/types'
 import type { OrderByType } from 'ducks/order'
-import { fetchActionCreator } from 'ducks/fetch'
-
+import { fetchActionCreator, fetchAction } from 'ducks/fetch'
+import type { FetchAction } from 'ducks/fetch'
 import { RECEIVE_PAGE } from 'ducks/pagination'
 
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
@@ -46,25 +46,25 @@ export const namespace = 'pullRequests'
  *Action creators
  */
 export const fetchPullRequestData =
-  (actionType: string, query: string, variables: Object = {}): Object =>
-    fetchActionCreator(actionType, query, variables)
+  (actionType: string, query: string, variables: Object = {}): FetchAction =>
+    fetchAction({ type: actionType, query, variables })
 
-export const fetchPullRequestDiff = (id: string): Object =>
+export const fetchPullRequestDiff = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_DIFF, pullRequestFiles, { id })
 
-export const fetchPullRequestMetadata = (id: string) =>
+export const fetchPullRequestMetadata = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_METADATA, pullRequestMetadataQuery, { id })
 
-export const fetchPullRequestDiscussion = (id: string): Object =>
+export const fetchPullRequestDiscussion = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_DISCUSSION, pullRequestDiscussion, { id })
 
-export const fetchPullRequestIssues = (id: string): Object =>
+export const fetchPullRequestIssues = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_ISSUES, pullRequestIssues, { id })
 
-export const fetchPullRequestChangeset = (id: string): Object =>
+export const fetchPullRequestChangeset = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_CHANGESET, pullRequestChangeset, { id })
 
-export const fetchPullRequests = (variables: FetchPullRequestVariables): Object =>
+export const fetchPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
   fetchActionCreator(
     types.FETCH_PULL_REQUESTS, pullRequestList, variables, operationName,
     (data: Object, cbArgs: Object): Array<Object> => {

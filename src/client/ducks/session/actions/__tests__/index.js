@@ -37,7 +37,7 @@ describe('session fetch actions', () => {
     expected.me = expected.me.undefined
     const actionsList = [{
       type: fetchTypes.FETCH_DATA, query: userProfileQuery,
-      name: types.FETCH_USER_PROFILE, variables: {},
+      name: types.FETCH_USER_PROFILE,
     }, {
       type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PROFILE,
     }, {
@@ -59,7 +59,6 @@ describe('session fetch actions', () => {
       type: fetchTypes.FETCH_DATA,
       query: userProfileQuery,
       name: types.FETCH_USER_PROFILE,
-      variables: {},
     }
 
     const clearError = {

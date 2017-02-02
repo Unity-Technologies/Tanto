@@ -37,12 +37,12 @@ export function* fetchAnythingSaga(action: FetchAction): Generator<any, any, any
   try {
     yield put(actions.clearError(action.name))
     yield put(actions.sendingRequest(action.name, true))
-    const response = yield call(get, action.query, action.variables, action.operationName)
+    const response = yield call(get, action.query, action.variables || {}, action.operationName)
 
     yield call(normalizeSaga, response.data || response)
 
     if (action.callback) {
-      const callbacks = action.callback(response, action.variables)
+      const callbacks = action.callback(response, action.variables || {})
       while (callbacks.length) {
         const next = callbacks.splice(0, 1)
         yield put(next[0])

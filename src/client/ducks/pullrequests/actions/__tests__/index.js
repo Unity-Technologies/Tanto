@@ -34,7 +34,7 @@ describe('pullrequests actions', () => {
 
     const testQuery = 'djhfkjshfjk'
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery, operationName: '' },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST, sending: true },
       { type: SET_NORMALIZED_ENTITIES, entities: normalize(pr, schema).entities },
@@ -55,7 +55,7 @@ describe('pullrequests actions', () => {
     const error = new Error('some error')
     const testQuery = 'djhfkjshfjk'
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery, operationName: '' },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUEST, error },

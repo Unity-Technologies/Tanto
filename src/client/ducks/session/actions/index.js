@@ -1,7 +1,8 @@
 /* @flow */
 import userProfileQuery from 'ducks/session/queries/me.graphql'
-import { fetchActionCreator } from 'ducks/fetch'
+import { fetchActionCreator, fetchAction } from 'ducks/fetch'
 import type { PullRequestSource } from 'universal/types'
+import type { FetchAction } from 'ducks/fetch'
 import type { OrderByType } from 'ducks/order'
 import _ from 'lodash'
 import { RECEIVE_PAGE } from 'ducks/pagination'
@@ -12,6 +13,8 @@ import pullRequestList from 'ducks/session/queries/userPullRequestList.graphql'
  */
 export const types = {
   FETCH_USER_PROFILE: 'SESSION/FETCH_USER_PROFILE',
+  SET_USER_PROFILE: 'SESSION/SET_USER_PROFILE',
+  SET_USER_PERSONA: 'SESSION/SET_USER_PERSONA',
   FETCH_USER_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_PULL_REQUESTS',
   FETCH_USER_ASSIGNED_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_ASSIGNED_PULL_REQUESTS',
   FETCH_USER_WATCHING_PULL_REQUESTS: 'PULLREQUESTS/FETCH_USER_WATCHING_PULL_REQUESTS',
@@ -42,7 +45,7 @@ export const parseCurrentUserAssignedPullRequests = (response: Object) => (
  * Action creators
  */
 export const fetchProfile = (): Object =>
-  fetchActionCreator(types.FETCH_USER_PROFILE, userProfileQuery)
+  fetchAction({ type: types.FETCH_USER_PROFILE, query: userProfileQuery })
 
 export const setProfile = (profile: Object): Object => ({ type: types.SET_USER_PROFILE, profile })
 
@@ -50,7 +53,7 @@ export const setPersona = (persona: string): Object => ({ type: types.SET_USER_P
 
 
 // TODO:  move RECEIVE_PAGE into middleware or remove at leat callback
-export const fetchUserPullRequests = (variables: FetchPullRequestVariables): Object =>
+export const fetchUserPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
   fetchActionCreator(
     types.FETCH_USER_PULL_REQUESTS, pullRequestList, variables,
     operationNames.pullRequestsOwned,
@@ -66,7 +69,7 @@ export const fetchUserPullRequests = (variables: FetchPullRequestVariables): Obj
     })
 
 // TODO:  move RECEIVE_PAGE into middleware or remove at leat callback
-export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariables): Object =>
+export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
   fetchActionCreator(
     types.FETCH_USER_ASSIGNED_PULL_REQUESTS, pullRequestList, variables,
     operationNames.pullRequestsAssigned,
