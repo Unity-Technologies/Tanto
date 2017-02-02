@@ -1,13 +1,13 @@
 /* @flow */
 
 import React from 'react'
+import Comment from 'components/Comment'
 import Col from 'react-bootstrap/lib/Col'
 import moment from 'moment'
 import Row from 'react-bootstrap/lib/Row'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { types } from 'ducks/pullrequests/actions'
-import NewComment from 'components/NewComment/NewComment'
 import TestAvatar from 'components/TestAvatar/TestAvatar'
 import TextEditorBox from 'components/TextEditorBox/TextEditorBox'
 import type { GeneralCommentType, UserType } from 'universal/types'
@@ -75,36 +75,18 @@ const renderHeadComment = ({ owner, description, created }) => {
   )
 }
 
-const renderComments = ({ comments }) => {
+const renderComments = ({ comments }, user) => {
   if (!comments) {
     return null
   }
   return (
     <div>
       {comments.map(comment => (
-        <div key={_.uniqueId('comment')}>
-          <div style={{ display: 'inline-flex', width: '100%' }}>
-            <TestAvatar />
-            <div style={{ padding: '0 20px' }}>
-              <div style={{ fontSize: '14px', color: '#31708f' }}>
-                <strong>{comment.author.fullName}</strong>
-              </div>
-              <div
-                style={{
-                  color: 'rgb(145, 142, 142)',
-                  fontStyle: 'italic',
-                  textTransform: 'lowercase',
-                }}
-              >
-                created {moment(comment.created).fromNow()}
-              </div>
-            </div>
-          </div>
-          <div style={{ marginRight: '10px' }}>
-            <TextEditorBox text={comment.text} readOnly previewMode simpleText />
-          </div>
-          <hr style={{ margin: '15px 0' }} />
-        </div>
+        <Comment
+          loggedUsername={user}
+          simpleText
+          comment={comment}
+        />
       ))}
     </div>
   )
@@ -125,18 +107,19 @@ const PullRequestDiscussion = (props: Props) => {
         <hr style={{ margin: '15px 0' }} />
         <Row>
           <Col md={12}>
-            {renderComments(props.pullRequest)}
+            {renderComments(props.pullRequest, props.user)}
             <div name="discussion-last" id="discussion-last" style={{ marginTop: '20px' }}>
-              <NewComment
-                author={props.user}
+              <Comment
+                comment={{
+                  author: props.user,
+                }}
                 headerStyle={{ borderRadius: '0px' }}
                 style={{
                   borderBottom: '1px solid lightgrey',
                   borderRadius: '0px',
                   marginBottom: '10px',
                 }}
-                // ref="newTextEditorBox"
-                placeholder="Write comment here..."
+                newComment
                 onComment={props.onSaveComment}
               />
             </div>

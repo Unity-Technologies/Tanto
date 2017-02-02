@@ -34,7 +34,8 @@ class Comment extends Component {
   constructor(props: Props) {
     super(props)
     this.state = {
-      editMode: false,
+      editMode: props.newComment,
+      newComment: props.newComment,
       commentText: '',
     }
   }
@@ -45,13 +46,21 @@ class Comment extends Component {
     this.setState({ editMode: true })
   }
 
+  onCommentCancel= () => {
+    this.setState({
+      editMode: false,
+      newComment: false })
+    // TODO: unmount component if this is a new comment.
+  }
   // onCommentDelete() {
   //   // TODO: dispatch reducer action to delete comment
   // }
 
   onCommentSave = () => {
-    this.setState({ editMode: false })
-      // TODO: dispatch reducer action to save edited comment
+    this.setState({
+      editMode: false,
+      newComment: false })
+      // TODO: dispatch reducer action to save edited and new comments
   }
 
   // handleChange(event, value) {
@@ -88,8 +97,10 @@ class Comment extends Component {
       headerStyle,
       buttonGroupStyle,
     } = this.props
-    const { editMode } = this.state
+
+    const { editMode, newComment } = this.state
     const isAuthor = loggedUsername === comment.author.username
+    const placeholder = newComment ? 'Write comment text here.' : null
     const iconButtonStyle = {
       padding: 0,
       width: '30px',
@@ -103,10 +114,11 @@ class Comment extends Component {
     }
 
     const defaultCommentStyle = {
-      border: '2px solid rgb(224, 224, 227)',
+      border: newComment ? '2px solid #d9edf7' : '2px solid rgb(224, 224, 227)',
       borderRadius: '10px 10px 10px 10px',
       marginBottom: '10px',
-      boxShadow: '3px 2px 11px 1px #cac9c9',
+      padding: '10px',
+      boxShadow: newComment ? '3px 2px 11px 1px #cac9c9' : null,
       ...style,
     }
 
@@ -136,7 +148,7 @@ class Comment extends Component {
                   <span> commented {moment(comment.created).fromNow()}</span>
                 </div>
               </div>
-            {isAuthor &&
+            {!newComment && isAuthor &&
               <div style={{ float: 'right', padding: '10px' }}>
                 {!this.props.hideSettings &&
                   <IconMenu
@@ -194,30 +206,30 @@ class Comment extends Component {
           <div style={{ margin: '0px 10px 10px' }}>
             <TextEditorBox
               onTextChanged={(value) => { this.state.commentText = value }}
-              ref={comment.id}
               text={comment.text}
+              placeholder={placeholder}
               readOnly={!editMode}
               simpleText={simpleText}
               styleControlsStyle={{ borderRadius: '10px 10px 0 0' }}
             />
           </div>
         {!this.props.hideSettings &&
-         (this.state.issue || this.state.niceToHave || this.state.codeStyle) &&
+         (this.props.issue || this.props.niceToHave || this.props.codeStyle) &&
           <div style={buttonGroupStyle || { overflow: 'auto' }}>
             <ButtonGroup style={{ float: 'right', padding: '5px' }}>
-              {this.state.issue &&
+              {this.props.issue &&
                 <Button style={{ ...iconStyle, color: '#ca6b4a' }} >
                   <i className="fa fa-bug" title="Issue" />
                   <span style={votesCountStyle}>1</span>
                 </Button>
               }
-              {this.state.niceToHave &&
+              {this.props.niceToHave &&
                 <Button style={{ ...iconStyle, color: 'rgba(84, 105, 75, 0.68)' }} >
                   <i className="fa fa-thumbs-up" title="Nice to have" />
                   <span style={votesCountStyle}>3</span>
                 </Button>
               }
-              {this.state.codeStyle &&
+              {this.props.codeStyle &&
                 <Button style={{ ...iconStyle, color: '#d43a5a' }} >
                   <i className="fa fa-thumbs-down" title="Bad code" />
                 </Button>
@@ -226,13 +238,20 @@ class Comment extends Component {
           </div>
         }
         </div>
-        {editMode &&
-          <RaisedButton
-            label="Save Comment"
-            backgroundColor="#d9edf7"
-            style={{ marginBottom: '10px', marginRight: '10px' }}
-            onClick={this.onCommentSave}
-          />
+       {editMode &&
+         <div>
+           <RaisedButton
+             label="Save Comment"
+             backgroundColor="#d9edf7"
+             style={{ marginBottom: '10px', marginRight: '10px' }}
+             onClick={this.onCommentSave}
+           />
+           <RaisedButton
+             label="Cancel"
+             backgroundColor="#efefef"
+             onClick={() => this.onCommentCancel()}
+           />
+         </div>
         }
       </div>
     )
