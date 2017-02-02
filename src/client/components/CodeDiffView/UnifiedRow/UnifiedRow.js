@@ -1,7 +1,6 @@
 // TODO: add flow annotations
 
 import React, { Component } from 'react'
-import NewComment from 'components/NewComment'
 import Comment from 'components/Comment'
 import _ from 'lodash'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -140,7 +139,7 @@ class UnifiedRow extends Component {
           }
           {this.state.commentState &&
             <div className="code-line-comment">
-              <NewComment
+              <Comment
                 onCancel={this.cancelComment}
                 onComment={text => this.handleCommentSave(line, text)}
               />
