@@ -14,7 +14,7 @@ import { types } from 'ducks/session/actions'
 
 const prState = {
   orderBy: {
-    direction: DIRECTION.ASC,
+    direction: DIRECTION.DESC,
     field: PullRequestOrderFields.UPDATED,
   },
   filters: {

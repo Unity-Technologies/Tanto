@@ -1,0 +1,15 @@
+.approved {
+    color: green;
+}
+
+.rejected {
+    color: red;
+}
+
+.under-review {
+    color: yellow;
+}
+
+.not-reviewed {
+    color: gray;
+}

@@ -44,8 +44,7 @@ const renderTitle = ({ title, owner, created }) => {
         </div>
         <span style={{ color: 'grey', fontSize: '13px' }}>
           created {moment(created).fromNow()}
-          {' '} by {owner.fullName}
-          ({owner.username})
+          {' '} by {owner.fullName} ({owner.username})
         </span>
       </div>
     </div>
