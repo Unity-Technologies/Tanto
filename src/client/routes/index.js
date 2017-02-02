@@ -19,7 +19,15 @@ import ProjectPullRequests from 'pages/Project/PullRequests'
 import Issues from 'pages/Project/Issues'
 import PullRequest from 'pages/Project/PullRequest'
 import NewPullRequest from 'pages/Project/NewPullRequest'
+import { fetchRepository } from 'ducks/repositories/actions'
 
+import {
+  fetchPullRequestDiff,
+  fetchPullRequestMetadata,
+  fetchPullRequestDiscussion,
+  fetchPullRequestIssues,
+  fetchPullRequestChangeset,
+} from 'ducks/pullrequests/actions'
 
 import { app, project, pullrequest, changeset } from 'containers/SideBar/SideBarConfig'
 
@@ -35,11 +43,19 @@ export default (store) => {
     app(store)
   }
   const onProjectEnter = (nextState) => {
-    project(store, nextState.params.splat)
+    const name = nextState.params.splat
+    project(store, name)
+    store.dispatch(fetchRepository(name))
   }
 
   const onPullRequestEnter = (nextState) => {
-    pullrequest(store, nextState.params.splat, nextState.params.prid)
+    const id = nextState.params.prid
+    pullrequest(store, nextState.params.splat, id)
+    store.dispatch(fetchPullRequestMetadata(id))
+    store.dispatch(fetchPullRequestDiscussion(id))
+    store.dispatch(fetchPullRequestDiff(id))
+    store.dispatch(fetchPullRequestIssues(id))
+    store.dispatch(fetchPullRequestChangeset(id))
   }
 
   const onChangesetEnter = (nextState) => {
