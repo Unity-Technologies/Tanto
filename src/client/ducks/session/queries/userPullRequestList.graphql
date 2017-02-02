@@ -1,0 +1,47 @@
+query pullRequestsOwned($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: PullRequestOrdering) {
+  me {
+    pullRequestsOwned(limit: $limit, offset: $offset, repo: $repo, target: $target, orderBy: $orderBy) {
+      ...pullRequestMetadata
+    }
+  }
+}
+
+query pullRequestsAssigned($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: PullRequestOrdering) {
+  me {
+    pullRequestsAssigned(limit: $limit, offset: $offset, repo: $repo, target: $target, orderBy: $orderBy) {
+      ...pullRequestMetadata
+    }
+  }
+}
+
+fragment pullRequestMetadata on PullRequests {
+  total
+  nodes {
+    id
+    description
+    title
+    updated
+    status
+    origin {
+      revision
+      name
+      repository {
+        id
+        name
+      }
+    }
+    target {
+      name
+      repository {
+        id
+        name
+        fullName
+      }
+    }
+    owner {
+      id
+      username
+      fullName
+    }
+  }
+}

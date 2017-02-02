@@ -1,7 +1,6 @@
 /* @flow */
 
 import { fetchActionCreator } from 'ducks/fetch'
-import type { RepositoryType, GroupType } from 'universal/types'
 import repositoriesQuery from '../queries/repositories.graphql'
 import repoBranchesQuery from '../queries/branches.graphql'
 import repository from '../queries/repository.graphql'
@@ -19,27 +18,6 @@ export const types = {
 export const operationNames = {
   repositoriesNested: 'repositoriesNested',
   repositoriesTopLevel: 'repositoriesTopLevel',
-}
-
-export type ReturnType = {
-  repositories: Array<RepositoryType>,
-  groups: Array<GroupType>,
-}
-
-export function parseRepositories(data: any): ReturnType {
-  const root = (data.data.group || data.data)
-  return {
-    repositories: root.repositories.nodes,
-    groups: root.groups,
-  }
-}
-
-export function parseAllRepositoriesNames(data: any): Array<Object> {
-  return data ? data.data.repositories.nodes : []
-}
-
-export function parseRepository(data: any): Object {
-  return data.data.repository
 }
 
 /**

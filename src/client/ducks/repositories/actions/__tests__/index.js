@@ -6,20 +6,18 @@ import {
   fetchRepository,
   fetchRepositoryBranches,
   fetchRepositories,
-  parseRepositories,
   operationNames,
 } from 'ducks/repositories/actions'
+import { SET_NORMALIZED_ENTITIES } from 'ducks/entities'
+import schema from 'ducks/schema'
+import { normalize } from 'normalizr'
 
 import { types as fetchTypes } from 'ducks/fetch'
-
-import chai from 'chai'
-
-const expect = chai.expect
-
 import storeMock from 'tests/mocks/storeMock'
 import fetchMock from 'fetch-mock'
 
 import repositoriesQuery from 'ducks/repositories/queries/repositories.graphql'
+import repositoryQuery from 'ducks/repositories/queries/repository.graphql'
 import repoBranchesQuery from 'ducks/repositories/queries/branches.graphql'
 
 describe('repository actions', () => {
@@ -38,7 +36,7 @@ describe('repository actions', () => {
       { type: fetchTypes.CLEAR_ERROR, name: types.SEARCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: true },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: false },
-      { type: types.SET_REPOSITORIES_NAMES, nodes },
+      { type: SET_NORMALIZED_ENTITIES, entities: normalize(nodes, schema).entities },
     ]
 
     fetchMock.mock('*', {
@@ -62,7 +60,6 @@ describe('repository actions', () => {
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.SEARCH_REPOSITORY, error },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: false },
-      { type: types.SET_REPOSITORIES_NAMES, nodes: [] },
     ]
 
     fetchMock.mock('*', { throws: error, status: 503 })
@@ -74,7 +71,7 @@ describe('repository actions', () => {
 
   it('fetchRepository success', (done) => {
     const repositoryName = 'test/repo'
-    const query = 'test'
+
     const repo = {
       repository: {
         id: 1,
@@ -83,10 +80,10 @@ describe('repository actions', () => {
       },
     }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY, args: { name: repositoryName }, query },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY, args: { name: repositoryName }, query: repositoryQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY, sending: true },
-      { type: types.SET_REPOSITORY, node: repo.repository },
+      { type: SET_NORMALIZED_ENTITIES, entities: normalize(repo, schema).entities },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY, sending: false },
     ]
 
@@ -96,16 +93,15 @@ describe('repository actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchRepository(repositoryName, query))
+    store.dispatch(fetchRepository(repositoryName, repositoryQuery))
   })
 
   it('fetchRepository failure', (done) => {
     const repositoryName = 'test/repo'
-    const queryStr = 'test query'
     const error = new Error('some error')
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY, args: { name: repositoryName }, query: queryStr },
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY, args: { name: repositoryName }, query: repositoryQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_REPOSITORY, error },
@@ -116,7 +112,7 @@ describe('repository actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchRepository(repositoryName, queryStr))
+    store.dispatch(fetchRepository(repositoryName, repositoryQuery))
   })
 
   it('fetchRepositoryBranches success', (done) => {
@@ -137,7 +133,7 @@ describe('repository actions', () => {
       { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY_BRANCHES, args: { id }, query: repoBranchesQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY_BRANCHES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: true },
-      { type: types.SET_REPOSITORY, node: repo.repository },
+      { type: SET_NORMALIZED_ENTITIES, entities: normalize(repo, schema).entities },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: false },
     ]
 
@@ -195,8 +191,7 @@ describe('repository actions', () => {
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORIES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: true },
-      { type: types.SET_REPOSITORIES, nodes: data.repositories.nodes },
-      { type: types.SET_GROUPS, nodes: data.groups },
+      { type: SET_NORMALIZED_ENTITIES, entities: normalize(data, schema).entities },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: false },
     ]
 
@@ -213,6 +208,7 @@ describe('repository actions', () => {
     const name = 'test'
     const data = {
       group: {
+        id: 3,
         repositories: {
           nodes: [
             {
@@ -239,8 +235,7 @@ describe('repository actions', () => {
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORIES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: true },
-      { type: types.SET_REPOSITORIES, nodes: data.group.repositories.nodes },
-      { type: types.SET_GROUPS, nodes: data.group.groups },
+      { type: SET_NORMALIZED_ENTITIES, entities: normalize(data, schema).entities },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: false },
     ]
 
@@ -274,42 +269,5 @@ describe('repository actions', () => {
     const store = storeMock({}, expectedActions, done)
 
     store.dispatch(fetchRepositories(name))
-  })
-})
-
-
-describe('services repositories query parsers', () => {
-  const repos = [
-    { id: 1, name: 'name1', description: 'description1' },
-    { id: 2, name: 'name2', description: 'description2' },
-    { id: 3, name: 'name3', description: 'description3' }]
-
-  const groups = [
-    { id: 11, name: 'group1', description: 'group1description1' },
-    { id: 12, name: 'group2', description: 'group2description2' },
-  ]
-
-  it('parseCurrentUserPullRequests should parse the first level group', () => {
-    const response = {
-      data:
-      {
-        group: {
-          repositories: { nodes: repos },
-          groups,
-        },
-      },
-    }
-    expect(parseRepositories(response)).to.be.eql({ repositories: repos, groups })
-  })
-
-  it('parseCurrentUserPullRequests should parse the nested level repositories and groups', () => {
-    const response = {
-      data:
-      {
-        repositories: { nodes: repos },
-        groups,
-      },
-    }
-    expect(parseRepositories(response)).to.be.eql({ repositories: repos, groups })
   })
 })

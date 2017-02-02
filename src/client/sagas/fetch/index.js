@@ -4,7 +4,7 @@ import { put, call } from 'redux-saga/effects'
 import { get } from 'services/ono/api'
 import { actions } from 'ducks/fetch'
 import { normalize } from 'normalizr'
-import schema from 'ducks/entities/schema'
+import schema from 'ducks/schema'
 import { types } from 'ducks/entities'
 
 export function* fetchSaga(
@@ -31,6 +31,7 @@ type ActionType = {
 
 export function* normalizeSaga(data) {
   const { entities } = normalize(data, schema)
+
   // NOTE: This is a hack due to ono graphql me scheme design
   if (entities.me) {
     entities.me = entities.me.undefined
@@ -45,7 +46,7 @@ export function* fetchAnythingSaga(action: ActionType): Generator<any, any, any>
     yield put(actions.sendingRequest(action.name, true))
     const response = yield call(get, action.query, action.args, action.operationName)
 
-    yield call(normalizeSaga, response.data)
+    yield call(normalizeSaga, response.data || response)
 
     if (action.callback) {
       const callbacks = action.callback(response, action.args)

@@ -11,14 +11,6 @@ import _ from 'lodash'
 export const getPageFetchStatus =
   (state: Object): StatusType => getFetchStatus(state, types.FETCH_PULL_REQUESTS)
 
-
-export const getOwnedFetchStatus =
-  (state: Object): StatusType => getFetchStatus(state, types.FETCH_USER_PULL_REQUESTS)
-
-
-export const getAssignedFetchStatus =
-  (state: Object): StatusType => getFetchStatus(state, types.FETCH_USER_ASSIGNED_PULL_REQUESTS)
-
 export const getPullRequest =
   (state: Object, props: Object): Object => {
     const id = props.params ? props.params.prid : props.pullRequestId || props.id

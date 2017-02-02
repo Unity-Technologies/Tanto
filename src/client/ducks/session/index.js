@@ -1,12 +1,11 @@
 /* @flow */
 
-import { pagination, receivePage } from 'ducks/pagination'
+import { pagination } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
 import { combineReducers } from 'redux'
-import _ from 'lodash'
 import { target } from 'ducks/filters'
 import { PullRequestSource, DEVELOPER_PERSONA, PullRequestOrderFields } from 'universal/constants'
-import { types } from 'ducks/session/actions'
+import { types, operationNames } from 'ducks/session/actions'
 import { createReducer } from '../createReducer'
 
 /**
@@ -44,13 +43,14 @@ export const filters = combineReducers({
   repo,
 })
 
-export const pullRequestsAssigned = createReducer('pullRequestsAssigned', combineReducers({
-  filters,
-  orderBy,
-  pagination,
-}), prState)
+export const pullRequestsAssigned =
+  createReducer(operationNames.pullRequestsAssigned, combineReducers({
+    filters,
+    orderBy,
+    pagination,
+  }), prState)
 
-export const pullRequestsOwned = createReducer('pullRequestsOwned', combineReducers({
+export const pullRequestsOwned = createReducer(operationNames.pullRequestsOwned, combineReducers({
   filters,
   orderBy,
   pagination,

@@ -2,7 +2,7 @@
 import { call, put } from 'redux-saga/effects'
 import { actions } from 'ducks/fetch'
 import { get } from 'services/ono/api'
-import { fetchSaga, fetchAnythingSaga } from 'sagas/fetch'
+import { fetchSaga, fetchAnythingSaga, normalizeSaga } from 'sagas/fetch'
 
 const expect = require('chai').expect
 
@@ -88,6 +88,7 @@ describe('fetch anything saga', () => {
     expect(generator.next().value).to.deep.equal(put(actions.clearError(actionName)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, true)))
     expect(generator.next().value).to.deep.equal(call(get, query, args, operationName))
+    expect(generator.next(testResponse).value).to.deep.equal(call(normalizeSaga, testResponse.data))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb1))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb2))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb3))
@@ -139,6 +140,7 @@ describe('fetch anything saga', () => {
     expect(generator.next().value).to.deep.equal(put(actions.clearError(actionName)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, true)))
     expect(generator.next().value).to.deep.equal(call(get, query, args, operationName))
+    expect(generator.next(testResponse).value).to.deep.equal(call(normalizeSaga, testResponse.data))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb1))
     expect(generator.throw(error).value).to.deep.equal(put(actions.requestError(actionName, error)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, false)))

@@ -1,14 +1,13 @@
 /* @flow */
 
 import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
-import { entities, actions as entitiesActions } from 'ducks/entities'
 import { target } from 'ducks/filters'
 import { pagination } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
 import { combineReducers } from 'redux'
 import type { OrderByType } from 'ducks/order'
 import { createReducer } from '../createReducer'
-import { namespace } from './actions'
+import { operationName } from './actions'
 
 export const operationNames = {
   pullRequestsOwned: 'pullRequestsOwned',
@@ -50,7 +49,7 @@ export const filters = combineReducers({
 })
 
 
-export const pullRequests = createReducer(namespace, combineReducers({
+export const pullRequests = createReducer(operationName, combineReducers({
   filters,
   orderBy,
   pagination,

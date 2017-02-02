@@ -1,5 +1,9 @@
 import { createSelector } from 'reselect'
 import _ from 'lodash'
+import { getFetchStatus } from 'ducks/fetch'
+import { types } from '../actions'
+import type { StatusType } from 'ducks/fetch'
+export type { StatusType } from 'ducks/fetch'
 
 export const getIds = (state) => {
   const { pagination: { pages, currentPage } } = state
@@ -38,3 +42,10 @@ export const getPullRequestsOwnedTotal = state =>
 
 export const getPullRequestsAssignedTotal = state =>
   _.get(state, ['entities', 'me', 'pullRequestsAssigned', 'total'], 0)
+
+export const getOwnedFetchStatus =
+  (state: Object): StatusType => getFetchStatus(state, types.FETCH_USER_PULL_REQUESTS)
+
+
+export const getAssignedFetchStatus =
+  (state: Object): StatusType => getFetchStatus(state, types.FETCH_USER_ASSIGNED_PULL_REQUESTS)

@@ -6,17 +6,15 @@ import { connect } from 'react-redux'
 import Tabs from 'react-bootstrap/lib/Tabs'
 import Tab from 'react-bootstrap/lib/Tab'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
-import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/pullrequests/actions'
+import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/session/actions'
 import {
   getPullRequestsOwned,
   getPullRequestsAssigned,
   getPullRequestsOwnedTotal,
   getPullRequestsAssignedTotal,
-} from 'ducks/session/selectors'
-import {
   getOwnedFetchStatus,
   getAssignedFetchStatus,
-} from 'ducks/pullrequests/selectors'
+} from 'ducks/session/selectors'
 
 import './styles.css'
 
