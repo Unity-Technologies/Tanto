@@ -45,7 +45,9 @@ export default (store) => {
   const onProjectEnter = (nextState) => {
     const name = nextState.params.splat
     project(store, name)
-    store.dispatch(fetchRepository(name))
+    if (name) {
+      store.dispatch(fetchRepository(name))
+    }
   }
 
   const onPullRequestEnter = (nextState) => {

@@ -9,8 +9,6 @@ import {
   getPageFetchStatus,
   getPullRequests } from 'ducks/pullrequests/selectors'
 
-import { getRepositoryId } from 'ducks/repositories/selectors'
-
 export type Props = {
   project_pullrequests: Array<any>,
   params: {
@@ -46,7 +44,7 @@ function PullRequests(props: Props) {
 
 export default connect(
   (state, props) => ({
-    repo: getRepositoryId(state, props),
+    repo: props.params.splat,
   })
 )(PullRequests)
 

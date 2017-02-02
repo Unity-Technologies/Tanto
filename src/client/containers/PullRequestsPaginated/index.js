@@ -30,7 +30,7 @@ export type Props = {
 const selectBoxStyle = { minWidth: '200px', maxWidth: '250px', marginRight: '5px' }
 
 class PullRequestsPaginated extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const args = this.getArguments()
     this.props.dispatch(this.props.fetchData(args))
   }

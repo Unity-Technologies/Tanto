@@ -17,7 +17,7 @@ export const getPullRequest =
     return (state.entities.pullRequests || {})[id]
   }
 
-export const getIssuesEntities = state => state.entities.issues
+export const getIssuesEntities = (state: Object) => state.entities.issues
 export const getPullRequestIssuesIds =
   (state: Object, props: Object): Object => {
     const id = props.params ? props.params.prid : props.pullRequestId || props.id
@@ -30,7 +30,7 @@ export const getPullRequestIssues = createSelector(
     _.values(_.pick(issues, ids))
 )
 
-export const getCommentsEntities = state => state.entities.comments
+export const getCommentsEntities = (state: Object) => state.entities.comments
 export const getPullRequestGeneralCommentsIds =
   (state: Object, props: Object): Object => {
     const id = props.params ? props.params.prid : props.pullRequestId || props.id
