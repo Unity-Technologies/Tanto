@@ -12,7 +12,6 @@ import Panel from 'react-bootstrap/lib/Panel'
 import CodeMirrorView from 'components/CodeMirrorView'
 import BranchSelect from 'components/BranchSelect'
 import Filter from 'components/Filter'
-import NewComment from 'components/NewComment'
 import Comment from 'components/Comment'
 
 import Breadcrumb from 'components/Breadcrumb'
@@ -180,9 +179,8 @@ class File extends Component {
         ))}
         </div>
         <div style={{ marginTop: '20px' }}>
-          <NewComment
-            ref={c => (this.newTextEditorBox = c)}
-            placeholder="Write comment here..."
+          <Comment
+            newComment
             onComment={message => this.onSaveComment(message)}
           />
         </div>

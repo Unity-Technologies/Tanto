@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 
 import TextEditorBox from 'components/TextEditorBox'
 import Label from 'components/Label'
-import NewComment from 'components/NewComment'
 import Comment from 'components/Comment'
 import UserFilter from 'components/UserFilter'
 
@@ -123,7 +122,9 @@ class Overview extends Component {
               ))}
             </div>
             <div style={{ marginTop: '20px' }}>
-              <NewComment
+              <Comment
+                loggedUsername={this.props.commentAuthor}
+                newComment
                 headerStyle={{ borderRadius: '0px' }}
                 style={{ border: '1px solid lightgrey',
                   borderRadius: '0px',

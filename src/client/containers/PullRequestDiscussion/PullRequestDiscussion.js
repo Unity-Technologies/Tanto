@@ -3,7 +3,6 @@
 import React from 'react'
 import Comment from 'components/Comment'
 import Col from 'react-bootstrap/lib/Col'
-import moment from 'moment'
 import Row from 'react-bootstrap/lib/Row'
 import _ from 'lodash'
 import { connect } from 'react-redux'

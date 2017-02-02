@@ -81,7 +81,7 @@ class PullRequestListItem extends Component {
                   style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
                   to={{
                     pathname: buildProjectLink(pullRequest.target.repository.fullName),
-                    query: { branch: pullRequest.target.name }
+                    query: { branch: pullRequest.target.name },
                   }}
                 >
                   {pullRequest.target.repository.name}
