@@ -32,3 +32,11 @@ storiesOf('Checkbox', module)
       disabled
     />
   ))
+  .add('without external onChange handler', () => (
+    <Checkbox
+      value={42}
+      name={'label-42'}
+      checked
+      disabled={false}
+    />
+  ))
