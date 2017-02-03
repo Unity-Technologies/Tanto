@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import chai from 'chai'
 import {
   getPageFetchStatus,
