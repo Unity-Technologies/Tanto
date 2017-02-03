@@ -1,17 +1,16 @@
 /* @flow */
 
-import { pagination, receivePage } from 'ducks/pagination'
+import { pagination } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
 import { combineReducers } from 'redux'
-import _ from 'lodash'
 import { target } from 'ducks/filters'
 import { PullRequestSource, DEVELOPER_PERSONA, PullRequestOrderFields } from 'universal/constants'
-import { types } from 'ducks/session/actions'
+import { types, operationNames } from 'ducks/session/actions'
+import { createReducer } from '../createReducer'
 
 /**
  * Initial state
  */
-
 const prState = {
   orderBy: {
     direction: DIRECTION.DESC,
@@ -33,14 +32,6 @@ const prState = {
 }
 
 const initialState = {
-  pullRequestsAssigned: _.cloneDeep(prState),
-  pullRequestsOwned: _.cloneDeep(prState),
-  pullRequestsWatching: _.cloneDeep(prState),
-  profile: {
-    username: null,
-    email: null,
-    fullName: null,
-  },
   persona: DEVELOPER_PERSONA,
 }
 
@@ -52,36 +43,29 @@ export const filters = combineReducers({
   repo,
 })
 
-export const sessionEntities = combineReducers({
-  pagination,
-  orderBy,
+export const pullRequestsAssigned =
+  createReducer(operationNames.pullRequestsAssigned, combineReducers({
+    filters,
+    orderBy,
+    pagination,
+  }), prState)
+
+export const pullRequestsOwned = createReducer(operationNames.pullRequestsOwned, combineReducers({
   filters,
-})
+  orderBy,
+  pagination,
+}), prState)
+
 
 /**
  * Current user reducer
  */
-export default (state: Object = initialState, action: Object): Object => {
+export const profile = (state: Object = initialState, action: Object): Object => {
   switch (action.type) {
-    case types.SET_USER_PROFILE:
-      return {
-        ...state,
-        profile: action.profile,
-      }
     case types.SET_USER_PERSONA:
       return {
         ...state,
         persona: action.persona,
-      }
-    case types.SET_PULL_REQUESTS_OWNED:
-      return {
-        ...state,
-        pullRequestsOwned: sessionEntities(state.pullRequestsOwned, receivePage(action)),
-      }
-    case types.SET_PULL_REQUESTS_ASSIGNED:
-      return {
-        ...state,
-        pullRequestsAssigned: sessionEntities(state.pullRequestsAssigned, receivePage(action)),
       }
     default:
       return state

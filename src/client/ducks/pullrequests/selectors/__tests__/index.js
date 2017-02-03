@@ -1,8 +1,6 @@
 import chai from 'chai'
 import {
   getPageFetchStatus,
-  getOwnedFetchStatus,
-  getAssignedFetchStatus,
   getPullRequest,
   pullRequestsEntitiesSelector,
   pullRequestsIdsSelector,
@@ -23,25 +21,6 @@ describe('fetch status', () => {
     expect(getPageFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
 
-  it('getOwnedFetchStatus for owned pull requests', () => {
-    const state = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { isFetching: false } } }
-    expect(getOwnedFetchStatus(state)).to.eql({ error: null, isFetching: false })
-
-    const state2 = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { isFetching: true } } }
-    expect(getOwnedFetchStatus(state2)).to.eql({ error: null, isFetching: true })
-
-    expect(getOwnedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
-  })
-
-  it('getAssignedFetchStatus for owned pull requests', () => {
-    const state = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { isFetching: false } } }
-    expect(getAssignedFetchStatus(state)).to.eql({ error: null, isFetching: false })
-
-    const state2 = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { isFetching: true } } }
-    expect(getAssignedFetchStatus(state2)).to.eql({ error: null, isFetching: true })
-
-    expect(getAssignedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
-  })
 
   it('getPageFetchStatus error for pull requests', () => {
     const testerror = { text: 'error message' }
@@ -49,22 +28,6 @@ describe('fetch status', () => {
     expect(getPageFetchStatus(state)).to.eql({ error: testerror, isFetching: false })
 
     expect(getPageFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
-  })
-
-  it('getOwnedFetchStatus error for owned pull requests', () => {
-    const testerror = { text: 'error message' }
-    const state = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { error: testerror } } }
-    expect(getOwnedFetchStatus(state)).to.eql({ error: testerror, isFetching: false })
-
-    expect(getOwnedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
-  })
-
-  it('getAssignedError for assigned pull requests', () => {
-    const testerror = { text: 'error message' }
-    const state = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { error: testerror } } }
-    expect(getAssignedFetchStatus(state)).to.eql({ error: testerror, isFetching: false })
-
-    expect(getAssignedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
 })
 
@@ -75,7 +38,7 @@ describe('pullRequestSelector', () => {
       title: 'test pr',
       description: 'test pr description',
     }
-    const state = { pullrequests: { entities: { 12: pullRequest } } }
+    const state = { entities: { pullRequests: { 12: pullRequest } } }
     const props = { params: { prid: 12 } }
     expect(getPullRequest(state, props)).to.eql(pullRequest)
   })
@@ -88,9 +51,9 @@ describe('getPullRequests', () => {
       title: 'test pr',
       description: 'test pr description',
     }
-    const state = { pullrequests: { entities: { 12: pullRequest } } }
+    const state = { entities: { pullRequests: { 12: pullRequest } } }
 
-    expect(pullRequestsEntitiesSelector(state, {})).to.eql(state.pullrequests.entities)
+    expect(pullRequestsEntitiesSelector(state, {})).to.eql(state.entities.pullRequests)
   })
 
   it('pullRequestsIdsSelector', () => {
@@ -106,21 +69,26 @@ describe('getPullRequests', () => {
       description: 'test pr description2',
     }
     const state = {
-      pullrequests: {
-        entities: { 12: pullRequest1, 122: pullRequest2 },
-        pagination: {
-          currentPage: 1,
-          pages: {
-            1: [12],
+      session: {
+        pullRequests: {
+          pagination: {
+            currentPage: 1,
+            pages: {
+              1: [12],
+            },
           },
         },
+      },
+      entities: {
+        pullRequests: { 12: pullRequest1, 122: pullRequest2 },
+
       },
     }
 
     expect(pullRequestsIdsSelector(state, {})).to.eql([12])
   })
 
-  it('getPullRequests', () => {
+  it('pullRequestsIdsSelector', () => {
     const pullRequest1 = {
       id: 12,
       title: 'test pr',
@@ -139,14 +107,19 @@ describe('getPullRequests', () => {
       description: 'test pr description22',
     }
     const state = {
-      pullrequests: {
-        entities: { 12: pullRequest1, 122: pullRequest2, 2: pullRequest3 },
-        pagination: {
-          currentPage: 1,
-          pages: {
-            1: [12, 2],
+      session: {
+        pullRequests: {
+          pagination: {
+            currentPage: 1,
+            pages: {
+              1: [12, 2],
+            },
           },
         },
+      },
+      entities: {
+        pullRequests: { 12: pullRequest1, 122: pullRequest2, 2: pullRequest3 },
+
       },
     }
 

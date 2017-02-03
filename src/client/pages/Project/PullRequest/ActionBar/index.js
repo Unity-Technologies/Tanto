@@ -9,6 +9,7 @@ import DropdownButton from 'react-bootstrap/lib/DropdownButton'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 import { setPersona } from 'ducks/session/actions'
 import { connect } from 'react-redux'
+import { getPersona } from 'ducks/session/selectors'
 
 import {
   GUARDIAN_PERSONA,
@@ -112,5 +113,5 @@ class ActionBar extends Component {
 }
 
 export default connect(state => ({
-  persona: state.session.persona,
+  persona: getPersona(state),
 }))(ActionBar)

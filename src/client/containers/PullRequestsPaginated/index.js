@@ -30,7 +30,7 @@ export type Props = {
 const selectBoxStyle = { minWidth: '200px', maxWidth: '250px', marginRight: '5px' }
 
 class PullRequestsPaginated extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const args = this.getArguments()
     this.props.dispatch(this.props.fetchData(args))
   }
@@ -127,7 +127,7 @@ class PullRequestsPaginated extends Component {
         </div>
         {isFetching && <LinearProgress />}
         {error && <ErrorMessage error={error} />}
-        {!this.props.isFetching && !error &&
+        {!this.props.isFetching && !error && !this.props.items.length &&
           <Alert bsStyle="warning" style={{ fontSize: '13px' }}>
             <strong>
               <i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong>

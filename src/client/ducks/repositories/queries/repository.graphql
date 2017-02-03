@@ -1,0 +1,11 @@
+query repository($name: String!) {
+	repository(name: $name) {
+    id
+    name,
+    fullName,
+    branches {
+      name
+      revision
+    }
+  }
+}

@@ -99,22 +99,37 @@ export type FetchAction = {
   type: string,
   name: string,
   query: string,
-  operationName: string,
-  args: Object,
-  callback: Function
+  operationName?: string,
+  varibles?: Object,
+  callback?: Function
 }
 
+
+export type ActionType = {
+  type: string,
+  query: string,
+  operationName?: string,
+  variables?: Object,
+  callback?: (data: Object, cbArgs: Object) => Array<Object>
+}
+
+export const fetchAction =
+  (action: ActionType): FetchAction => ({
+    ...action,
+    name: action.type,
+    type: types.FETCH_DATA,
+  })
 
 export const fetchActionCreator =
   (type: string,
     query: string,
-    args: Object = {},
+    variables: Object = {},
     operationName: string = '',
     callback: (data: Object, cbArgs: Object) => Array<Object>): FetchAction => ({
       type: types.FETCH_DATA,
       operationName,
       name: type,
       query,
-      args,
+      variables,
       callback,
     })

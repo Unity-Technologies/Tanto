@@ -7,12 +7,14 @@ query pullRequestIssues($id: Int!){
       description
       status
       assignee {
+        id
         username
         fullName
 
       }
       branch
       owner {
+        id
         username
         fullName
       }

@@ -13,7 +13,7 @@ import { IndexLink } from 'react-router'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Scroll from 'react-scroll'
-
+import { getPersona } from 'ducks/session/selectors'
 import SelectableList from 'components/SelectableList'
 import './SideBar.css'
 
@@ -235,7 +235,7 @@ class SideBar extends Component {
 
 export default connect(state => ({
   open: state.sidebar.open,
-  persona: state.session.persona,
+  persona: getPersona(state),
   items: state.sidebar.items || [],
   subitems: state.sidebar.subitems || [],
   defaultValue: state.sidebar.selected,

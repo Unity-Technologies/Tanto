@@ -40,8 +40,8 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
-        entities: {
+      entities: {
+        repositories: {
           1: node1,
           2: node2,
           3: node3,
@@ -79,8 +79,8 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
-        entities: {
+      entities: {
+        repositories: {
           1: node1,
           2: node2,
           3: node3,
@@ -118,8 +118,8 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
-        entities: {
+      entities: {
+        repositories: {
           1: node1,
           2: node2,
           3: node3,
@@ -157,8 +157,8 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
-        entities: {
+      entities: {
+        repositories: {
           1: node1,
           2: node2,
           3: node3,
@@ -196,7 +196,7 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
+      entities: {
         groups: {
           1: node1,
           2: node2,
@@ -235,7 +235,7 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
+      entities: {
         groups: {
           1: node1,
           2: node2,
@@ -274,7 +274,7 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
+      entities: {
         groups: {
           1: node1,
           2: node2,
@@ -313,7 +313,7 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
+      entities: {
         groups: {
           1: node1,
           2: node2,
@@ -356,8 +356,8 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
-        entities: {
+      entities: {
+        repositories: {
           1: node1,
           2: node2,
           3: node3,
@@ -463,8 +463,8 @@ describe('repositories selectors', () => {
 
 
     const state = {
-      repositories: {
-        entities: {
+      entities: {
+        repositories: {
           1: rnode1,
           2: rnode2,
           3: rnode3,
@@ -520,8 +520,8 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
-        entities: {
+      entities: {
+        repositories: {
           1: node1,
           2: node2,
           3: node3,
@@ -551,8 +551,8 @@ describe('repositories selectors', () => {
       description: 'description2',
       parentGroupName: '/group21',
       branches: [{ name: 'default', revision: '3452345' },
-        { name: 'test', revision: 'te456356st' },
-        { name: 'unity', revision: 'tes24524t' }],
+      { name: 'test', revision: 'te456356st' },
+      { name: 'unity', revision: 'tes24524t' }],
     }
     const node3 = {
       id: 3,
@@ -562,8 +562,8 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
-        entities: {
+      entities: {
+        repositories: {
           1: node1,
           2: node2,
           3: node3,
@@ -609,8 +609,8 @@ describe('repositories selectors', () => {
     }
 
     const state = {
-      repositories: {
-        entities: {
+      entities: {
+        repositories: {
           1: node1,
           2: node2,
           3: node3,

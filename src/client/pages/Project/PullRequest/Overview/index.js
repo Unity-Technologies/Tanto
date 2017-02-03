@@ -7,7 +7,7 @@ import Label from 'components/Label'
 import NewComment from 'components/NewComment'
 import Comment from 'components/Comment'
 import UserFilter from 'components/UserFilter'
-
+import { getLoggedUsername } from 'ducks/session/selectors'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import moment from 'moment'
@@ -141,5 +141,5 @@ class Overview extends Component {
 }
 
 export default connect(state => ({
-  commentAuthor: state.session.profile.username,
+  commentAuthor: getLoggedUsername(state),
 }))(Overview)

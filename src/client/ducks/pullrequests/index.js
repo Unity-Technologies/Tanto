@@ -1,14 +1,13 @@
 /* @flow */
 
 import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
-import { entities, actions as entitiesActions } from 'ducks/entities'
 import { target } from 'ducks/filters'
-import { pagination, receivePage } from 'ducks/pagination'
+import { pagination } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
-import type { PaginationType } from 'ducks/pagination'
 import { combineReducers } from 'redux'
 import type { OrderByType } from 'ducks/order'
-import { types } from './actions'
+import { createReducer } from '../createReducer'
+import { operationName } from './actions'
 
 export const operationNames = {
   pullRequestsOwned: 'pullRequestsOwned',
@@ -16,11 +15,7 @@ export const operationNames = {
   pullRequests: 'pullRequests',
 }
 
-/**
- * Initial state
- */
-const initialState = {
-  entities: {},
+const defaultValue = {
   pagination: {
     total: 0,
     pages: {},
@@ -45,7 +40,6 @@ export type PullRequestDictionary = {
 
 export type PullRequestsStateType = {
   entities: PullRequestDictionary,
-  pagination: PaginationType,
   orderBy: OrderByType,
   filters: Object
 }
@@ -54,32 +48,10 @@ export const filters = combineReducers({
   target,
 })
 
-/**
- * Pullrequests reducer
- */
-export default (
-  state: PullRequestsStateType = initialState, action: Object): PullRequestsStateType => {
-  switch (action.type) {
-    case types.SET_PULL_REQUESTS:
-      return {
-        ...state,
-        entities: entities(state.entities, entitiesActions.setEntities(action.nodes)),
-      }
-    case types.SET_PULL_REQUESTS_PAGE:
-      return {
-        ...state,
-        pagination: pagination(state.pagination, receivePage(action)),
-        orderBy: orderBy(state.orderBy, action),
-        filters: filters(state.filters, action),
-      }
-    case types.SET_PULL_REQUEST:
-      return {
-        ...state,
-        entities: entities(state.entities, entitiesActions.setEntity(action.node)),
-      }
 
-    default:
-      return state
-  }
-}
+export const pullRequests = createReducer(operationName, combineReducers({
+  filters,
+  orderBy,
+  pagination,
+}), defaultValue)
 
