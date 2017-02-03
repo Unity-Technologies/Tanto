@@ -4,19 +4,13 @@ import chai from 'chai'
 
 import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
 
-import reducer, {
-  filters,
+import {
+  pullRequests,
 } from '../index'
-
-import { types } from '../actions'
-
 
 import 'isomorphic-fetch'
 
-
-import { pagination, receivePage } from 'ducks/pagination'
-import { orderBy, DIRECTION } from 'ducks/order'
-
+import { DIRECTION } from 'ducks/order'
 
 const expect = chai.expect
 const chaiSubset = require('chai-subset')
@@ -169,7 +163,6 @@ describe('pullrequests reducer', () => {
 
   it('should return initial state', () => {
     const initialState = {
-      entities: {},
       pagination: {
         total: 0,
         pages: {},
@@ -187,84 +180,6 @@ describe('pullrequests reducer', () => {
         },
       },
     }
-    expect(reducer(undefined, {})).to.eql(initialState)
-  })
-
-  it('should handle SET_PULL_REQUESTS', () => {
-    const nodes = [pr1, pr2, pr3, pr5]
-
-    const initialState = {
-      entities: {
-        [pr4.id]: pr4,
-      },
-    }
-
-    const action = {
-      type: types.SET_PULL_REQUESTS,
-      nodes,
-    }
-    const expectedState = {
-      entities: {
-        [pr1.id]: pr1,
-        [pr2.id]: pr2,
-        [pr3.id]: pr3,
-        [pr4.id]: pr4,
-        [pr5.id]: pr5,
-      },
-    }
-    expect(reducer(initialState, action)).to.eql(expectedState)
-  })
-
-  it('should handle SET_PULL_REQUESTS_PAGE', () => {
-    const nodes = [pr1, pr2, pr3, pr4, pr5]
-    const page = 1
-    const pageSize = 12
-    const total = 15
-    const order = {
-      direction: DIRECTION.DESC,
-      field: 'testField',
-    }
-    const filtersValues = {
-      branch: 'testbranch',
-    }
-    const action = {
-      type: types.SET_PULL_REQUESTS_PAGE,
-      page,
-      nodes,
-      total,
-      pageSize,
-      orderBy: order,
-      filters: filtersValues,
-    }
-    const initialState = {
-      entities: {
-        [pr5.id]: pr5,
-      },
-      pagination: {
-        total: 0,
-        pages: {},
-        pageSize: 0,
-        currentPage: 0,
-      },
-      orderBy: {
-        direction: DIRECTION.ASC,
-        field: '',
-      },
-      filters: {
-        target: {
-          name: '',
-          type: PullRequestSource.BRANCH,
-        },
-      },
-    }
-
-    const state = {
-      ...initialState,
-      pagination: pagination(initialState.pagination, receivePage(action)),
-      orderBy: orderBy(initialState.orderBy, action),
-      filters: filters(initialState.filters, action),
-    }
-
-    expect(reducer(initialState, action)).to.eql(state)
+    expect(pullRequests(undefined, {})).to.eql(initialState)
   })
 })

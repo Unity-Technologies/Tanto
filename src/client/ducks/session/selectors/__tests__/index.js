@@ -1,7 +1,19 @@
 /* eslint-disable max-len */
 
 import { DEVELOPER_PERSONA } from 'universal/constants'
-import { pullRequestsOwned, pullRequestsAssigned, pullRequestsWatching } from '../index'
+import {
+  getPullRequestsOwned,
+  getPullRequestsAssigned,
+  getPullRequestsWatching,
+  getOwnedFetchStatus,
+  getAssignedFetchStatus,
+  getPersona,
+  getLoggedUsername,
+  getPullRequestsOwnedTotal,
+  getPullRequestsAssignedTotal,
+} from '../index'
+
+import { types } from 'ducks/session/actions'
 
 const expect = require('chai').expect
 
@@ -142,48 +154,46 @@ const pr5 = {
 }
 
 const sessionState = {
-  error: null,
-  isFetching: false,
-  persona: DEVELOPER_PERSONA,
   pullRequestsOwned: { pagination: { pages: { 1: [pr2.id, pr3.id], 2: [pr1.id, pr4.id] }, currentPage: 2 } },
   pullRequestsAssigned: { pagination: { pages: { 1: [pr1.id, pr3.id], 2: [pr2.id, pr4.id] }, currentPage: 1 } },
   pullRequestsWatching: { pagination: { pages: { 1: [pr2.id, pr1.id], 2: [pr4.id] }, currentPage: 1 } },
   profile: {
+    persona: DEVELOPER_PERSONA,
     username: 'testauthor1',
     email: 'test@test.ff',
     full_name: 'test test',
   },
 }
 
-const entities = {}
-entities[pr1.id] = pr1
-entities[pr2.id] = pr2
-entities[pr3.id] = pr3
-entities[pr4.id] = pr4
-entities[pr5.id] = pr5
+const pullRequests = {}
+pullRequests[pr1.id] = pr1
+pullRequests[pr2.id] = pr2
+pullRequests[pr3.id] = pr3
+pullRequests[pr4.id] = pr4
+pullRequests[pr5.id] = pr5
 
-const pullrequstsState = {
-  entities,
-}
 
 const state = {
   session: sessionState,
-  pullrequests: pullrequstsState,
+  entities: {
+    pullRequests,
+  },
 }
 
 describe('session selectors', () => {
   it('get user pull requests', () => {
-    expect(pullRequestsOwned(state)).to.eql([pr1, pr4])
+    expect(getPullRequestsOwned(state)).to.eql([pr1, pr4])
   })
 
   it('get user pull requests - empty pull requests entities ', () => {
     const emptyState = {
       session: sessionState,
-      pullrequests: {
-        entities: {},
+      entities: {
+        pullRequests: {
+        },
       },
     }
-    expect(pullRequestsOwned(emptyState)).to.eql([])
+    expect(getPullRequestsOwned(emptyState)).to.eql([])
   })
 
   it('get user pull requests - empty session page', () => {
@@ -195,20 +205,21 @@ describe('session selectors', () => {
           },
         },
       },
-      pullrequests: pullrequstsState,
+      entities: {
+        pullRequests,
+      },
     }
-    expect(pullRequestsOwned(emptyState)).to.eql([])
+    expect(getPullRequestsOwned(emptyState)).to.eql([])
   })
-
 
   it('get user assigned pull requests - empty pull requests list', () => {
     const emptyState = {
       session: sessionState,
-      pullrequests: {
-        entities: {},
+      entities: {
+        pullRequests: {},
       },
     }
-    expect(pullRequestsAssigned(emptyState)).to.eql([])
+    expect(getPullRequestsAssigned(emptyState)).to.eql([])
   })
 
   it('get user assigned pull requests - empty session page', () => {
@@ -220,28 +231,29 @@ describe('session selectors', () => {
           },
         },
       },
-      pullrequests: pullrequstsState,
+      entities: {
+        pullRequests,
+      },
     }
-    expect(pullRequestsAssigned(emptyState)).to.eql([])
+    expect(getPullRequestsAssigned(emptyState)).to.eql([])
   })
 
-
   it('get user pull assigned requests', () => {
-    expect(pullRequestsAssigned(state)).to.eql([pr1, pr3])
+    expect(getPullRequestsAssigned(state)).to.eql([pr1, pr3])
   })
 
   it('get user pull watching requests', () => {
-    expect(pullRequestsWatching(state)).to.eql([pr2, pr1])
+    expect(getPullRequestsWatching(state)).to.eql([pr2, pr1])
   })
 
   it('get user watching pull requests - empty pull requests list', () => {
     const emptyState = {
       session: sessionState,
-      pullrequests: {
-        entities: {},
+      entities: {
+        pullRequests: {},
       },
     }
-    expect(pullRequestsWatching(emptyState)).to.eql([])
+    expect(getPullRequestsWatching(emptyState)).to.eql([])
   })
 
   it('get user watching pull requests - empty session page', () => {
@@ -253,9 +265,101 @@ describe('session selectors', () => {
           },
         },
       },
-      pullrequests: pullrequstsState,
+      entities: {
+        pullRequests,
+      },
     }
-    expect(pullRequestsWatching(emptyState)).to.eql([])
+    expect(getPullRequestsWatching(emptyState)).to.eql([])
+  })
+
+
+  it('getPersona', () => {
+    const persona = 'some persona'
+    const st = {
+      session: {
+        profile: {
+          persona,
+        },
+      },
+    }
+    expect(getPersona(st)).to.eql(persona)
+  })
+
+  it('getLoggedUsername', () => {
+    const username = 'someusername'
+    const st = {
+      entities: {
+        me: {
+          username,
+        },
+      },
+    }
+    expect(getLoggedUsername(st)).to.eql(username)
+  })
+
+  it('getPullRequestsOwnedTotal', () => {
+    const total = 12
+    const st = {
+      entities: {
+        me: {
+          pullRequestsOwned: {
+            total,
+          },
+        },
+      },
+    }
+    expect(getPullRequestsOwnedTotal(st)).to.eql(total)
+  })
+
+  it('getPullRequestsAssignedTotal', () => {
+    const total = 12
+    const st = {
+      entities: {
+        me: {
+          pullRequestsAssigned: {
+            total,
+          },
+        },
+      },
+    }
+    expect(getPullRequestsAssignedTotal(st)).to.eql(total)
+  })
+
+  it('getOwnedFetchStatus for owned pull requests', () => {
+    const st = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { isFetching: false } } }
+    expect(getOwnedFetchStatus(st)).to.eql({ error: null, isFetching: false })
+
+    const state2 = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { isFetching: true } } }
+    expect(getOwnedFetchStatus(state2)).to.eql({ error: null, isFetching: true })
+
+    expect(getOwnedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
+  })
+
+  it('getAssignedFetchStatus for owned pull requests', () => {
+    const st = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { isFetching: false } } }
+    expect(getAssignedFetchStatus(st)).to.eql({ error: null, isFetching: false })
+
+    const state2 = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { isFetching: true } } }
+    expect(getAssignedFetchStatus(state2)).to.eql({ error: null, isFetching: true })
+
+    expect(getAssignedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
+  })
+
+
+  it('getOwnedFetchStatus error for owned pull requests', () => {
+    const testerror = { text: 'error message' }
+    const st = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { error: testerror } } }
+    expect(getOwnedFetchStatus(st)).to.eql({ error: testerror, isFetching: false })
+
+    expect(getOwnedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
+  })
+
+  it('getAssignedError for assigned pull requests', () => {
+    const testerror = { text: 'error message' }
+    const st = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { error: testerror } } }
+    expect(getAssignedFetchStatus(st)).to.eql({ error: testerror, isFetching: false })
+
+    expect(getAssignedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
 })
 

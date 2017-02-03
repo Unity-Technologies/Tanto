@@ -7,36 +7,45 @@ import './Checkbox.css'
 export type Props = {
   checked: boolean,
   value: any,
-  onCheck?: (e: SyntheticInputEvent, value: boolean) => any,
+  onChange?: (e: SyntheticInputEvent) => any,
   name: string,
   disabled?: boolean,
 }
 
 class Checkbox extends Component {
-  /* eslint-disable react/sort-comp */
   constructor(props: Props) {
-    super(props);
-    (this:any).handleClick = this.handleClick.bind(this)
+    super(props)
+    this.state = {
+      checked: this.props.checked,
+    }
+  }
+
+  state: {
+    checked: boolean,
   }
 
   props: Props
 
-  handleClick(e: SyntheticInputEvent) {
-    if (this.props.onCheck) {
-      this.props.onCheck(e, e.target.checked)
+  handleClick = (e: SyntheticInputEvent) => {
+    this.setState({
+      checked: e.target.checked,
+    })
+    if (this.props.onChange) {
+      this.props.onChange(e)
     }
   }
 
   // TODO: apply material-ui  styling here
   render() {
-    const { value, checked, disabled, name } = this.props
+    const { value, disabled, name } = this.props
+
     return (
       <div>
         <input
           type="checkbox"
           name={name}
           value={value}
-          checked={checked}
+          checked={this.state.checked}
           disabled={disabled}
           onChange={this.handleClick}
           className="checkbox-box"

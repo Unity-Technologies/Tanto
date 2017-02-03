@@ -1,23 +1,17 @@
-query pullRequestIssues($id: Int!){
+query pullRequestDiscussion($id: Int!){
   pullRequest(id: $id) {
     id
-    issues {
+    comments {
       id
-      title
-      description
-      status
-      assignee {
-        username
-        fullName
-
-      }
-      branch
-      owner {
-        username
-        fullName
-      }
-      updated
+      text
       created
+      status
+      author {
+        id
+        username
+        fullName
+      }
     }
   }
 }
+

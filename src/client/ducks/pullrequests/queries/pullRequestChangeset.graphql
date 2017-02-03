@@ -4,16 +4,17 @@ query pullRequestCommits($id: Int!){
 		title
     origin {
       repository{
+        id
         fullName
       }
     }
     changeset {
       id
-      rawId
       branch
       message
       author
       files {
+        id
         stats {
           added
           deleted

@@ -13,7 +13,7 @@ import type { GeneralCommentType, UserType } from 'universal/types'
 import type { StatusType } from 'ducks/fetch'
 import { statusFetchCreator } from 'ducks/fetch'
 import LoadingComponent from 'components/LoadingComponent'
-import { getPullRequest } from 'ducks/pullrequests/selectors'
+import { getPullRequestGeneralComments, getPullRequest } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 
 export type Props = {
@@ -34,9 +34,12 @@ export const getFetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_DISCUS
 export const getLoggedUser = (state: Object) => state.session.profile.fullName
 export const getPullRequestDiscussion = (state: Object, props: Object): Object =>
   createSelector(
-    getPullRequest, getFetchStatus, getLoggedUser,
-    (pr, status, user) => ({
-      pullRequest: _.pick(pr, ['description', 'created', 'owner', 'comments']),
+    getPullRequest, getPullRequestGeneralComments, getFetchStatus, getLoggedUser,
+    (pr, comments, status, user) => ({
+      pullRequest: {
+        ..._.pick(pr, ['description', 'created', 'owner']),
+        comments,
+      },
       status,
       user,
     })
@@ -73,6 +76,7 @@ const renderHeadComment = ({ owner, description, created }) => {
     </div>
   )
 }
+
 
 const renderComments = ({ comments }, user) => {
   if (!comments) {

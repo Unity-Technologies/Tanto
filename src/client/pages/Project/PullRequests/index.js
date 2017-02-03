@@ -9,8 +9,6 @@ import {
   getPageFetchStatus,
   getPullRequests } from 'ducks/pullrequests/selectors'
 
-import { getRepositoryId } from 'ducks/repositories/selectors'
-
 export type Props = {
   project_pullrequests: Array<any>,
   params: {
@@ -21,13 +19,13 @@ export type Props = {
 }
 
 const mapStateToProps = (state, props) => ({
-  branch: state.pullrequests.filters.branch,
+  branch: state.session.pullRequests.filters.branch,
   pageSize: 10,
-  activePage: state.pullrequests.pagination.currentPage,
-  total: state.pullrequests.pagination.total,
+  activePage: state.session.pullRequests.pagination.currentPage,
+  total: state.session.pullRequests.pagination.total,
   status: getPageFetchStatus(state),
   items: getPullRequests(state) || [],
-  orderBy: state.session.pullRequestsOwned.orderBy,
+  orderBy: state.session.pullRequests.orderBy,
 })
 
 function PullRequests(props: Props) {
@@ -46,7 +44,7 @@ function PullRequests(props: Props) {
 
 export default connect(
   (state, props) => ({
-    repo: getRepositoryId(state, props),
+    repo: props.params.splat,
   })
 )(PullRequests)
 

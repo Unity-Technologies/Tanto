@@ -2,6 +2,7 @@ query pullRequestFiles($id: Int!) {
   pullRequest(id: $id) {
     id
     files {
+      id
       stats {
         added
         deleted
@@ -17,12 +18,12 @@ query pullRequestFiles($id: Int!) {
         created
         id
         author {
+          id
           username
           fullName
         }
         lineNumber
       }
-      id
     }
   }
 }
