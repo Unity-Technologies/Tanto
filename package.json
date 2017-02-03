@@ -22,7 +22,7 @@
   },
   "betterScripts": {
     "start-prod": {
-      "command": "forever start ./server.js &",
+      "command": "node ./server.js &",
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "production",
@@ -60,7 +60,7 @@
       }
     },
     "test": {
-      "command": "mocha-webpack --webpack-config webpack/config.test.js --recursive 'src/**/__tests__/*.js' --full-trace --require source-map-support/register --colors",
+      "command": "mocha-webpack --webpack-config webpack/config.test.js --recursive \"src/**/__tests__/*.js\" --full-trace --require source-map-support/register --colors",
       "env": {
         "NODE_ENV": "test"
       }

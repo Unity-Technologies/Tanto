@@ -11,10 +11,10 @@ export const routes = {
 export const ChangesetStatus = {
   TEST: 'test',
   NEW: 'new',
-  NOT_REVIEWED: 'not_reviewed',
-  UNDER_REVIEW: 'under_review',
-  APPROVED: 'approved',
-  REJECTED: 'rejected',
+  NOT_REVIEWED: 'NOT_REVIEWED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
 }
 
 export const IssueStatus = {
@@ -34,7 +34,11 @@ export const PullRequestSource = {
   BOOK: 'BOOK',
 }
 
-export const PullRequestOrderFields = ['updated']
+
+export const PullRequestOrderFields = {
+  UPDATED: 'UPDATED',
+  CREATED: 'CREATED',
+}
 
 /**
  * Available user personas (for testing purposes only !!!)

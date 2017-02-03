@@ -5,9 +5,8 @@ import { orderBy, DIRECTION } from 'ducks/order'
 import { combineReducers } from 'redux'
 import _ from 'lodash'
 import { target } from 'ducks/filters'
-import { PullRequestSource, DEVELOPER_PERSONA } from 'universal/constants'
+import { PullRequestSource, DEVELOPER_PERSONA, PullRequestOrderFields } from 'universal/constants'
 import { types } from 'ducks/session/actions'
-
 
 /**
  * Initial state
@@ -15,8 +14,8 @@ import { types } from 'ducks/session/actions'
 
 const prState = {
   orderBy: {
-    direction: DIRECTION.ASC,
-    field: '',
+    direction: DIRECTION.DESC,
+    field: PullRequestOrderFields.UPDATED,
   },
   filters: {
     target: {

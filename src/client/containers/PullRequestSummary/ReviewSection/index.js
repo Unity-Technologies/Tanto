@@ -128,23 +128,27 @@ class ReviewSection extends Component {
                 <ul style={{ listStyleType: 'none', padding: 0, margin: 0, fontSize: '13px' }}>
                   <ReviewerList
                     reviewers={reviewerGroups.not_reviewed}
-                    icon={'fa-envelope-o'}
+                    icon={'fa-circle'}
                     tooltip={'Not reviewed yet'}
+                    approval={ChangesetStatus.NOT_REVIEWED}
                   />
                   <ReviewerList
                     reviewers={reviewerGroups.under_review}
-                    icon={'fa-envelope-open-o'}
+                    icon={'fa-circle'}
                     tooltip={'Under review'}
+                    approval={ChangesetStatus.UNDER_REVIEW}
                   />
                   <ReviewerList
                     reviewers={reviewerGroups.approved}
-                    icon={'fa-thumbs-o-up'}
+                    icon={'fa-circle'}
                     tooltip={'Approved'}
+                    approval={ChangesetStatus.APPROVED}
                   />
                   <ReviewerList
                     reviewers={reviewerGroups.rejected}
-                    icon={'fa-thumbs-o-down'}
+                    icon={'fa-circle'}
                     tooltip={'Rejected'}
+                    approval={ChangesetStatus.REJECTED}
                   />
                 </ul>
                 {this.state.toggleReviewers &&
