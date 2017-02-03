@@ -35,6 +35,15 @@ class PullRequestsPaginated extends Component {
     this.props.dispatch(this.props.fetchData(args))
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.repo !== nextProps.repo) {
+      const args = {
+        ...this.getArguments(), repo: nextProps.repo,
+      }
+      this.props.dispatch(this.props.fetchData(args))
+    }
+  }
+
   getArguments = (): Object => ({
     pageSize: this.props.pageSize,
     limit: this.props.pageSize,
@@ -42,7 +51,7 @@ class PullRequestsPaginated extends Component {
     page: this.props.activePage,
     orderBy: this.props.orderBy,
     branch: this.props.branch,
-    repo: this.props.repo,
+    repo: this.props.repo || -1,
   })
 
   props: Props
@@ -127,7 +136,7 @@ class PullRequestsPaginated extends Component {
         </div>
         {isFetching && <LinearProgress />}
         {error && <ErrorMessage error={error} />}
-        {!this.props.isFetching && !error && !this.props.items.length &&
+        {!isFetching && !error && !this.props.items.length &&
           <Alert bsStyle="warning" style={{ fontSize: '13px' }}>
             <strong>
               <i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong>

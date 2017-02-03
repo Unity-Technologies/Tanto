@@ -34,7 +34,7 @@ export const pages = (state: Object= {}, action: Object = {}): Object => {
     case RECEIVE_PAGE:
       return {
         ...state,
-        [action.page]: action.nodes.map(x => x.id),
+        [action.page]: (action.nodes || []).map(x => x.id),
       }
     default:
       return state
