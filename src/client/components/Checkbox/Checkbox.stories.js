@@ -8,7 +8,7 @@ storiesOf('Checkbox', module)
   .add('not checked', () => (
     <Checkbox
       value={42}
-      onCheck={() => action('onCheck')}
+      onChange={action('onChange')}
       name={'label-42'}
       checked={false}
       disabled={false}
@@ -17,7 +17,7 @@ storiesOf('Checkbox', module)
   .add('checked', () => (
     <Checkbox
       value={42}
-      onCheck={() => action('onCheck')}
+      onChange={action('onChange')}
       name={'label-42'}
       checked
       disabled={false}
@@ -26,9 +26,17 @@ storiesOf('Checkbox', module)
   .add('disabled', () => (
     <Checkbox
       value={42}
-      onCheck={() => action('onCheck')}
+      onChange={action('onChange')}
       name={'label-42'}
       checked={false}
       disabled
+    />
+  ))
+  .add('without external onChange handler', () => (
+    <Checkbox
+      value={42}
+      name={'label-42'}
+      checked
+      disabled={false}
     />
   ))
