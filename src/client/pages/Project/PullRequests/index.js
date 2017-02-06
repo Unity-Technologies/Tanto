@@ -5,9 +5,12 @@ import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchPullRequests } from 'ducks/pullrequests/actions'
+import { getRepositoryId } from 'ducks/repositories/selectors'
+
 import {
   getPageFetchStatus,
-  getPullRequests } from 'ducks/pullrequests/selectors'
+  getPullRequestsPage,
+} from 'ducks/pullrequests/selectors'
 
 export type Props = {
   project_pullrequests: Array<any>,
@@ -24,7 +27,7 @@ const mapStateToProps = (state, props) => ({
   activePage: state.session.pullRequests.pagination.currentPage,
   total: state.session.pullRequests.pagination.total,
   status: getPageFetchStatus(state),
-  items: getPullRequests(state) || [],
+  items: getPullRequestsPage(state) || [],
   orderBy: state.session.pullRequests.orderBy,
 })
 
@@ -44,7 +47,7 @@ function PullRequests(props: Props) {
 
 export default connect(
   (state, props) => ({
-    repo: props.params.splat,
+    repo: getRepositoryId(state, props),
   })
 )(PullRequests)
 

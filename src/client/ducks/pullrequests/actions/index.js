@@ -5,7 +5,7 @@ import type { OrderByType } from 'ducks/order'
 import { fetchActionCreator, fetchAction } from 'ducks/fetch'
 import type { FetchAction } from 'ducks/fetch'
 import { RECEIVE_PAGE } from 'ducks/pagination'
-
+import _ from 'lodash'
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
 import pullRequestFiles from 'ducks/pullrequests/queries/pullRequestFiles.graphql'
 import pullRequestMetadataQuery from 'ducks/pullrequests/queries/pullRequestMetadata.graphql'
@@ -36,11 +36,11 @@ export type FetchPullRequestVariables = {
 
 /** Response parsers */
 
-export const parsePullRequests = (response: Object) => response.data.repository.pullRequests
+export const parsePullRequests = (response: Object) =>
+  _.get(response, ['data', 'repository', 'pullRequests'], {})
 
-export const parsePullRequest = (response: Object) => response.data.pullRequest
-
-export const namespace = 'pullRequests'
+export const parsePullRequest = (response: Object) =>
+  _.get(response, ['data', 'pullRequest'], {})
 
 /**
  *Action creators
@@ -68,7 +68,7 @@ export const fetchPullRequests = (variables: FetchPullRequestVariables): FetchAc
   fetchActionCreator(
     types.FETCH_PULL_REQUESTS, pullRequestList, variables, operationName,
     (data: Object, cbArgs: Object): Array<Object> => {
-      const { nodes, total } = parsePullRequests(data)
+      const { nodes, total } = parsePullRequests(data) || {}
       return [
         { type: RECEIVE_PAGE, namespace: operationName, nodes, total, ...cbArgs }]
     })

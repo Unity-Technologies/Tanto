@@ -1,8 +1,12 @@
+/* @flow */
+
 import { createSelector } from 'reselect'
 import _ from 'lodash'
 
-export const usersSelector = (state: Object): Array<Object> => state.entities.users
+export const userEntitiesSelector = (state: Object): Array<Object> =>
+  _.get(state, ['entities', 'users'], {})
+
 export const getUsers = createSelector(
-  usersSelector,
+  userEntitiesSelector,
   users => _.values(users) || []
 )
