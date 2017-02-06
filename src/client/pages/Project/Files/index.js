@@ -13,8 +13,6 @@ import BranchSelect from 'components/BranchSelect'
 import Filter from 'components/Filter'
 import Breadcrumb from 'components/Breadcrumb'
 
-import { projectFilesTestData, changesets } from '../../../api/testData'
-
 
 export type Props = {
   pathname: string,
@@ -127,7 +125,7 @@ class Files extends Component {
                 <div style={{ width: '270px', marginRight: '5px' }}>
                   <BranchSelect project={id} placeholder="Select branch ..." />
                 </div>
-                <Filter data={changesets} placeholder="Select changeset..." />
+                <Filter data={this.props.changesets} placeholder="Select changeset..." />
               </div>
             </Col>
             <Col md={1}>
@@ -156,5 +154,5 @@ class Files extends Component {
 
 export default connect(state => ({
   pathname: state.routing.locationBeforeTransitions.pathname,
-  data: projectFilesTestData,
+  data: [],
 }))(Files)

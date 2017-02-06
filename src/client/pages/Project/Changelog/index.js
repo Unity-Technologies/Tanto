@@ -9,8 +9,6 @@ import Row from 'react-bootstrap/lib/Row'
 import Button from 'react-bootstrap/lib/Button'
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 
-import { prChangesetList3, prChangesetList1, prChangesetList2 } from '../../../api/testPullRequest'
-
 
 export type Props = {
   params: Object,
@@ -158,5 +156,5 @@ class Changelog extends Component {
 
 
 export default connect(state => ({ // eslint-disable-line no-unused-vars
-  data: [...prChangesetList1, ...prChangesetList2, ...prChangesetList3],
+  data: [],
 }))(Changelog)

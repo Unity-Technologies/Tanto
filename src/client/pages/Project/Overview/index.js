@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
-import { prDescription } from '../../../api/testData'
 
 export type Props = {
   params: {
@@ -22,7 +21,6 @@ function Overview({ params: { id } }: Props) {
         <Row>
           <Col md={8}>
             <h3>Project readme</h3>
-            <p>{prDescription}</p>
             <h3>Project release notes</h3>
             <ul>
               <li> Release note 1 </li>

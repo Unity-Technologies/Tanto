@@ -18,8 +18,6 @@ import TestAvatar from '../TestAvatar'
 import './TextEditorBox.css'
 import StyleControls from './StyleControls'
 
-import { mentions } from '../../api/testData'
-
 const mentionPlugin = createMentionPlugin()
 const { MentionSuggestions } = mentionPlugin
 
@@ -58,8 +56,8 @@ class TextEditorBox extends Component {
         EditorState.createWithContent(
           props.simpleText ? ContentState.createFromText(props.text) : importer(props.text)
         ) : EditorState.createEmpty(),
-      mentions: props.mentions,
-      suggestions: fromJS(mentions),
+      mentions: props.mentions || [],
+      suggestions: fromJS(props.mentions || []),
     }
 
     this.handleKeyCommand = this.handleKeyCommand.bind(this)

@@ -64,8 +64,6 @@ const config = {
       ducks: 'client/ducks',
       sagas: 'client/sagas',
       services: 'universal/services',
-      // TODO: obsolete, should br removed after removing dependencies on mocked data
-      'graphql-queries': 'client/api/graphql/queries',
       universal: 'universal',
       pages: 'client/pages',
       utils: 'client/utils',
