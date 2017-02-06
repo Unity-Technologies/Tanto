@@ -1,7 +1,6 @@
 // TODO: add flow annotations
 
 import React, { Component } from 'react'
-import { fromJS } from 'immutable'
 import { EditorState, RichUtils, ContentState } from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import Editor from 'draft-js-plugins-editor'
@@ -57,7 +56,7 @@ class TextEditorBox extends Component {
           props.simpleText ? ContentState.createFromText(props.text) : importer(props.text)
         ) : EditorState.createEmpty(),
       mentions: props.mentions || [],
-      suggestions: fromJS(props.mentions || []),
+      suggestions: [],
     }
 
     this.handleKeyCommand = this.handleKeyCommand.bind(this)

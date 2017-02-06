@@ -116,8 +116,8 @@ class NewPullRequest extends Component {
           </Col>
         </Row>
         <Row style={rowStyle}>
-          <Col md={12}>
-
+          <Col md={12} >
+            diff
           </Col>
         </Row>
 

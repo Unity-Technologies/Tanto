@@ -147,7 +147,7 @@ class Comment extends Component {
               <div style={{ float: 'left', padding: '6px 6px', fontFamily: 'sans-serif' }}>
                 <TestAvatar />
                 <div style={headerStyle || commentHeaderStyle}>
-                <strong style={{ color: '#31708f' }}>{comment.author.fullName}</strong>
+                  <strong style={{ color: '#31708f' }}>{comment.author.fullName}</strong>
                   <span> commented {moment(comment.created).fromNow()}</span>
                 </div>
               </div>
