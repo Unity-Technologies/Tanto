@@ -17,8 +17,8 @@ export type AuthUser = {
   email: string,
   fullName: string,
   repositories: Array<Repository>,
-  pullRequestsOwned: PullRequests,
-  pullRequestsAssigned: PullRequests,
+  pullRequestsOwned: PullRequestPage,
+  pullRequestsAssigned: PullRequestPage,
 }
 
 
@@ -49,7 +49,7 @@ export type InlineComment = {
 }
 
 
-export type Paging = PullRequests | Repositories
+export type Paging = PullRequestPage | RepositoryPage
 
 
 export type PullRequest = {
@@ -91,7 +91,7 @@ export type PullRequestOrigin = {
 }
 
 
-export type PullRequests = {
+export type PullRequestPage = {
   total: number,
   limit: number,
   offset: number,
@@ -99,7 +99,7 @@ export type PullRequests = {
 }
 
 
-export type Repositories = {
+export type RepositoryPage = {
   total: number,
   limit: number,
   offset: number,

@@ -14,7 +14,7 @@ query pullRequestsAssigned($limit: Int, $offset: Int, $target: PullRequestTarget
   }
 }
 
-fragment pullRequestMetadata on PullRequests {
+fragment pullRequestMetadata on PullRequestPage {
   total
   nodes {
     id

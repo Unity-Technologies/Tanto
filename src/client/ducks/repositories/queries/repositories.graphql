@@ -19,7 +19,7 @@ query repositoriesTopLevel {
   }
 }
 
-fragment repo on Repositories {
+fragment repo on RepositoryPage {
   nodes {
     id
     name
