@@ -31,9 +31,10 @@ class BranchSelect extends Component {
   }
 
   componentDidMount() {
-    if (this.props.repoId) {
-      this.props.dispatch(fetchRepositoryBranches(this.props.repoId))
-    }
+    // TODO : enable search instead of fetching all branches
+    // if (this.props.repoId) {
+    //   this.props.dispatch(fetchRepositoryBranches(this.props.repoId))
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
