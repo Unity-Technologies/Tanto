@@ -58,7 +58,11 @@ module.exports = Object.assign({}, baseConfig.config, {
     ]),
   },
   plugins: [
-    new LodashModuleReplacementPlugin(),
+    new LodashModuleReplacementPlugin({
+      collections: true,
+      paths: true,
+      flattening: true,
+    }),
     new CleanPlugin([assetsPath], {
       root: projectRootPath,
     }),
