@@ -10,7 +10,7 @@ import Helmet from 'react-helmet'
 // import CodeDiffView from 'components/CodeDiffView'
 // import ChangesetGroupedList from 'components/ChangesetGroupedList'
 // import Divider from 'components/Divider'
-// import { PullRequestData, prChangesetList } from '../../../api/testPullRequest'
+
 
 // const Element = Scroll.Element
 

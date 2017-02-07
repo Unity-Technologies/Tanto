@@ -5,8 +5,7 @@ import Helmet from 'react-helmet'
 
 import TextEditorBox from 'components/TextEditorBox'
 import BranchSelect from 'components/BranchSelect'
-import UserFilter from 'components/UserFilter'
-import CodeDiffView from 'components/CodeDiffView'
+// import CodeDiffView from 'components/CodeDiffView'
 
 import FlatButton from 'material-ui/FlatButton'
 
@@ -18,8 +17,7 @@ import NavItem from 'react-bootstrap/lib/NavItem'
 
 import TextField from 'material-ui/TextField'
 import { connect } from 'react-redux'
-import { reviewers as reviewersTestData } from '../../../api/testData'
-import { NewPullRequestData } from '../../../api/testPullRequest'
+
 
 export type Props = {
   params?: Object,
@@ -118,11 +116,8 @@ class NewPullRequest extends Component {
           </Col>
         </Row>
         <Row style={rowStyle}>
-          <Col md={12}>
-            <UserFilter
-              project={id}
-              placeholder="Select reviewers ...."
-            />
+          <Col md={12} >
+            diff
           </Col>
         </Row>
 
@@ -130,7 +125,7 @@ class NewPullRequest extends Component {
           <Row>
             <Col md={12}>
               <h4>Changeset</h4>
-              <CodeDiffView files={NewPullRequestData} />
+
             </Col>
           </Row>
         }
@@ -140,5 +135,5 @@ class NewPullRequest extends Component {
 }
 
 export default connect(state => ({ // eslint-disable-line no-unused-vars
-  reviewers: reviewersTestData,
+  reviewers: [],
 }))(NewPullRequest)
