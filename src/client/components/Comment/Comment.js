@@ -42,14 +42,15 @@ class Comment extends Component {
 
   props: Props
 
-  onCommentEdit= () => {
+  onCommentEdit = () => {
     this.setState({ editMode: true })
   }
 
-  onCommentCancel= () => {
+  onCommentCancel = () => {
     this.setState({
       editMode: false,
-      newComment: false })
+      newComment: false,
+    })
     // TODO: unmount component if this is a new comment.
   }
   // onCommentDelete() {
@@ -59,8 +60,9 @@ class Comment extends Component {
   onCommentSave = () => {
     this.setState({
       editMode: false,
-      newComment: false })
-      // TODO: dispatch reducer action to save edited and new comments
+      newComment: false,
+    })
+    // TODO: dispatch reducer action to save edited and new comments
   }
 
   // handleChange(event, value) {
@@ -86,7 +88,7 @@ class Comment extends Component {
   // }
 
   render() {
-    if (!this.props.comment) {
+    if (!this.props.comment || !this.props.comment.author) {
       return null
     }
     const {
@@ -135,6 +137,7 @@ class Comment extends Component {
       color: 'lightgrey',
       fontSize: '17px',
     }
+
 
     return (
       <div>

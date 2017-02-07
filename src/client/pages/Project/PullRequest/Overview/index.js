@@ -1,11 +1,9 @@
 // TODO: add flow annotations
 
 import React, { Component } from 'react'
-
 import TextEditorBox from 'components/TextEditorBox'
 import Label from 'components/Label'
 import Comment from 'components/Comment'
-import UserFilter from 'components/UserFilter'
 import { getLoggedUsername } from 'ducks/session/selectors'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
@@ -56,7 +54,7 @@ class Overview extends Component {
   }
 
   render() {
-    const { id, user } = this.props
+    const { user } = this.props
     const titleStyle = { fontSize: '18px', marginTop: '15px' }
     const rowStyle = { paddingTop: '10px' }
     const owner = user === this.state.pullRequest.author
@@ -97,11 +95,7 @@ class Overview extends Component {
             <div style={{ padding: '10px 0', fontSize: '16px' }}>
               <strong>Reviewers:</strong>
             </div>
-            <UserFilter
-              project={id}
-              defaultValue={this.state.pullRequest.reviewers}
-              placeholder="Select reviewers ...."
-            />
+
           </Col>
         </Row>
         <Row>

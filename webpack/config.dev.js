@@ -2,7 +2,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const assetsPath = path.resolve(__dirname, '../static/dist')
-
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const host = (process.env.HOST || 'localhost')
 const port = (+process.env.PORT + 1) || 3001
 
@@ -40,6 +40,11 @@ module.exports = Object.assign({}, baseConfig.config, {
     ]),
   },
   plugins: [
+    new LodashModuleReplacementPlugin({
+      collections: true,
+      paths: true,
+      flattening: true,
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/webpack-stats\.json$/),
     new webpack.DefinePlugin({

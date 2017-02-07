@@ -1,7 +1,6 @@
 // TODO: add flow annotations
 
 import React, { Component } from 'react'
-import { fromJS } from 'immutable'
 import { EditorState, RichUtils, ContentState } from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import Editor from 'draft-js-plugins-editor'
@@ -17,8 +16,6 @@ import 'draft-js-emoji-plugin/lib/plugin.css'
 import TestAvatar from '../TestAvatar'
 import './TextEditorBox.css'
 import StyleControls from './StyleControls'
-
-import { mentions } from '../../api/testData'
 
 const mentionPlugin = createMentionPlugin()
 const { MentionSuggestions } = mentionPlugin
@@ -58,8 +55,8 @@ class TextEditorBox extends Component {
         EditorState.createWithContent(
           props.simpleText ? ContentState.createFromText(props.text) : importer(props.text)
         ) : EditorState.createEmpty(),
-      mentions: props.mentions,
-      suggestions: fromJS(mentions),
+      mentions: props.mentions || [],
+      suggestions: [],
     }
 
     this.handleKeyCommand = this.handleKeyCommand.bind(this)

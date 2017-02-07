@@ -62,7 +62,7 @@ export type OriginGraphType = {
 export type PullRequestGraphType = {
   id: string,
   title: string,
-  descroiption: string,
+  description: string,
   updated: string,
   status: string,
   created: string,

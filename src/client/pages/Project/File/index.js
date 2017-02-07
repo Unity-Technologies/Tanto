@@ -4,18 +4,16 @@ import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import _ from 'lodash'
 import moment from 'moment'
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Panel from 'react-bootstrap/lib/Panel'
 
-import CodeMirrorView from 'components/CodeMirrorView'
 import BranchSelect from 'components/BranchSelect'
 import Filter from 'components/Filter'
 import Comment from 'components/Comment'
 
 import Breadcrumb from 'components/Breadcrumb'
-import { changesets } from '../../../api/testData'
 
 
 export type Props = {
@@ -52,26 +50,26 @@ class File extends Component {
   // }
 
   render() {
-    const value = `// This function tries to parse a single expression at a given
-    // offset in a string. Useful for parsing mixed-language formats
-    // that embed JavaScript expressions.
+    // const value = `// This function tries to parse a single expression at a given
+    // // offset in a string. Useful for parsing mixed-language formats
+    // // that embed JavaScript expressions.
 
-    export function parseExpressionAt(input, pos, options) {
-      let p = new Parser(options, input, pos)
-      p.nextToken()
-      return p.parseExpression()
-    }`
+    // export function parseExpressionAt(input, pos, options) {
+    //   let p = new Parser(options, input, pos)
+    //   p.nextToken()
+    //   return p.parseExpression()
+    // }`
 
-    const options = {
-      readOnly: true,
-      lineNumbers: true,
-      style: { border: '1px solid black' },
-      textAreaClassName: ['form-control'],
-      textAreaStyle: { minHeight: '10em', fontSize: '14px' },
-      theme: 'solarized',
-      mode: 'javascript',
-      matchBrackets: true,
-    }
+    // const options = {
+    //   readOnly: true,
+    //   lineNumbers: true,
+    //   style: { border: '1px solid black' },
+    //   textAreaClassName: ['form-control'],
+    //   textAreaStyle: { minHeight: '10em', fontSize: '14px' },
+    //   theme: 'solarized',
+    //   mode: 'javascript',
+    //   matchBrackets: true,
+    // }
 
     const metadata = {
       name: 'filename.py',
@@ -123,7 +121,7 @@ class File extends Component {
                 <div style={{ width: '270px', marginRight: '5px' }}>
                   <BranchSelect project={id} placeholder="Select branch ..." />
                 </div>
-                <Filter data={changesets} placeholder="Select changeset..." />
+                <Filter data={this.props.changesets} placeholder="Select changeset..." />
               </div>
             </Col>
 
@@ -163,7 +161,7 @@ class File extends Component {
             </div>
       }
         >
-          <CodeMirrorView fill value={value} options={options} />
+          {/* TODO: here should be placed prism.js code viewer */}
         </Panel>
 
         <div>
@@ -189,6 +187,8 @@ class File extends Component {
   }
 }
 
-export default connect(state => ({
-  file: state.projects.file || null,
-}))(File)
+// export default connect(state => ({
+//   file: state.projects.file || null,
+// }))(File)
+
+export default File
