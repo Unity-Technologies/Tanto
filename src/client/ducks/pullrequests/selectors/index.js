@@ -5,6 +5,7 @@ import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { createSelector } from 'reselect'
 export type { StatusType } from 'ducks/fetch'
 import { userEntitiesSelector } from 'ducks/users/selectors'
+import { getRepositoryId } from 'ducks/repositories/selectors'
 
 import _ from 'lodash'
 
@@ -61,12 +62,25 @@ export const getPullRequestNormlized = createSelector(
 /**
  * Pull request page selectors
  */
-export const pullRequestsPageIdsSelector =
-  (state: Object, props: Object): Array<Number> => {
-    const pullRequestsPagingSettings = _.get(state, ['session', 'pullRequests', 'pagination'], {})
-    const { pages, currentPage } = pullRequestsPagingSettings
-    return pages && currentPage > -1 ? pages[currentPage] : []
+export const pullRequestsSettingsState = (state: Object, props: Object) => {
+  const p = state.session.pullRequests
+  return p
+}
+
+export const getRepoPullRequestsPageSettings = (state: Object, props: Object) => createSelector(
+  getRepositoryId, pullRequestsSettingsState,
+  (id: string, settingsState: Object): Object => {
+    const seti = settingsState[id] || {}
+    return seti
   }
+  )
+
+export const pullRequestsPageIdsSelector = createSelector(
+  getRepoPullRequestsPageSettings,
+  (settings: Object): Array<Number> => {
+    const { pages, currentPage } = settings.pagination || {}
+    return pages && currentPage > -1 ? pages[currentPage] : []
+  })
 
 export const getPullRequestsPage = createSelector(
   getPullRequestsEntities, userEntitiesSelector, pullRequestsPageIdsSelector,

@@ -2,7 +2,7 @@
 
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
-import { pullRequests } from './pullrequests'
+import pullRequests from './pullrequests'
 import { pullRequestsOwned, pullRequestsAssigned, profile } from './session'
 import fetchStatus from './fetch'
 import sidebar from './sidebar'

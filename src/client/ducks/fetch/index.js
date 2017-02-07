@@ -57,7 +57,6 @@ export type FetchAction = {
   callback?: Function
 }
 
-
 export type ActionType = {
   type: string,
   query: string,

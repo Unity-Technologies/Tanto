@@ -10,6 +10,7 @@ import { getRepositoryId } from 'ducks/repositories/selectors'
 import {
   getPageFetchStatus,
   getPullRequestsPage,
+  getRepoPullRequestsPageSettings,
 } from 'ducks/pullrequests/selectors'
 
 export type Props = {
@@ -22,13 +23,10 @@ export type Props = {
 }
 
 const mapStateToProps = (state, props) => ({
-  branch: state.session.pullRequests.filters.branch,
+  ...getRepoPullRequestsPageSettings(state, props),
   pageSize: 10,
-  activePage: state.session.pullRequests.pagination.currentPage,
-  total: state.session.pullRequests.pagination.total,
   status: getPageFetchStatus(state),
   items: getPullRequestsPage(state) || [],
-  orderBy: state.session.pullRequests.orderBy,
 })
 
 function PullRequests(props: Props) {

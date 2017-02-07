@@ -15,7 +15,7 @@ import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
 
 export type Props = {
   dispatch: Function,
-  activePage: number,
+  currentPage: number,
   pageSize: number,
   status: StatusType,
   total: number,
@@ -47,8 +47,8 @@ class PullRequestsPaginated extends Component {
   getArguments = (): Object => ({
     pageSize: this.props.pageSize,
     limit: this.props.pageSize,
-    offset: this.props.activePage > 0 ? this.props.pageSize * (this.props.activePage - 1) : 0,
-    page: this.props.activePage,
+    offset: this.props.currentPage > 0 ? this.props.pageSize * (this.props.currentPage - 1) : 0,
+    page: this.props.currentPage,
     orderBy: this.props.orderBy,
     branch: this.props.branch,
     repo: this.props.repo || -1,

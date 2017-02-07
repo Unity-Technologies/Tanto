@@ -22,7 +22,7 @@ function PullRequestList(props: Props) {
   return (
     <List
       total={props.total}
-      activePage={props.activePage}
+      activePage={props.currentPage}
       pageSize={props.pageSize}
       onPageSelect={props.onPageSelect}
     >

@@ -8,6 +8,7 @@ import { combineReducers } from 'redux'
 import type { OrderByType } from 'ducks/order'
 import { createReducer } from '../createReducer'
 import { operationName } from './actions'
+import { RECEIVE_PAGE } from 'ducks/pagination'
 
 export const operationNames = {
   pullRequestsOwned: 'pullRequestsOwned',
@@ -48,10 +49,26 @@ export const filters = combineReducers({
   target,
 })
 
-
-export const pullRequests = createReducer(operationName, combineReducers({
+export const repositoryPullRequests = combineReducers({
   filters,
   orderBy,
   pagination,
-}), defaultValue)
+})
+
+export const pullRequests = (state: Object = { }, action: Object = {}): Object => {
+  switch (action.type) {
+    case RECEIVE_PAGE:
+      if (action.repo) {
+        return {
+          ...state,
+          [action.repo]: repositoryPullRequests(state[action.repo] || defaultValue, action),
+        }
+      }
+      return state
+    default:
+      return state
+  }
+}
+
+export default createReducer(operationName, pullRequests, {})
 
