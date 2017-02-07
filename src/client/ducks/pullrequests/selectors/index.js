@@ -3,7 +3,7 @@
 import { types } from '../actions'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { createSelector } from 'reselect'
-export type { StatusType } from 'ducks/fetch'
+export type { StatusType } from 'ducks/fetch/selectors'
 import { userEntitiesSelector } from 'ducks/users/selectors'
 
 import _ from 'lodash'
