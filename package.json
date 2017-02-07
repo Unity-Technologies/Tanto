@@ -18,11 +18,13 @@
     "storybook": "NODE_PATH=src/client:src/universal:src start-storybook -p 6006 -c storybook",
     "test-watch": "better-npm-run test-watch",
     "test": "better-npm-run test",
-    "watch-client": "better-npm-run watch-client"
+    "watch-client": "better-npm-run watch-client",
+    "git-checkout": "git checkout -f restart-prod-script && git pull",
+    "restart-prod": "yarn run git-checkout && yarn run build && yarn start"
   },
   "betterScripts": {
     "start-prod": {
-      "command": "forever start ./server.js &",
+      "command": "forever restart ./server.js &",
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "production",
