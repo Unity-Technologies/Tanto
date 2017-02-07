@@ -4,7 +4,7 @@ import React from 'react'
 import Avatar from 'material-ui/Avatar'
 
 export type Props = {
-  icon?: number | string | React.Element<any> | Array<any>,
+  icon?: React.Element<any>,
   size?: number,
   color?: string,
   backgroundColor?: string,
