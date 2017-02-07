@@ -20,7 +20,6 @@
     "test": "better-npm-run test",
     "watch-client": "better-npm-run watch-client",
     "git-checkout": "git checkout -f restart-prod-script && git pull",
-    "forever-restart": "forever restart",
     "restart-prod": "yarn run git-checkout && yarn run build && yarn start"
   },
   "betterScripts": {
