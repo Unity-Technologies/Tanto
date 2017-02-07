@@ -7,21 +7,9 @@ export const types = {
   FETCH_DATA: 'FETCH/FETCH_DATA',
 }
 
-export const sendingRequest = (name: string, sending: boolean): Object =>
-  ({ type: types.SENDING_REQUEST, sending, name })
-
-export const requestError = (name: string, error: string): Object =>
-  ({ type: types.REQUEST_ERROR, error, name })
-
-export const clearError = (name: string): Object =>
-({ type: types.CLEAR_ERROR, name })
-
-export const actions = {
-  sendingRequest,
-  requestError,
-  clearError,
-}
-
+/**
+ * Fetch reducer
+ */
 export const fetchStatus = (state: Object = {}, action: Object): Object => {
   switch (action.type) {
     case types.SENDING_REQUEST:
@@ -55,45 +43,10 @@ export const fetchStatus = (state: Object = {}, action: Object): Object => {
 
 export default fetchStatus
 
-export const fetchSelector =
-  (key: string, prop: string, defaultValue: any = null): Function => (state: Object): any => {
-    const st = state.fetch[key]
-    return st && st.hasOwnProperty(prop) ? st[prop] : defaultValue
-  }
 
-export const isFetchingSelector =
-  (key: string): Function => (state: Object): boolean => {
-    const st = state.fetch[key]
-    return st && st.hasOwnProperty('isFetching') ? st.isFetching : false
-  }
-
-export const errorSelector =
-  (key: string): Function => (state: Object): any => {
-    const fetchState = state.fetch[key]
-    return fetchState && fetchState.hasOwnProperty('error') ? fetchState.error : null
-  }
-
-export type StatusType = {
-  isFetching: boolean,
-  error: Object
-}
-
-export type StateType = {
-  fetch: {
-    [key: string]: StatusType
-  }
-}
-
-export const getFetchStatus = (state: StateType, actionType: string): StatusType => ({
-  isFetching: isFetchingSelector(actionType)(state),
-  error: errorSelector(actionType)(state),
-})
-
-export const statusFetchCreator = (actionType: string) =>
-  (state: StateType): StatusType => ({
-    isFetching: isFetchingSelector(actionType)(state),
-    error: errorSelector(actionType)(state),
-  })
+/**
+ * Fetch types and action creators
+ */
 
 export type FetchAction = {
   type: string,
@@ -111,6 +64,21 @@ export type ActionType = {
   operationName?: string,
   variables?: Object,
   callback?: (data: Object, cbArgs: Object) => Array<Object>
+}
+
+export const sendingRequest = (name: string, sending: boolean): Object =>
+  ({ type: types.SENDING_REQUEST, sending, name })
+
+export const requestError = (name: string, error: string): Object =>
+  ({ type: types.REQUEST_ERROR, error, name })
+
+export const clearError = (name: string): Object =>
+  ({ type: types.CLEAR_ERROR, name })
+
+export const actions = {
+  sendingRequest,
+  requestError,
+  clearError,
 }
 
 export const fetchAction =

@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import CodeDiffView from 'components/CodeDiffView'
 import { types } from 'ducks/pullrequests/actions'
 import type { StatusType } from 'ducks/fetch'
-import { statusFetchCreator } from 'ducks/fetch'
+import { statusFetchFactory } from 'ducks/fetch/selectors'
 import LoadingComponent from 'components/LoadingComponent'
 import { getPullRequestFiles } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
@@ -18,7 +18,7 @@ type Props = {
   loggedUsername: string,
 }
 
-export const fetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_DIFF)
+export const fetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DIFF)
 export const getData = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequestFiles, fetchStatus, getLoggedUsername,

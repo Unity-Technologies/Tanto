@@ -11,7 +11,7 @@ import TestAvatar from 'components/TestAvatar/TestAvatar'
 import TextEditorBox from 'components/TextEditorBox/TextEditorBox'
 import type { GeneralCommentType, UserType } from 'universal/types'
 import type { StatusType } from 'ducks/fetch'
-import { statusFetchCreator } from 'ducks/fetch'
+import { statusFetchFactory } from 'ducks/fetch/selectors'
 import LoadingComponent from 'components/LoadingComponent'
 import { getPullRequestGeneralComments, getPullRequest } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
@@ -29,7 +29,7 @@ export type Props = {
   status: StatusType
 }
 
-export const getFetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_DISCUSSION)
+export const getFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DISCUSSION)
 
 export const getLoggedUser = (state: Object) => state.session.profile.fullName
 export const getPullRequestDiscussion = (state: Object, props: Object): Object =>

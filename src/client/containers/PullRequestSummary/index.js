@@ -14,10 +14,10 @@ import { createStructuredSelector } from 'reselect'
 import IssuesSection from './IssuesSection'
 import RepositoriesSection from './RepositoriesSection'
 import ReviewSection from './ReviewSection'
-import { statusFetchCreator } from 'ducks/fetch'
+import { statusFetchFactory } from 'ducks/fetch/selectors'
 import LoadingComponent from 'components/LoadingComponent'
 
-export const fetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_METADATA)
+export const fetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_METADATA)
 
 export type PullRequestSummaryPropsType = {
   status: StatusType,

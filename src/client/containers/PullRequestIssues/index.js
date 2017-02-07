@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import IssuesList from 'components/IssuesList'
 import { types } from 'ducks/pullrequests/actions'
 import type { StatusType } from 'ducks/fetch'
-import { statusFetchCreator } from 'ducks/fetch'
+import { statusFetchFactory } from 'ducks/fetch/selectors'
 import LoadingComponent from 'components/LoadingComponent'
 import { getPullRequestIssues } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
@@ -17,7 +17,7 @@ type Props = {
   status: StatusType,
 }
 
-export const fetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_ISSUES)
+export const fetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_ISSUES)
 
 export const getData = (state: Object, props: Object): Object =>
   createSelector(

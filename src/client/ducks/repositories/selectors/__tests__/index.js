@@ -5,8 +5,7 @@ import {
   groupsEntitiesSelector,
   getGroups,
   getRepositoryId,
-  getRepoFetchingStatus,
-  getRepoFetchError,
+  getRepositoriesFetchStatus,
   pathnameSelector,
   getRepositoriesFetchState,
   repoBranchesSelector,
@@ -381,33 +380,22 @@ describe('repositories selectors', () => {
     expect(getRepositoryId(state, props2)).to.equal(undefined)
   })
 
-  it('getRepoFetchingStatus', () => {
+  it('getRepositoriesFetchStatus', () => {
+    const error = {
+      message: 'test message error',
+    }
     const state = {
       fetch: {
         [types.FETCH_REPOSITORIES]: {
           isFetching: false,
+          error,
         },
       },
     }
-    expect(getRepoFetchingStatus(state)).to.equal(false)
-
-    state.fetch[types.FETCH_REPOSITORIES].isFetching = true
-    expect(getRepoFetchingStatus(state)).to.equal(true)
-  })
-
-  it('getRepoFetchError', () => {
-    const state = {
-      fetch: {
-        [types.FETCH_REPOSITORIES]: {
-          error: null,
-        },
-      },
-    }
-    expect(getRepoFetchError(state)).to.equal(null)
-
-    const error = { text: 'some test error' }
-    state.fetch[types.FETCH_REPOSITORIES].error = error
-    expect(getRepoFetchError(state)).to.equal(error)
+    expect(getRepositoriesFetchStatus(state)).to.eql({
+      isFetching: false,
+      error,
+    })
   })
 
 
@@ -490,8 +478,11 @@ describe('repositories selectors', () => {
       },
     }
     expect(getRepositoriesFetchState(state, { params: { splat: '/projects/testgroup' } })).to.eql({
-      isFetching: false,
-      error: null,
+      status:
+      {
+        isFetching: false,
+        error: null,
+      },
       groups: [node2],
       repositories: [rnode2, rnode3],
       pathname: '/test/path',

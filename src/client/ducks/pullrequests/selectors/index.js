@@ -1,7 +1,7 @@
 /* @flow */
 
 import { types } from '../actions'
-import { isFetchingSelector, errorSelector } from 'ducks/fetch'
+import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { createSelector } from 'reselect'
 export type { StatusType } from 'ducks/fetch'
 import { userEntitiesSelector } from 'ducks/users/selectors'
@@ -41,14 +41,7 @@ export const getPullRequestsEntities = (state: Object): Object =>
 export const getPullRequestId = (state: Object, props: Object): string =>
   (props.params ? props.params.prid : props.pullRequestId || props.id)
 
-const isFetchingPullRequests = (state) => isFetchingSelector(types.FETCH_PULL_REQUESTS)(state)
-const errorPullRequests = (state) => errorSelector(types.FETCH_PULL_REQUESTS)(state)
-export const getPageFetchStatus = createSelector(
-  isFetchingPullRequests, errorPullRequests,
-  (isFetching, error) => ({
-    isFetching, error,
-  })
-)
+export const getPageFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUESTS)
 
 export const getPullRequest = createSelector(
   getPullRequestsEntities, userEntitiesSelector, getPullRequestId,

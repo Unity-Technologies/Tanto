@@ -6,6 +6,7 @@ import Select from 'react-select'
 import { connect } from 'react-redux'
 import { searchRepository } from 'ducks/repositories/actions'
 import { getSearchRepoResultState } from 'ducks/repositories/selectors'
+import type { StatusType } from 'ducks/fetch/selectors'
 
 type SelectItemType = {
   label: string,
@@ -16,7 +17,7 @@ type RepoProps = {
   options: Array<SelectItemType>,
   onSelect: Function,
   dispatch: Function,
-  isFetching: boolean,
+  status: StatusType,
   style: ?Object,
 }
 
@@ -56,7 +57,7 @@ class RepoSelect extends Component {
         onChange={this.handleRepoChange}
         onInputChange={this.handleRepoInputChange}
         placeholder="repository ..."
-        isLoading={this.props.isFetching}
+        isLoading={this.props.status.isFetching}
       />
     )
   }

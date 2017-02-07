@@ -40,36 +40,43 @@ export const getIssues = (state: Object, props: Object): Object =>
   )
 
 //  TODO: complete this component, now it's mockeed since no ono API available for it
-export const IssuesSection = (props: IssuesSectionProps) => (<div>
-  {props.issues &&
-    <ListGroupItem style={danger}>
-      <Row>
-        <Col md={2}>
-          <div style={headerColumnStyle}>
-            PR Issues
-          </div>
-        </Col>
-        <Col md={3}>
-          {subHeader('Status:')}
-          <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
-            UNRESOLVED
-          </div>
-          <div style={{ fontSize: '12px' }}>({props.issues.length} issues)</div>
-        </Col>
-        <Col md={7}>
-          <div>
-            <div>
-              {subHeader('Unresolved:')}
-              {
-                props.issues.map(issue =>
-                  (<div><a href="#">{issue.title}</a></div>))
-              }
-            </div>
-          </div>
-        </Col>
-      </Row>
-    </ListGroupItem>
-  }</div>)
+export const IssuesSection = (props: IssuesSectionProps) => {
+  if (!props.issues || !props.issues.length) {
+    return null
+  }
+  return (
+    <div>
+      {props.issues &&
+        <ListGroupItem style={danger}>
+          <Row>
+            <Col md={2}>
+              <div style={headerColumnStyle}>
+                PR Issues
+              </div>
+            </Col>
+            <Col md={3}>
+              {subHeader('Status:')}
+              <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
+                UNRESOLVED
+              </div>
+              <div style={{ fontSize: '12px' }}>({props.issues.length} issues)</div>
+            </Col>
+            <Col md={7}>
+              <div>
+                <div>
+                  {subHeader('Unresolved:')}
+                  {
+                    props.issues.map(issue =>
+                      (<div><a href="#">{issue.title}</a></div>))
+                  }
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </ListGroupItem>
+      }
+    </div>)
+}
 
 
 export default connect(getIssues)(IssuesSection)

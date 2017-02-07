@@ -344,22 +344,5 @@ describe('session selectors', () => {
 
     expect(getAssignedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
   })
-
-
-  it('getOwnedFetchStatus error for owned pull requests', () => {
-    const testerror = { text: 'error message' }
-    const st = { fetch: { [types.FETCH_USER_PULL_REQUESTS]: { error: testerror } } }
-    expect(getOwnedFetchStatus(st)).to.eql({ error: testerror, isFetching: false })
-
-    expect(getOwnedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
-  })
-
-  it('getAssignedError for assigned pull requests', () => {
-    const testerror = { text: 'error message' }
-    const st = { fetch: { [types.FETCH_USER_ASSIGNED_PULL_REQUESTS]: { error: testerror } } }
-    expect(getAssignedFetchStatus(st)).to.eql({ error: testerror, isFetching: false })
-
-    expect(getAssignedFetchStatus({ fetch: {} })).to.eql({ error: null, isFetching: false })
-  })
 })
 

@@ -161,9 +161,9 @@ class ChangesetList extends Component {
                     <i style={{ fontSize: '14px', padding: '2px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }} className="fa fa-clipboard" aria-hidden="true" />
                     <Link
                       style={{ padding: '10px', textDecoration: 'none', color: '#5a6082', textTransform: 'uppercase', fontSize: '12px' }}
-                      to={buildChangesetLink(projectName, item.rawId)}
+                      to={buildChangesetLink(projectName, item.id)}
                       >
-                      {item.id}
+                      {item.id.substring(0, 9)}
                     </Link>
                   </div>
 
