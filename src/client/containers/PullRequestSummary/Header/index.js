@@ -1,7 +1,7 @@
 /* @flow */
 import moment from 'moment'
 import React from 'react'
-import UserAvatar from 'components/UserAvatar'
+import Avatar from 'components/Avatar'
 import { createSelector } from 'reselect'
 import _ from 'lodash'
 import { getPullRequest } from 'ducks/pullrequests/selectors'
@@ -13,7 +13,10 @@ export type HeaderPropsType = {
   created: string,
   owner: {
     fullName: string,
-    username: string
+    username: string,
+    slack: {
+      avatar: string
+    }
   }
 }
 
@@ -34,10 +37,7 @@ const renderTitle = ({ title, owner, created }) => {
 
   return (
     <div>
-      <UserAvatar
-        src={null}  // FIXME
-        style={{ float: 'left', display: 'table-column' }}
-      />
+      <Avatar {...owner.slack} />
       <div style={{ padding: '0 10px', display: 'table' }}>
         <div style={{ fontSize: '16px' }}>
           <strong>{title}</strong>

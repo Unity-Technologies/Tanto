@@ -69,6 +69,7 @@ const config = {
       utils: 'client/utils',
       routes: 'client/routes',
       tests: 'client/tests',
+      server: 'server',
     },
   },
 }

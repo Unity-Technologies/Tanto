@@ -1,17 +1,13 @@
 /* eslint-disable no-console */
-const redis = require('redis')
+import redis from '../redis'
 
-const client = redis.createClient()
+const client = redis.client()
 
-client.on('error', (err) => {
-  console.log(`Error ${err}`)
-})
-
-exports.findById = (id, done) => {
+export const findById = (id, done) => {
   client.hgetall(id, done)
 }
 
-exports.save = (user, done) => {
+export const save = (user, done) => {
   client.hmset(user.id, [
     'name', user.name,
     'token', user.token,

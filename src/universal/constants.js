@@ -6,6 +6,7 @@ export const routes = {
   ONO_AUTH_CALLBACK_ROUTE: '/auth/ono/callback',
   ONO_AUTH_LOGOUT_ROUTE: '/auth/logout',
   LOGIN_ROUTE: '/login',
+  SLACK_API_ROUTE: '/api/slack/users',
 }
 
 export const ChangesetStatus = {

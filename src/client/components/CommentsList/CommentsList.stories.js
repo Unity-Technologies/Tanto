@@ -10,7 +10,7 @@ storiesOf('CommentsList', module)
   .add('default', () => (
     <CommentsList
       comments={[
-        { date: '2016-08-15 20:31:23', message: 'lorem ipsum' },
+        { date: '2016-08-15 20:31:23', message: 'lorem ipsum', author: { slack: { avatar: '' } } },
         { date: '2016-08-10 20:31:23', message: 'lorem ipsum' },
       ]}
     />

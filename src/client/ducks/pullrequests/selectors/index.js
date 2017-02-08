@@ -8,18 +8,21 @@ import { userEntitiesSelector } from 'ducks/users/selectors'
 
 import _ from 'lodash'
 
-const denormalizePullRequestUsers = (pullRequest: Object, userEntities: Object): Object => {
-  if (!pullRequest || !pullRequest.owner || !pullRequest.reviews || !userEntities) {
+export const denormalizePullRequestUsers = (pullRequest: Object, userEntities: Object): Object => {
+  if (!pullRequest || !userEntities) {
     return pullRequest
   }
-  return {
-    ...pullRequest,
-    owner: userEntities[pullRequest.owner],
-    reviews: pullRequest.reviews.map(review => ({
+  const denormalizedPullRequest = Object.assign({}, pullRequest)
+  if (pullRequest.owner) {
+    denormalizedPullRequest.owner = userEntities[pullRequest.owner]
+  }
+  if (pullRequest.reviews) {
+    denormalizedPullRequest.reviews = pullRequest.reviews.map(review => ({
       ...review,
       user: userEntities[review.user],
-    })),
+    }))
   }
+  return denormalizedPullRequest
 }
 
 export const denormalizeCommentAuthor = (comment: Object, userEntities: Object): Object => {

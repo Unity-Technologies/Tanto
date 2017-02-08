@@ -7,15 +7,18 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
 
 
-import TestAvatar from '../TestAvatar'
+import Avatar from 'components/Avatar'
 import './CommentsList.css'
 
 export type Props = {
   comments: Array<{
     date: string,
     message: string,
+    author?: {
+      slack: Object
+    }
   }>
-};
+}
 
 class CommentsList extends Component {
   /* eslint-disable react/sort-comp */
@@ -69,7 +72,7 @@ class CommentsList extends Component {
               {this.props.comments.map(comment => (
                 <ListGroupItem style={{ padding: '10px 10px' }} >
                   <div style={{ display: 'inline-block' }}>
-                    <TestAvatar />
+                    {comment.author && comment.author.slack && <Avatar {...comment.author.slack} />}
                     <div style={{ padding: '0 10px', display: 'table' }}>
                       <div style={{ fontSize: '13px', color: '#aaa7a7' }}>
                         <strong>
