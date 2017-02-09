@@ -3,19 +3,18 @@
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
-import ErrorMessage from 'components/ErrorMessage'
-import LinearProgress from 'material-ui/LinearProgress'
 import { fetchRepositories } from 'ducks/repositories/actions'
 import type { StateType } from 'ducks/repositories'
 import { groupPathFromPath } from 'routes/helpers'
+import type { StatusType } from 'ducks/fetch/selectors'
 import { getRepositoriesFetchState } from 'ducks/repositories/selectors'
 import Breadcrumb from 'components/Breadcrumb'
 import RepositoryList from 'components/RepositoryList'
 import type { RepositoryType, GroupType } from 'components/RepositoryList'
+import LoadingComponent from 'components/LoadingComponent'
 
 export type Props = {
-  isFetching: boolean,
-  error: Object,
+  status: StatusType,
   repositories: Array<RepositoryType>,
   groups: Array<GroupType>,
   dispatch: Function,
@@ -40,20 +39,20 @@ export class Projects extends Component {
   props: Props
 
   render() {
-    const { isFetching, error, repositories, groups, pathname } = this.props
+    const { status, repositories, groups, pathname } = this.props
 
     return (
       <div>
         <Helmet title="Projects" />
         <Breadcrumb path={pathname} skip={0} />
-        {isFetching && <LinearProgress />}
-        {error && <ErrorMessage error={error} />}
-        <RepositoryList groups={groups} repositories={repositories} path={pathname} />
-        {!isFetching && !repositories.length && !groups.length && !error &&
-          <div style={{ textAlign: 'center', padding: '10%' }} >
-            <h4>NO PROJECTS</h4>
-          </div>
-        }
+        <LoadingComponent status={status}>
+          {!status.isFetching && !repositories.length && !groups.length && !status.error &&
+            <div style={{ textAlign: 'center', padding: '10%' }} >
+              <h4>NO PROJECTS</h4>
+            </div>
+          }
+          <RepositoryList groups={groups} repositories={repositories} path={pathname} />
+        </LoadingComponent>
       </div>
     )
   }

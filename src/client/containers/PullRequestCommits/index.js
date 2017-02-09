@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import ChangesetList from 'components/ChangesetList'
 import { types } from 'ducks/pullrequests/actions'
 import type { StatusType } from 'ducks/fetch'
-import { statusFetchCreator } from 'ducks/fetch'
+import { statusFetchFactory } from 'ducks/fetch/selectors'
 import LoadingComponent from 'components/LoadingComponent'
 import { getPullRequest } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
@@ -17,7 +17,7 @@ type Props = {
   projectName: string
 }
 
-export const fetchStatus = statusFetchCreator(types.FETCH_PULL_REQUEST_CHANGESET)
+export const fetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_CHANGESET)
 
 // TODO: if we get displaying groups of commits
 // export const reduceCommitsByRawId = (commits) =>

@@ -3,9 +3,7 @@ import {
   actions,
   types,
   fetchStatus,
-  fetchSelector,
-  isFetchingSelector,
-  errorSelector,
+  fetchAction,
   fetchActionCreator,
 } from '../index'
 
@@ -101,57 +99,6 @@ describe('fetch error reducer', () => {
   })
 })
 
-describe('fetch selectors', () => {
-  it('fetchSelector returns existing property', () => {
-    const key = 'testkey'
-    const prop = 'somevalue'
-    const value = 'somevalue'
-    const state = { fetch: { [key]: { [prop]: value } } }
-    expect(fetchSelector(key, prop)(state)).to.eql(value)
-  })
-
-  it('fetchSelector returns null if property absent', () => {
-    const key = 'testkey'
-    const prop = 'somevalue'
-
-    const state = { fetch: { } }
-    expect(fetchSelector(key, prop)(state)).to.eql(null)
-  })
-
-  it('fetchSelector returns default value if property absent', () => {
-    const key = 'testkey'
-    const prop = 'somevalue'
-    const defaultValue = 'defaultValue'
-    const state = { fetch: {} }
-    expect(fetchSelector(key, prop, defaultValue)(state)).to.eql(defaultValue)
-  })
-
-  it('isFetchingSelector returns existing property', () => {
-    const key = 'testkey'
-    const state = { fetch: { [key]: { isFetching: true } } }
-    expect(isFetchingSelector(key)(state)).to.eql(true)
-  })
-
-  it('isFetchingSelector returns false if no property', () => {
-    const key = 'testkey'
-    const state = { fetch: { } }
-    expect(isFetchingSelector(key)(state)).to.eql(false)
-  })
-
-  it('errorSelector returns null if no property', () => {
-    const key = 'testkey'
-    const state = { fetch: {} }
-    expect(errorSelector(key)(state)).to.eql(null)
-  })
-
-  it('errorSelector returns property', () => {
-    const key = 'testkey'
-    const error = { message: 'some error' }
-    const state = { fetch: { [key]: { error } } }
-    expect(errorSelector(key)(state)).to.eql(error)
-  })
-})
-
 describe('fetchActionCreator', () => {
   it('fetchActionCreator should convert any action to FETCH_DATA action', () => {
     const type = 'SOME_ACTOIN_TYPE'
@@ -167,6 +114,27 @@ describe('fetchActionCreator', () => {
         query,
         variables,
         callback,
+      })
+  })
+})
+
+describe('fetchAction', () => {
+  it('fetchAction should convert any action to FETCH_DATA action', () => {
+    const type = 'SOME_ACTOIN_TYPE'
+    const query = 'query {test query}'
+    const variables = { id: 'testid', limit: 123 }
+    const operationName = 'someOperationName'
+    const action = {
+      type,
+      query,
+      variables,
+      operationName,
+    }
+    expect(fetchAction(action))
+      .to.eql({
+        ...action,
+        name: type,
+        type: types.FETCH_DATA,
       })
   })
 })
