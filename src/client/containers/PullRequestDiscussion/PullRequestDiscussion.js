@@ -13,6 +13,7 @@ import type { GeneralCommentType, UserType } from 'universal/types'
 import type { StatusType } from 'ducks/fetch/selectors'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import LoadingComponent from 'components/LoadingComponent'
+import { getLoggedUser } from 'ducks/session/selectors'
 import { getPullRequestGeneralComments, getPullRequest } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 
@@ -25,17 +26,16 @@ export type Props = {
     created: string,
     comments: Array<GeneralCommentType>,
   },
-  user: string,
+  user: UserType,
   status: StatusType
 }
 
 export const getFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DISCUSSION)
 
-export const getLoggedUser = (state: Object) => state.session.profile.fullName
 export const getPullRequestDiscussion = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequest, getPullRequestGeneralComments, getFetchStatus, getLoggedUser,
-    (pr, comments, status, user) => ({
+    (pr, comments, status, user, loggedUsername) => ({
       pullRequest: {
         ..._.pick(pr, ['description', 'created', 'owner']),
         comments,
@@ -77,7 +77,7 @@ const renderHeadComment = ({ owner, description, created }) => {
   )
 }
 
-const renderComments = ({ comments }, user) => {
+const renderComments = ({ comments }, loggedUsername) => {
   if (!comments) {
     return null
   }
@@ -85,7 +85,7 @@ const renderComments = ({ comments }, user) => {
     <div>
       {comments.map(comment => (
         <Comment
-          loggedUsername={user}
+          loggedUsername={loggedUsername}
           simpleText
           comment={comment}
         />
@@ -109,17 +109,11 @@ const PullRequestDiscussion = (props: Props) => {
         <hr style={{ margin: '15px 0' }} />
         <Row>
           <Col md={12}>
-            {renderComments(props.pullRequest, props.user)}
+            {renderComments(props.pullRequest, props.user.username)}
             <div name="discussion-last" id="discussion-last" style={{ marginTop: '20px' }}>
               <Comment
                 comment={{
                   author: props.user,
-                }}
-                headerStyle={{ borderRadius: '0px' }}
-                style={{
-                  borderBottom: '1px solid lightgrey',
-                  borderRadius: '0px',
-                  marginBottom: '10px',
                 }}
                 newComment
                 onComment={props.onSaveComment}

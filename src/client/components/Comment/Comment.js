@@ -7,14 +7,26 @@ import Avatar from 'components/Avatar'
 import IconButton from 'material-ui/IconButton'
 import Edit from 'material-ui/svg-icons/editor/mode-edit'
 import Settings from 'material-ui/svg-icons/action/settings'
+import Grid from 'react-bootstrap/lib/Grid' 
+import Row from 'react-bootstrap/lib/Row'
+import Col from 'react-bootstrap/lib/Col'
+import Well from 'react-bootstrap/lib/Well'
+import Glyphicon from 'react-bootstrap/lib/Glyphicon'
+import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
 import Close from 'material-ui/svg-icons/navigation/close'
 import RaisedButton from 'material-ui/RaisedButton'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import Button from 'react-bootstrap/lib/Button'
+import Panel from 'react-bootstrap/lib/Panel'
+import Alert from 'react-bootstrap/lib/Alert'
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
+import marked from 'marked'
 import moment from 'moment'
+
 import type { InlineCommentType } from 'universal/comments' //eslint-disable-line
+
+import './styles.css'
 
 export type Props = {
   loggedUsername: string,
@@ -33,23 +45,34 @@ class Comment extends Component {
 
   constructor(props: Props) {
     super(props)
+    marked.setOptions({
+      gfm: true,
+      tables: true,
+      breaks: true,
+      pedantic: false,
+      sanitize: true,
+      smartLists: true,
+      smartypants: false,
+    })
     this.state = {
       editMode: props.newComment,
       newComment: props.newComment,
-      commentText: '',
+      commentText: props.comment.text,
+      renderedText: this.renderText(props.comment.text),
     }
   }
 
   props: Props
 
   onCommentEdit = () => {
-    this.setState({ editMode: true })
+    this.setState({ editMode: !this.state.editMode })
   }
 
   onCommentCancel = () => {
     this.setState({
       editMode: false,
       newComment: false,
+      commentText: this.props.comment.text,
     })
     // TODO: unmount component if this is a new comment.
   }
@@ -61,6 +84,7 @@ class Comment extends Component {
     this.setState({
       editMode: false,
       newComment: false,
+      renderedText: this.renderText(this.state.commentText),
     })
     // TODO: dispatch reducer action to save edited and new comments
   }
@@ -86,11 +110,74 @@ class Comment extends Component {
   //       return
   //   }
   // }
+  renderStatusPanelContent(comment, statusChangeString) {
+    return (
+      <span><strong>{comment.author.fullName}</strong> {statusChangeString} these changes {moment(comment.created).fromNow()}.</span>
+    )
+  }
 
-  render() {
-    if (!this.props.comment || !this.props.comment.author) {
-      return null
+  renderText(text) {
+    if (text) {
+      return { __html: marked(text) }
     }
+    return { __html: '' }
+  }
+  
+  renderStatusPanel(comment) {
+
+    let statusChangeString
+    let bsStyle
+
+    switch (comment.status) {
+      case 'approved':
+        bsStyle = 'success'
+        statusChangeString = comment.status
+        break
+      case 'rejected':
+        bsStyle = 'danger'
+        statusChangeString = comment.status
+        break
+      case 'under_review':
+        bsStyle = 'warning'
+        statusChangeString = 'started reviewing'
+        break
+      default:
+        bsStyle = 'default'
+        statusChangeString = 'stopped reviewing'
+    }
+
+    return (
+        <Alert bsStyle={bsStyle}>
+          {this.renderStatusPanelContent(comment, statusChangeString)}
+        </Alert>
+    )
+  }
+
+  renderCommentHeader(fullName, created, isAuthor) {
+    return (
+      <Row>
+        <Col md={4}>
+          <span className="header-text">
+            <strong>{fullName}</strong> commented {moment(created).fromNow()}
+          </span>
+        </Col>
+        <Col md={4} mdOffset={4}>
+           {isAuthor &&
+             <ButtonToolbar className="pull-right">
+               <Button onClick={this.onCommentEdit}>
+                 <Glyphicon glyph="edit" />
+               </Button>
+               <Button>
+                 <Glyphicon glyph="remove" />
+               </Button>
+             </ButtonToolbar>
+           }
+        </Col>
+      </Row>
+    )
+  }
+  renderComment() {
+
     const {
       loggedUsername,
       comment,
@@ -99,164 +186,66 @@ class Comment extends Component {
       headerStyle,
       buttonGroupStyle,
     } = this.props
-
+    
     const { editMode, newComment } = this.state
     const isAuthor = loggedUsername === comment.author.username
     const placeholder = newComment ? 'Write comment text here.' : null
-    const iconButtonStyle = {
-      padding: 0,
-      width: '30px',
-      height: '30px',
-    }
-
-    const votesCountStyle = {
-      padding: '0px 0px 0px 10px',
-      fontSize: '14px',
-      color: 'grey',
-    }
-
-    const defaultCommentStyle = {
-      border: newComment ? '2px solid #d9edf7' : '2px solid rgb(224, 224, 227)',
-      borderRadius: '10px 10px 10px 10px',
-      marginBottom: '10px',
-      padding: '10px',
-      boxShadow: newComment ? '3px 2px 11px 1px #cac9c9' : null,
-      ...style,
-    }
-
-    const commentHeaderStyle = {
-      float: 'right',
-      padding: '8px 15px',
-      fontSize: '14px',
-      color: 'grey',
-    }
-
-    const iconStyle = {
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
-      color: 'lightgrey',
-      fontSize: '17px',
-    }
-
 
     return (
-      <div>
-        <div style={style || defaultCommentStyle}>
-          {!editMode &&
-            <div style={{ overflow: 'auto', padding: '3px' }}>
-              <div style={{ float: 'left', padding: '6px 6px', fontFamily: 'sans-serif' }}>
+      <Col>
+        <Row>
+          <Col md={1}>
                 <Avatar {...comment.author.slack} />
-                <div style={headerStyle || commentHeaderStyle}>
-                  <strong style={{ color: '#31708f' }}>{comment.author.fullName}</strong>
-                  <span> commented {moment(comment.created).fromNow()}</span>
-                </div>
-              </div>
-            {!newComment && isAuthor &&
-              <div style={{ float: 'right', padding: '10px' }}>
-                {!this.props.hideSettings &&
-                  <IconMenu
-                    selectedMenuItemStyle={{ color: 'green' }}
-                    menuStyle={{ border: '1px solid lightgrey' }}
-                    iconButtonElement={
-                      <IconButton style={iconButtonStyle}>
-                        <Icon icon={<Settings />} size={30} color="rgb(181, 180, 180)" />
-                      </IconButton>}
-                    anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    onChange={this.handleChange}
-                    insetChildren
-                  >
-                    <MenuItem
-                      value="1"
-                      primaryText="Mark as issue"
-                      checked={!!comment.issue}
+          </Col>
+          <Col md={11}>
+            <Panel header={this.renderCommentHeader(comment.author.fullName, comment.created, isAuthor)}>
+              {!editMode && <span className="comment-text" dangerouslySetInnerHTML={this.state.renderedText}></span>}
+              {editMode &&
+                <Col md={12}>
+                  <Well>
+                    <TextEditorBox
+                      onTextChanged={(value) => { this.setState({ commentText: value }) }}
+                      text={this.state.commentText}
+                      placeholder={placeholder}
+                      readOnly={!editMode}
+                      simpleText={simpleText}
+                      hideStyleControls
                     />
-                    {/* <MenuItem
-                      value="2"
-                      primaryText="Mark as nice to have"
-                      checked={this.state.niceToHave}
-                    />
-                    <MenuItem
-                      value="3"
-                      primaryText="Mark as code style"
-                      checked={this.state.codeStyle}
-                    /> */}
-                  </IconMenu>
-                }
-                <IconButton
-                  style={iconButtonStyle}
-                  key="edit"
-                  disableTouchRipple
-                  title="Edit"
-                  onClick={this.onCommentEdit}
-                >
-                  <Icon icon={<Edit />} size={30} color="rgb(181, 180, 180)" />
-                </IconButton>
-                <IconButton
-                  style={iconButtonStyle}
-                  key="delete"
-                  disableTouchRipple
-                  title="Delete comment"
-                  onClick={this.onCommentDelete}
-                >
-                  <Icon icon={<Close />} size={30} color="rgb(181, 180, 180)" />
-                </IconButton>
+                  </Well>
+                  <Row>
+                    <Col>
+                      <ButtonToolbar>
+                        <Button onClick={this.onCommentSave}>
+                          Save
+                        </Button>
+                        <Button onClick={this.onCommentCancel}>
+                          Cancel
+                        </Button>
+                      </ButtonToolbar>
+                    </Col>
+                  </Row>
+                </Col>
+              }
+            </Panel>
+          </Col>
+        </Row>
+      </Col>
+    )
+  }
+  render() {
+    if (!this.props.comment || !this.props.comment.author) {
+      return null
+    }
 
-              </div>
-            }
-            </div>
-          }
-          <div style={{ margin: '0px 10px 10px' }}>
-            <TextEditorBox
-              onTextChanged={(value) => { this.state.commentText = value }}
-              text={comment.text}
-              placeholder={placeholder}
-              readOnly={!editMode}
-              simpleText={simpleText}
-              styleControlsStyle={{ borderRadius: '10px 10px 0 0' }}
-            />
-          </div>
-        {!this.props.hideSettings &&
-         (this.props.issue || this.props.niceToHave || this.props.codeStyle) &&
-          <div style={buttonGroupStyle || { overflow: 'auto' }}>
-            <ButtonGroup style={{ float: 'right', padding: '5px' }}>
-              {this.props.issue &&
-                <Button style={{ ...iconStyle, color: '#ca6b4a' }} >
-                  <i className="fa fa-bug" title="Issue" />
-                  <span style={votesCountStyle}>1</span>
-                </Button>
-              }
-              {this.props.niceToHave &&
-                <Button style={{ ...iconStyle, color: 'rgba(84, 105, 75, 0.68)' }} >
-                  <i className="fa fa-thumbs-up" title="Nice to have" />
-                  <span style={votesCountStyle}>3</span>
-                </Button>
-              }
-              {this.props.codeStyle &&
-                <Button style={{ ...iconStyle, color: '#d43a5a' }} >
-                  <i className="fa fa-thumbs-down" title="Bad code" />
-                </Button>
-              }
-            </ButtonGroup>
-          </div>
-        }
-        </div>
-       {editMode &&
-         <div>
-           <RaisedButton
-             label="Save Comment"
-             backgroundColor="#d9edf7"
-             style={{ marginBottom: '10px', marginRight: '10px' }}
-             onClick={this.onCommentSave}
-           />
-           <RaisedButton
-             label="Cancel"
-             backgroundColor="#efefef"
-             onClick={() => this.onCommentCancel()}
-           />
-         </div>
-        }
-      </div>
+    return (
+      <Col md={12} className="comment-frame">
+        <Row>
+          {this.props.comment.status && this.renderStatusPanel(this.props.comment)}
+        </Row>
+        <Row>
+          {this.props.comment.text && this.renderComment()}
+        </Row>
+      </Col>
     )
   }
 }
