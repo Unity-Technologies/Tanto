@@ -23,4 +23,3 @@ module.exports.Link = class Link extends React.Component {
     )
   }
 }
-
