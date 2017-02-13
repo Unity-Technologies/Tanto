@@ -40,11 +40,6 @@ But if node process is not running, do the following(or run npm command shortcut
 `git checkout -f master`
 `git pull`
 `yarn`
-`forever list`
-
-There should be only one node process run with forever, stop it
-
-`forever stop *process PID*`
 `yarn run build`
 `yarn start`
 
