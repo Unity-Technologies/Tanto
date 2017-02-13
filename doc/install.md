@@ -9,16 +9,16 @@
 - nginx
 - redis (local or remote)
 
-Application uses Redis db to store session, if you can't connect to any Redis instance, please setup local one. Familiarize yourself with the installation guide http://redis.io/topics/quickstart.
+The application uses Redis db to store session, if you can't connect to any Redis instance, please setup local one. Familiarize yourself with the installation guide http://redis.io/topics/quickstart.
 
 You might run it with `docker run -d -p 6379:6379 redis `
 
 ##### 2. Enable environment variables file:
 Rename/copy file  `.env.example` to `.env` and provide variables if needed.
 
-- provide ***REDIS_HOST, REDIS_PORT*** if they differs from default ones
+- provide ***REDIS_HOST, REDIS_PORT*** if they differ from default ones
 
-- application uses SLACK Web API to fetch user's avatars. Make sure you provide ***SLACK_TOKEN*** in `.env` file
+- the application uses SLACK Web API to fetch user's avatars. Make sure you provide ***SLACK_TOKEN*** in `.env` file
 
 To obtain slack token for development and testing visit page https://api.slack.com/docs/oauth-test-tokens, login with your slack account and issue your personal token following the instructions.
 
@@ -33,7 +33,7 @@ If node process is already run you can simply run
 
 `yarn restart`
 
-Check if process restarted correctly and there is no errors. Done.
+Check if process restarted correctly and there are no errors. Done.
 
 But if node process is not running, do the following(or run npm command shortcuts from package.json):
 
