@@ -23,6 +23,11 @@ const environment = envalid.cleanEnv(process.env, {
 
   APP_NAME: str({ default: 'Tanto' }),
   APP_THEME: str({ default: 'cyan' }),
+
+  SLACK_TOKEN: str({ default: '' }),
+  SLACK_CLIENT_ID: str({ default: '' }),
+  SLACK_CLIENT_SECRET: str({ default: '' }),
+  SLACK_AVATARS_PREFETCH_SCHEDULE: str({ default: '0 0 1 * *' }),
 })
 
 module.exports = environment

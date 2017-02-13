@@ -9,7 +9,7 @@ import ListGroup from 'react-bootstrap/lib/ListGroup'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import type { ChangesetType } from 'universal/types'
 import ChangesetDelta from 'components/ChangesetDelta'
-import TestAvatar from 'components/TestAvatar'
+import Avatar from 'components/Avatar'
 import { Link } from 'react-router'
 import { buildChangesetLink } from 'routes/helpers'
 import Checkbox from 'material-ui/Checkbox'
@@ -132,7 +132,7 @@ class ChangesetList extends Component {
                         disableTouchRipple
                         style={{ float: 'left', padding: '10px', width: 'auto' }}
                         /> : ''}
-                    <TestAvatar />
+                    <Avatar />
                     <div style={{ paddingLeft: '10px', display: 'table' }}>
                       <Link
                         style={{

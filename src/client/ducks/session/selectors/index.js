@@ -2,6 +2,8 @@ import { createSelector } from 'reselect'
 import _ from 'lodash'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { types } from '../actions'
+import { userEntitiesSelector } from 'ducks/users/selectors'
+import { denormalizePullRequestUsers } from 'ducks/pullrequests/selectors'
 
 export const getIds = (state) => {
   const { pagination: { pages, currentPage } } = state
@@ -15,25 +17,36 @@ export const pullRequestsAssignedIdsSelector = state => getIds(state.session.pul
 export const pullRequestsWatchingIdsSelector = state => getIds(state.session.pullRequestsWatching)
 export const pullRequestsSelector = state => state.entities.pullRequests
 
-export const pullRequestsComputation = (pullRequests, ids) => (
-  _.isEmpty(pullRequests) || !ids ? [] :
-    _.values(_.pick(pullRequests, ids))
-)
+export const pullRequestsComputation = (pullRequests, ids, userEntities) => {
+  const res = _.isEmpty(pullRequests) || !ids ? [] : _.values(_.pick(pullRequests, ids))
+  return res.map(pr => denormalizePullRequestUsers(pr, userEntities))
+}
 
 export const getPullRequestsOwned = createSelector(
-  pullRequestsSelector, pullRequestsOwnedIdsSelector, pullRequestsComputation
+  pullRequestsSelector, pullRequestsOwnedIdsSelector, userEntitiesSelector,
+  pullRequestsComputation
 )
 
 export const getPullRequestsAssigned = createSelector(
-  pullRequestsSelector, pullRequestsAssignedIdsSelector, pullRequestsComputation
+  pullRequestsSelector, pullRequestsAssignedIdsSelector, userEntitiesSelector,
+  pullRequestsComputation
 )
 
 export const getPullRequestsWatching = createSelector(
-  pullRequestsSelector, pullRequestsWatchingIdsSelector, pullRequestsComputation
+  pullRequestsSelector, pullRequestsWatchingIdsSelector, userEntitiesSelector,
+  pullRequestsComputation
 )
 
 export const getPersona = state => _.get(state, ['session', 'profile', 'persona'], null)
 export const getLoggedUsername = state => _.get(state, ['entities', 'me', 'username'], null)
+export const getLoggedUserId = state => _.get(state, ['entities', 'me', 'id'], null)
+
+export const getLoggedUserAvatar = createSelector(
+  userEntitiesSelector, getLoggedUserId,
+  (entities: Object, id: string) => {
+    const user = entities[id]
+    return user ? user.slack.avatar : null
+  })
 
 export const getPullRequestsOwnedTotal = state =>
   _.get(state, ['entities', 'me', 'pullRequestsOwned', 'total'], 0)

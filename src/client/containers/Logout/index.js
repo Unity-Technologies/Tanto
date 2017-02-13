@@ -7,8 +7,8 @@ import IconMenu from 'material-ui/IconMenu'
 import Divider from 'material-ui/Divider'
 import IconButton from 'material-ui/IconButton'
 import { setPersona } from 'ducks/session/actions'
-import { getLoggedUsername, getPersona } from 'ducks/session/selectors'
-import TestAvatar from 'components/TestAvatar'
+import { getLoggedUserAvatar, getLoggedUsername, getPersona } from 'ducks/session/selectors'
+import Avatar from 'components/Avatar'
 
 import {
   GUARDIAN_PERSONA,
@@ -18,6 +18,7 @@ import More from 'material-ui/svg-icons/navigation/more-vert'
 
 export type Props = {
   persona: string,
+  avatar: string,
   username: string,
   logoutRoute: string,
   dispatch: Function
@@ -30,12 +31,10 @@ class Logout extends Component {
   }
   props: Props
   render() {
-    const { username, persona, logoutRoute } = this.props
+    const { avatar, username, persona, logoutRoute } = this.props
     return (
       <div>
-        <TestAvatar
-          style={{ margin: '8px' }}
-        />
+        <Avatar avatar={avatar} style={{ margin: '8px' }} />
         <div
           style={{
             float: 'left',
@@ -88,5 +87,6 @@ export default connect(
   state => ({
     persona: getPersona(state),
     username: getLoggedUsername(state),
+    avatar: getLoggedUserAvatar(state),
   })
 )(Logout)

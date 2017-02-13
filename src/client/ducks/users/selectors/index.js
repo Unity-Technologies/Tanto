@@ -10,3 +10,4 @@ export const getUsers = createSelector(
   userEntitiesSelector,
   users => _.values(users) || []
 )
+

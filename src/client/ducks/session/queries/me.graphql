@@ -1,5 +1,6 @@
 query {
   me {
+    id,
     username,
     fullName,
     email
