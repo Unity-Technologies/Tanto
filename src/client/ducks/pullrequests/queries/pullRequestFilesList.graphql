@@ -1,4 +1,4 @@
-query pullRequestFiles($id: Int!) {
+query pullRequestFilesList($id: Int!) {
   pullRequest(id: $id) {
     id
     files {

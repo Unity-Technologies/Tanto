@@ -7,7 +7,8 @@ import type { FetchAction } from 'ducks/fetch'
 import { RECEIVE_PAGE } from 'ducks/pagination'
 import _ from 'lodash'
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
-import pullRequestFiles from 'ducks/pullrequests/queries/pullRequestFiles.graphql'
+import pullRequestFilesList from 'ducks/pullrequests/queries/pullRequestFilesList.graphql'
+import pullRequestFile from 'ducks/pullrequests/queries/pullRequestFile.graphql'
 import pullRequestMetadataQuery from 'ducks/pullrequests/queries/pullRequestMetadata.graphql'
 import pullRequestDiscussion from 'ducks/pullrequests/queries/pullRequestDiscussion.graphql'
 import pullRequestIssues from 'ducks/pullrequests/queries/pullRequestIssues.graphql'
@@ -16,7 +17,7 @@ import pullRequestChangeset from 'ducks/pullrequests/queries/pullRequestChangese
  * Action types
  */
 export const types = {
-  FETCH_PULL_REQUEST_DIFF: 'PULLREQUESTS/FETCH_PULL_REQUEST_DIFF',
+  FETCH_PULL_REQUEST_FILES_LIST: 'PULLREQUESTS/FETCH_PULL_REQUEST_FILES_LIST',
   FETCH_PULL_REQUESTS: 'PULLREQUESTS/FETCH_PULL_REQUESTS',
   FETCH_PULL_REQUEST_ISSUES: 'PULLREQUESTS/FETCH_PULL_REQUESTS_ISSUES',
   FETCH_PULL_REQUEST_CHANGESET: 'PULLREQUESTS/FETCH_PULL_REQUESTS_CHANGESET',
@@ -49,8 +50,11 @@ export const fetchPullRequestData =
   (actionType: string, query: string, variables: Object = {}): FetchAction =>
     fetchAction({ type: actionType, query, variables })
 
-export const fetchPullRequestDiff = (id: string): FetchAction =>
-  fetchPullRequestData(types.FETCH_PULL_REQUEST_DIFF, pullRequestFiles, { id })
+export const fetchPullRequestFilesList = (id: string): FetchAction =>
+  fetchPullRequestData(types.FETCH_PULL_REQUEST_FILES_LIST, pullRequestFilesList, { id })
+
+export const fetchPullRequestFile = (id: string, name: string): FetchAction =>
+  fetchPullRequestData(types.FETCH_PULL_REQUEST_FILE, pullRequestFile, { id })
 
 export const fetchPullRequestMetadata = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_METADATA, pullRequestMetadataQuery, { id })

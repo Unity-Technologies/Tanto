@@ -1,0 +1,9 @@
+query pullRequestFile($id: Int!, $name: string) {
+  pullRequest(id: $id) {
+    id
+    files (name: $name) {
+      id
+      diff
+    }
+  }
+}
