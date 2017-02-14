@@ -4,11 +4,13 @@
 import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
+import { Button } from 'react-bootstrap'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import type {
   UserType,
   PullRequestReviewerStatusType,
   PullRequestReviewerType,
+  PullRequestMissingReviewerType,
 } from 'universal/types'
 import { connect } from 'react-redux'
 import ReviewerSelection from './ReviewerSelection'
@@ -17,20 +19,44 @@ import { getPullRequest } from 'ducks/pullrequests/selectors'
 import { getUsers } from 'ducks/users/selectors'
 import { createSelector } from 'reselect'
 import ReviewerList from './ReviewerList'
+import MissingReviewerList from './MissingReviewerList'
 import { ChangesetStatus } from 'universal/constants'
+import { fetchPullRequestAddReviewers, fetchPullRequestRemoveReviewers } from 'ducks/pullrequests/actions'
 
 export const getReviews = createSelector(
   getPullRequest,
     (pr) => (pr && pr.reviews ? pr.reviews : [])
 )
 
+const createReviewSelector = (filter) => createSelector(
+  getPullRequest,
+  pr => {
+    let reviews = pr && pr.reviews ? pr.reviews : []
+    return reviews.filter(filter) || []
+  }
+)
+
+export const getNotReviewed = createReviewSelector(r => !r.status || r.status === ChangesetStatus.NOT_REVIEWED)
+export const getApproved = createReviewSelector(r => r.status === ChangesetStatus.APPROVED)
+export const getRejected = createReviewSelector(r => r.status === ChangesetStatus.REJECTED)
+export const getUnderReview = createReviewSelector(r => r.status === ChangesetStatus.UNDER_REVIEW)
+
+export const getMissingReviewers = createSelector(
+  getPullRequest,
+    (pr) => (pr && pr.missingReviewers ? pr.missingReviewers : [])
+)
+
 type ReviewersSectionProps = {
   reviews: Array<PullRequestReviewerType>,
-  onToggleReviewer: Function,
-  onToggleReviewers: Function,
-  toggleReviewers: boolean,
+  not_reviewed: Array<PullRequestReviewerType>,
+  approved: Array<PullRequestReviewerType>,
+  rejected: Array<PullRequestReviewerType>,
+  under_review: Array<PullRequestReviewerType>,
   users: Array<UserType>,
-  id: string
+  id: string,
+  missingReviewers: PullRequestMissingReviewerType,
+  addReviewers: Function,
+  removeReviewers: Function,
 }
 
 const headerColumnStyle = {
@@ -51,59 +77,102 @@ const subHeader = text => (
 
 const inProgressColor = 'rgb(198, 149, 10)'
 
+const getStatus = (state, props) => {
+  const { reviews } = props
+  let status
+  let statusColor
+  let statusExtraText
+  if (reviews && reviews.length === 0) {
+    status = ChangesetStatus.NOT_REVIEWED
+    statusColor = inProgressColor
+  } else if (props.approved.length === reviews.length) {
+    status = ChangesetStatus.APPROVED
+    statusColor = approvedColor
+  } else if (props.rejected.length === reviews.length) {
+    status = ChangesetStatus.REJECTED
+    statusColor = rejectedColor
+  } else {
+    status = ChangesetStatus.UNDER_REVIEW
+    statusColor = inProgressColor
+    const pendingReviewCount =
+      props.under_review.length + state.not_reviewed.length
+    statusExtraText = `(${pendingReviewCount} pending responses)`
+  }
+
+  return { status, statusColor, statusExtraText }
+}
+
 class ReviewSection extends Component {
   constructor(props) {
     super(props)
-    this.state = { toggleReviewers: false }
+
+    this.state = {
+      added: [],
+      removed: [],
+      not_reviewed: getNotReviewed({}, props),
+    }
   }
 
   state: {
-    toggleReviewers: boolean
+    added: Array<UserType>,
+    removed: Array<UserType>,
+    not_reviewed: Array<PullRequestReviewerType>
+  }
+
+  igetNotReviewed = props => props.reviews ? props.reviews.filter(r => !r.status || r.status === ChangesetStatus.NOT_REVIEWED) : []
+
+  componentWillMount()
+  {
+    this.setState(
+      {
+        not_reviewed: this.igetNotReviewed(this.props)
+      }
+    )
+  }
+
+  componentWillReceiveProps(nextProps)
+  {
+    if (this.props === nextProps)
+      return
+
+    this.setState(
+      {
+        added: [],
+        removed: [],
+        not_reviewed: this.igetNotReviewed(nextProps)
+      }
+    )
   }
 
   // TODO: aiting for API to add/remove reviewers
-  onToggleReviewer = () => { }
+  props: ReviewersSectionProps
 
-  onToggleReviewers = () => {
-    const newState = !this.state.toggleReviewers
-    this.setState({ toggleReviewers: newState })
+  addReviewer(reviewer: UserType)
+  {
+    let removed = this.state.removed.findIndex(r => r.id === reviewer.id) != -1
+
+    this.setState({
+      added: removed ? this.state.added : this.state.added.concat(reviewer),
+      removed: this.state.removed.filter(r => r.id !== reviewer.id),
+    })
   }
 
-  props: ReviewersSectionProps
+  removeReviewer(reviewer: UserType)
+  {
+    let added = this.state.added.findIndex(r => r.id === reviewer.id) != -1
+
+    this.setState(
+      {
+        added: this.state.added.filter(a => a.id !== reviewer.id),
+        removed: added ? this.state.removed : this.state.removed.concat(reviewer),
+        not_reviewed: this.state.not_reviewed.filter(nr => nr.id !== reviewer.id)
+      }
+    )
+  }
 
   render() {
     const { reviews, users } = this.props
-
-    // Lodash gr oupBy is not really what we want here, all groups should be represented.
-    type GroupsType = { [key: PullRequestReviewerStatusType]: Array<PullRequestReviewerType> }
-    const reviewerGroups: GroupsType = {
-      not_reviewed: reviews ?
-        reviews.filter(r => !r.status || r.status === ChangesetStatus.NOT_REVIEWED) : [],
-      approved: reviews ? reviews.filter(r => r.status === ChangesetStatus.APPROVED) : [],
-      rejected: reviews ? reviews.filter(r => r.status === ChangesetStatus.REJECTED) : [],
-      under_review: reviews ? reviews.filter(r => r.status === ChangesetStatus.UNDER_REVIEW) : [],
-    }
-
-    let status
-    let statusColor
-    let statusExtraText
-    if (reviews && reviews.length === 0) {
-      status = ChangesetStatus.NOT_REVIEWED
-      statusColor = inProgressColor
-    } else if (reviewerGroups.approved.length === reviews.length) {
-      status = ChangesetStatus.APPROVED
-      statusColor = approvedColor
-    } else if (reviewerGroups.rejected.length === reviews.length) {
-      status = ChangesetStatus.REJECTED
-      statusColor = rejectedColor
-    } else {
-      status = ChangesetStatus.UNDER_REVIEW
-      statusColor = inProgressColor
-      const pendingReviewCount =
-        reviewerGroups.under_review.length + reviewerGroups.not_reviewed.length
-      statusExtraText = `(${pendingReviewCount} pending responses)`
-    }
-
+    const { status, statusColor, statusExtraText } = getStatus(this.state, this.props)
     const reviewers = new Set(reviews.map(x => x.user.username))
 
     return (
@@ -127,52 +196,55 @@ class ReviewSection extends Component {
                 {subHeader('Reviewers:')}
                 <ul style={{ listStyleType: 'none', padding: 0, margin: 0, fontSize: '13px' }}>
                   <ReviewerList
-                    reviewers={reviewerGroups.not_reviewed}
+                    reviewers={this.state.not_reviewed}
                     icon={'fa-circle'}
                     tooltip={'Not reviewed yet'}
                     approval={ChangesetStatus.NOT_REVIEWED}
+                    removeReviewer={this.removeReviewer.bind(this)}
+                    id={this.props.id}
                   />
                   <ReviewerList
-                    reviewers={reviewerGroups.under_review}
+                    reviewers={this.props.under_review}
                     icon={'fa-circle'}
                     tooltip={'Under review'}
                     approval={ChangesetStatus.UNDER_REVIEW}
+                    removeReviewer={this.props.removeReviewers}
+                    id={this.props.id}
                   />
                   <ReviewerList
-                    reviewers={reviewerGroups.approved}
+                    reviewers={this.props.approved}
                     icon={'fa-circle'}
                     tooltip={'Approved'}
                     approval={ChangesetStatus.APPROVED}
+                    removeReviewer={this.props.removeReviewers}
+                    id={this.props.id}
                   />
                   <ReviewerList
-                    reviewers={reviewerGroups.rejected}
+                    reviewers={this.props.rejected}
                     icon={'fa-circle'}
                     tooltip={'Rejected'}
                     approval={ChangesetStatus.REJECTED}
+                    removeReviewer={this.props.removeReviewers}
+                    id={this.props.id}
                   />
+                  <MissingReviewerList
+                    id={this.props.id}
+                    missingReviewers={this.props.missingReviewers}
+                    addReviewer={this.props.addReviewers} />
                 </ul>
-                {this.state.toggleReviewers &&
-                  <Row style={{ paddingTop: '20px', paddingLeft: '15px' }}>
-                    <ReviewerSelection
-                      onToggleReviewer={this.onToggleReviewer}
-                      reviewers={reviewers}
-                      users={users}
-                    />
+                <Row style={{ paddingTop: '20px', paddingLeft: '15px' }}>
+                  <ReviewerSelection
+                    reviewers={reviewers}
+                    users={users}
+                    id={this.props.id}
+                    addReviewers={this.props.addReviewers}
+                  />
+                </Row>
+                <Row style={{ paddingTop: '20px', paddingLeft: '15px' }}>
+                  {(this.state.added.length > 0 || this.state.removed.length > 0) &&
+                    <Button>Save</Button>
+                  }
                   </Row>
-                }
-              </Col>
-              <Col md={1}>
-                <div
-                  onClick={this.onToggleReviewers}
-                  style={{
-                    color: 'rgb(159, 217, 237)',
-                    float: 'right',
-                    fontSize: '20px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <i className="fa fa-pencil" aria-hidden="true" />
-                </div>
               </Col>
             </Row>
           </ListGroupItem>}
@@ -181,8 +253,23 @@ class ReviewSection extends Component {
   }
 }
 
-export default connect((state, props) => ({
-  reviews: getReviews(state, props) || [],
-  users: getUsers(state, props),
-}))(ReviewSection)
+const mapStateToProps = (state, props) => (
+  {
+    reviews: getReviews(state, props) || [],
+    users: getUsers(state, props),
+    missingReviewers: getMissingReviewers(state, props) || [],
+    approved: getApproved(state, props),
+    rejected: getRejected(state, props),
+    under_review: getUnderReview(state, props),
+  }
+)
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addReviewers: (id, reviewers) => dispatch(fetchPullRequestAddReviewers(id, reviewers)),
+    removeReviewers: (id, reviewers) => dispatch(fetchPullRequsetRemoveReviewers(id, reviewers))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewSection)
 

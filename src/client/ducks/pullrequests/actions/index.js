@@ -12,6 +12,9 @@ import pullRequestMetadataQuery from 'ducks/pullrequests/queries/pullRequestMeta
 import pullRequestDiscussion from 'ducks/pullrequests/queries/pullRequestDiscussion.graphql'
 import pullRequestIssues from 'ducks/pullrequests/queries/pullRequestIssues.graphql'
 import pullRequestChangeset from 'ducks/pullrequests/queries/pullRequestChangeset.graphql'
+import pullRequestAddReviewers from 'ducks/pullrequests/queries/pullRequestAddReviewers.graphql'
+import pullRequestRemoveReviewers from 'ducks/pullrequests/queries/pullRequestRemoveReviewers.graphql'
+
 /**
  * Action types
  */
@@ -22,6 +25,8 @@ export const types = {
   FETCH_PULL_REQUEST_CHANGESET: 'PULLREQUESTS/FETCH_PULL_REQUESTS_CHANGESET',
   FETCH_PULL_REQUEST_METADATA: 'PULLREQUESTS/FETCH_PULL_REQUEST_METADATA',
   FETCH_PULL_REQUEST_DISCUSSION: 'PULLREQUESTS/FETCH_PULL_REQUEST_DISCUSSION',
+  FETCH_PULL_REQUEST_ADD_REVIEWERS: 'PULLREQUESTS/FETCH_PULL_REQUEST_ADD_REVIEWERS',
+  FETCH_PULL_REQUEST_REMOVE_REVIEWERS: 'PULLREQUESTS/FETCH_PULL_REQUEST_REMOVE_REVIEWERS',
 }
 
 export const operationName = 'pullRequests'
@@ -73,3 +78,18 @@ export const fetchPullRequests = (variables: FetchPullRequestVariables): FetchAc
         { type: RECEIVE_PAGE, namespace: operationName, nodes, total, ...cbArgs }]
     })
 
+export const fetchPullRequestAddReviewers = (pullRequestId: string, reviewers: Array<UserInput>) =>
+  fetchActionCreator(
+    types.FETCH_PULL_REQUEST_ADD_REVIEWERS, pullRequestAddReviewers, { pullRequestId, reviewers }, null,
+    (data: Object, cbArgs: Object): Array<Object> => {
+      console.log("received %O %O", data, cbArgs)
+      return {}
+    })
+
+export const fetchPullRequestRemoveReviewers = (pullRequestId: string, reviewers: Array<UserInput>) =>
+  fetchActionCreator(
+    types.FETCH_PULL_REQUEST_REMOVE_REVIEWERS, pullRequestRemvoeReviewers, { pullRequestId, reviewers }, null,
+    (data: Object, cbArgs: Object): Array<Object> => {
+      console.log("received %O %O", data, cbArgs)
+      return {}
+    })

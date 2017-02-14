@@ -1,0 +1,5 @@
+mutation AddReviewers($pullRequestId: Int!, $reviewers: [UserInput]!) {
+  addReviewers(pullRequestId: $pullRequestId, reviewers: $reviewers) {
+    ok
+  }
+}
