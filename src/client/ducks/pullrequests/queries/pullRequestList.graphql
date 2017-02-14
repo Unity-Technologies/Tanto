@@ -1,39 +1,39 @@
 query pullRequests($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: Int, $orderBy: PullRequestOrdering) {
   repository(id: $repo) {
-      pullRequests(limit: $limit, offset: $offset, target: $target, orderBy: $orderBy) {
-      ...pullRequestMetadata
+    pullRequests(limit: $limit, offset: $offset, target: $target, orderBy: $orderBy) {
+      total
+      nodes {
+        ...pullRequestMetadata
+      }
     }
   }
 }
 
-fragment pullRequestMetadata on PullRequestPage {
-  total
-  nodes {
-    id
-    description
-    title
-    updated
-    status
-    origin {
-      revision
-      name
-      repository {
-        id
-        name
-      }
-    }
-    target {
-      name
-      repository {
-        id
-        name
-        fullName
-      }
-    }
-    owner {
+fragment pullRequestMetadata on PullRequest {
+  id
+  description
+  title
+  updated
+  status
+  origin {
+    revision
+    name
+    repository {
       id
-      username
+      name
+    }
+  }
+  target {
+    name
+    repository {
+      id
+      name
       fullName
     }
+  }
+  owner {
+    id
+    username
+    fullName
   }
 }
