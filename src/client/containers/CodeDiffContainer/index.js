@@ -91,7 +91,7 @@ class CodeDiffContainer extends PureComponent {
           style={{ marginBottom: '20px' }}
         >
           <DiffHeader
-            comments={file.comments.length > 0}
+            comments={file.comments ? file.comments.length > 0 : false}
             collapsed={collapsed}
             title={file.name}
             stats={file.stats}
