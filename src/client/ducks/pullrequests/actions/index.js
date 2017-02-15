@@ -18,6 +18,7 @@ import pullRequestChangeset from 'ducks/pullrequests/queries/pullRequestChangese
  */
 export const types = {
   FETCH_PULL_REQUEST_FILES_LIST: 'PULLREQUESTS/FETCH_PULL_REQUEST_FILES_LIST',
+  FETCH_PULL_REQUEST_FILE: 'PULLREQUESTS/FETCH_PULL_REQUEST_FILE',
   FETCH_PULL_REQUESTS: 'PULLREQUESTS/FETCH_PULL_REQUESTS',
   FETCH_PULL_REQUEST_ISSUES: 'PULLREQUESTS/FETCH_PULL_REQUESTS_ISSUES',
   FETCH_PULL_REQUEST_CHANGESET: 'PULLREQUESTS/FETCH_PULL_REQUESTS_CHANGESET',
@@ -43,6 +44,9 @@ export const parsePullRequests = (response: Object) =>
 export const parsePullRequest = (response: Object) =>
   _.get(response, ['data', 'pullRequest'], {})
 
+
+export const createFileFetchActionType = (id: string, name: string) =>
+  (`${types.FETCH_PULL_REQUEST_FILE}:${id}:${name}`)
 /**
  *Action creators
  */
@@ -54,7 +58,7 @@ export const fetchPullRequestFilesList = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_FILES_LIST, pullRequestFilesList, { id })
 
 export const fetchPullRequestFile = (id: string, name: string): FetchAction =>
-  fetchPullRequestData(types.FETCH_PULL_REQUEST_FILE, pullRequestFile, { id })
+  fetchPullRequestData(createFileFetchActionType(id, name), pullRequestFile, { id, name })
 
 export const fetchPullRequestMetadata = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_METADATA, pullRequestMetadataQuery, { id })

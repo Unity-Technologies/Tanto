@@ -1,9 +1,40 @@
-query pullRequestFile($id: Int!, $name: string) {
+query pullRequestFile($id: Int!, $name: String) {
   pullRequest(id: $id) {
     id
     files (name: $name) {
       id
       diff
+      comments {
+        id
+        text
+        author {
+          id
+          username
+          fullName
+          email
+        }
+        lineNumber
+
+        filePath
+        created
+        issue {
+          id
+          title
+          created
+          description
+          status
+          branch
+          owner {
+            id
+            username
+            fullName
+            email
+          }
+          assignee {
+            id
+          }
+        }
+      }
     }
   }
 }

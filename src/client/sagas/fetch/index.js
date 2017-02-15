@@ -23,6 +23,9 @@ export function* fetchSaga(
 }
 
 export function* normalizeSaga(data: Object): Generator<any, any, any> {
+  if (!data) {
+    return
+  }
   const { entities } = normalize(data, schema)
 
   // NOTE: This is a hack due to ono graphql me scheme design

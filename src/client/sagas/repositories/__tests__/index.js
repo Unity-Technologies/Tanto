@@ -26,8 +26,8 @@ const repo3 = {
   fullName: 'title3',
 }
 
-describe('search repositories names saga', () => {
-  it('searchRepository', () => {
+describe('searchRepository saga', () => {
+  it('success response', () => {
     const action = {
       type: 'SOME_TYPE',
       limit: 12,
@@ -43,5 +43,37 @@ describe('search repositories names saga', () => {
       .to.deep.equal(
       call(fetchSaga, action.type, query, { limit: action.limit, filter: action.filter }))
     expect(generator.next(testResponse).value).to.deep.equal(call(normalizeSaga, testResponse.data))
+  })
+
+  it('null response', () => {
+    const action = {
+      type: 'SOME_TYPE',
+      limit: 12,
+      filter: 'titl',
+    }
+
+    const generator = searchRepository(action)
+    expect(generator.next().value)
+      .to.deep.equal(call(delay, 300))
+    expect(generator.next().value)
+      .to.deep.equal(
+      call(fetchSaga, action.type, query, { limit: action.limit, filter: action.filter }))
+    expect(generator.next(null).value).to.deep.equal(call(normalizeSaga, null))
+  })
+
+  it('null response data', () => {
+    const action = {
+      type: 'SOME_TYPE',
+      limit: 12,
+      filter: 'titl',
+    }
+
+    const generator = searchRepository(action)
+    expect(generator.next().value)
+      .to.deep.equal(call(delay, 300))
+    expect(generator.next().value)
+      .to.deep.equal(
+      call(fetchSaga, action.type, query, { limit: action.limit, filter: action.filter }))
+    expect(generator.next({ data: null }).value).to.deep.equal(call(normalizeSaga, { data: null }))
   })
 })

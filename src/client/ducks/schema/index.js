@@ -10,6 +10,7 @@ const issue = new schema.Entity('issues', {
   assignee: user,
 })
 
+
 const comment = new schema.Entity('comments', {
   author: user,
 })
@@ -34,12 +35,14 @@ group.define({
   },
 })
 
+const file = new schema.Entity('files', {
+  comments: [comment],
+})
+
 pullRequest.define({
   owner: user,
   issues: [issue],
-  files: [{
-    comments: [comment],
-  }],
+  files: [file],
   reviews: [{
     user,
   }],

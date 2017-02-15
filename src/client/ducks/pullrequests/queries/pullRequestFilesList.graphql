@@ -1,4 +1,4 @@
-query pullRequestFilesList($id: Int!) {
+query pullRequestFiles($id: Int!) {
   pullRequest(id: $id) {
     id
     files {
@@ -12,6 +12,9 @@ query pullRequestFilesList($id: Int!) {
       oldName
       name
       type
+      comments {
+        id
+      }
     }
   }
 }
