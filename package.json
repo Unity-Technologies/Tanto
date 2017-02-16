@@ -172,7 +172,6 @@
     "draft-js-ast-exporter": "^0.0.3",
     "draft-js-ast-importer": "^0.0.3",
     "draft-js-emoji-plugin": "^2.0.0-beta1",
-    "draft-js-export-html": "^0.5.2",
     "draft-js-hashtag-plugin": "^2.0.0-beta1",
     "draft-js-linkify-plugin": "^2.0.0-beta1",
     "draft-js-mention-plugin": "^2.0.0-beta1",

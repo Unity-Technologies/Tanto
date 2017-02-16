@@ -45,35 +45,22 @@ export const getPullRequestDiscussion = (state: Object, props: Object): Object =
     })
   )
 
-const renderHeadComment = ({ owner, description, created }) => {
+const renderHeadComment = ({ owner, description, created }, loggedUsername) => {
   if (!owner || !created) {
     return null
   }
-
+  const comment = {
+    author: owner,
+    text: description,
+    created,
+  }
   return (
-    <div>
-      <div style={{ display: 'inline-flex', width: '100%' }}>
+    <Comment
+      loggedUsername={loggedUsername}
         <Avatar {...owner.slack} />
-        <div style={{ padding: '0 20px' }}>
-          <div style={{ fontSize: '14px', color: '#31708f' }}>
-            <strong>{owner.fullName}</strong>
-          </div>
-          <div
-            style={{
-              color: 'rgb(145, 142, 142)',
-              fontStyle: 'italic',
-              textTransform: 'lowercase',
-            }}
-          >
-            Initial PR description, 1 day ago
-          </div>
-        </div>
-      </div>
-      <TextEditorBox
-        text={description || 'No description provided ...'}
-        readOnly previewMode simpleText
-      />
-    </div>
+      hideHeader
+      onoStyle
+    />
   )
 }
 
@@ -86,6 +73,7 @@ const renderComments = ({ comments }, loggedUsername) => {
       {comments.map(comment => (
         <Comment
           loggedUsername={loggedUsername}
+          onoStyle
           simpleText
           comment={comment}
         />
@@ -103,7 +91,7 @@ const PullRequestDiscussion = (props: Props) => {
       <div>
         <Row>
           <Col md={12}>
-            {renderHeadComment(props.pullRequest)}
+            {renderHeadComment(props.pullRequest, props.user.username)}
           </Col>
         </Row>
         <hr style={{ margin: '15px 0' }} />

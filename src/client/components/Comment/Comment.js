@@ -2,25 +2,16 @@
 
 import React, { Component } from 'react'
 import TextEditorBox from 'components/TextEditorBox'
-import Icon from 'components/Icon'
 import Avatar from 'components/Avatar'
-import IconButton from 'material-ui/IconButton'
-import Edit from 'material-ui/svg-icons/editor/mode-edit'
-import Settings from 'material-ui/svg-icons/action/settings'
-import Grid from 'react-bootstrap/lib/Grid' 
+import Grid from 'react-bootstrap/lib/Grid'
 import Row from 'react-bootstrap/lib/Row'
 import Col from 'react-bootstrap/lib/Col'
 import Well from 'react-bootstrap/lib/Well'
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
-import Close from 'material-ui/svg-icons/navigation/close'
-import RaisedButton from 'material-ui/RaisedButton'
-import IconMenu from 'material-ui/IconMenu'
-import MenuItem from 'material-ui/MenuItem'
 import Button from 'react-bootstrap/lib/Button'
 import Panel from 'react-bootstrap/lib/Panel'
 import Alert from 'react-bootstrap/lib/Alert'
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 import marked from 'marked'
 import moment from 'moment'
 
@@ -31,14 +22,34 @@ import './styles.css'
 export type Props = {
   loggedUsername: string,
   comment: InlineCommentType,
-  simpleText?: boolean,
-  style?: Object,
-  headerStyle?: Object,
-  buttonGroupStyle?: Object,
-  niceToHave?: boolean,
-  codeStyle?: boolean,
+  onoStyle?: boolean,
+  markdown?: boolean,
   hideSettings?: boolean,
+  hideHeader?: boolean,
+  customHeader?: string,
+  onCommentSave: Function,
+  onCommentCancel: Function,
+  onCommentDelete: Function,
 }
+
+function escapeHTML(text) {
+  const escape = {
+    '&': '&amp;',
+    '>': '&gt;',
+    '<': '&lt;',
+    '"': '&quot;',
+    '\'': '&apos;',
+  }
+  return text.replace(/[&<>"'\\]/g, (char) => escape[char])
+}
+
+
+function linkifyRevisionHashes(text) {
+  return text.replace(/([a-f0-9]{12}|[a-f0-9]{40})/, (hash) => (
+    `<a href="${hash}">${hash}</a>`
+  ))
+}
+
 
 class Comment extends Component {
   /* eslint-disable react/sort-comp */
@@ -54,77 +65,76 @@ class Comment extends Component {
       smartLists: true,
       smartypants: false,
     })
+    const rendered = this.renderCommentText(props.comment.text, props)
     this.state = {
       editMode: props.newComment,
       newComment: props.newComment,
       commentText: props.comment.text,
-      renderedText: this.renderText(props.comment.text),
+      renderedText: rendered,
     }
   }
 
   props: Props
 
+  formatOnoText(text) {
+    let formatted = escapeHTML(text)
+    formatted = formatted.replace(/@([a-z]+)/g, '<b>@$1</b>')
+    formatted = linkifyRevisionHashes(formatted)
+    // TODO add urlification of urls, revision hashes, and cases
+    return formatted
+  }
+
+  formatMarkdown(text) {
+    let formatted = marked(text)
+    formatted = linkifyRevisionHashes(formatted)
+    return formatted
+  }
+
   onCommentEdit = () => {
     this.setState({ editMode: !this.state.editMode })
   }
 
+  onCommentDelete = () => {
+    this.props.onCommentDelete()
+  }
+
   onCommentCancel = () => {
+    if (this.state.newComment) {
+      this.props.onCommentCancel()
+    }
     this.setState({
       editMode: false,
       newComment: false,
       commentText: this.props.comment.text,
     })
-    // TODO: unmount component if this is a new comment.
   }
-  // onCommentDelete() {
-  //   // TODO: dispatch reducer action to delete comment
-  // }
 
   onCommentSave = () => {
     this.setState({
       editMode: false,
       newComment: false,
-      renderedText: this.renderText(this.state.commentText),
+      renderedText: this.renderCommentText(this.state.commentText, this.props),
     })
-    // TODO: dispatch reducer action to save edited and new comments
+    this.props.onCommentSave(this.comment.id, this.state.commentText)
+    // TODO: Figure out proper API for onCommentSave
   }
 
-  // handleChange(event, value) {
-  //   switch (value) {
-  //     case '1':
-  //       this.setState({
-  //         issue: !this.state.issue,
-  //       })
-  //       return
-  //     case '2':
-  //       this.setState({
-  //         niceToHave: !this.state.niceToHave,
-  //       })
-  //       return
-  //     case '3':
-  //       this.setState({
-  //         codeStyle: !this.state.codeStyle,
-  //       })
-  //       return
-  //     default:
-  //       return
-  //   }
-  // }
   renderStatusPanelContent(comment, statusChangeString) {
     return (
       <span><strong>{comment.author.fullName}</strong> {statusChangeString} these changes {moment(comment.created).fromNow()}.</span>
     )
   }
 
-  renderText(text) {
-    if (text) {
-      return { __html: marked(text) }
+  renderCommentText(text, { markdown, onoStyle }) {
+    if (text && onoStyle) {
+      return { __html: this.formatOnoText(text) }
+    } else if (text && markdown) {
+      return { __html: this.formatMarkdown(text) }
     }
-    return { __html: '' }
+    return text
   }
-  
-  renderStatusPanel(comment) {
 
+  renderStatusPanel(comment) {
     let statusChangeString
     let bsStyle
 
@@ -147,27 +157,42 @@ class Comment extends Component {
     }
 
     return (
-        <Alert bsStyle={bsStyle}>
-          {this.renderStatusPanelContent(comment, statusChangeString)}
-        </Alert>
+      <Row>
+        <Col md="12">
+          <Alert className="comment-status-panel" bsStyle={bsStyle}>
+            {this.renderStatusPanelContent(comment, statusChangeString)}
+          </Alert>
+        </Col>
+      </Row>
     )
   }
 
-  renderCommentHeader(fullName, created, isAuthor) {
+  renderCommentHeader({ comment, newComment, hideHeader, customHeader }, isAuthor) {
+    const buttonSize = 'small'
+    if (newComment || hideHeader) {
+      return ''
+    }
     return (
       <Row>
-        <Col md={4}>
-          <span className="header-text">
-            <strong>{fullName}</strong> commented {moment(created).fromNow()}
+        <Col md={8}>
+          <span className="comment-header-text">
+            <strong>{comment.author.fullName}</strong> commented {moment(comment.created).fromNow()}
           </span>
         </Col>
-        <Col md={4} mdOffset={4}>
+        <Col md={4} mdOffset={0}>
            {isAuthor &&
-             <ButtonToolbar className="pull-right">
-               <Button onClick={this.onCommentEdit}>
+             <ButtonToolbar
+               className="comment-header-buttons pull-right"
+             >
+               <Button
+                 onClick={this.onCommentEdit}
+                 bsSize={buttonSize}
+               >
                  <Glyphicon glyph="edit" />
                </Button>
-               <Button>
+               <Button
+                 bsSize={buttonSize}
+               >
                  <Glyphicon glyph="remove" />
                </Button>
              </ButtonToolbar>
@@ -176,42 +201,76 @@ class Comment extends Component {
       </Row>
     )
   }
-  renderComment() {
 
+  renderCustomText({ comment }, text) {
+    return text
+      .replace('{time}', moment(comment.created).fromNow())
+      .replace('{fullName}', comment.author.fullName)
+  }
+
+  renderCommentBody({ markdown, onoStyle }) {
+    if (markdown) {
+      return (
+        <span
+          className="comment-body-markdown"
+          dangerouslySetInnerHTML={this.state.renderedText}
+        />)
+    }
+    if (onoStyle) {
+      return (
+        <span
+          className="comment-body-onostyle"
+          dangerouslySetInnerHTML={this.state.renderedText}
+        />
+      )
+    }
+    return (
+      <span className="comment-body-onostyle">
+        {this.state.renderedText}
+      </span>
+    )
+  }
+
+  renderComment() {
     const {
       loggedUsername,
       comment,
-      style,
       simpleText,
-      headerStyle,
-      buttonGroupStyle,
     } = this.props
-    
-    const { editMode, newComment } = this.state
-    const isAuthor = loggedUsername === comment.author.username
-    const placeholder = newComment ? 'Write comment text here.' : null
 
+    const { editMode } = this.state
+    const isAuthor = loggedUsername === comment.author.username
+    const placeholder = 'Write comment text here.'
     return (
-      <Col>
-        <Row>
-          <Col md={1}>
+      <Row>
+        <Col md={1}>
                 <Avatar {...comment.author.slack} />
-          </Col>
-          <Col md={11}>
-            <Panel header={this.renderCommentHeader(comment.author.fullName, comment.created, isAuthor)}>
-              {!editMode && <span className="comment-text" dangerouslySetInnerHTML={this.state.renderedText}></span>}
+        </Col>
+        <Col md={11}>
+          <Panel
+            header={this.renderCommentHeader(this.props,
+                                             isAuthor)}
+          >
+            <Grid fluid>
+              <Row>
+                {!editMode && this.renderCommentBody(this.props)}
+              </Row>
               {editMode &&
-                <Col md={12}>
-                  <Well>
-                    <TextEditorBox
-                      onTextChanged={(value) => { this.setState({ commentText: value }) }}
-                      text={this.state.commentText}
-                      placeholder={placeholder}
-                      readOnly={!editMode}
-                      simpleText={simpleText}
-                      hideStyleControls
-                    />
-                  </Well>
+                <div>
+                  <Row>
+                    <Col>
+                      <Well>
+                        <TextEditorBox
+                          onTextChanged={(value) => { this.setState({ commentText: value }) }}
+                          text={this.state.commentText}
+                          placeholder={placeholder}
+                          readOnly={!editMode}
+                          simpleText={simpleText}
+                          hideStyleControls
+                        />
+                      </Well>
+                    </Col>
+                  </Row>
                   <Row>
                     <Col>
                       <ButtonToolbar>
@@ -224,12 +283,12 @@ class Comment extends Component {
                       </ButtonToolbar>
                     </Col>
                   </Row>
-                </Col>
+                </div>
               }
-            </Panel>
-          </Col>
-        </Row>
-      </Col>
+            </Grid>
+          </Panel>
+        </Col>
+      </Row>
     )
   }
   render() {
@@ -238,14 +297,11 @@ class Comment extends Component {
     }
 
     return (
-      <Col md={12} className="comment-frame">
-        <Row>
+      <Grid className="comment-frame">
           {this.props.comment.status && this.renderStatusPanel(this.props.comment)}
-        </Row>
-        <Row>
-          {this.props.comment.text && this.renderComment()}
-        </Row>
-      </Col>
+          {(this.props.comment.text || this.props.newComment)
+           && this.renderComment()}
+      </Grid>
     )
   }
 }

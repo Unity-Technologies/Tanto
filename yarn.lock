@@ -2448,12 +2448,6 @@ draft-js-emoji-plugin@^2.0.0-beta1:
     react-dom ">=15.1.0"
     union-class-names "^1.0.0"
 
-draft-js-export-html@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/draft-js-export-html/-/draft-js-export-html-0.5.2.tgz#089e55ce06d5aed0dbd9af5eee2eb56c58a1c428"
-  dependencies:
-    draft-js-utils "^0.1.5"
-
 draft-js-hashtag-plugin@^2.0.0-beta1:
   version "2.0.0-beta1"
   resolved "https://registry.yarnpkg.com/draft-js-hashtag-plugin/-/draft-js-hashtag-plugin-2.0.0-beta1.tgz#f21099aa3ee117ec8c22ca605985309d9ecbe3d2"
@@ -2503,7 +2497,7 @@ draft-js-plugins-editor@^2.0.0-beta1:
     react-dom ">=15.1.0"
     union-class-names "^1.0.0"
 
-draft-js-utils@^0.1.4, draft-js-utils@^0.1.5:
+draft-js-utils@^0.1.4:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/draft-js-utils/-/draft-js-utils-0.1.7.tgz#e2b6927ca620edf1855a4bfc1cf1d21080a70f16"
 

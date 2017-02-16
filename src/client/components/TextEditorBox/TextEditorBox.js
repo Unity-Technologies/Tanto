@@ -8,7 +8,6 @@ import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import createHashtagPlugin from 'draft-js-hashtag-plugin'
-import { stateToHTML } from 'draft-js-export-html';
 import exporter from 'draft-js-ast-exporter'
 import importer from 'draft-js-ast-importer'
 import Row from 'react-bootstrap/lib/Row'
