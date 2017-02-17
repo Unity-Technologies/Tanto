@@ -1,7 +1,7 @@
 import React from 'react'
 import { List, ListItem } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
-import { Link } from 'react-router'
+import Link from 'components/Link'
 import { darkBlack, grey400 } from 'material-ui/styles/colors'
 import ActionInfo from 'material-ui/svg-icons/action/info'
 import Update from 'material-ui/svg-icons/action/system-update-alt'
@@ -51,9 +51,8 @@ function NotificationList() {
                   paddingLeft: '10px',
                 }}
                 to="project/undefined/pullrequest/UHVsbFJlcXVlc3Q6Mw=="
-              >
-                Fixes for builds count controller, added new charts, fixed minor issues
-              </Link>
+                label="Fixes for builds count controller, added new charts, fixed minor issues"
+              />
               <span
                 style={{
                   color: '#bcbbbb',
@@ -100,9 +99,8 @@ function NotificationList() {
                   paddingLeft: '10px',
                 }}
                 to="project/undefined/pullrequest/UHVsbFJlcXVlc3Q6Mw=="
-              >
-                [5.4] Fix particle random number regression
-              </Link>
+                label="[5.4] Fix particle random number regression"
+              />
               <span
                 style={{
                   color: '#bcbbbb',
@@ -142,9 +140,8 @@ function NotificationList() {
                 paddingLeft: '10px',
               }}
               to="/project/UmVwb3NpdG9yeTox"
-            >
-              Option to use low resolution for Game View aspect ratios V4
-            </Link>
+              label="Option to use low resolution for Game View aspect ratios V4"
+            />
             <span
               style={{
                 color: '#bcbbbb',
@@ -177,9 +174,8 @@ function NotificationList() {
                   paddingLeft: '10px',
                 }}
                 to="project/undefined/pullrequest/UHVsbFJlcXVlc3Q6Mw=="
-              >
-                Trunk merge of the scriptable renderloop branch
-              </Link>
+                label="Trunk merge of the scriptable renderloop branch"
+              />
               <span
                 style={{
                   color: '#bcbbbb',
@@ -223,9 +219,8 @@ function NotificationList() {
                 paddingLeft: '10px',
               }}
               to="project/undefined/pullrequest/UHVsbFJlcXVlc3Q6Mw=="
-            >
-            Option to use low resolution for Game View aspect ratios
-            </Link>
+              link="Option to use low resolution for Game View aspect ratios"
+            />
             <span
               style={{
                 color: '#bcbbbb',
@@ -258,9 +253,8 @@ function NotificationList() {
                   paddingLeft: '10px',
                 }}
                 to="project/undefined/pullrequest/UHVsbFJlcXVlc3Q6Mw=="
-              >
-                Move render target switching out from jobs
-              </Link>
+                label="Move render target switching out from jobs"
+              />
               <span
                 style={{
                   color: '#bcbbbb',

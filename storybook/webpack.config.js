@@ -23,4 +23,12 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    alias: {
+      // this is used by the custom `react-router.js` module
+      'react-router-original': require.resolve('react-router'),
+      // this `react-router.js` will replace the Link with a our own mock component
+      'react-router': require.resolve('./react-router.js'),
+    },
+  },
 }

@@ -88,7 +88,6 @@
   "author": "",
   "license": "",
   "devDependencies": {
-    "@kadira/storybook": "^2.21.0",
     "autoprefixer": "^6.5.3",
     "babel-eslint": "^7.1.1",
     "babel-plugin-lodash": "^3.2.10",
@@ -133,6 +132,7 @@
     "webpack-node-externals": "^1.5.4"
   },
   "dependencies": {
+    "@kadira/storybook": "^2.21.0",
     "asynch": "^0.5.2",
     "babel": "^6.5.2",
     "babel-cli": "^6.18.0",
