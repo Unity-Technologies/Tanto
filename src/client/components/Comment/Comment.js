@@ -49,7 +49,98 @@ function linkifyRevisionHashes(text) {
     `<a href="${hash}">${hash}</a>`
   ))
 }
+function StatusPanel(props) {
+  const { comment } = props
+  let statusChangeString
+  let bsStyle
 
+  switch (comment.status) {
+    case 'approved':
+      bsStyle = 'success'
+      statusChangeString = comment.status
+      break
+    case 'rejected':
+      bsStyle = 'danger'
+      statusChangeString = comment.status
+      break
+    case 'under_review':
+      bsStyle = 'warning'
+      statusChangeString = 'started reviewing'
+      break
+    default:
+      bsStyle = 'default'
+      statusChangeString = 'stopped reviewing'
+  }
+
+  return (
+    <Row>
+      <Col md="12">
+        <Alert className="comment-status-panel" bsStyle={bsStyle}>
+          <strong>{comment.author.fullName}</strong> {statusChangeString} these changes {moment(comment.created).fromNow()}.
+        </Alert>
+      </Col>
+    </Row>
+  )
+}
+
+function CommentHeader(props) {
+  const { comment,
+          showButtons,
+          onCommentEdit } = props
+
+  const buttonSize = 'small'
+  return (
+    <Row>
+      <Col md={8}>
+        <span className="comment-header-text">
+          <strong>{comment.author.fullName}</strong> commented {moment(comment.created).fromNow()}
+        </span>
+      </Col>
+      <Col md={4} mdOffset={0}>
+        {showButtons &&
+          <ButtonToolbar
+            className="comment-header-buttons pull-right"
+          >
+            <Button
+              onClick={onCommentEdit}
+              bsSize={buttonSize}
+            >
+              <Glyphicon glyph="edit" />
+            </Button>
+            <Button
+              bsSize={buttonSize}
+            >
+              <Glyphicon glyph="remove" />
+            </Button>
+          </ButtonToolbar>
+        }
+      </Col>
+    </Row>
+  )
+}
+
+function CommentBody(props) {
+  if (props.markdown) {
+    return (
+      <span
+        className="comment-body-markdown"
+        dangerouslySetInnerHTML={props.children}
+      />)
+  }
+  if (props.onoStyle) {
+    return (
+      <span
+        className="comment-body-onostyle"
+        dangerouslySetInnerHTML={props.children}
+      />
+    )
+  }
+  return (
+    <span className="comment-body-onostyle">
+      {props.children}
+    </span>
+  )
+}
 
 class Comment extends Component {
   /* eslint-disable react/sort-comp */
@@ -119,12 +210,6 @@ class Comment extends Component {
     // TODO: Figure out proper API for onCommentSave
   }
 
-  renderStatusPanelContent(comment, statusChangeString) {
-    return (
-      <span><strong>{comment.author.fullName}</strong> {statusChangeString} these changes {moment(comment.created).fromNow()}.</span>
-    )
-  }
-
   renderCommentText(text, { markdown, onoStyle }) {
     if (text && onoStyle) {
       return { __html: this.formatOnoText(text) }
@@ -134,126 +219,43 @@ class Comment extends Component {
     return text
   }
 
-  renderStatusPanel(comment) {
-    let statusChangeString
-    let bsStyle
-
-    switch (comment.status) {
-      case 'approved':
-        bsStyle = 'success'
-        statusChangeString = comment.status
-        break
-      case 'rejected':
-        bsStyle = 'danger'
-        statusChangeString = comment.status
-        break
-      case 'under_review':
-        bsStyle = 'warning'
-        statusChangeString = 'started reviewing'
-        break
-      default:
-        bsStyle = 'default'
-        statusChangeString = 'stopped reviewing'
-    }
-
-    return (
-      <Row>
-        <Col md="12">
-          <Alert className="comment-status-panel" bsStyle={bsStyle}>
-            {this.renderStatusPanelContent(comment, statusChangeString)}
-          </Alert>
-        </Col>
-      </Row>
-    )
-  }
-
-  renderCommentHeader({ comment, newComment, hideHeader, customHeader }, isAuthor) {
-    const buttonSize = 'small'
-    if (newComment || hideHeader) {
-      return ''
-    }
-    return (
-      <Row>
-        <Col md={8}>
-          <span className="comment-header-text">
-            <strong>{comment.author.fullName}</strong> commented {moment(comment.created).fromNow()}
-          </span>
-        </Col>
-        <Col md={4} mdOffset={0}>
-           {isAuthor &&
-             <ButtonToolbar
-               className="comment-header-buttons pull-right"
-             >
-               <Button
-                 onClick={this.onCommentEdit}
-                 bsSize={buttonSize}
-               >
-                 <Glyphicon glyph="edit" />
-               </Button>
-               <Button
-                 bsSize={buttonSize}
-               >
-                 <Glyphicon glyph="remove" />
-               </Button>
-             </ButtonToolbar>
-           }
-        </Col>
-      </Row>
-    )
-  }
-
-  renderCustomText({ comment }, text) {
-    return text
-      .replace('{time}', moment(comment.created).fromNow())
-      .replace('{fullName}', comment.author.fullName)
-  }
-
-  renderCommentBody({ markdown, onoStyle }) {
-    if (markdown) {
-      return (
-        <span
-          className="comment-body-markdown"
-          dangerouslySetInnerHTML={this.state.renderedText}
-        />)
-    }
-    if (onoStyle) {
-      return (
-        <span
-          className="comment-body-onostyle"
-          dangerouslySetInnerHTML={this.state.renderedText}
-        />
-      )
-    }
-    return (
-      <span className="comment-body-onostyle">
-        {this.state.renderedText}
-      </span>
-    )
-  }
-
   renderComment() {
     const {
       loggedUsername,
       comment,
       simpleText,
+      newComment,
+      hideHeader,
+      onoStyle,
+      markdown,
     } = this.props
 
     const { editMode } = this.state
     const isAuthor = loggedUsername === comment.author.username
     const placeholder = 'Write comment text here.'
+
+    const header = !newComment && !hideHeader && (
+      <CommentHeader
+        showButtons={isAuthor}
+        onCommentEdit={this.onCommentEdit}
+        comment={comment}
+      />)
+
     return (
       <Row>
         <Col md={1}>
-                <Avatar {...comment.author.slack} />
+          <Avatar {...comment.author.slack} />
         </Col>
         <Col md={11}>
           <Panel
-            header={this.renderCommentHeader(this.props,
-                                             isAuthor)}
+            header={header}
           >
             <Grid fluid>
               <Row>
-                {!editMode && this.renderCommentBody(this.props)}
+                {!editMode &&
+                  <CommentBody onoStyle={onoStyle} markdown={markdown}>
+                    {this.state.renderedText}
+                  </CommentBody>}
               </Row>
               {editMode &&
                 <div>
@@ -298,7 +300,7 @@ class Comment extends Component {
 
     return (
       <Grid className="comment-frame">
-          {this.props.comment.status && this.renderStatusPanel(this.props.comment)}
+          {this.props.comment.status && <StatusPanel comment={this.props.comment} />}
           {(this.props.comment.text || this.props.newComment)
            && this.renderComment()}
       </Grid>

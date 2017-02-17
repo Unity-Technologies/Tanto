@@ -57,8 +57,7 @@ const renderHeadComment = ({ owner, description, created }, loggedUsername) => {
   return (
     <Comment
       loggedUsername={loggedUsername}
-        <Avatar {...owner.slack} />
-      hideHeader
+      comment={comment}
       onoStyle
     />
   )
