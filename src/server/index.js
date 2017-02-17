@@ -23,6 +23,10 @@ import Html from 'client/pages/Html'
 import Login from 'client/pages/Login'
 import passportConfig from './passport'
 import env from './config'
+import {
+  getSlackAvatars,
+  scheduleSlackUserProfilesPrefetch,
+} from './controllers/slack'
 
 const app = new Express()
 
@@ -108,6 +112,11 @@ const onoProxy = proxy(options)
 
 app.use(routes.ONO_API_ROUTE, passportConfig.isAuthenticated, onoProxy)
 
+/**
+ * Slack Web API routes
+ */
+app.get(routes.SLACK_API_ROUTE, passportConfig.isAuthenticated, getSlackAvatars)
+
 app.use('/', passportConfig.isAuthenticated, (req, res) => {
   if (env.isDev) {
     webpackIsomorphicTools.refresh()
@@ -127,3 +136,9 @@ app.listen(app.get('port'), () => {
     app.get('env')
   )
 })
+
+/**
+ * Scheduling job to prefetch slack users profiles ID and Avatar every month
+ */
+
+scheduleSlackUserProfilesPrefetch(env.SLACK_AVATARS_PREFETCH_SCHEDULE)

@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import TextEditorBox from 'components/TextEditorBox'
 import Icon from 'components/Icon'
-import TestAvatar from 'components/TestAvatar'
+import Avatar from 'components/Avatar'
 import IconButton from 'material-ui/IconButton'
 import Edit from 'material-ui/svg-icons/editor/mode-edit'
 import Settings from 'material-ui/svg-icons/action/settings'
@@ -145,7 +145,7 @@ class Comment extends Component {
           {!editMode &&
             <div style={{ overflow: 'auto', padding: '3px' }}>
               <div style={{ float: 'left', padding: '6px 6px', fontFamily: 'sans-serif' }}>
-                <TestAvatar />
+                <Avatar {...comment.author.slack} />
                 <div style={headerStyle || commentHeaderStyle}>
                   <strong style={{ color: '#31708f' }}>{comment.author.fullName}</strong>
                   <span> commented {moment(comment.created).fromNow()}</span>

@@ -6,11 +6,10 @@ import { darkBlack, grey400 } from 'material-ui/styles/colors'
 import ActionInfo from 'material-ui/svg-icons/action/info'
 import Update from 'material-ui/svg-icons/action/system-update-alt'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
-import TestAvatar from 'components/TestAvatar'
+import Avatar from 'components/Avatar'
 import IconButton from 'material-ui/IconButton'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
-import Avatar from 'material-ui/Avatar'
 
 const primaryTextStyle = {
   fontSize: '14px',
@@ -41,7 +40,7 @@ function NotificationList() {
     <div>
       <List>
         <ListItem
-          leftAvatar={<TestAvatar />}
+          leftAvatar={<Avatar />}
           rightIconButton={rightIconMenu}
           primaryText={
             <div><div style={primaryTextStyle}>New comment in:
@@ -164,7 +163,7 @@ function NotificationList() {
         <ListItem
           rightIconButton={rightIconMenu}
           leftAvatar={
-            <TestAvatar />
+            <Avatar />
           }
           primaryText={
             <p style={primaryTextStyle}>You are mentioned in:
@@ -243,7 +242,7 @@ function NotificationList() {
         <ListItem
           rightIconButton={rightIconMenu}
           leftAvatar={
-            <TestAvatar />
+            <Avatar />
           }
           primaryText={
             <p style={primaryTextStyle}>New comment in:

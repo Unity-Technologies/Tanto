@@ -21,6 +21,7 @@ import PullRequest from 'pages/Project/PullRequest'
 import NewPullRequest from 'pages/Project/NewPullRequest'
 import { fetchRepository } from 'ducks/repositories/actions'
 
+
 import {
   fetchPullRequestDiff,
   fetchPullRequestMetadata,
@@ -32,8 +33,8 @@ import {
 import { app, project, pullrequest, changeset } from 'containers/SideBar/SideBarConfig'
 
 export const initialPrefetch = (store) => {
-  store.dispatch(store.dispatch(fetchProfile()))
-  store.dispatch(store.dispatch(fetchUsers()))
+  store.dispatch(fetchProfile())
+  store.dispatch(fetchUsers())
 }
 
 export default (store) => {

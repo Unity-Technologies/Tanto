@@ -27,7 +27,8 @@ export function* normalizeSaga(data: Object): Generator<any, any, any> {
 
   // NOTE: This is a hack due to ono graphql me scheme design
   if (entities.me) {
-    entities.me = entities.me.undefined
+    const me = entities.me
+    entities.me = me[Object.keys(me)[0]]
   }
 
   yield (put({ type: types.SET_NORMALIZED_ENTITIES, entities }))
@@ -48,6 +49,7 @@ export function* fetchAnythingSaga(action: FetchAction): Generator<any, any, any
         yield put(next[0])
       }
     }
+    return response
   } catch (error) {
     yield put(actions.requestError(action.name, error))
   } finally {

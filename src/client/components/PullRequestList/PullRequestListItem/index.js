@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { buildPullRequestLink, buildProjectLink } from 'routes/helpers'
-import TestAvatar from 'components/TestAvatar'
+import Avatar from 'components/Avatar'
 import { Link } from 'react-router'
 import { fromNow } from 'utils/datetime'
 import { PullRequestGraphType } from 'universal/types'
@@ -43,7 +43,7 @@ class PullRequestListItem extends Component {
         <Row>
           <Col md={5}>
             <div style={{ display: 'table' }}>
-              <TestAvatar />
+              <Avatar {...pullRequest.owner.slack} />
               <div style={{ paddingLeft: '10px', display: 'table' }}>
                 <Link
                   to={buildPullRequestLink(pullRequest.target.repository.fullName, pullRequest.id)}

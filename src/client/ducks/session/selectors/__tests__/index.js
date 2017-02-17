@@ -10,13 +10,13 @@ import {
   getPersona,
   getLoggedUsername,
   getPullRequestsOwnedTotal,
+  getLoggedUserAvatar,
   getPullRequestsAssignedTotal,
 } from '../index'
 
 import { types } from 'ducks/session/actions'
 
 const expect = require('chai').expect
-
 
 const pr1 = {
   id: '1UHVsbFJlcXVlc3Q6MQ==',
@@ -25,11 +25,7 @@ const pr1 = {
   created: '2016-11-15 16:18:36.628901',
   updated: '2016-11-15 16:18:36.628916',
   status: 'new',
-  owner: {
-    username: 'test2',
-    email: 'test1@test.tt',
-    fullName: 'test test11',
-  },
+  owner: 16,
   origin: {
     revision: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
     branch: 'graphics/gi/bugfix/staging1',
@@ -52,11 +48,7 @@ const pr2 = {
   created: '2016-11-14 16:18:36.628901',
   updated: '2016-11-14 16:18:36.628916',
   status: 'new',
-  owner: {
-    username: 'test2',
-    email: 'test2@test.tt',
-    fullName: 'test test2',
-  },
+  owner: 15,
   origin: {
     revision: '2d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
     branch: 'graphics/gi/bugfix/staging2',
@@ -79,11 +71,7 @@ const pr3 = {
   created: '2016-11-13 16:18:36.628901',
   updated: '2016-11-13 16:18:36.628916',
   status: 'new',
-  owner: {
-    username: 'test3',
-    email: 'test3@test.tt',
-    fullName: 'test test44',
-  },
+  owner: 14,
   origin: {
     revision: '3d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
     branch: 'graphics/gi/bugfix/staging3',
@@ -106,11 +94,7 @@ const pr4 = {
   created: '2016-11-12 16:18:36.628901',
   updated: '2016-11-12 16:18:36.628916',
   status: 'new',
-  owner: {
-    username: 'test4',
-    email: 'test4@test.tt',
-    fullName: 'test test44',
-  },
+  owner: 13,
   origin: {
     revision: '4d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
     branch: 'graphics/gi/bugfix/staging4',
@@ -133,11 +117,7 @@ const pr5 = {
   created: '2016-11-13 16:18:36.628901',
   updated: '2016-11-13 16:18:36.628916',
   status: 'new',
-  owner: {
-    username: 'test5',
-    email: 'test5@test.tt',
-    fullName: 'test test55',
-  },
+  owner: 12,
   origin: {
     revision: '1d1aa61c80fef159d0a61e8fcbd2150ed1bf6702',
     branch: 'graphics/gi/bugfix/staging5',
@@ -172,17 +152,51 @@ pullRequests[pr3.id] = pr3
 pullRequests[pr4.id] = pr4
 pullRequests[pr5.id] = pr5
 
+const users = [
+  16: {
+    id: 16,
+    username: 'test2',
+    email: 'test1@test.tt',
+    fullName: 'test test11',
+  },
+  12:{
+    id: 12,
+    username: 'test5',
+    email: 'test5@test.tt',
+    fullName: 'test test55',
+  },
+  13: {
+    id: 13,
+    username: 'test4',
+    email: 'test4@test.tt',
+    fullName: 'test test44',
+  },
+  14: {
+    id: 14,
+    username: 'test3',
+    email: 'test3@test.tt',
+    fullName: 'test test44',
+  },
+  15:{
+    id: 15,
+    username: 'test2',
+    email: 'test2@test.tt',
+    fullName: 'test test2',
+  },
+]
 
 const state = {
   session: sessionState,
   entities: {
     pullRequests,
+    users,
   },
 }
 
 describe('session selectors', () => {
   it('get user pull requests', () => {
-    expect(getPullRequestsOwned(state)).to.eql([pr1, pr4])
+    const denormalized = [{ ...pr1, owner: users[pr1.owner] }, { ...pr4, owner: users[pr4.owner] }]
+    expect(getPullRequestsOwned(state)).to.eql(denormalized)
   })
 
   it('get user pull requests - empty pull requests entities ', () => {
@@ -239,11 +253,13 @@ describe('session selectors', () => {
   })
 
   it('get user pull assigned requests', () => {
-    expect(getPullRequestsAssigned(state)).to.eql([pr1, pr3])
+    const denormalized = [{ ...pr1, owner: users[pr1.owner] }, { ...pr3, owner: users[pr3.owner] }]
+    expect(getPullRequestsAssigned(state)).to.eql(denormalized)
   })
 
   it('get user pull watching requests', () => {
-    expect(getPullRequestsWatching(state)).to.eql([pr2, pr1])
+    const denormalized = [{ ...pr2, owner: users[pr2.owner] }, { ...pr1, owner: users[pr1.owner] }]
+    expect(getPullRequestsWatching(state)).to.eql(denormalized)
   })
 
   it('get user watching pull requests - empty pull requests list', () => {
@@ -272,7 +288,6 @@ describe('session selectors', () => {
     expect(getPullRequestsWatching(emptyState)).to.eql([])
   })
 
-
   it('getPersona', () => {
     const persona = 'some persona'
     const st = {
@@ -295,6 +310,28 @@ describe('session selectors', () => {
       },
     }
     expect(getLoggedUsername(st)).to.eql(username)
+  })
+
+  it('getLoggedUserAvatar', () => {
+    const username = 'someusername'
+    const id = 12
+    const avatar = 'avatar link'
+    const st = {
+      entities: {
+        me: {
+          id,
+          username,
+        },
+        users: {
+          12: {
+            slack: {
+              avatar,
+            },
+          },
+        },
+      },
+    }
+    expect(getLoggedUserAvatar(st)).to.eql(avatar)
   })
 
   it('getPullRequestsOwnedTotal', () => {

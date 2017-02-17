@@ -7,8 +7,8 @@ import Row from 'react-bootstrap/lib/Row'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { types } from 'ducks/pullrequests/actions'
-import TestAvatar from 'components/TestAvatar/TestAvatar'
-import TextEditorBox from 'components/TextEditorBox/TextEditorBox'
+import Avatar from 'components/Avatar'
+import TextEditorBox from 'components/TextEditorBox'
 import type { GeneralCommentType, UserType } from 'universal/types'
 import type { StatusType } from 'ducks/fetch/selectors'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
@@ -53,7 +53,7 @@ const renderHeadComment = ({ owner, description, created }) => {
   return (
     <div>
       <div style={{ display: 'inline-flex', width: '100%' }}>
-        <TestAvatar />
+        <Avatar {...owner.slack} />
         <div style={{ padding: '0 20px' }}>
           <div style={{ fontSize: '14px', color: '#31708f' }}>
             <strong>{owner.fullName}</strong>

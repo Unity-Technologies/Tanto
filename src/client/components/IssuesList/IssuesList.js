@@ -12,7 +12,7 @@ import moment from 'moment'
 
 import _ from 'lodash'
 
-import TestAvatar from '../TestAvatar'
+import Avatar from 'components/Avatar'
 import './IssuesList.css'
 
 const subHeader = text => (
@@ -132,7 +132,7 @@ class IssuesList extends Component {
                   <Row>
                     <Col md={3} sm={6} xs={12}>
                       <div style={{ display: 'table' }}>
-                        <TestAvatar />
+                        <Avatar {...issue.owner.slack} />
                         <div style={{ paddingLeft: '10px', display: 'table' }}>
                           <a href="#issue">{issue.title}</a>
                           <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>

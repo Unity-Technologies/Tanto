@@ -13,7 +13,7 @@ import importer from 'draft-js-ast-importer'
 import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
-import TestAvatar from '../TestAvatar'
+import Avatar from 'components/Avatar'
 import './TextEditorBox.css'
 import StyleControls from './StyleControls'
 
@@ -138,7 +138,7 @@ class TextEditorBox extends Component {
       {!hideStyleControls && !readOnly &&
         <div style={{ width: '100%', padding: '10px' }}>
           <div style={{ display: 'inline-flex' }}>
-            <TestAvatar />
+            <Avatar />
             <div
               style={{
                 fontSize: '14px', color: '#31708f', padding: '0 20px',
