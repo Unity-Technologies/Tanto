@@ -33,10 +33,10 @@ export function get(query: string, variables: any, operationName: string) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      'query': query,
-      'variables': JSON.stringify(variables),
-      'operationName': operationName,
-    })
+      query,
+      variables: JSON.stringify(variables),
+      operationName,
+    }),
   })
     .then(checkHttpStatus)
     .then(parseJSON)
