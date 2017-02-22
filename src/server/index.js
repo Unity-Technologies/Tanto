@@ -97,12 +97,6 @@ const options = {
   ws: true,
   logLevel: env.isDev ? 'debug' : 'silent',
   pathRewrite: rewriteRouteRule,
-  onError: (err, req, res) => {
-    res.writeHead(500, {
-      'Content-Type': 'text/plain',
-    })
-    res.end(err.message)
-  },
   onProxyReq: (proxyReq, req, res) => {
     proxyReq.setHeader('Authorization', `Bearer ${req.user.token}`)
   },
