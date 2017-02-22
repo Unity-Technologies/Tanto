@@ -6,4 +6,4 @@ export const types = {
   FETCH_USERS: 'USERS/FETCH_USERS',
 }
 
-export const fetchUsers = (): Object => ({ type: types.FETCH_USERS, query: usersQuery })
+export const fetchUsers = (): Object => ({ type: types.FETCH_USERS, query: usersQuery, variables: {} })

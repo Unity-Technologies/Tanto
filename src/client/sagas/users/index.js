@@ -13,8 +13,10 @@ export function* fetchUsers(action: Object): Generator<any, any, any> {
     avatarsByEmails[cur.email] = cur
     return avatarsByEmails
   }, {})
+  const usersResponse = (response.data || response)
+  const users = usersResponse.users.nodes || usersResponse.users
   const data = {
-    users: (response.data || response).users.map(
+    users: users.map(
       user => ({ ...user, slack: avatarsByEmails[user.email] || {} })),
   }
   yield call(normalizeSaga, data)
