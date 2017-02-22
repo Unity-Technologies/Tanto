@@ -121,5 +121,28 @@ describe('entities merge', () => {
 
     expect(merge(state, nodes)).to.equal(state)
   })
+
+  it('merge by id and accept upstream for certain keys', () => {
+    const nodes = {
+      reviews: [{ user: 1, status: null }],
+      missingReviewers: [{ area: 'x', reviewers: [{ id: 2, username: 'y' }] }],
+      nodes: [{ id: 2 }],
+    }
+
+    const state = {
+      reviews: [{ user: 2, status: null }, { user: 1, status: null }],
+      missingReviewers: [
+        { area: 'x', reviewers: [{ id: 2, username: 'y' }, { id: 1, username: 'x' }] }],
+      nodes: [{ id: 3 }, { id: 2 }],
+    }
+
+    const expected = {
+      reviews: [{ user: 1, status: null }],
+      missingReviewers: [{ area: 'x', reviewers: [{ id: 2, username: 'y' }] }],
+      nodes: [{ id: 2 }, { id: 3 }],
+    }
+
+    expect(merge(state, nodes)).to.eql(expected)
+  })
 })
 
