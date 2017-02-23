@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/lib/Row'
 import type { IssueType } from 'universal/types'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
+import Tooltip from 'react-bootstrap/lib/Tooltip'
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
 import { IssueStatus } from 'universal/constants'
 import moment from 'moment'
 
@@ -32,18 +34,43 @@ export type Props = {
   issues: Array<IssueType>,
 }
 
-const getStatusColor = (status) => {
+const getStatus = (status) => {
   switch (status) {
-    case IssueStatus.NOW:
-      return redStatus
     case IssueStatus.LATER:
-      return yellowStatus
-    case IssueStatus.OBSOLETE:
-      return greenStatus
+      return {
+        text: 'Can fix later',
+        color: yellowStatus
+      }
+    case IssueStatus.NEXT:
+      return {
+        text: 'Fix in next PR',
+        color: yellowStatus
+      }
+    case IssueStatus.NOW:
+      return {
+        text: 'Fix in this PR',
+        color: redStatus
+      }
     case IssueStatus.AVAILABLE:
-      return greenStatus
+      return {
+        text: 'Fix submitted',
+        color: greenStatus
+      }
+    case IssueStatus.CONFIRMED:
+      return {
+        text: 'Fix confirmed',
+        color: greenStatus
+      }
+    case IssueStatus.OBSOLETE:
+      return {
+        text: 'Obsolete',
+        color: greenStatus
+      }
     default:
-      return greyStatus
+      return {
+        text: 'Unknown issue status',
+        color: greyStatus
+      }
   }
 }
 
@@ -78,6 +105,9 @@ class IssuesList extends Component {
     const newTotal = IssueStatus.NOW in statuses ? statuses[IssueStatus.NOW] : 0
     const nextTotal = IssueStatus.NEXT in statuses ? statuses[IssueStatus.NEXT] : 0
     const laterTotal = IssueStatus.LATER in statuses ? statuses[IssueStatus.LATER] : 0
+    const tooltip = (status) => {
+      return (<Tooltip id="tooltip">{getStatus(status).text}</Tooltip>)
+    }
 
     return (
       <div>
@@ -126,9 +156,10 @@ class IssuesList extends Component {
                   key={_.uniqueId('listItem')}
                   style={{
                     padding: '10px 10px',
-                    ...(getStatusColor(issue.status))
+                    ...(getStatus(issue.status).color)
                   }}
-                  >
+                >
+                <OverlayTrigger placement="top" overlay={tooltip(issue.status)}>
                   <Row>
                     <Col md={3} sm={6} xs={12}>
                       <div style={{ display: 'table' }}>
@@ -144,7 +175,8 @@ class IssuesList extends Component {
                     </Col>
                     <Col md={3} sm={3} xsHidden>
                       {subHeader('Location:')}
-                      {issue.location? issue.location: 'generic'}
+                      {(issue.location && issue.location.filePath && issue.location.lineNumber)
+                        ? <a href="diff#">{issue.location.filePath}@{issue.location.lineNumber}</a> : 'generic'}
                     </Col>
                     <Col md={3} sm={3} xsHidden>
                       {subHeader('Assigned to:')}
@@ -154,7 +186,8 @@ class IssuesList extends Component {
                       {subHeader('Created:')}
                       {moment(issue.created).fromNow()}
                     </Col>
-                  </Row>
+                   </Row>
+                  </OverlayTrigger>  
                 </ListGroupItem>))}
             </ListGroup>
           </Col>
