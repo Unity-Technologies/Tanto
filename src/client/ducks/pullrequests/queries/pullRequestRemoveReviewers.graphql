@@ -1,5 +1,0 @@
-mutation RemoveReviewers($pullRequestId: Int!, $reviewers: [UserInput]!) {
-  removeReviewers(pullRequestId: $pullRequestId, reviewers: $reviewers) {
-    ok
-  }
-}
