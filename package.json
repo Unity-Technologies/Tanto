@@ -72,7 +72,7 @@
       }
     },
     "test": {
-      "command": "mocha-webpack --webpack-config webpack/config.test.js --recursive \"src/**/__tests__/*.js\" --full-trace --require source-map-support/register --colors",
+      "command": "mocha-webpack --webpack-config webpack/config.test.js --recursive \"src/**/__tests__/*.js\" --full-trace --require source-map-support/register --require ignore-styles --colors",
       "env": {
         "NODE_ENV": "test"
       }
@@ -189,6 +189,7 @@
     "graphql": "^0.6.0",
     "http-proxy-middleware": "^0.17.2",
     "ignore-loader": "^0.1.2",
+    "ignore-styles": "^5.0.1",
     "isomorphic-fetch": "^2.2.1",
     "jsdom": "^9.9.1",
     "kafka-node": "^0.3.2",
