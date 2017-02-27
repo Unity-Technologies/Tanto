@@ -15,10 +15,6 @@ describe('getHeaderData', () => {
         1: user1,
         3: user3,
       }
-    const status = {
-      isFetching: false,
-      error: null,
-    }
     const pullRequestHeaderData = {
       title: 'someTitle',
       created: '2017-02-27',
@@ -39,7 +35,6 @@ describe('getHeaderData', () => {
       params: {
         prid: 12,
       },
-      status,
     }
     expect(getHeaderData(state, props)(state, props)).to.deep.eql(expectedData)
   })
