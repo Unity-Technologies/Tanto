@@ -2,7 +2,6 @@ import chai from 'chai'
 import {
   getIssues,
 } from '../index'
-import { types } from 'ducks/pullrequests/actions'
 import { IssueStatus } from 'universal/constants'
 
 const expect = chai.expect
