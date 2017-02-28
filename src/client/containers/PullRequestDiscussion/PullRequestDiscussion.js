@@ -31,10 +31,10 @@ export type Props = {
 
 export const getFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DISCUSSION)
 
-export const getLoggedUser = (state: Object) => state.session.profile.fullName
+export const getLoggedUsername = (state: Object) => state.session.profile.fullName
 export const getPullRequestDiscussion = (state: Object, props: Object): Object =>
   createSelector(
-    getPullRequest, getPullRequestGeneralComments, getFetchStatus, getLoggedUser,
+    getPullRequest, getPullRequestGeneralComments, getFetchStatus, getLoggedUsername,
     (pr, comments, status, user) => ({
       pullRequest: {
         ..._.pick(pr, ['description', 'created', 'owner']),
