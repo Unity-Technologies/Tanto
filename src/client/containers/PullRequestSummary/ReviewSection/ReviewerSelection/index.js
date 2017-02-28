@@ -3,79 +3,38 @@
 import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
-import fuzzy from 'fuzzy'
-import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import ListGroup from 'react-bootstrap/lib/ListGroup'
 import type { UserType } from 'universal/types'
+import Select from 'react-select'
+import MissingReviewerList from '../MissingReviewerList'
+import { connect } from 'react-redux'
+import { createSelector } from 'reselect'
+import { getPullRequest } from 'ducks/pullrequests/selectors'
+import './ReviewerSelection.css'
 
-type ReviewerSelectionItemProps = {
-  isReviewer: boolean,
-  onToggleReviewer: (user: UserType) => void,
-  user: UserType,
+type MissingReviewerType = {
+  area: string,
+  reviewers: Array<UserType>,
 }
-
-const whiteSpaceRegExp = /\s+/g
-
-class ReviewerSelectionItem extends Component {
-
-  onToggleReviewer = () => {
-    this.props.onToggleReviewer(this.props.user)
-  }
-
-  props: ReviewerSelectionItemProps
-
-  render() {
-    const { isReviewer, user } = this.props
-
-    return (
-      <ListGroupItem
-        onClick={this.onToggleReviewer}
-        style={{
-          padding: '2px 10px',
-          textDecoration: 'none',
-          outline: 'none',
-          border: 'none',
-          boxShadow: 'none',
-        }}
-      >
-        <div
-          style={{
-            float: 'left',
-            marginRight: '12px',
-          }}
-        >
-          <i
-            className="fa fa-check"
-            style={{
-              visibility: isReviewer ? 'inherit' : 'hidden',
-              display: 'inline-block',
-              fontSize: '16px',
-              lineHeight: '40px',
-              width: '40px',
-              height: '40px',
-              textAlign: 'center',
-              verticalAlign: 'bottom',
-            }}
-          />
-        </div>
-        <div>
-          <div style={{ fontSize: '14px' }}>
-            <strong>{user.fullName}</strong>
-          </div>
-          <span style={{ color: 'grey', fontSize: '11px' }}>{user.username}</span>
-        </div>
-      </ListGroupItem>
-    )
-  }
-}
-
 
 type ReviewersProps = {
+  id: string,
   reviewers: Set<string>,
   users: Array<UserType>,
   onToggleReviewer: (user: UserType) => void,
+  addReviewers: (id: string, users: Array<UserType>) => void,
+  missingReviewers: Array<MissingReviewerType>,
 }
 
+export const getMissingReviewers = createSelector(
+  getPullRequest,
+  (pr) => (pr && pr.missingReviewers ? pr.missingReviewers : [])
+)
+
+export type ValueType = {
+  label: string,
+  value: string,
+  user: UserType,
+}
 
 class ReviewerSelection extends Component {
   /* eslint-disable react/sort-comp */
@@ -83,93 +42,81 @@ class ReviewerSelection extends Component {
   constructor(props: ReviewersProps) {
     super(props)
     this.state = {
-      usersAfterSearch: this.props.users,
-      query: '',
+      value: [],
     }
+
+    this.onChange = this.onChange.bind(this)
+    this.addMissingReviewer = this.addMissingReviewer.bind(this)
   }
 
   props: ReviewersProps
 
   state: {
-    usersAfterSearch: Array<UserType>,
-    query: string,
+    value: []
   }
 
-  onSearchQueryChange = (event: SyntheticInputEvent) => {
-    const query = event.target.value
-    let usersAfterSearch
+  onChange: Array<ValueType> => void
 
-    if (query) {
-      const queryWithoutWhitespace = query.replace(whiteSpaceRegExp, '')
-      const matches = fuzzy.filter(queryWithoutWhitespace, this.props.users, {
-        // A bit quick and dirty to concat these, but does the job:
-        extract: (el) => `${el.username} ${el.fullName}`,
-      })
-      usersAfterSearch = matches.map(match => match.original)
-    } else {
-      usersAfterSearch = this.props.users
-    }
+  onChange(value) {
+    this.setState({
+      value,
+    })
+
+    this.props.addReviewers(this.props.id, value.map(v => v.user))
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.missingReviewers === this.props.missingReviewers) { return }
 
     this.setState({
-      usersAfterSearch,
-      query,
+      value: [],
     })
   }
 
+  addMissingReviewer: (string, UserType) => void
+
+  addMissingReviewer(id, reviewer) {
+    const value = this.state.value
+    if (value.findIndex(r => reviewer.username === r) === -1) {
+      this.onChange(this.state.value.concat({
+        label: reviewer.fullName || reviewer.username,
+        value: reviewer.username,
+        user: reviewer,
+      }))
+    }
+  }
+
   render() {
-    const { onToggleReviewer, reviewers } = this.props
-    const { usersAfterSearch } = this.state
+    const options = this.props.users.map(u => ({
+      label: u.fullName || u.username,
+      value: u.username,
+      user: u,
+    }))
 
     return (
       <div>
         <Row>
-          <Col md={12}>
-            <div
-              style={{
-                display: 'inline-flex',
-                border: '1px solid lightgrey',
-                borderRadius: '5px',
-                padding: '7px',
-                width: '100%',
-              }}
-            >
-              <span style={{ pagging: '10px', color: 'grey' }}>
-                <i className="fa fa-search" aria-hidden="true" />
-              </span>
-              <input
-                type="text"
-                style={{
-                  outline: 'none',
-                  border: 'none',
-                  marginLeft: '10px',
-                  fontSize: '14px',
-                  width: '100%',
-                }}
-                onChange={this.onSearchQueryChange}
-              />
-            </div>
+          <Col md={10}>
+            <Select
+              name="test"
+              value={this.state.value}
+              onChange={this.onChange}
+              options={options}
+              multi
+              ignoreAccents
+              tabSelectsValue
+              placeholder="Add reviewers..."
+              className="reviewer-selection"
+            />
           </Col>
         </Row>
-
         <Row>
           <Col md={12}>
-            <ListGroup
-              style={{
-                fontSize: '13px',
-                maxHeight: '500px',
-                overflowY: 'auto',
-                overflowX: 'hidden',
-              }}
-            >
-              {usersAfterSearch.map(user => (
-                <ReviewerSelectionItem
-                  user={user}
-                  isReviewer={reviewers.has(user.username)}
-                  onToggleReviewer={onToggleReviewer}
-                  key={user.username}
-                />
-              ))}
-            </ListGroup>
+            <MissingReviewerList
+              id={this.props.id}
+              missingReviewers={this.props.missingReviewers}
+              addReviewer={this.addMissingReviewer}
+            />
           </Col>
         </Row>
       </div>
@@ -177,4 +124,10 @@ class ReviewerSelection extends Component {
   }
 }
 
-export default ReviewerSelection
+const mapStateToProps = (state, props) => (
+  {
+    missingReviewers: getMissingReviewers(state, props) || [],
+  }
+)
+
+export default connect(mapStateToProps)(ReviewerSelection)

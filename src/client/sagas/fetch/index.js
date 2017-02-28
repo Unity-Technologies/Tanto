@@ -23,7 +23,19 @@ export function* fetchSaga(
 }
 
 export function* normalizeSaga(data: Object): Generator<any, any, any> {
-  const { entities } = normalize(data, schema)
+  // HACK: Handle mutation results until we find a more elegant way to deal with it
+  const mutations = ['addReviewers']
+
+  let resolvedData = data
+  for (let i = 0; i < mutations.length; ++i) {
+    const mutation = mutations[i]
+    if (resolvedData.hasOwnProperty(mutation)) {
+      resolvedData = resolvedData[mutation]
+      break
+    }
+  }
+
+  const { entities } = normalize(resolvedData, schema)
 
   // NOTE: This is a hack due to ono graphql me scheme design
   if (entities.me) {
