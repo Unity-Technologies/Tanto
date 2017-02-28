@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import { connect } from 'react-redux'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import { getPullRequest } from 'ducks/pullrequests/selectors'
+import { getPullRequestIssues } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 import type { IssueType } from 'universal/types'
 import { IssueStatus } from 'universal/constants'
@@ -33,9 +33,9 @@ type IssuesSectionProps = {
 
 export const getIssues = (state: Object, props: Object): Object =>
   createSelector(
-    getPullRequest,
-    pr => ({
-      issues: pr && pr.issues ? pr.issues.filter(x => x.status !== IssueStatus.OBSOLETE) : [],
+    getPullRequestIssues,
+    issues => ({
+      issues: issues ? issues.filter(x => x.status !== IssueStatus.OBSOLETE) : [],
     })
   )
 
