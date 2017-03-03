@@ -10,8 +10,7 @@ const issue = new schema.Entity('issues', {
   assignee: user,
 })
 
-
-const comment = new schema.Entity('comments', {
+export const comment = new schema.Entity('comments', {
   author: user,
 })
 

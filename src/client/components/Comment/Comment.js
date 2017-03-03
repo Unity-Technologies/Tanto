@@ -74,7 +74,7 @@ function StatusPanel(props) {
 
   return (
     <Row>
-      <Col md="12">
+      <Col md={12}>
         <Alert className="comment-status-panel" bsStyle={bsStyle}>
           <strong>{comment.author.fullName}</strong> {statusChangeString} these changes {moment(comment.created).fromNow()}.
         </Alert>
@@ -201,12 +201,19 @@ class Comment extends Component {
   }
 
   onCommentSave = () => {
-    this.setState({
-      editMode: false,
-      newComment: false,
-      renderedText: this.renderCommentText(this.state.commentText, this.props),
-    })
-    this.props.onCommentSave(this.comment.id, this.state.commentText)
+    this.props.onCommentSave(this.props.comment.id, this.state.commentText)
+
+    if (this.state.newComment) {
+      this.setState({
+        commentText: null,
+      })
+    } else {
+      this.setState({
+        editMode: false,
+        renderedText: this.renderCommentText(this.state.commentText, this.props),
+      })
+    }
+
     // TODO: Figure out proper API for onCommentSave
   }
 

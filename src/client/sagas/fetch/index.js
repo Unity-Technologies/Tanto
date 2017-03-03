@@ -28,7 +28,7 @@ export function* normalizeSaga(data: Object): Generator<any, any, any> {
   }
 
   // HACK: Handle mutation results until we find a more elegant way to deal with it
-  const mutations = ['addReviewers']
+  const mutations = ['addReviewers', 'editComment', 'createComment']
 
   let resolvedData = data
   for (let i = 0; i < mutations.length; ++i) {
@@ -56,7 +56,11 @@ export function* fetchAnythingSaga(action: FetchAction): Generator<any, any, any
     yield put(actions.sendingRequest(action.name, true))
     const response = yield call(get, action.query, action.variables || {}, action.operationName)
 
-    yield call(normalizeSaga, response.data || response)
+    if (action.normalize) {
+      yield put(action.normalize(response.data || response))
+    } else {
+      yield call(normalizeSaga, response.data || response)
+    }
 
     if (action.callback) {
       const callbacks = action.callback(response, action.variables || {})

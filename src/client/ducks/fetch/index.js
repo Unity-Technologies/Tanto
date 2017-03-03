@@ -107,11 +107,13 @@ export const singleFetchActionCreator =
    query: string,
    variables: Object = {},
    operationName: string = '',
-   callback: (data: Object, cbArgs: Object) => Object): FetchAction => ({
+   callback: (data: Object, cbArgs: Object) => Object,
+   normalize: (data: Object) => Object): FetchAction => ({
      type: types.FETCH_DATA,
      operationName,
      name: type,
      query,
      variables,
      callback,
+     normalize,
    })
