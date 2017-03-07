@@ -6124,8 +6124,11 @@ react-addons-create-fragment@^15.0.0:
   resolved "https://registry.yarnpkg.com/react-addons-create-fragment/-/react-addons-create-fragment-15.4.1.tgz#596fde66cf7f375b5dad3c36ff6efe19c0ac47e7"
 
 "react-addons-shallow-compare@^0.14.0 || ^15.0.0":
-  version "15.4.1"
-  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.4.1.tgz#b68103dd4d13144cb221065f6021de1822bd435a"
+  version "15.4.2"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.4.2.tgz#027ffd9720e3a1e0b328dcd8fc62e214a0d174a5"
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
 
 react-addons-test-utils@^0.14.0:
   version "0.14.8"
@@ -6346,12 +6349,20 @@ react-simple-di@^1.2.0:
     babel-runtime "6.x.x"
     hoist-non-react-statics "1.x.x"
 
+react-simple-pie-chart@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-simple-pie-chart/-/react-simple-pie-chart-0.4.0.tgz#f9a56a330d05bb9f9abea670abde804da4f1e861"
+
 react-split-pane@^0.1.50:
   version "0.1.56"
   resolved "https://registry.yarnpkg.com/react-split-pane/-/react-split-pane-0.1.56.tgz#0cc4c8cc32eacb94b170cf22a986750f8287364e"
   dependencies:
     inline-style-prefixer "^2.0.4"
     react-style-proptype "^1.4.0"
+
+react-sticky@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/react-sticky/-/react-sticky-5.0.5.tgz#995871273f8a001fa4d462d3b96f381ee54b2649"
 
 react-stubber@^1.0.0:
   version "1.0.0"

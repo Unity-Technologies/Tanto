@@ -16,7 +16,6 @@ export const prefetchSlackAvatars = () => {
   const env = require('server/config')
   slack.users.list({ token: env.SLACK_TOKEN }, (err, data) => {
     if (err) {
-      console.log('error')
       throw err
     }
     if (data.ok) {
@@ -48,9 +47,11 @@ export const scheduleSlackUserProfilesPrefetch = (rule: string) => {
 export const getSlackAvatars = (req: Object, res: Object, next: Function): any => {
   client.hgetall(SLACK_USERS, (err, results) => {
     if (err) {
-      return res.json({
-        error: err,
-      })
+      return next(err)
+    }
+
+    if (!results || !results.data) {
+      return next(new Error("No users read from redis store ..."))
     }
 
     return res.json(JSON.parse(results.data || {}))

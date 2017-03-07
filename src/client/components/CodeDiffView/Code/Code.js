@@ -1,13 +1,13 @@
 // TODO: finish flow annotations
 
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import Prism from 'prismjs'
 import ErrorMessage from 'components/ErrorMessage'
 import _ from 'lodash'
-import LinearProgress from 'material-ui/LinearProgress'
 import 'prismjs/themes/prism.css'
 import UnifiedRow from '../UnifiedRow/UnifiedRow'
 import SplitRow from '../SplitRow/SplitRow'
+
 import {
   getUnifiedDiff,
   getSideBySideDiff,
@@ -24,7 +24,7 @@ export type Props = {
 };
 
 
-class Code extends Component {
+class Code extends PureComponent {
   /* eslint-disable react/sort-comp */
   asyncProcessCode = ({ type, viewType, diff }) => {
     const promise = new Promise((resolve) => {
@@ -73,17 +73,13 @@ class Code extends Component {
   }
 
   updateCode = (code) => {
-    this.setState({
+    this.setState((prevState, props) => ({
       content: code,
       ready: true,
-    })
+    }))
   }
 
-  changeDiffViewType = (value) => {
-    this.setState({ viewType: value })
-  }
-
-  processCode = () => {
+  renderDiff = () => {
     const { content } = this.state
     const { collapseComments, comments, viewType, loggedUsername } = this.props
     if (viewType === '0') {
@@ -117,7 +113,7 @@ class Code extends Component {
                 this.getFileComments(comments, line.rightLineNumber, 'n')}
               {...line}
             />
-            ))}</tbody>
+          ))}</tbody>
         </table>
       )
     }
@@ -129,26 +125,25 @@ class Code extends Component {
     )
   }
 
+
   render() {
+    if (!this.state.ready) {
+      return <div>processing diff...</div>
+    }
+
+    if (!!this.state.error) {
+      return <ErrorMessage text={this.state.error} />
+    }
     return (
-      <div>
-      {!this.state.ready &&
-        <LinearProgress mode="indeterminate" />
-      }
-      {this.state.ready &&
-        <pre
-          key={_.uniqueId('_code_')}
-          className="diff-view"
-        >
-          <code className={`language-${this.props.type}`} ref={(c) => { this.code = c }}>
-            {this.processCode()}
-          </code>
-        </pre>
-      }
-      {!!this.state.error &&
-        <ErrorMessage text={this.state.error} />
-      }
-      </div>
+      <pre
+        key={_.uniqueId('_code_')}
+        className="diff-view"
+      >
+        <code className={`language-${this.props.type}`}>
+          {this.renderDiff()}
+        </code>
+      </pre>
+
     )
   }
 }

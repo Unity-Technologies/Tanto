@@ -55,11 +55,11 @@ export const getPullRequest = createSelector(
   })
 
 // Sometimes we don't need Denormalization of users, when we need just issues or comments
-export const getPullRequestNormlized = createSelector(
+export const getPullRequestNormalized = createSelector(
   getPullRequestsEntities, getPullRequestId,
   (entities: Object, id: string): Object =>
-    (id ? entities[id] : {})
- )
+    (id ? entities[id] || {} : {})
+)
 
 /**
  * Pull request page selectors
@@ -84,7 +84,7 @@ export const getIssuesEntities = (state: Object) =>
   _.get(state, ['entities', 'issues'], {})
 
 export const getPullRequestIssues = createSelector(
-  getIssuesEntities, userEntitiesSelector, getPullRequestNormlized,
+  getIssuesEntities, userEntitiesSelector, getPullRequestNormalized,
   (issueEntities, userEntities, pr) => {
     const prIssues = _.values(_.pick(issueEntities, pr.issues || []))
     // Denormalization of owner and assignee
@@ -103,7 +103,7 @@ export const getCommentsEntities = (state: Object) =>
   _.get(state, ['entities', 'comments'], {})
 
 export const getPullRequestGeneralComments = createSelector(
-  getCommentsEntities, userEntitiesSelector, getPullRequestNormlized,
+  getCommentsEntities, userEntitiesSelector, getPullRequestNormalized,
   (commentsEntities, userEntities, pr) => {
     const prComments = _.values(_.pick(commentsEntities, pr.comments || []))
     //  Denormalization of comment author
@@ -114,21 +114,34 @@ export const getPullRequestGeneralComments = createSelector(
 /**
  * Pull request files
  */
+export const getFilesEntities = (state: Object): Object =>
+  _.get(state, ['entities', 'files'], {})
 export const getPullRequestFiles = createSelector(
-  getCommentsEntities, userEntitiesSelector, getPullRequestNormlized,
-  (commentEntities, userEntities, pr) => {
-    const files = pr.files || []
-    if (!files) {
-      return files
+  getFilesEntities, getPullRequestNormalized,
+  (files, pr) => {
+    if (!pr || !pr.files) {
+      return []
     }
-    // Denormalization of inline comments
-    const filesDenormalized = files.map(file => (
-      {
-        ...file,
-        comments: _.values(_.pick(commentEntities, file.comments))
-          .map(comment => denormalizeCommentAuthor(comment, userEntities)),
-      }))
+    return _.values(_.pick(files, pr.files))
+  })
 
-    return filesDenormalized
+export const fileNameSelector = (state:Object, props:Object): string => props.fileName
+export const getPullRequestFile = createSelector(
+  getPullRequestFiles, fileNameSelector, getCommentsEntities, userEntitiesSelector,
+  (files, fileName, commentEntities, userEntities) => {
+    if (!files || !fileName) {
+      return {}
+    }
+    const file = files.find(x => x.name === fileName)
+    if (!file) {
+      return {}
+    }
+
+    // Denormalization of inline comments
+    return {
+      ...file,
+      comments: _.values(_.pick(commentEntities, file.comments))
+      .map(comment => denormalizeCommentAuthor(comment, userEntities)),
+    }
   })
 
