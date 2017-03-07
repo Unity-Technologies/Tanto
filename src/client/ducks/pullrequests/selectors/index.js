@@ -117,6 +117,9 @@ export const getPullRequestGeneralComments = createSelector(
 export const getPullRequestFiles = createSelector(
   getCommentsEntities, userEntitiesSelector, getPullRequestNormlized,
   (commentEntities, userEntities, pr) => {
+    if (!pr) {
+      return []
+    }
     const files = pr.files || []
     if (!files) {
       return files
