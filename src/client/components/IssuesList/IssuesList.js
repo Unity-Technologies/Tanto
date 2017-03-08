@@ -1,6 +1,6 @@
 /* @flow */
 
-/* eslint no-param-reassign: ["error", { "ignorePropertyModificationsFor": ["statuses"] }] */
+/* eslint no-param-reassign: ["error", { "props": false }] */
 
 import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
@@ -149,7 +149,8 @@ class IssuesList extends Component {
               />
             </div>
             <div style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }}>
-              {newTotal} unresolved in this PR, {nextTotal} fix in next PR, {laterTotal} can be fixed later
+              {newTotal} unresolved in this PR,
+              {nextTotal} fix in next PR, {laterTotal} can be fixed later
             </div>
 
           </Col>
@@ -194,7 +195,7 @@ class IssuesList extends Component {
                         {issue.location && issue.location.filePath && issue.location.lineNumber
                           ? <a href="diff#">
                               {issue.location.filePath}@{issue.location.lineNumber}
-                            </a>
+                          </a>
                           : 'generic'}
                       </Col>
                       <Col md={3} sm={3} xsHidden>
