@@ -23,6 +23,10 @@ export function* fetchSaga(
 }
 
 export function* normalizeSaga(data: Object): Generator<any, any, any> {
+  if (!data) {
+    return
+  }
+
   // HACK: Handle mutation results until we find a more elegant way to deal with it
   const mutations = ['addReviewers']
 
