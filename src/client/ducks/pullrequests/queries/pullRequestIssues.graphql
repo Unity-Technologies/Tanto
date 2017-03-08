@@ -18,6 +18,10 @@ query pullRequestIssues($id: Int!){
         username
         fullName
       }
+      location {
+        filePath
+        lineNumber
+      }
       updated
       created
     }
