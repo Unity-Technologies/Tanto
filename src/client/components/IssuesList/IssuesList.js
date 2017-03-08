@@ -34,6 +34,10 @@ export type Props = {
   issues: Array<IssueType>,
 }
 
+type statusCountType = {
+  [key: string]: number
+}
+
 type IssueStatusType = {
   text: string,
   color: Object
@@ -79,7 +83,7 @@ const getStatus = (status : string) : IssueStatusType => {
   }
 }
 
-const calculateStatuses = (issues: Array<IssueType>) : Object =>
+const calculateStatuses = (issues: Array<IssueType>) : statusCountType =>
   issues.reduce((statuses, issue) => {
     if (issue.status in statuses) {
       statuses[issue.status]++;
