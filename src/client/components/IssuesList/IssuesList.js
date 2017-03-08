@@ -34,7 +34,12 @@ export type Props = {
   issues: Array<IssueType>,
 }
 
-const getStatus = (status) => {
+type IssueStatusType = {
+  text: string,
+  color: Object
+}
+
+const getStatus = (status : string) : IssueStatusType => {
   switch (status) {
     case IssueStatus.LATER:
       return {
@@ -74,7 +79,7 @@ const getStatus = (status) => {
   }
 }
 
-const calculateStatuses = (issues) =>
+const calculateStatuses = (issues: Array<IssueType>) : Object =>
   issues.reduce((statuses, issue) => {
     if (issue.status in statuses) {
       statuses[issue.status]++;
