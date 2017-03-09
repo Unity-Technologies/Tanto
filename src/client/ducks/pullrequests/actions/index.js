@@ -6,6 +6,7 @@ import { singleFetchActionCreator, fetchActionCreator, fetchAction } from 'ducks
 import type { FetchAction } from 'ducks/fetch'
 import { APPEND_ENTITY } from 'ducks/entities'
 import { RECEIVE_PAGE } from 'ducks/pagination'
+import { comment } from 'ducks/schema'
 import _ from 'lodash'
 import { UserInput } from 'universal/types'
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
@@ -102,15 +103,16 @@ export const fetchPullRequestChangeReviewers = (
 
 export const createPullRequestDiscussionCommentNormalizer = (pullRequestId) => (
   (response) => {
-    const comment = _.get(response, ['createComment', 'comment'], null)
-    if (!comment) {
+    const newComment = _.get(response, ['createComment', 'comment'], null)
+    if (!newComment) {
       return null
     }
     return {
       type: APPEND_ENTITY,
-      object: comment,
+      object: newComment,
       sourcePath: ['comments'],
       referencePaths: [['pullRequests', pullRequestId.toString(), 'comments']],
+      schema: comment,
     }
   }
 )

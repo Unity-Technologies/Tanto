@@ -129,7 +129,6 @@ class PullRequestDiscussion extends Component {
 export const getPRequest = createSelector(
   getPullRequest, getPullRequestGeneralComments,
   (pr, comments) => {
-    console.log(comments)
     return {
       ..._.pick(pr, ['description', 'created', 'owner', 'origin']),
       comments,

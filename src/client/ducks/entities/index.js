@@ -1,7 +1,6 @@
 /* @flow */
 import _ from 'lodash'
 import { normalize } from 'normalizr'
-import { comment } from 'ducks/schema'
 
 export const SET_NORMALIZED_ENTITIES = 'ENTITIES/SET_NORMALIZED_ENTITIES'
 export const APPEND_ENTITY = 'ENTITIES/APPEND_ENTITY'
@@ -73,11 +72,11 @@ export const merge = (state: Object, entity: Object): Object => {
 /**
  * Appends/updates a new/modified entity and adds references to it at given paths.
  */
-export const appendEntity = (state: Object, pathToSource: Array<String>, pathsToReferences: Array<Array<String>>, object: Object): Object => {
-  if (!_.has(state, pathToSource)) {
+export const appendEntity = (state: Object, pathToSource: Array<String>, pathsToReferences: Array<Array<String>>, object: Object, schema: Object): Object => {
+  if (!_.has(state, pathToSource) || !_.has(object, 'id')) {
     return state
   }
-  const { entities } = normalize(object, comment)
+  const { entities } = normalize(object, schema)
 
   const updatedState = merge(state, entities)
 
@@ -86,7 +85,7 @@ export const appendEntity = (state: Object, pathToSource: Array<String>, pathsTo
   let referenceList
 
   for (let i = 0; i < numPaths; i++) {
-    referenceList = _.get(updatedState, pathsToReferences[i])
+    referenceList = _.get(updatedState, pathsToReferences[i], null)
     if (!referenceList || _.includes(referenceList, object.id)) {
       continue
     }
@@ -101,7 +100,7 @@ export const entities = (state: Object = {}, action: Object): Object => {
     case types.SET_NORMALIZED_ENTITIES:
       return merge(state, action.entities)
     case types.APPEND_ENTITY:
-      return appendEntity(state, action.sourcePath, action.referencePaths, action.object)
+      return appendEntity(state, action.sourcePath, action.referencePaths, action.object, action.schema)
     default:
       return state
   }

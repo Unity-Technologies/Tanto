@@ -12,9 +12,8 @@ import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
 import Button from 'react-bootstrap/lib/Button'
 import Panel from 'react-bootstrap/lib/Panel'
 import Alert from 'react-bootstrap/lib/Alert'
-import marked from 'marked'
 import moment from 'moment'
-
+import { formatOnoText, formatMarkdown } from 'utils/text'
 import type { InlineCommentType } from 'universal/comments' //eslint-disable-line
 
 import './styles.css'
@@ -32,23 +31,6 @@ export type Props = {
   onCommentDelete: Function,
 }
 
-function escapeHTML(text) {
-  const escape = {
-    '&': '&amp;',
-    '>': '&gt;',
-    '<': '&lt;',
-    '"': '&quot;',
-    '\'': '&apos;',
-  }
-  return text.replace(/[&<>"'\\]/g, (char) => escape[char])
-}
-
-
-function linkifyRevisionHashes(text) {
-  return text.replace(/([a-f0-9]{12}|[a-f0-9]{40})/, (hash) => (
-    `<a href="${hash}">${hash}</a>`
-  ))
-}
 function StatusPanel(props) {
   const { comment } = props
   let statusChangeString
@@ -147,15 +129,6 @@ class Comment extends Component {
 
   constructor(props: Props) {
     super(props)
-    marked.setOptions({
-      gfm: true,
-      tables: true,
-      breaks: true,
-      pedantic: false,
-      sanitize: true,
-      smartLists: true,
-      smartypants: false,
-    })
     const rendered = this.renderCommentText(props.comment.text, props)
     this.state = {
       editMode: props.newComment,
@@ -164,33 +137,20 @@ class Comment extends Component {
       renderedText: rendered,
     }
   }
-
   props: Props
-
-  formatOnoText(text) {
-    let formatted = escapeHTML(text)
-    formatted = formatted.replace(/@([a-z]+)/g, '<b>@$1</b>')
-    formatted = linkifyRevisionHashes(formatted)
-    // TODO add urlification of urls, revision hashes, and cases
-    return formatted
-  }
-
-  formatMarkdown(text) {
-    let formatted = marked(text)
-    formatted = linkifyRevisionHashes(formatted)
-    return formatted
-  }
 
   onCommentEdit = () => {
     this.setState({ editMode: !this.state.editMode })
   }
 
   onCommentDelete = () => {
-    this.props.onCommentDelete()
+    if (this.props.onCommentDelete) {
+      this.props.onCommentDelete()
+    }
   }
 
   onCommentCancel = () => {
-    if (this.state.newComment) {
+    if (this.state.newComment && this.props.onCommentCancel) {
       this.props.onCommentCancel()
     }
     this.setState({
@@ -219,9 +179,9 @@ class Comment extends Component {
 
   renderCommentText(text, { markdown, onoStyle }) {
     if (text && onoStyle) {
-      return { __html: this.formatOnoText(text) }
+      return { __html: formatOnoText(text) }
     } else if (text && markdown) {
-      return { __html: this.formatMarkdown(text) }
+      return { __html: formatMarkdown(text) }
     }
     return text
   }

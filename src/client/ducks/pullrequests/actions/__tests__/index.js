@@ -6,12 +6,13 @@ import {
   fetchPullRequests,
   parsePullRequest,
   operationName,
+  createPullRequestDiscussionCommentNormalizer,
 } from '../index'
 import { types as fetchTypes } from 'ducks/fetch'
 import { RECEIVE_PAGE } from 'ducks/pagination'
-import schema from 'ducks/schema'
+import schema, { comment as commentSchema } from 'ducks/schema'
 import { normalize } from 'normalizr'
-import { SET_NORMALIZED_ENTITIES } from 'ducks/entities'
+import { SET_NORMALIZED_ENTITIES, APPEND_ENTITY } from 'ducks/entities'
 import { DIRECTION } from 'ducks/order'
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
 import storeMock from 'tests/mocks/storeMock'
@@ -199,3 +200,28 @@ describe('parse pullRequest response', () => {
   })
 })
 
+describe('createPullRequestDiscussionCommentNormalizer', () => {
+  it('should return an APPEND_ENTITY action with correct parameters', () => {
+    const prid = 5
+
+    const comment = { id: 4, text: 'test' }
+    const response = { createComment: { comment } }
+
+    const expectedAction = {
+      type: APPEND_ENTITY,
+      object: comment,
+      sourcePath: ['comments'],
+      referencePaths: [['pullRequests', prid.toString(), 'comments']],
+      schema: commentSchema,
+    }
+
+    expect((createPullRequestDiscussionCommentNormalizer(prid))(response)).to.eql(expectedAction)
+  })
+
+  it('should return nothing when there was no comment', () => {
+    const prid = 5
+    const response = {}
+
+    expect((createPullRequestDiscussionCommentNormalizer(prid))(response)).to.eql(null)
+  })
+})

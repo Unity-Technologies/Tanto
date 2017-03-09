@@ -1,6 +1,9 @@
 /* @flow */
+import _ from 'lodash'
 import { singleFetchActionCreator } from 'ducks/fetch'
-import { NewCommentInput, IssueInput, LocationInput } from 'universal/types'
+import { APPEND_ENTITY } from 'ducks/entities'
+import { comment } from 'ducks/schema'
+import { NewCommentInput } from 'universal/types'
 import editComment from 'ducks/comments/queries/editComment.graphql'
 import createComment from 'ducks/comments/queries/createComment.graphql'
 
@@ -10,24 +13,37 @@ export const types = {
   FETCH_COMMENT_CREATE: 'COMMENTS/FETCH_COMMENT_CREATE',
 }
 
+export const editCommentNormalizer = (
+  (response) => {
+    const modifiedComment = _.get(response, ['editComment', 'comment'], null)
+    if (!modifiedComment) {
+      return null
+    }
+    return {
+      type: APPEND_ENTITY,
+      object: modifiedComment,
+      sourcePath: ['comments'],
+      referencePaths: [],
+      schema: comment
+    }
+  }
+)
+
 
 export const fetchCommentEdit = (commentId: number, text: string) =>
   singleFetchActionCreator(types.FETCH_COMMENT_EDIT,
                            editComment,
                            { commentId, text },
                            '',
-                           null)
+                           null,
+                           editCommentNormalizer)
 
 
-export const fetchCommentCreate =
-  (commentInput: NewCommentInput,
-   normalize: Function) => {
-     const action = singleFetchActionCreator(types.FETCH_COMMENT_CREATE,
-                                             createComment,
-                                             commentInput,
-                                             '',
-                                             null,
-                                             normalize)
-     console.log(action)
-     return action
-   }
+export const fetchCommentCreate = (commentInput: NewCommentInput, normalize: Function) =>
+  singleFetchActionCreator(types.FETCH_COMMENT_CREATE,
+                           createComment,
+                           commentInput,
+                           '',
+                           null,
+                           normalize)
+
