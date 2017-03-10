@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from 'react'
 import type { FileType } from 'universal/types'
-import 'react-select/dist/react-select.css'
 
 import Code from './Code/Code'
 import './CodeDiffView.css'
