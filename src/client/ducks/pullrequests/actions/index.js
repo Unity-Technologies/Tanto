@@ -101,8 +101,8 @@ export const fetchPullRequestChangeReviewers = (
     })
   )
 
-export const createPullRequestDiscussionCommentNormalizer = (pullRequestId) => (
-  (response) => {
+export const createPullRequestDiscussionCommentNormalizer = (pullRequestId: number): Function => (
+  (response: Object) => {
     const newComment = _.get(response, ['createComment', 'comment'], null)
     if (!newComment) {
       return null

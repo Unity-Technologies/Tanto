@@ -57,7 +57,10 @@ export function* fetchAnythingSaga(action: FetchAction): Generator<any, any, any
     const response = yield call(get, action.query, action.variables || {}, action.operationName)
 
     if (action.normalize) {
-      yield put(action.normalize(response.data || response))
+      const normalizeAction = action.normalize(response.data || response)
+      if (normalizeAction) {
+        yield put(normalizeAction)
+      }
     } else {
       yield call(normalizeSaga, response.data || response)
     }

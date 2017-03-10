@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/lib/Row'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { types, createPullRequestDiscussionCommentNormalizer } from 'ducks/pullrequests/actions'
-import type { GeneralCommentType, UserType } from 'universal/types'
+import type { GeneralCommentType, UserType, OriginGraphType } from 'universal/types'
 import type { StatusType } from 'ducks/fetch/selectors'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { fetchCommentEdit, fetchCommentCreate } from 'ducks/comments/actions'
@@ -17,14 +17,15 @@ import { getPullRequestGeneralComments, getPullRequest } from 'ducks/pullrequest
 import { createSelector } from 'reselect'
 
 export type Props = {
-  onSaveComment?: Function,
-  onCommentEdit: Function,
+  createComment: Function,
+  editComment: Function,
   pullRequestId: number,
   pullRequest: {
     owner: UserType,
     description: string,
     created: string,
     comments: Array<GeneralCommentType>,
+    origin: OriginGraphType,
   },
   user: UserType,
   status: StatusType
@@ -55,17 +56,17 @@ class PullRequestDiscussion extends Component {
   constructor(props: Props) {
     super(props)
 
-    this.onCommentEdit = this.onCommentEdit.bind(this)
-    this.onCommentCreation = this.onCommentCreation.bind(this)
+    this.handleCommentEdit = this.handleCommentEdit.bind(this)
+    this.handleCommentCreation = this.handleCommentCreation.bind(this)
   }
 
   props: Props
 
-  onCommentEdit(commentId: number, text: string) : void {
+  handleCommentEdit(commentId: number, text: string) : void {
     this.props.editComment(commentId, text)
   }
 
-  onCommentCreation(commentId: Any, text: string) : void {
+  handleCommentCreation(commentId: any, text: string) : void {
     this.props.createComment({
       repoId: this.props.pullRequest.origin.repository.id,
       text,
@@ -73,7 +74,7 @@ class PullRequestDiscussion extends Component {
     }, this.props.pullRequestId)
   }
 
-  renderComments({ comments }, loggedUsername, onCommentSave) {
+  renderComments({ comments }, loggedUsername, handleCommentSave) {
     if (!comments) {
       return null
     }
@@ -85,7 +86,7 @@ class PullRequestDiscussion extends Component {
             loggedUsername={loggedUsername}
             onoStyle
             simpleText
-            onCommentSave={this.onCommentEdit}
+            handleCommentSave={this.handleCommentEdit}
             comment={comment}
           />
          ))}
@@ -115,7 +116,7 @@ class PullRequestDiscussion extends Component {
                     author: this.props.user,
                   }}
                   newComment
-                  onCommentSave={this.onCommentCreation}
+                  handleCommentSave={this.handleCommentCreation}
                 />
               </div>
             </Col>
@@ -128,22 +129,21 @@ class PullRequestDiscussion extends Component {
 
 export const getPRequest = createSelector(
   getPullRequest, getPullRequestGeneralComments,
-  (pr, comments) => {
-    return {
+  (pr, comments) => (
+    {
       ..._.pick(pr, ['description', 'created', 'owner', 'origin']),
       comments,
-    }
-  }
+    })
 )
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state: Object, props: Props): Props => ({
   ...props,
   pullRequest: getPRequest(state, props),
   status: getFetchStatus(state, props),
   user: getLoggedUser(state, props),
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: Function): Object => ({
   editComment: (commentId, text) => dispatch(
     fetchCommentEdit(commentId, text)),
   createComment: (commentInput, pullRequestId) => dispatch(

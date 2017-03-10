@@ -14,7 +14,7 @@ export const types = {
 }
 
 export const editCommentNormalizer = (
-  (response) => {
+  (response: Object) => {
     const modifiedComment = _.get(response, ['editComment', 'comment'], null)
     if (!modifiedComment) {
       return null
@@ -24,7 +24,7 @@ export const editCommentNormalizer = (
       object: modifiedComment,
       sourcePath: ['comments'],
       referencePaths: [],
-      schema: comment
+      schema: comment,
     }
   }
 )
@@ -35,7 +35,7 @@ export const fetchCommentEdit = (commentId: number, text: string) =>
                            editComment,
                            { commentId, text },
                            '',
-                           null,
+                           [],
                            editCommentNormalizer)
 
 
@@ -44,6 +44,6 @@ export const fetchCommentCreate = (commentInput: NewCommentInput, normalize: Fun
                            createComment,
                            commentInput,
                            '',
-                           null,
+                           [],
                            normalize)
 

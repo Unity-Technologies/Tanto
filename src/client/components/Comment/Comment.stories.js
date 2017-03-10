@@ -14,7 +14,6 @@ storiesOf('Comment', module)
     <div>
       <Comment
         loggedUsername={'test_user'}
-        simpleText
         comment={{
           id: '1',
           text: twoParagraphs,
@@ -31,7 +30,6 @@ storiesOf('Comment', module)
       />
       <Comment
         loggedUsername={'test_user'}
-        simpleText
         comment={{
           id: '2',
           text: 'I am a comment by another user, and this comment changes my vote to rejected.',
@@ -49,7 +47,6 @@ storiesOf('Comment', module)
       />
       <Comment
         loggedUsername={'test_user'}
-        simpleText
         onoStyle
         comment={{
           id: '2',
@@ -72,7 +69,6 @@ fd34e830fab3 revision hashes are links
       />
       <Comment
         loggedUsername={'test_user'}
-        simpleText
         comment={{
           author: {
             id: 1,
@@ -86,7 +82,6 @@ fd34e830fab3 revision hashes are links
       />
       <Comment
         loggedUsername={'test_user'}
-        simpleText
         markdown
         comment={{
           text: 'I **am** a `markdown` \n - [comment](www.example.com).\n',
@@ -102,7 +97,6 @@ fd34e830fab3 revision hashes are links
       <Comment
         loggedUsername={'test_user'}
         newComment
-        simpleText
         comment={{
           author: {
             id: 1,

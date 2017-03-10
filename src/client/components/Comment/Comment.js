@@ -1,4 +1,4 @@
-// TODO: finish flow annotations
+/* @flow */
 
 import React, { Component } from 'react'
 import TextEditorBox from 'components/TextEditorBox'
@@ -14,7 +14,7 @@ import Panel from 'react-bootstrap/lib/Panel'
 import Alert from 'react-bootstrap/lib/Alert'
 import moment from 'moment'
 import { formatOnoText, formatMarkdown } from 'utils/text'
-import type { InlineCommentType } from 'universal/comments' //eslint-disable-line
+import type { InlineCommentType } from 'universal/types' //eslint-disable-line
 
 import './styles.css'
 
@@ -25,14 +25,20 @@ export type Props = {
   markdown?: boolean,
   hideSettings?: boolean,
   hideHeader?: boolean,
-  customHeader?: string,
-  onCommentSave: Function,
-  onCommentCancel: Function,
-  onCommentDelete: Function,
+  newComment: boolean,
+  handleCommentSave?: Function,
+  handleCommentCancel?: Function,
+  handleCommentDelete?: Function,
 }
 
-function StatusPanel(props) {
-  const { comment } = props
+export type State = {
+  editMode: boolean,
+  newComment: boolean,
+  commentText: string,
+  renderedText: string | Object,
+}
+
+function StatusPanel(comment: InlineCommentType) {
   let statusChangeString
   let bsStyle
 
@@ -68,7 +74,7 @@ function StatusPanel(props) {
 function CommentHeader(props) {
   const { comment,
           showButtons,
-          onCommentEdit } = props
+          handleCommentEdit } = props
 
   const buttonSize = 'small'
   return (
@@ -84,7 +90,7 @@ function CommentHeader(props) {
             className="comment-header-buttons pull-right"
           >
             <Button
-              onClick={onCommentEdit}
+              onClick={handleCommentEdit}
               bsSize={buttonSize}
             >
               <Glyphicon glyph="edit" />
@@ -129,7 +135,7 @@ class Comment extends Component {
 
   constructor(props: Props) {
     super(props)
-    const rendered = this.renderCommentText(props.comment.text, props)
+    const rendered = this.renderCommentText(props.comment.text, props.markdown, props.onoStyle)
     this.state = {
       editMode: props.newComment,
       newComment: props.newComment,
@@ -138,20 +144,20 @@ class Comment extends Component {
     }
   }
   props: Props
-
-  onCommentEdit = () => {
+  state: State
+  handleCommentEdit = () => {
     this.setState({ editMode: !this.state.editMode })
   }
 
-  onCommentDelete = () => {
-    if (this.props.onCommentDelete) {
-      this.props.onCommentDelete()
+  handleCommentDelete = () => {
+    if (this.props.handleCommentDelete) {
+      this.props.handleCommentDelete()
     }
   }
 
-  onCommentCancel = () => {
-    if (this.state.newComment && this.props.onCommentCancel) {
-      this.props.onCommentCancel()
+  handleCommentCancel = () => {
+    if (this.state.newComment && this.props.handleCommentCancel) {
+      this.props.handleCommentCancel()
     }
     this.setState({
       editMode: false,
@@ -160,24 +166,24 @@ class Comment extends Component {
     })
   }
 
-  onCommentSave = () => {
-    this.props.onCommentSave(this.props.comment.id, this.state.commentText)
+  handleCommentSave = () => {
+    this.props.handleCommentSave(this.props.comment.id, this.state.commentText)
 
     if (this.state.newComment) {
       this.setState({
-        commentText: null,
+        commentText: '',
       })
     } else {
       this.setState({
         editMode: false,
-        renderedText: this.renderCommentText(this.state.commentText, this.props),
+        renderedText: this.renderCommentText(this.state.commentText, this.props.markdown, this.props.onoStyle),
       })
     }
 
-    // TODO: Figure out proper API for onCommentSave
+    // TODO: Figure out proper API for handleCommentSave
   }
 
-  renderCommentText(text, { markdown, onoStyle }) {
+  renderCommentText(text:string, markdown: boolean, onoStyle:boolean) {
     if (text && onoStyle) {
       return { __html: formatOnoText(text) }
     } else if (text && markdown) {
@@ -190,7 +196,6 @@ class Comment extends Component {
     const {
       loggedUsername,
       comment,
-      simpleText,
       newComment,
       hideHeader,
       onoStyle,
@@ -204,7 +209,7 @@ class Comment extends Component {
     const header = !newComment && !hideHeader && (
       <CommentHeader
         showButtons={isAuthor}
-        onCommentEdit={this.onCommentEdit}
+        handleCommentEdit={this.handleCommentEdit}
         comment={comment}
       />)
 
@@ -234,7 +239,7 @@ class Comment extends Component {
                           text={this.state.commentText}
                           placeholder={placeholder}
                           readOnly={!editMode}
-                          simpleText={simpleText}
+                          simpleText
                           hideStyleControls
                         />
                       </Well>
@@ -243,10 +248,10 @@ class Comment extends Component {
                   <Row>
                     <Col>
                       <ButtonToolbar>
-                        <Button onClick={this.onCommentSave}>
+                        <Button onClick={this.handleCommentSave}>
                           Save
                         </Button>
-                        <Button onClick={this.onCommentCancel}>
+                        <Button onClick={this.handleCommentCancel}>
                           Cancel
                         </Button>
                       </ButtonToolbar>
