@@ -86,7 +86,7 @@ export const getIssuesEntities = (state: Object) =>
 export const getPullRequestIssues = createSelector(
   getIssuesEntities, userEntitiesSelector, getPullRequestNormlized,
   (issueEntities, userEntities, pr) => {
-    const prIssues = _.values(_.pick(issueEntities, pr.issues || []))
+    const prIssues = pr ? _.values(_.pick(issueEntities, pr.issues || [])) : []
     // Denormalization of owner and assignee
     return prIssues.map(issue => ({
       ...issue,
