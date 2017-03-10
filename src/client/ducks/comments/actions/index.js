@@ -35,7 +35,7 @@ export const fetchCommentEdit = (commentId: number, text: string) =>
                            editComment,
                            { commentId, text },
                            '',
-                           [],
+                           undefined,
                            editCommentNormalizer)
 
 
@@ -44,6 +44,6 @@ export const fetchCommentCreate = (commentInput: NewCommentInput, normalize: Fun
                            createComment,
                            commentInput,
                            '',
-                           [],
+                           undefined,
                            normalize)
 

@@ -96,9 +96,6 @@ export const fetchPullRequestChangeReviewers = (
     pullRequestChangeReviewers,
     { pullRequestId, addReviewers, removeReviewers },
     '',
-    (data: Object, cbArgs: Object): Object => ({
-      pullRequest: _.get(data, ['data', 'changeReviewers', 'pullRequest'], {}),
-    })
   )
 
 export const createPullRequestDiscussionCommentNormalizer = (pullRequestId: number): Function => (

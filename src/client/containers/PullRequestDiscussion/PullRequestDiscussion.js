@@ -12,7 +12,7 @@ import type { StatusType } from 'ducks/fetch/selectors'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { fetchCommentEdit, fetchCommentCreate } from 'ducks/comments/actions'
 import LoadingComponent from 'components/LoadingComponent'
-import { getLoggedUser } from 'ducks/session/selectors'
+import { getLoggedUsername } from 'ducks/session/selectors'
 import { getPullRequestGeneralComments, getPullRequest } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 
@@ -27,7 +27,7 @@ export type Props = {
     comments: Array<GeneralCommentType>,
     origin: OriginGraphType,
   },
-  user: UserType,
+  loggedUsername: string,
   status: StatusType
 }
 
@@ -38,11 +38,14 @@ const renderHeadComment = ({ owner, description, created }, loggedUsername) => {
   if (!owner || !created) {
     return null
   }
+
+  const text = description || 'No description.'
   const comment = {
     author: owner,
-    text: description,
+    text,
     created,
   }
+
   return (
     <Comment
       loggedUsername={loggedUsername}
@@ -53,20 +56,14 @@ const renderHeadComment = ({ owner, description, created }, loggedUsername) => {
 }
 
 class PullRequestDiscussion extends Component {
-  constructor(props: Props) {
-    super(props)
-
-    this.handleCommentEdit = this.handleCommentEdit.bind(this)
-    this.handleCommentCreation = this.handleCommentCreation.bind(this)
-  }
 
   props: Props
 
-  handleCommentEdit(commentId: number, text: string) : void {
+  handleCommentEdit = (commentId: number, text: string) : void => {
     this.props.editComment(commentId, text)
   }
 
-  handleCommentCreation(commentId: any, text: string) : void {
+  handleCommentCreation = (commentId: any, text: string) : void => {
     this.props.createComment({
       repoId: this.props.pullRequest.origin.repository.id,
       text,
@@ -74,7 +71,7 @@ class PullRequestDiscussion extends Component {
     }, this.props.pullRequestId)
   }
 
-  renderComments({ comments }, loggedUsername, handleCommentSave) {
+  renderComments(comments, loggedUsername) {
     if (!comments) {
       return null
     }
@@ -103,20 +100,19 @@ class PullRequestDiscussion extends Component {
         <div>
           <Row>
             <Col md={12}>
-              {renderHeadComment(this.props.pullRequest, this.props.user.username)}
+              {renderHeadComment(this.props.pullRequest, this.props.loggedUsername)}
             </Col>
           </Row>
           <hr style={{ margin: '15px 0' }} />
           <Row>
             <Col md={12}>
-              {this.renderComments(this.props.pullRequest, this.props.user.username)}
+              {this.renderComments(this.props.pullRequest.comments, this.props.loggedUsername)}
               <div name="discussion-last" id="discussion-last" style={{ marginTop: '20px' }}>
                 <Comment
-                  comment={{
-                    author: this.props.user,
-                  }}
+                  comment={{}}
                   newComment
                   handleCommentSave={this.handleCommentCreation}
+                  loggedUsername
                 />
               </div>
             </Col>
@@ -140,7 +136,7 @@ const mapStateToProps = (state: Object, props: Props): Props => ({
   ...props,
   pullRequest: getPRequest(state, props),
   status: getFetchStatus(state, props),
-  user: getLoggedUser(state, props),
+  loggedUsername: getLoggedUsername(state, props),
 })
 
 const mapDispatchToProps = (dispatch: Function): Object => ({

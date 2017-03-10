@@ -25,7 +25,7 @@ export type Props = {
   markdown?: boolean,
   hideSettings?: boolean,
   hideHeader?: boolean,
-  newComment: boolean,
+  newComment?: boolean,
   handleCommentSave?: Function,
   handleCommentCancel?: Function,
   handleCommentDelete?: Function,
@@ -38,10 +38,9 @@ export type State = {
   renderedText: string | Object,
 }
 
-function StatusPanel(comment: InlineCommentType) {
+function StatusPanel({ comment }) {
   let statusChangeString
   let bsStyle
-
   switch (comment.status) {
     case 'approved':
       bsStyle = 'success'
@@ -59,7 +58,6 @@ function StatusPanel(comment: InlineCommentType) {
       bsStyle = 'default'
       statusChangeString = 'stopped reviewing'
   }
-
   return (
     <Row>
       <Col md={12}>
@@ -137,8 +135,8 @@ class Comment extends Component {
     super(props)
     const rendered = this.renderCommentText(props.comment.text, props.markdown, props.onoStyle)
     this.state = {
-      editMode: props.newComment,
-      newComment: props.newComment,
+      editMode: props.newComment || false,
+      newComment: props.newComment || false,
       commentText: props.comment.text,
       renderedText: rendered,
     }
@@ -167,7 +165,9 @@ class Comment extends Component {
   }
 
   handleCommentSave = () => {
-    this.props.handleCommentSave(this.props.comment.id, this.state.commentText)
+    if (this.props.handleCommentSave) {
+      this.props.handleCommentSave(this.props.comment.id, this.state.commentText)
+    }
 
     if (this.state.newComment) {
       this.setState({
@@ -183,7 +183,7 @@ class Comment extends Component {
     // TODO: Figure out proper API for handleCommentSave
   }
 
-  renderCommentText(text:string, markdown: boolean, onoStyle:boolean) {
+  renderCommentText(text:string, markdown: boolean = false, onoStyle: boolean = false) {
     if (text && onoStyle) {
       return { __html: formatOnoText(text) }
     } else if (text && markdown) {
@@ -269,7 +269,6 @@ class Comment extends Component {
     if (!this.props.comment || !this.props.comment.author) {
       return null
     }
-
     return (
       <Grid className="comment-frame">
           {this.props.comment.status && <StatusPanel comment={this.props.comment} />}
