@@ -29,7 +29,9 @@ const repository = new schema.Entity('repositories', {
 const group = new schema.Entity('groups')
 
 group.define({
-  groups: [group],
+  groups: {
+    nodes: [group],
+  },
   repositories: {
     nodes: [repository],
   },
@@ -65,7 +67,9 @@ export const tantoSchema = {
   changeset,
   pullRequest,
   group,
-  groups: [group],
+  groups: {
+    nodes: [group],
+  },
   pullRequests: [pullRequest],
   repositories: {
     nodes: [repository],
