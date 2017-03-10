@@ -72,7 +72,8 @@ export const merge = (state: Object, entity: Object): Object => {
 /**
  * Appends/updates a new/modified entity and adds references to it at given paths.
  */
-export const appendEntity = (state: Object, pathToSource: Array<string>, pathsToReferences: Array<Array<string>>, object: Object, schema: Object): Object => {
+export const appendEntity = (state: Object, pathToSource: Array<string>,
+                             pathsToReferences: Array<Array<string>>, object: Object, schema: Object): Object => {
   if (!_.has(state, pathToSource) || !_.has(object, 'id')) {
     return state
   }

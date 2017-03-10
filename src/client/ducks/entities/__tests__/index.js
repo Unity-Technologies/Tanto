@@ -3,7 +3,7 @@ import {
   merge,
   appendEntity,
 } from '../index'
-import { normalize, schema } from 'normalizr'
+import { schema } from 'normalizr'
 const expect = chai.expect
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)

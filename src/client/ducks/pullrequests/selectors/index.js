@@ -105,10 +105,7 @@ export const getCommentsEntities = (state: Object) =>
 export const getPullRequestGeneralComments = createSelector(
   getCommentsEntities, userEntitiesSelector, getPullRequestNormalized,
   (commentsEntities, userEntities, pr) => {
-    console.log(pr)
-    console.log(commentsEntities)
     const prComments = _.values(_.pick(commentsEntities, _.get(pr, ['comments'], [])))
-    console.log(prComments)
     //  Denormalization of comment author
     return prComments.map(comment => denormalizeCommentAuthor(comment, userEntities))
   }
