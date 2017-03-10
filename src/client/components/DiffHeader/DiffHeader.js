@@ -27,26 +27,26 @@ export type Props = {
   },
   onViewChangeClick: Function,
   selectedValue: string,
+  collapsed: boolean,
+  collapsedComments: boolean,
   onCollapse?: Function,
-};
+  onCollapseComments?: Function,
+}
+
 
 class DiffHeader extends Component {
   constructor(props: Props) {
     super(props)
 
     this.state = {
-      notesCollapsed: false,
       selectedValue: props.selectedValue || '0',
       onViewChangeClick: props.onViewChangeClick,
     }
-    this.handleChangeSingle = this.handleChangeSingle.bind(this)
-    this.handleCollapseClick = this.handleCollapseClick.bind(this)
-    this.handleExpandClick = this.handleExpandClick.bind(this)
   }
 
   props: Props
 
-  handleChangeSingle(event, value) {
+  handleChangeSingle = (event, value) => {
     this.setState({
       selectedValue: value,
     })
@@ -56,23 +56,15 @@ class DiffHeader extends Component {
     }
   }
 
-  handleCollapseClick() {
-    this.setState({
-      notesCollapsed: true,
-    })
-
+  handleCommentsCollapseClick = (value: boolean) => {
     if (this.props.onCollapse) {
-      this.props.onCollapse(true)
+      this.props.onCollapseComments(value)
     }
   }
 
-  handleExpandClick() {
-    this.setState({
-      notesCollapsed: false,
-    })
-
+  handleDiffCollapseClick = (value: boolean) => {
     if (this.props.onCollapse) {
-      this.props.onCollapse(false)
+      this.props.onCollapse(value)
     }
   }
 
@@ -82,6 +74,20 @@ class DiffHeader extends Component {
     return (
       <Navbar style={navbarStyle} fluid>
         <Nav>
+          <NavItem>
+            <div>
+              <div onClick={this.handleDiffCollapseClick}>
+              {!this.props.collapsed && <div onMouseDown={() => this.handleDiffCollapseClick(true)}>
+                <i className="fa fa-minus" aria-hidden="true"></i>
+              </div>}
+              {this.props.collapsed &&
+                <div onMouseDown={() => this.handleDiffCollapseClick(false)}>
+                  <i className="fa fa-plus" aria-hidden="true"></i>
+                </div>}
+              </div>
+
+            </div>
+          </NavItem>
           <NavItem>
             <div style={{ width: '150px', display: 'flex' }}>
               <div

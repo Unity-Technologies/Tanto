@@ -49,5 +49,13 @@ query pullRequestMetadata($id: Int!) {
         fullName
       }
     }
+    missingReviewers {
+      area
+      reviewers {
+        id
+        username
+        fullName
+      }
+    }
   }
 }

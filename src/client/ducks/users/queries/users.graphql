@@ -1,8 +1,10 @@
 query {
   users{
-    id
-    username
-    fullName
-    email
+    nodes {
+      id
+      username
+      fullName
+      email
+    }
   }
 }

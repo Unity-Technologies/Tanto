@@ -1,8 +1,7 @@
 /* @flow */
 
-import Select from 'react-select'
 import React, { Component } from 'react'
-import 'react-select/dist/react-select.css'
+import { default as Select } from 'components/VirtualizedSelect'
 
 export type Props = {
   placeholder?: string,

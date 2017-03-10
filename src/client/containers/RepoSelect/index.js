@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 
-import Select from 'react-select'
+import { default as Select } from 'components/VirtualizedSelect'
 import { connect } from 'react-redux'
 import { searchRepository } from 'ducks/repositories/actions'
 import { getSearchRepoResultState } from 'ducks/repositories/selectors'

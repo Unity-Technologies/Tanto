@@ -7,7 +7,9 @@ query repositoriesNested($name: String!) {
       }
     }
     groups {
-      ...group
+      nodes {
+        ...group
+      }
     }
   }
 }
@@ -19,7 +21,9 @@ query repositoriesTopLevel {
     }
   }
   groups {
-    ...group
+    nodes {
+      ...group
+    }
   }
 }
 

@@ -44,7 +44,7 @@
     "no-unused-vars": ["error", { "args": "none" }],
     "import/extensions": "off",
     "no-duplicate-imports": "off",
-    "max-len": ["error", 100],
+    "max-len": ["error", 140],
     "react/prop-types": "off"
   },
   "globals": {

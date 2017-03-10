@@ -278,4 +278,16 @@ describe('normalize saga', () => {
 
     expect(generator.next().value).to.deep.equal(put({ type: types.SET_NORMALIZED_ENTITIES, entities: normalized.entities }))
   })
+
+  it('null data ', () => {
+    const generator = normalizeSaga(null)
+
+    expect(generator.next().value).to.deep.equal(undefined)
+  })
+
+  it('undefined data ', () => {
+    const generator = normalizeSaga(undefined)
+
+    expect(generator.next().value).to.deep.equal(undefined)
+  })
 })

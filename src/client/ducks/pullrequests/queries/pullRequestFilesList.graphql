@@ -11,18 +11,9 @@ query pullRequestFiles($id: Int!) {
       operation
       oldName
       name
-      diff
       type
       comments {
-        text
-        created
         id
-        author {
-          id
-          username
-          fullName
-        }
-        lineNumber
       }
     }
   }

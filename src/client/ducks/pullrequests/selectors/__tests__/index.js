@@ -5,7 +5,9 @@ import {
   getPageFetchStatus,
   getPullRequest,
   getPullRequestsPage,
+  fileNameSelector,
   getPullRequestsEntities,
+  getFilesEntities,
   pullRequestsPageIdsSelector,
   getIssuesEntities,
   getCommentsEntities,
@@ -13,6 +15,7 @@ import {
   getPullRequestId,
   getPullRequestFiles,
   getPullRequestGeneralComments,
+  getPullRequestFile
 } from '../index'
 
 import { types } from '../../actions'
@@ -91,10 +94,10 @@ describe('getPullRequest', () => {
         status: 0,
         user: 6,
       },
-        {
-          status: 3,
-          user: 1,
-        }],
+      {
+        status: 3,
+        user: 1,
+      }],
     }
     const users =
       {
@@ -114,10 +117,10 @@ describe('getPullRequest', () => {
         status: 0,
         user: { id: 6, username: 'testusername6' },
       },
-        {
-          status: 3,
-          user: { id: 1, username: 'testusername1' },
-        }],
+      {
+        status: 3,
+        user: { id: 1, username: 'testusername1' },
+      }],
     }
 
     expect(getPullRequest(state, props)).to.eql(pullRequestExpected)
@@ -683,14 +686,6 @@ describe('getPullRequestFiles', () => {
       6: { id: 6, username: 'testusername6' },
     }
 
-  const comments =
-    {
-      1: { id: 1, message: 'test pr', author: 3 },
-      12: { id: 12, message: 'test pr12', author: 1 },
-      21: { id: 21, message: 'test pr21', author: 6 },
-      31: { id: 31, message: 'test pr31', author: 3 },
-    }
-
 
   it('not empty state', () => {
     const pullRequests =
@@ -700,10 +695,7 @@ describe('getPullRequestFiles', () => {
           owner: 3,
           title: 'test pr92',
           description: 'test pr description92',
-          files: [
-            { id: 2, name: 'file name2', comments: [31] },
-            { id: 1, name: 'file name1', comments: [1, 21, 12] },
-          ],
+          files: [2, 1],
         },
 
         93: {
@@ -716,21 +708,355 @@ describe('getPullRequestFiles', () => {
         },
       }
 
-
-    const state = { entities: { comments, pullRequests, users } }
+    const files = {
+      2: { id: 2, name: 'file name2', comments: [31] },
+      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    }
+    const state = { entities: { pullRequests, users, files } }
     const props = { params: { prid: 92 } }
-    const expected = [
-      { id: 2, name: 'file name2', comments: [{ id: 31, message: 'test pr31', author: { id: 3, username: 'testusername3' } }] },
+    const expected =
+
+      [{ id: 1, name: 'file name1', comments: [1, 21, 12] },
+      { id: 2, name: 'file name2', comments: [31] }]
+
+    expect(getPullRequestFiles(state, props)).to.eql(expected)
+  })
+
+  it('empty state', () => {
+    const pullRequests =
       {
-        id: 1, name: 'file name1', comments:
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const files = {
+      2: { id: 2, name: 'file name2', comments: [31] },
+      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    }
+    const state = { entities: { pullRequests, users } }
+    const props = { params: { prid: 92 } }
+    const expected =
+      [{ id: 1, name: 'file name1', comments: [1, 21, 12] },
+      { id: 2, name: 'file name2', comments: [31] }]
+
+    expect(getPullRequestFiles(state, props)).to.eql([])
+  })
+
+  it('empty pullRequests state', () => {
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const files = {
+      2: { id: 2, name: 'file name2', comments: [31] },
+      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    }
+    const state = { entities: { users, files } }
+    const props = { params: { prid: 92 } }
+    const expected =
+      [{ id: 1, name: 'file name1', comments: [1, 21, 12] },
+      { id: 2, name: 'file name2', comments: [31] }]
+
+    expect(getPullRequestFiles(state, props)).to.eql([])
+  })
+
+  it('empty entities state', () => {
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const files = {
+      2: { id: 2, name: 'file name2', comments: [31] },
+      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    }
+    const state = { entities: {} }
+    const props = { params: { prid: 92 } }
+    const expected =
+      [{ id: 1, name: 'file name1', comments: [1, 21, 12] },
+      { id: 2, name: 'file name2', comments: [31] }]
+
+    expect(getPullRequestFiles(state, props)).to.eql([])
+  })
+})
+
+describe('getFilesEntities', () => {
+  it('not empty entities state', () => {
+    const files =
+      {
+        12: {
+          id: 12,
+          title: 'test file',
+          description: 'test pr description',
+        },
+      }
+    const state = { entities: { files } }
+    expect(getFilesEntities(state)).to.eql(files)
+  })
+
+  it('empty entities state', () => {
+    const state = { entities: {} }
+    expect(getFilesEntities(state)).to.eql({})
+  })
+
+  it('empty files state', () => {
+    const state = { entities: { pullRequests: {} } }
+    expect(getFilesEntities(state)).to.eql({})
+  })
+})
+
+describe('fileNameSelector', () => {
+  it('empty props', () => {
+    const files =
+      {
+        12: {
+          id: 12,
+          title: 'test file',
+          description: 'test pr description',
+        },
+      }
+    const state = { entities: { files } }
+    expect(fileNameSelector(state, {})).to.eql(undefined)
+  })
+
+  it('not empty props', () => {
+    const state = { entities: {} }
+    expect(fileNameSelector(state, { fileName: 'testFilename.cs' })).to.eql('testFilename.cs')
+  })
+})
+
+describe('getPullRequestFile', () => {
+  const users =
+    {
+      1: { id: 1, username: 'testusername1' },
+      3: { id: 3, username: 'testusername3' },
+      6: { id: 6, username: 'testusername6' },
+    }
+  const comments = {
+    1: { id: 1, message: 'test pr', author: 3 },
+    12: { id: 12, message: 'test pr12', author: 1 },
+    21: { id: 21, message: 'test pr21', author: 6 },
+  }
+
+  it('not empty state', () => {
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const files = {
+      2: { id: 2, name: 'file name2', comments: [31] },
+      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    }
+    const state = { entities: { comments, pullRequests, users, files } }
+    const props = { params: { prid: 92 }, fileName: 'file name1' }
+    const expected =
+      {
+        id: 1, name: 'file name1', id: 1, name: 'file name1', comments:
         [
           { id: 1, message: 'test pr', author: { id: 3, username: 'testusername3' } },
           { id: 12, message: 'test pr12', author: { id: 1, username: 'testusername1' } },
           { id: 21, message: 'test pr21', author: { id: 6, username: 'testusername6' } },
-        ],
-      },
-    ]
+        ]
+      }
 
-    expect(getPullRequestFiles(state, props)).to.eql(expected)
+    expect(getPullRequestFile(state, props)).to.eql(expected)
+  })
+
+  it('empty comments state', () => {
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const files = {
+      2: { id: 2, name: 'file name2', comments: [31] },
+      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    }
+    const state = { entities: { pullRequests, users, files } }
+    const props = { params: { prid: 92 }, fileName: 'file name1' }
+    const expected =
+      {
+        id: 1, name: 'file name1', id: 1, name: 'file name1', comments:[]
+      }
+
+    expect(getPullRequestFile(state, props)).to.eql(expected)
+  })
+
+  it('empty files state', () => {
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const files = {
+      2: { id: 2, name: 'file name2', comments: [31] },
+      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    }
+    const state = { entities: { comments, pullRequests, users } }
+    const props = { params: { prid: 92 }, fileName: 'file name1' }
+
+    expect(getPullRequestFile(state, props)).to.eql({})
+  })
+
+  it('empty pullRequests state', () => {
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const files = {
+      2: { id: 2, name: 'file name2', comments: [31] },
+      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    }
+    const state = { entities: { comments, files, users } }
+    const props = { params: { prid: 92 }, fileName: 'file name1' }
+
+    expect(getPullRequestFile(state, props)).to.eql({})
+  })
+
+  it('empty users state', () => {
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const files = {
+      2: { id: 2, name: 'file name2', comments: [31] },
+      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    }
+    const state = { entities: { comments, pullRequests, files } }
+    const props = { params: { prid: 92 }, fileName: 'file name1' }
+    const expected =
+      {
+        id: 1, name: 'file name1', id: 1, name: 'file name1', comments:
+        [
+          { id: 1, message: 'test pr', author: {}},
+          { id: 12, message: 'test pr12', author: {}},
+          { id: 21, message: 'test pr21', author: {}},
+        ]
+      }
+
+    expect(getPullRequestFile(state, props)).to.eql(expected)
   })
 })
