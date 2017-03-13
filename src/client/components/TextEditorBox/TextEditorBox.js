@@ -8,7 +8,6 @@ import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import createHashtagPlugin from 'draft-js-hashtag-plugin'
-import exporter from 'draft-js-ast-exporter'
 import importer from 'draft-js-ast-importer'
 import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
@@ -76,7 +75,7 @@ class TextEditorBox extends Component {
       editorState,
     })
     if (this.props.onTextChanged) {
-      this.props.onTextChanged(exporter(this.state.editorState))
+      this.props.onTextChanged(this.state.editorState.getCurrentContent().getPlainText())
     }
   }
 
@@ -139,15 +138,13 @@ class TextEditorBox extends Component {
         <div style={{ width: '100%', padding: '10px' }}>
           <div style={{ display: 'inline-flex' }}>
             <Avatar />
-            <div
-              style={{
-                fontSize: '14px', color: '#31708f', padding: '0 20px',
-                fontWeight: 'bold',
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-              }}
-            >
+            style={{
+              fontSize: '14px', color: '#31708f', padding: '0 20px',
+              fontWeight: 'bold',
+              fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            }}
+            >}
               {author}
-            </div>
           </div>
           <StyleControls
             editorState={this.state.editorState}
@@ -155,11 +152,12 @@ class TextEditorBox extends Component {
             onToogleBlockType={this.onToogleBlockType}
             style={styleControlsStyle}
           />
+          <hr style={{ margin: '15px 0' }} />
         </div>
+
       }
         <div style={{ paddingTop: '5px' }}>
           <div
-            className="RichEditor-editor"
             onClick={this.focus}
             style={editorStyle}
           >

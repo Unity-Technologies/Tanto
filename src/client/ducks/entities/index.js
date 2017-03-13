@@ -1,10 +1,13 @@
 /* @flow */
 import _ from 'lodash'
+import { normalize } from 'normalizr'
 
 export const SET_NORMALIZED_ENTITIES = 'ENTITIES/SET_NORMALIZED_ENTITIES'
+export const APPEND_ENTITY = 'ENTITIES/APPEND_ENTITY'
 
 export const types = {
   SET_NORMALIZED_ENTITIES,
+  APPEND_ENTITY,
 }
 
 /*
@@ -26,7 +29,7 @@ we identify a need for attempting to preserve the respective array ordering, it 
 to needlessly complicate the customizer functionality.
  */
 const customizer = (merge, objValue, srcValue, key, object, source, stack) => {
-  const overwriteKeys = ['reviews', 'missingReviewers']
+  const overwriteKeys = ['reviews', 'missingReviewers', 'comments']
   if (objValue instanceof Array && srcValue instanceof Array) {
     if (overwriteKeys.indexOf(key) !== -1) {
       return srcValue
@@ -65,12 +68,41 @@ export const merge = (state: Object, entity: Object): Object => {
   return _.isEqual(updatedState, state) ? state : updatedState
 }
 
+
+/**
+ * Appends/updates a new/modified entity and adds references to it at given paths.
+ */
+export const appendEntity = (state: Object, pathToSource: Array<string>,
+                             pathsToReferences: Array<Array<string>>, object: Object, schema: Object): Object => {
+  if (!_.has(state, pathToSource) || !_.has(object, 'id')) {
+    return state
+  }
+  const { entities } = normalize(object, schema)
+
+  const updatedState = merge(state, entities)
+
+  const numPaths = pathsToReferences.length
+
+  let referenceList
+
+  for (let i = 0; i < numPaths; i++) {
+    referenceList = _.get(updatedState, pathsToReferences[i], null)
+    if (!referenceList || _.includes(referenceList, object.id)) {
+      continue
+    }
+    referenceList.push(object.id)
+  }
+
+  return updatedState
+}
+
 export const entities = (state: Object = {}, action: Object): Object => {
   switch (action.type) {
     case types.SET_NORMALIZED_ENTITIES:
       return merge(state, action.entities)
+    case types.APPEND_ENTITY:
+      return appendEntity(state, action.sourcePath, action.referencePaths, action.object, action.schema)
     default:
       return state
   }
 }
-

@@ -1,0 +1,46 @@
+.default-comment {
+    border: 2px solid rgb(200, 210, 210);
+    border-radius: 10px 10px 10px 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.comment-body-onostyle {
+    white-space: pre-wrap;
+    font-size: 15px;
+    font-family: Lucidia Console, monospace;
+}
+
+.comment-body-markdown {
+    font-size: 15px;
+}
+.comment-text {
+    white-space: pre-wrap;
+}
+
+.new-comment {
+    border: 2px solid #d9edf7;
+    box-shadow: 3px 2px 11px 1px #cac9c9;
+}
+.comment-header {
+    font-size: 14px;
+    color: grey;
+}
+
+.comment-header-buttons {
+    
+}
+.comment-header-text {
+    vertical-align: bottom;
+    font-size: 14px;
+}
+
+.comment-frame {
+    margin-bottom: 10px;
+}
+
+.comment-status-panel {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+}
