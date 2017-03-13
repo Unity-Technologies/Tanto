@@ -13,6 +13,8 @@ export default function* rootSaga(): Generator<*, *, *> {
   yield fork(
     takeEvery, fetchTypes.FETCH_DATA, fetchAnythingSaga)
   yield fork(
+    takeEvery, fetchTypes.MUTATE_DATA, fetchAnythingSaga)
+  yield fork(
     takeLatest, repoTypes.SEARCH_REPOSITORY, searchRepository)
   yield fork(
     takeEvery, usersTypes.FETCH_USERS, fetchUsers)

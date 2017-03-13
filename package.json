@@ -187,6 +187,7 @@
     "express-session": "^1.14.2",
     "express-status-monitor": "^0.1.5",
     "express-validator": "^2.21.0",
+    "fbjs": "^0.8.9",
     "fetch-mock": "^5.5.0",
     "file-loader": "^0.9.0",
     "font-awesome": "^4.7.0",

@@ -7,6 +7,7 @@ import type { FetchAction } from 'ducks/fetch'
 import { normalize } from 'normalizr'
 import schema from 'ducks/schema'
 import { types } from 'ducks/entities'
+import { fetchTypes } from 'ducks/fetch'
 
 export function* fetchSaga(
   actionName: string, graphQuery: string, variables: any = null): Generator<any, any, any> {
@@ -22,32 +23,30 @@ export function* fetchSaga(
   return null
 }
 
-export function* normalizeSaga(data: Object): Generator<any, any, any> {
-  if (!data) {
+export const transformMutationResponse = (response: Object) => {
+  let entities = response.data || response
+  const mutationName = Object.keys(entities)[0]
+  entities = entities[mutationName]
+  if (entities.hasOwnProperty('ok')) {
+    delete entities.ok
+  }
+
+  return entities
+}
+
+export function* normalizeSaga(response: Object, actionType: string): Generator<any, any, any> {
+  if (!response) {
     return
   }
 
-  // HACK: Handle mutation results until we find a more elegant way to deal with it
-  const mutations = ['addReviewers']
+  const entities = response.data || response
 
-  let resolvedData = data
-  for (let i = 0; i < mutations.length; ++i) {
-    const mutation = mutations[i]
-    if (resolvedData.hasOwnProperty(mutation)) {
-      resolvedData = resolvedData[mutation]
-      break
-    }
-  }
-
-  const { entities } = normalize(resolvedData, schema)
-
-  // NOTE: This is a hack due to ono graphql me scheme design
   if (entities.me) {
     const me = entities.me
     entities.me = me[Object.keys(me)[0]]
   }
-
-  yield (put({ type: types.SET_NORMALIZED_ENTITIES, entities }))
+  const type = fetchTypes.MUTATE_DATA ? types.SET_MUTATED_ENTITIES : types.SET_QUERIED_ENTITIES
+  yield (put({ type, entities }))
 }
 
 export function* fetchAnythingSaga(action: FetchAction): Generator<any, any, any> {
@@ -56,7 +55,7 @@ export function* fetchAnythingSaga(action: FetchAction): Generator<any, any, any
     yield put(actions.sendingRequest(action.name, true))
     const response = yield call(get, action.query, action.variables || {}, action.operationName)
 
-    yield call(normalizeSaga, response.data || response)
+    yield call(normalizeSaga, response, action.type)
 
     if (action.callback) {
       const callbacks = action.callback(response, action.variables || {})
