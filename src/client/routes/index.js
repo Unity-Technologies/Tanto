@@ -23,7 +23,7 @@ import { fetchRepository } from 'ducks/repositories/actions'
 
 
 import {
-  fetchPullRequestDiff,
+  fetchPullRequestFilesList,
   fetchPullRequestMetadata,
   fetchPullRequestDiscussion,
   fetchPullRequestIssues,
@@ -56,7 +56,7 @@ export default (store) => {
     pullrequest(store, nextState.params.splat, id)
     store.dispatch(fetchPullRequestMetadata(id))
     store.dispatch(fetchPullRequestDiscussion(id))
-    store.dispatch(fetchPullRequestDiff(id))
+    store.dispatch(fetchPullRequestFilesList(id))
     store.dispatch(fetchPullRequestIssues(id))
     store.dispatch(fetchPullRequestChangeset(id))
   }

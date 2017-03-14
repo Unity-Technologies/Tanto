@@ -1,7 +1,7 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import Select from 'react-select'
+import { default as Select } from 'components/VirtualizedSelect'
 import { connect } from 'react-redux'
 import { fetchRepositoryBranches } from 'ducks/repositories/actions'
 import { getRepositoryBranches } from 'ducks/repositories/selectors'

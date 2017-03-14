@@ -27,12 +27,9 @@ export const getHeaderData = (state: Object, props: Object): HeaderPropsType =>
       _.pick(pr, ['title', 'created', 'owner']),
   )
 
-const renderStub = () =>
-  <div style={{ height: '40px', borderRadius: '5px', backgroundColor: '#f6f5f5' }} />
-
 const renderTitle = ({ title, owner, created }) => {
   if (!title || !owner || !created) {
-    return renderStub()
+    return null
   }
 
   return (

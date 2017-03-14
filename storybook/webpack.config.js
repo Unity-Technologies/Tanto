@@ -21,6 +21,11 @@ module.exports = {
         loader: 'url-loader',
         query: { mimetype: 'image/png' },
       },
+      {
+        test: /\.graphql$/,
+        loader: 'url-loader',
+        query: { mimetype: 'text/plain' },
+      }
     ],
   },
   resolve: {

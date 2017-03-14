@@ -54,7 +54,8 @@ export type FetchAction = {
   query: string,
   operationName?: string,
   varibles?: Object,
-  callback?: Function
+  callback?: Function | null,
+  normalize?: Function | null,
 }
 
 
@@ -93,7 +94,7 @@ export const fetchActionCreator =
     query: string,
     variables: Object = {},
     operationName: string = '',
-    callback: (data: Object, cbArgs: Object) => Array<Object>): FetchAction => ({
+    callback: ?((data: Object, cbArgs: Object) => Array<Object>)): FetchAction => ({
       type: types.FETCH_DATA,
       operationName,
       name: type,
@@ -101,3 +102,19 @@ export const fetchActionCreator =
       variables,
       callback,
     })
+
+export const singleFetchActionCreator =
+  (type: string,
+   query: string,
+   variables: Object = {},
+   operationName: string = '',
+   callback: ?((data: Object, cbArgs: Object) => Array<Object>),
+   normalize: ?((data: Object) => Object | null)): FetchAction => ({
+     type: types.FETCH_DATA,
+     operationName,
+     name: type,
+     query,
+     variables,
+     callback,
+     normalize,
+   })

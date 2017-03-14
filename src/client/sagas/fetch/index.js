@@ -23,7 +23,23 @@ export function* fetchSaga(
 }
 
 export function* normalizeSaga(data: Object): Generator<any, any, any> {
-  const { entities } = normalize(data, schema)
+  if (!data) {
+    return
+  }
+
+  // HACK: Handle mutation results until we find a more elegant way to deal with it
+  const mutations = ['addReviewers', 'editComment', 'createComment']
+
+  let resolvedData = data
+  for (let i = 0; i < mutations.length; ++i) {
+    const mutation = mutations[i]
+    if (resolvedData.hasOwnProperty(mutation)) {
+      resolvedData = resolvedData[mutation]
+      break
+    }
+  }
+
+  const { entities } = normalize(resolvedData, schema)
 
   // NOTE: This is a hack due to ono graphql me scheme design
   if (entities.me) {
@@ -40,7 +56,14 @@ export function* fetchAnythingSaga(action: FetchAction): Generator<any, any, any
     yield put(actions.sendingRequest(action.name, true))
     const response = yield call(get, action.query, action.variables || {}, action.operationName)
 
-    yield call(normalizeSaga, response.data || response)
+    if (action.normalize) {
+      const normalizeAction = action.normalize(response.data || response)
+      if (normalizeAction) {
+        yield put(normalizeAction)
+      }
+    } else {
+      yield call(normalizeSaga, response.data || response)
+    }
 
     if (action.callback) {
       const callbacks = action.callback(response, action.variables || {})

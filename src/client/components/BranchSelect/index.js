@@ -1,8 +1,7 @@
 // TODO: finish flow annotation
 
-import Select from 'react-select'
+import { default as Select } from 'components/VirtualizedSelect'
 import React, { Component } from 'react'
-import 'react-select/dist/react-select.css'
 import './styles.css'
 
 export type Props = {

@@ -1,31 +1,131 @@
-// TODO: finish flow annotations
+/* @flow */
 
 import React, { Component } from 'react'
 import TextEditorBox from 'components/TextEditorBox'
-import Icon from 'components/Icon'
 import Avatar from 'components/Avatar'
-import IconButton from 'material-ui/IconButton'
-import Edit from 'material-ui/svg-icons/editor/mode-edit'
-import Settings from 'material-ui/svg-icons/action/settings'
-import Close from 'material-ui/svg-icons/navigation/close'
-import RaisedButton from 'material-ui/RaisedButton'
-import IconMenu from 'material-ui/IconMenu'
-import MenuItem from 'material-ui/MenuItem'
+import Grid from 'react-bootstrap/lib/Grid'
+import Row from 'react-bootstrap/lib/Row'
+import Col from 'react-bootstrap/lib/Col'
+import Well from 'react-bootstrap/lib/Well'
+import Glyphicon from 'react-bootstrap/lib/Glyphicon'
+import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
 import Button from 'react-bootstrap/lib/Button'
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
+import Panel from 'react-bootstrap/lib/Panel'
+import Alert from 'react-bootstrap/lib/Alert'
 import moment from 'moment'
-import type { InlineCommentType } from 'universal/comments' //eslint-disable-line
+import { formatOnoText, formatMarkdown } from 'utils/text'
+import type { InlineCommentType } from 'universal/types' //eslint-disable-line
+
+import './styles.css'
 
 export type Props = {
   loggedUsername: string,
   comment: InlineCommentType,
-  simpleText?: boolean,
-  style?: Object,
-  headerStyle?: Object,
-  buttonGroupStyle?: Object,
-  niceToHave?: boolean,
-  codeStyle?: boolean,
+  onoStyle?: boolean,
+  markdown?: boolean,
   hideSettings?: boolean,
+  hideHeader?: boolean,
+  newComment?: boolean,
+  handleCommentSave?: Function,
+  handleCommentCancel?: Function,
+  handleCommentDelete?: Function,
+}
+
+export type State = {
+  editMode: boolean,
+  newComment: boolean,
+  commentText: string,
+  renderedText: string | Object,
+}
+
+function StatusPanel({ comment }) {
+  let statusChangeString
+  let bsStyle
+  switch (comment.status) {
+    case 'approved':
+      bsStyle = 'success'
+      statusChangeString = comment.status
+      break
+    case 'rejected':
+      bsStyle = 'danger'
+      statusChangeString = comment.status
+      break
+    case 'under_review':
+      bsStyle = 'warning'
+      statusChangeString = 'started reviewing'
+      break
+    default:
+      bsStyle = 'default'
+      statusChangeString = 'stopped reviewing'
+  }
+  return (
+    <Row>
+      <Col md={12}>
+        <Alert className="comment-status-panel" bsStyle={bsStyle}>
+          <strong>{comment.author.fullName}</strong> {statusChangeString} these changes {moment(comment.created).fromNow()}.
+        </Alert>
+      </Col>
+    </Row>
+  )
+}
+
+function CommentHeader(props) {
+  const { comment,
+          showButtons,
+          handleCommentEdit } = props
+
+  const buttonSize = 'small'
+  return (
+    <Row>
+      <Col md={8}>
+        <span className="comment-header-text">
+          <strong>{comment.author.fullName}</strong> commented {moment(comment.created).fromNow()}
+        </span>
+      </Col>
+      <Col md={4} mdOffset={0}>
+        {showButtons &&
+          <ButtonToolbar
+            className="comment-header-buttons pull-right"
+          >
+            <Button
+              onClick={handleCommentEdit}
+              bsSize={buttonSize}
+            >
+              <Glyphicon glyph="edit" />
+            </Button>
+            <Button
+              bsSize={buttonSize}
+            >
+              <Glyphicon glyph="remove" />
+            </Button>
+          </ButtonToolbar>
+        }
+      </Col>
+    </Row>
+  )
+}
+
+function CommentBody(props) {
+  if (props.markdown) {
+    return (
+      <span
+        className="comment-body-markdown"
+        dangerouslySetInnerHTML={props.children}
+      />)
+  }
+  if (props.onoStyle) {
+    return (
+      <span
+        className="comment-body-onostyle"
+        dangerouslySetInnerHTML={props.children}
+      />
+    )
+  }
+  return (
+    <span className="comment-body-onostyle">
+      {props.children}
+    </span>
+  )
 }
 
 class Comment extends Component {
@@ -33,230 +133,148 @@ class Comment extends Component {
 
   constructor(props: Props) {
     super(props)
+    const rendered = this.renderCommentText(props.comment.text, props.markdown, props.onoStyle)
     this.state = {
-      editMode: props.newComment,
-      newComment: props.newComment,
-      commentText: '',
+      editMode: props.newComment || false,
+      newComment: props.newComment || false,
+      commentText: props.comment.text,
+      renderedText: rendered,
+    }
+  }
+  props: Props
+  state: State
+  handleCommentEdit = () => {
+    this.setState({ editMode: !this.state.editMode })
+  }
+
+  handleCommentDelete = () => {
+    if (this.props.handleCommentDelete) {
+      this.props.handleCommentDelete()
     }
   }
 
-  props: Props
-
-  onCommentEdit = () => {
-    this.setState({ editMode: true })
-  }
-
-  onCommentCancel = () => {
+  handleCommentCancel = () => {
+    if (this.state.newComment && this.props.handleCommentCancel) {
+      this.props.handleCommentCancel()
+    }
     this.setState({
       editMode: false,
       newComment: false,
+      commentText: this.props.comment.text,
     })
-    // TODO: unmount component if this is a new comment.
-  }
-  // onCommentDelete() {
-  //   // TODO: dispatch reducer action to delete comment
-  // }
-
-  onCommentSave = () => {
-    this.setState({
-      editMode: false,
-      newComment: false,
-    })
-    // TODO: dispatch reducer action to save edited and new comments
   }
 
-  // handleChange(event, value) {
-  //   switch (value) {
-  //     case '1':
-  //       this.setState({
-  //         issue: !this.state.issue,
-  //       })
-  //       return
-  //     case '2':
-  //       this.setState({
-  //         niceToHave: !this.state.niceToHave,
-  //       })
-  //       return
-  //     case '3':
-  //       this.setState({
-  //         codeStyle: !this.state.codeStyle,
-  //       })
-  //       return
-  //     default:
-  //       return
-  //   }
-  // }
+  handleCommentSave = () => {
+    if (this.props.handleCommentSave) {
+      this.props.handleCommentSave(this.props.comment.id, this.state.commentText)
+    }
 
+    if (this.state.newComment) {
+      this.setState({
+        commentText: '',
+      })
+    } else {
+      this.setState({
+        editMode: false,
+        renderedText: this.renderCommentText(this.state.commentText, this.props.markdown, this.props.onoStyle),
+      })
+    }
+
+    // TODO: Figure out proper API for handleCommentSave
+  }
+
+  renderCommentText(text:string, markdown: boolean = false, onoStyle: boolean = false) {
+    if (text && onoStyle) {
+      return { __html: formatOnoText(text) }
+    } else if (text && markdown) {
+      return { __html: formatMarkdown(text) }
+    }
+    return text
+  }
+
+  renderComment() {
+    const {
+      loggedUsername,
+      comment,
+      newComment,
+      hideHeader,
+      onoStyle,
+      markdown,
+    } = this.props
+
+    const { editMode } = this.state
+    const isAuthor = loggedUsername === comment.author.username
+    const placeholder = 'Write comment text here.'
+
+    const header = !newComment && !hideHeader && (
+      <CommentHeader
+        showButtons={isAuthor}
+        handleCommentEdit={this.handleCommentEdit}
+        comment={comment}
+      />)
+
+    return (
+      <Row>
+        <Col md={1}>
+          <Avatar {...comment.author.slack} />
+        </Col>
+        <Col md={11}>
+          <Panel
+            header={header}
+          >
+            <Grid fluid>
+              <Row>
+                {!editMode &&
+                  <CommentBody onoStyle={onoStyle} markdown={markdown}>
+                    {this.state.renderedText}
+                  </CommentBody>}
+              </Row>
+              {editMode &&
+                <div>
+                  <Row>
+                    <Col>
+                      <Well>
+                        <TextEditorBox
+                          onTextChanged={(value) => { this.setState({ commentText: value }) }}
+                          text={this.state.commentText}
+                          placeholder={placeholder}
+                          readOnly={!editMode}
+                          simpleText
+                          hideStyleControls
+                        />
+                      </Well>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <ButtonToolbar>
+                        <Button onClick={this.handleCommentSave}>
+                          Save
+                        </Button>
+                        <Button onClick={this.handleCommentCancel}>
+                          Cancel
+                        </Button>
+                      </ButtonToolbar>
+                    </Col>
+                  </Row>
+                </div>
+              }
+            </Grid>
+          </Panel>
+        </Col>
+      </Row>
+    )
+  }
   render() {
     if (!this.props.comment || !this.props.comment.author) {
       return null
     }
-    const {
-      loggedUsername,
-      comment,
-      style,
-      simpleText,
-      headerStyle,
-      buttonGroupStyle,
-    } = this.props
-
-    const { editMode, newComment } = this.state
-    const isAuthor = loggedUsername === comment.author.username
-    const placeholder = newComment ? 'Write comment text here.' : null
-    const iconButtonStyle = {
-      padding: 0,
-      width: '30px',
-      height: '30px',
-    }
-
-    const votesCountStyle = {
-      padding: '0px 0px 0px 10px',
-      fontSize: '14px',
-      color: 'grey',
-    }
-
-    const defaultCommentStyle = {
-      border: newComment ? '2px solid #d9edf7' : '2px solid rgb(224, 224, 227)',
-      borderRadius: '10px 10px 10px 10px',
-      marginBottom: '10px',
-      padding: '10px',
-      boxShadow: newComment ? '3px 2px 11px 1px #cac9c9' : null,
-      ...style,
-    }
-
-    const commentHeaderStyle = {
-      float: 'right',
-      padding: '8px 15px',
-      fontSize: '14px',
-      color: 'grey',
-    }
-
-    const iconStyle = {
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
-      color: 'lightgrey',
-      fontSize: '17px',
-    }
-
-
     return (
-      <div>
-        <div style={style || defaultCommentStyle}>
-          {!editMode &&
-            <div style={{ overflow: 'auto', padding: '3px' }}>
-              <div style={{ float: 'left', padding: '6px 6px', fontFamily: 'sans-serif' }}>
-                <Avatar {...comment.author.slack} />
-                <div style={headerStyle || commentHeaderStyle}>
-                  <strong style={{ color: '#31708f' }}>{comment.author.fullName}</strong>
-                  <span> commented {moment(comment.created).fromNow()}</span>
-                </div>
-              </div>
-            {!newComment && isAuthor &&
-              <div style={{ float: 'right', padding: '10px' }}>
-                {!this.props.hideSettings &&
-                  <IconMenu
-                    selectedMenuItemStyle={{ color: 'green' }}
-                    menuStyle={{ border: '1px solid lightgrey' }}
-                    iconButtonElement={
-                      <IconButton style={iconButtonStyle}>
-                        <Icon icon={<Settings />} size={30} color="rgb(181, 180, 180)" />
-                      </IconButton>}
-                    anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    onChange={this.handleChange}
-                    insetChildren
-                  >
-                    <MenuItem
-                      value="1"
-                      primaryText="Mark as issue"
-                      checked={!!comment.issue}
-                    />
-                    {/* <MenuItem
-                      value="2"
-                      primaryText="Mark as nice to have"
-                      checked={this.state.niceToHave}
-                    />
-                    <MenuItem
-                      value="3"
-                      primaryText="Mark as code style"
-                      checked={this.state.codeStyle}
-                    /> */}
-                  </IconMenu>
-                }
-                <IconButton
-                  style={iconButtonStyle}
-                  key="edit"
-                  disableTouchRipple
-                  title="Edit"
-                  onClick={this.onCommentEdit}
-                >
-                  <Icon icon={<Edit />} size={30} color="rgb(181, 180, 180)" />
-                </IconButton>
-                <IconButton
-                  style={iconButtonStyle}
-                  key="delete"
-                  disableTouchRipple
-                  title="Delete comment"
-                  onClick={this.onCommentDelete}
-                >
-                  <Icon icon={<Close />} size={30} color="rgb(181, 180, 180)" />
-                </IconButton>
-
-              </div>
-            }
-            </div>
-          }
-          <div style={{ margin: '0px 10px 10px' }}>
-            <TextEditorBox
-              onTextChanged={(value) => { this.state.commentText = value }}
-              text={comment.text}
-              placeholder={placeholder}
-              readOnly={!editMode}
-              simpleText={simpleText}
-              styleControlsStyle={{ borderRadius: '10px 10px 0 0' }}
-            />
-          </div>
-        {!this.props.hideSettings &&
-         (this.props.issue || this.props.niceToHave || this.props.codeStyle) &&
-          <div style={buttonGroupStyle || { overflow: 'auto' }}>
-            <ButtonGroup style={{ float: 'right', padding: '5px' }}>
-              {this.props.issue &&
-                <Button style={{ ...iconStyle, color: '#ca6b4a' }} >
-                  <i className="fa fa-bug" title="Issue" />
-                  <span style={votesCountStyle}>1</span>
-                </Button>
-              }
-              {this.props.niceToHave &&
-                <Button style={{ ...iconStyle, color: 'rgba(84, 105, 75, 0.68)' }} >
-                  <i className="fa fa-thumbs-up" title="Nice to have" />
-                  <span style={votesCountStyle}>3</span>
-                </Button>
-              }
-              {this.props.codeStyle &&
-                <Button style={{ ...iconStyle, color: '#d43a5a' }} >
-                  <i className="fa fa-thumbs-down" title="Bad code" />
-                </Button>
-              }
-            </ButtonGroup>
-          </div>
-        }
-        </div>
-       {editMode &&
-         <div>
-           <RaisedButton
-             label="Save Comment"
-             backgroundColor="#d9edf7"
-             style={{ marginBottom: '10px', marginRight: '10px' }}
-             onClick={this.onCommentSave}
-           />
-           <RaisedButton
-             label="Cancel"
-             backgroundColor="#efefef"
-             onClick={() => this.onCommentCancel()}
-           />
-         </div>
-        }
-      </div>
+      <Grid className="comment-frame">
+          {this.props.comment.status && <StatusPanel comment={this.props.comment} />}
+          {(this.props.comment.text || this.props.newComment)
+           && this.renderComment()}
+      </Grid>
     )
   }
 }

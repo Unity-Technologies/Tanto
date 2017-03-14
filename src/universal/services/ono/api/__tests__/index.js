@@ -19,7 +19,7 @@ describe('ono api get', () => {
 
   it('fetches data', () => {
     const testResponse = { data: { profile: { username: 'test' } } }
-    fetchMock.get('*', testResponse)
+    fetchMock.post('*', testResponse)
     get('query')
     .then((data) => {
       expect(data).to.be.eql(testResponse)

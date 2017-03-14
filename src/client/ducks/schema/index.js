@@ -10,7 +10,7 @@ const issue = new schema.Entity('issues', {
   assignee: user,
 })
 
-const comment = new schema.Entity('comments', {
+export const comment = new schema.Entity('comments', {
   author: user,
 })
 
@@ -28,18 +28,22 @@ const repository = new schema.Entity('repositories', {
 const group = new schema.Entity('groups')
 
 group.define({
-  groups: [group],
+  groups: {
+    nodes: [group],
+  },
   repositories: {
     nodes: [repository],
   },
 })
 
+const file = new schema.Entity('files', {
+  comments: [comment],
+})
+
 pullRequest.define({
   owner: user,
   issues: [issue],
-  files: [{
-    comments: [comment],
-  }],
+  files: [file],
   reviews: [{
     user,
   }],
@@ -62,7 +66,9 @@ export const tantoSchema = {
   changeset,
   pullRequest,
   group,
-  groups: [group],
+  groups: {
+    nodes: [group],
+  },
   pullRequests: [pullRequest],
   repositories: {
     nodes: [repository],

@@ -1,8 +1,9 @@
 import chai from 'chai'
 import {
   merge,
+  appendEntity,
 } from '../index'
-
+import { schema } from 'normalizr'
 const expect = chai.expect
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
@@ -121,5 +122,71 @@ describe('entities merge', () => {
 
     expect(merge(state, nodes)).to.equal(state)
   })
+
+  it('merge by id and accept upstream for certain keys', () => {
+    const nodes = {
+      reviews: [{ user: 1, status: null }],
+      missingReviewers: [{ area: 'x', reviewers: [{ id: 2, username: 'y' }] }],
+      nodes: [{ id: 2 }],
+    }
+
+    const state = {
+      reviews: [{ user: 2, status: null }, { user: 1, status: null }],
+      missingReviewers: [
+        { area: 'x', reviewers: [{ id: 2, username: 'y' }, { id: 1, username: 'x' }] }],
+      nodes: [{ id: 3 }, { id: 2 }],
+    }
+
+    const expected = {
+      reviews: [{ user: 1, status: null }],
+      missingReviewers: [{ area: 'x', reviewers: [{ id: 2, username: 'y' }] }],
+      nodes: [{ id: 2 }, { id: 3 }],
+    }
+
+    expect(merge(state, nodes)).to.eql(expected)
+  })
 })
 
+describe('appendEntity', () => {
+  it('should merge input with existing object if there', () => {
+    const id = '2'
+    const entityBefore = { text: 'test', number: 24, id }
+    const entityToAdd = { text: 'anothertest', id, email: 'test@test.test' }
+    const expectedEntity = { text: 'anothertest', number: 24, id, email: 'test@test.test' }
+
+    const initialState = { objects: {}, otherObjects: 'dont change this' }
+    initialState.objects[id] = entityBefore
+
+    const expectedState = { objects: {}, otherObjects: 'dont change this' }
+    expectedState.objects[id] = expectedEntity
+
+    const objectSchema = new schema.Entity('objects')
+
+    expect(appendEntity(initialState, ['objects'], [], entityToAdd, objectSchema)).to.eql(expectedState)
+  })
+
+  it('should append references to specified lists', () => {
+    const initialList = [2, 4, 5]
+    const initialState = { objects: {}, path: { to: { refs: initialList } } }
+    const entityToAdd = { id: 7, data: 'test' }
+    const expectedList = [2, 4, 5, 7]
+
+    const expectedState = { objects: { 7: entityToAdd }, path: { to: { refs: expectedList } } }
+    const objectSchema = new schema.Entity('objects')
+
+    expect(appendEntity(initialState, ['objects'], [['path', 'to', 'refs']], entityToAdd, objectSchema)).to.eql(expectedState)
+  })
+
+  it('should do nothing if the entity destination is nonexistant', () => {
+    const initialState = { objects: {}, otherObjects: 'dont change this' }
+    const entityToAdd = { text: 'anothertest', id: '2', email: 'test@test.test' }
+    expect(appendEntity(initialState, ['notThere'], [], entityToAdd, null)).to.eql(initialState)
+  })
+
+  it('should do nothing if the input enitity has no id', () => {
+    const initialState = { objects: {}, otherObjects: 'dont change this' }
+    const entityToAdd = { text: 'anothertest', email: 'test@test.test' }
+    const objectSchema = new schema.Entity('objects')
+    expect(appendEntity(initialState, ['objects'], [], entityToAdd, objectSchema)).to.eql(initialState)
+  })
+})

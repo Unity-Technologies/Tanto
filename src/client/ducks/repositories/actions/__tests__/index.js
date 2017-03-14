@@ -36,7 +36,7 @@ describe('repository actions', () => {
       { type: fetchTypes.CLEAR_ERROR, name: types.SEARCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: true },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: false },
-      { type: SET_NORMALIZED_ENTITIES, entities: normalize(nodes, schema).entities },
+      { type: SET_NORMALIZED_ENTITIES, entities: normalize({ repositories: { nodes } }, schema).entities },
     ]
 
     fetchMock.mock('*', {

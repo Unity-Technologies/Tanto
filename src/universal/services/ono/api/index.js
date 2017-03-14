@@ -26,18 +26,18 @@ import { checkHttpStatus, checkForGraphQlErrors, parseJSON } from 'universal/req
  * @return {[type]}      [description]
  */
 export function get(query: string, variables: any, operationName: string) {
-  const encodedQuery = encodeURIComponent(query)
-  let variablesPostFix = ''
-  let operationNamePostFix = ''
-  if (variables) {
-    variablesPostFix = `&variables=${encodeURIComponent(JSON.stringify(variables))}`
-  }
-  if (operationName) {
-    operationNamePostFix = `&operationName=${encodeURIComponent(operationName)}`
-  }
-  const url =
-    `${routes.ONO_API_ROUTE}?query=${encodedQuery}${variablesPostFix}${operationNamePostFix}`
-  return fetch(url, { credentials: 'same-origin' })
+  return fetch(routes.ONO_API_ROUTE, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      variables: JSON.stringify(variables),
+      operationName,
+    }),
+  })
     .then(checkHttpStatus)
     .then(parseJSON)
     .then(checkForGraphQlErrors)
