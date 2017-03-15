@@ -1,7 +1,7 @@
 // TODO: add flow annotations
 
 import React, { Component } from 'react'
-import Comment from 'components/Comment'
+// import Comment from 'components/Comment'
 import _ from 'lodash'
 import RaisedButton from 'material-ui/RaisedButton'
 
@@ -120,29 +120,31 @@ class UnifiedRow extends Component {
           {isCommented && !this.state.commentsCollapsed &&
             <div className="code-line-comment">
               {comments.map(comment => (
-                <Comment
+                {/* <Comment
+                  markdown
                   simpleText
                   key={_.uniqueId('_code_comment')}
                   comment={comment}
                   loggedUsername={loggedUsername}
-                />
+                />*/}
               ))}
-            {!this.state.commentState &&
-              <RaisedButton
-                label="Add Comment"
-                backgroundColor="#d9edf7"
-                style={{ marginRight: '10px' }}
-                onClick={() => this.addComment(line)}
-              />
-            }
+              {!this.state.commentState &&
+                <RaisedButton
+                  label="Add Comment"
+                  backgroundColor="#d9edf7"
+                  style={{ marginRight: '10px' }}
+                  onClick={() => this.addComment(line)}
+                />
+              }
             </div>
           }
           {this.state.commentState &&
             <div className="code-line-comment">
-              <Comment
+              {/* <Comment
+                markdown
                 onCancel={this.cancelComment}
                 onComment={text => this.handleCommentSave(line, text)}
-              />
+              />*/}
             </div>
           }
         </td>

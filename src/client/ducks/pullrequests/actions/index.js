@@ -4,7 +4,9 @@ import type { PullRequestSource } from 'universal/types'
 import type { OrderByType } from 'ducks/order'
 import { singleFetchActionCreator, fetchActionCreator, fetchAction } from 'ducks/fetch'
 import type { FetchAction } from 'ducks/fetch'
+import { APPEND_ENTITY } from 'ducks/entities'
 import { RECEIVE_PAGE } from 'ducks/pagination'
+import { comment } from 'ducks/schema'
 import _ from 'lodash'
 import { UserInput } from 'universal/types'
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
@@ -94,7 +96,20 @@ export const fetchPullRequestChangeReviewers = (
     pullRequestChangeReviewers,
     { pullRequestId, addReviewers, removeReviewers },
     '',
-    (data: Object, cbArgs: Object): Object => ({
-      pullRequest: _.get(data, ['data', 'changeReviewers', 'pullRequest'], {}),
-    })
   )
+
+export const createPullRequestDiscussionCommentNormalizer = (pullRequestId: number): Function => (
+  (response: Object) => {
+    const newComment = _.get(response, ['createComment', 'comment'], null)
+    if (!newComment) {
+      return null
+    }
+    return {
+      type: APPEND_ENTITY,
+      object: newComment,
+      sourcePath: ['comments'],
+      referencePaths: [['pullRequests', pullRequestId.toString(), 'comments']],
+      schema: comment,
+    }
+  }
+)

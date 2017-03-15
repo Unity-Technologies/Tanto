@@ -12,7 +12,7 @@ export const types = {
 
 const customizerQuery = (objValue: any, srcValue: any): any => {
   if (_.isArray(objValue)) {
-    return objValue.union(srcValue)
+    return _.union(objValue, srcValue)
   }
 }
 

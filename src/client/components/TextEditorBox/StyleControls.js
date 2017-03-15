@@ -56,7 +56,7 @@ const StyleControls = (props: Props) => {
     .getType()
 
   const activeColor = props.activeColor || '#1dafa6'
-  const notActiveColor = 'rgb(181, 180, 180)'
+  const notActiveColor = 'rgb(90, 90, 90)'
 
 
   return (

@@ -1,7 +1,7 @@
 // TODO: finish flow annotations
 
 import React, { Component } from 'react'
-import Comment from 'components/Comment'
+// import Comment from 'components/Comment'
 import _ from 'lodash'
 import RaisedButton from 'material-ui/RaisedButton'
 
@@ -256,12 +256,12 @@ class SplitRow extends Component {
           {isRightCommented && !this.state.rightCommentsCollapsed &&
             <div className="code-line-comment">
               {rightComments.map(comment => (
-                <Comment
+                {/* <Comment
                   simpleText
                   key={_.uniqueId('_code_comment')}
                   comment={comment}
                   loggedUsername={this.props.loggedUsername}
-                />
+                />*/}
               ))}
               {!this.state.rightCommentState &&
                 <RaisedButton
@@ -276,10 +276,10 @@ class SplitRow extends Component {
 
           {this.state.rightCommentState &&
             <div className="code-line-comment">
-              <Comment
+              {/* <Comment
                 onComment={text => this.handleCommentSave(rightLineNumber, text)}
                 onCancel={this.cancelComment}
-              />
+              />*/}
             </div>
           }
         </td>

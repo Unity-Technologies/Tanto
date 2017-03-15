@@ -86,7 +86,7 @@ export const getIssuesEntities = (state: Object) =>
 export const getPullRequestIssues = createSelector(
   getIssuesEntities, userEntitiesSelector, getPullRequestNormalized,
   (issueEntities, userEntities, pr) => {
-    const prIssues = _.values(_.pick(issueEntities, pr.issues || []))
+    const prIssues = pr ? _.values(_.pick(issueEntities, pr.issues || [])) : []
     // Denormalization of owner and assignee
     return prIssues.map(issue => ({
       ...issue,
@@ -105,7 +105,7 @@ export const getCommentsEntities = (state: Object) =>
 export const getPullRequestGeneralComments = createSelector(
   getCommentsEntities, userEntitiesSelector, getPullRequestNormalized,
   (commentsEntities, userEntities, pr) => {
-    const prComments = _.values(_.pick(commentsEntities, pr.comments || []))
+    const prComments = _.values(_.pick(commentsEntities, _.get(pr, ['comments'], [])))
     //  Denormalization of comment author
     return prComments.map(comment => denormalizeCommentAuthor(comment, userEntities))
   }

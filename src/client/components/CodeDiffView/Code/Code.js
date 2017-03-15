@@ -51,7 +51,7 @@ class Code extends PureComponent {
     }
     const prfx = version || ''
 
-    const res = _.filter(fileComments, (x) => x.lineNumber.match(`${prfx}${lineNumber}`))
+    const res = _.filter(fileComments, (x) => x.location.lineNumber.match(`${prfx}${lineNumber}`))
 
     return res
   }

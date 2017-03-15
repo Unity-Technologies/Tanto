@@ -5,7 +5,6 @@ export const types = {
   REQUEST_ERROR: 'FETCH/REQUEST_ERROR',
   CLEAR_ERROR: 'FETCH/CLEAR_ERROR',
   FETCH_DATA: 'FETCH/FETCH_DATA',
-  MUTATE_DATA: 'FETCH/MUTATE_DATA',
 }
 
 /**
@@ -94,7 +93,7 @@ export const fetchActionCreator =
     query: string,
     variables: Object = {},
     operationName: string = '',
-    callback: (data: Object, cbArgs: Object) => Array<Object>): FetchAction => ({
+    callback: ?((data: Object, cbArgs: Object) => Array<Object>)): FetchAction => ({
       type: types.FETCH_DATA,
       operationName,
       name: type,
