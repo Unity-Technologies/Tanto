@@ -95,30 +95,24 @@ class ReviewerSelection extends Component {
 
     return (
       <div>
-        <Row>
-          <Col md={10}>
-            <Select
-              name="test"
-              value={this.state.value}
-              onChange={this.onChange}
-              options={options}
-              multi
-              ignoreAccents
-              tabSelectsValue
-              placeholder="Add reviewers..."
-              className="reviewer-selection"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
-            <MissingReviewerList
-              id={this.props.id}
-              missingReviewers={this.props.missingReviewers}
-              addReviewer={this.addMissingReviewer}
-            />
-          </Col>
-        </Row>
+        <Select
+          name="test"
+          value={this.state.value}
+          onChange={this.onChange}
+          options={options}
+          multi
+          ignoreAccents
+          tabSelectsValue
+          placeholder="Add reviewers..."
+          className="reviewer-selection"
+        />
+
+        <MissingReviewerList
+          id={this.props.id}
+          missingReviewers={this.props.missingReviewers}
+          addReviewer={this.addMissingReviewer}
+        />
+
       </div>
     )
   }

@@ -9,8 +9,8 @@ import { Button } from 'react-bootstrap'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import type {
   UserType,
-  PullRequestReviewerType,
-  PullRequestMissingReviewerType,
+    PullRequestReviewerType,
+    PullRequestMissingReviewerType,
 } from 'universal/types'
 import ReviewerSelection from './ReviewerSelection'
 
@@ -23,7 +23,7 @@ import { addPullRequestReviewers, removePullRequestReviewers } from 'ducks/pullr
 
 export const getReviews = createSelector(
   getPullRequest,
-    (pr) => (pr && pr.reviews ? pr.reviews : [])
+  (pr) => (pr && pr.reviews ? pr.reviews : [])
 )
 
 const createReviewSelector = (filter) => createSelector(
@@ -116,6 +116,7 @@ class ReviewSection extends Component {
     this.state = {
       selection: [],
       removed: [],
+      editMode: false,
     }
   }
 
@@ -143,7 +144,7 @@ class ReviewSection extends Component {
     })
   }
 
-  removeReviewer = (reviewer: UserType) : void => {
+  removeReviewer = (reviewer: UserType): void => {
     this.setState(
       {
         removed: this.state.removed.concat(reviewer),
@@ -151,7 +152,7 @@ class ReviewSection extends Component {
     )
   }
 
-  saveReviewerChanges = (): void => {
+  handleSaveReviewers = (): void => {
     const removedReviewers = this.state.removed.map(r => ({ id: r.id }))
     const addedReviewers = this.state.selection.map(r => ({ id: r.id }))
 
@@ -189,7 +190,7 @@ class ReviewSection extends Component {
                 </div>
                 <div style={{ fontSize: '12px' }}>{statusExtraText}</div>
               </Col>
-              <Col md={6}>
+              <Col md={7}>
                 {subHeader('Reviewers:')}
                 <ul style={{ listStyleType: 'none', padding: 0, margin: 0, fontSize: '13px' }}>
                   <ReviewerList
@@ -221,19 +222,22 @@ class ReviewSection extends Component {
                     id={this.props.id}
                   />
                 </ul>
-                <Row style={{ paddingTop: '20px', paddingLeft: '15px' }}>
-                  <ReviewerSelection
-                    reviewers={reviewers}
-                    users={users}
-                    id={this.props.id}
-                    addReviewers={this.reviewerSelectionChanged}
-                  />
-                </Row>
-                <Row style={{ paddingTop: '20px', paddingLeft: '15px' }}>
-                  {(this.state.selection.length > 0 || this.state.removed.length > 0) &&
-                    <Button onClick={this.saveReviewerChanges}>Save</Button>
-                  }
-                </Row>
+
+                <div style={{ paddingTop: '5px' }}>
+                  <div style={{ float: 'left', width: '85%' }}>
+                    <ReviewerSelection
+                      reviewers={reviewers}
+                      users={users}
+                      id={this.props.id}
+                      addReviewers={this.reviewerSelectionChanged}
+                    />
+                  </div>
+                  <div style={{ float: 'right' }}>
+                    {(this.state.selection.length > 0 || this.state.removed.length > 0) &&
+                      <Button onClick={this.handleSaveReviewers}>Save</Button>
+                    }
+                  </div>
+                </div>
               </Col>
             </Row>
           </ListGroupItem>}

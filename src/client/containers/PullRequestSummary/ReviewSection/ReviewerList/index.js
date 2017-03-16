@@ -53,8 +53,7 @@ export type RemovedType = {
   [key: number]: PullRequestReviewerType
 }
 
-class ReviewerList extends Component
-{
+class ReviewerList extends Component {
   constructor(props: Props) {
     super(props)
 
@@ -65,12 +64,6 @@ class ReviewerList extends Component
 
   state: {
     removed: RemovedType
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      removed: {},
-    })
   }
 
   render() {
@@ -103,9 +96,13 @@ class ReviewerList extends Component
 
                 return (
                   <span>
-                    <a onClick={reviewerClick}>
-                      {r.user.fullName || r.user.username}
-                    </a>{i + 1 < displayReviewers.length && ', '}
+                    <span className="reviewer-item" onClick={reviewerClick}>
+                      <a >
+                        {r.user.fullName || r.user.username}
+                      </a>
+                      <i className="fa fa-times-circle reviewer-remove-icon" aria-hidden="true"></i>
+                    </span>
+                    {i + 1 < displayReviewers.length && ', '}
                   </span>
                 )
               })}
