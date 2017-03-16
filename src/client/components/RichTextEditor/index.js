@@ -3,9 +3,9 @@ import { default as RichTextEditorArea } from 'react-rte'
 import Button from 'react-bootstrap/lib/Button'
 
 type Props = {
-  onChange: Function,
   onCancel: Function,
   onSave: Function,
+  text: string,
   readMode: boolean,
   cancelButtonTitle: string,
   saveButtonTitle: string,
@@ -16,7 +16,7 @@ class RichTextEditor extends Component {
     super(props)
 
     this.state = {
-      value: this.getEditorInitialText(),
+      value: this.getEditorInitialText(props),
     }
   }
 
@@ -24,20 +24,23 @@ class RichTextEditor extends Component {
 
   handleOnChange = (value) => {
     this.setState({ value })
-    if (this.props.onChange) {
-      this.props.onChange(
-        value.toString('markdown')
-      )
+  }
+
+  componentWillReceiveProps(nextprops) {
+    if (nextprops.text !== this.props.text && nextprops.text) {
+      this.setState({
+        value: RichTextEditorArea.createValueFromString(nextprops.text, 'markdown'),
+      })
     }
   }
 
-  getEditorInitialText = () => (this.props.text ?
-    RichTextEditorArea.createValueFromString(this.props.text, 'markdown') :
-    RichTextEditorArea.createEmptyValue())
+  getEditorInitialText = (props) => (props.text ?
+      RichTextEditorArea.createValueFromString(this.props.text, 'markdown') :
+      RichTextEditorArea.createEmptyValue())
 
   handleOnCancel = () => {
     this.setState({
-      value: this.getEditorInitialText(),
+      value: this.getEditorInitialText(this.props),
     })
     if (this.props.onCancel) {
       this.props.onCancel()
@@ -45,6 +48,9 @@ class RichTextEditor extends Component {
   }
 
   handleOnSave = () => {
+    this.setState({
+      value: this.getEditorInitialText(this.props),
+    })
     if (this.props.onSave) {
       this.props.onSave(
         this.state.value.toString('markdown')
@@ -76,6 +82,7 @@ class RichTextEditor extends Component {
                 {this.props.saveButtonTitle || 'Save'}
               </Button>
             </div>
+
           </div>
         }
       </div>

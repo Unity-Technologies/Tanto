@@ -23,13 +23,13 @@ const customizerMutation = (objValue: any, srcValue: any, key, object, source, s
 }
 
 export const mergeOnQuery = (state: Object, entity: Object): Object => {
-  const updatedState = _.mergeWith(state, entity, customizerQuery)
+  const updatedState = _.mergeWith({}, state, entity, customizerQuery)
 
   return _.isEqual(updatedState, state) ? state : updatedState
 }
 
 export const mergeOnMutation = (state: Object, entity: Object): Object => {
-  const updatedState = _.mergeWith(state, entity, customizerMutation)
+  const updatedState = _.mergeWith({}, state, entity, customizerMutation)
 
   return _.isEqual(updatedState, state) ? state : updatedState
 }

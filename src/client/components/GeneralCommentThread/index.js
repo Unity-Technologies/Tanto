@@ -31,6 +31,7 @@ const renderNewComment = (loggedUser: UserType, handleOnSave: Function, handleOn
     </div>
     <div className="comment-box-content" >
       <RichTextEditor
+        text={''}
         onCancel={handleOnClose}
         onSave={handleOnSave}
         cancelButtonTitle={'Close Pull Request'}

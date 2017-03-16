@@ -49,14 +49,14 @@ class PullRequestDiscussion extends Component {
   }
 
   render() {
-    if (!this.props.pullRequest) {
+    if (!this.props.pullRequest || !this.props.comments || !this.props.loggedUser) {
       return null
     }
     return (
       <LoadingComponent status={this.props.status}>
         <GeneralCommentThread
           comments={this.props.comments}
-          repoId={3}
+          repoId={this.props.pullRequest.origin.repository.id}
           pullRequestId={this.props.pullRequestId}
           loggedUser={this.props.loggedUser}
           onDelete={this.handleOnCommentDelete}
