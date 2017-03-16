@@ -4,12 +4,14 @@ import React, { Component } from 'react'
 import RichTextEditor from 'components/RichTextEditor'
 import Avatar from 'components/Avatar'
 import Button from 'react-bootstrap/lib/Button'
+import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import type { GeneralCommentType } from 'universal/types'
 import './Comment.css'
 
 type Props = {
   comment: GeneralCommentType,
   canEdit: boolean,
+  newMode: boolean,
   onUpdate: (id: string, value: string) => void,
   onDelete: (id: string) => void,
 }
@@ -21,42 +23,30 @@ export const getStatusText = (status) => {
       return status
     case 'under_review':
       return 'started reviewing'
-    default:
+    case 'not_reviewed':
       return 'stopped reviewing'
+    default:
+      return 'commented'
   }
 }
 
 export const getStatusIcon = (status) => {
-  let iconName
-  let color
   switch (status) {
     case 'approved':
-      iconName = 'fa-check-circle'
-      color = 'green'
-      break
+      return (<Glyphicon glyph="ok-sign" className="comment-status-glyph status-green" />)
     case 'rejected':
-      iconName = 'fa-times-circle'
-      color = 'red'
-      break
+      return (<Glyphicon glyph="remove-sign" className="comment-status-glyph status-red" />)
     case 'under_review':
-      iconName = 'fa-eye'
-      color = 'orange'
-      break
+      return (<Glyphicon glyph="eye-open" className="comment-status-glyph status-orange" />)
     default:
-      iconName = 'fa-eye-slash'
-      color = 'grey'
-      break
+      return (<Glyphicon glyph="eye-close" className="comment-status-glyph status-grey" />)
   }
-
-  return (
-    <i className={`fa ${iconName} comment-status-icon`} aria-hidden="true" style={{ color }}></i>
-  )
 }
 
 const renderEditMode = (comment: GeneralCommentType, handleOnCancel: Function, handleOnUpdate: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
-      <Avatar avatar={comment.author.slack.avatar} />
+      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : null} />
     </div>
     <div className="comment-box-content" >
       <RichTextEditor
@@ -73,7 +63,7 @@ const renderEditMode = (comment: GeneralCommentType, handleOnCancel: Function, h
 const renderReadMode = (comment: GeneralCommentType, canEdit: boolean, handleOnEdit: Function, handleOnDelete: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
-      <Avatar avatar={comment.author.slack.avatar} />
+      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : null} />
     </div>
     <div className="comment-box-content">
       <div className="comment-box-header">
@@ -107,19 +97,19 @@ const renderReadMode = (comment: GeneralCommentType, canEdit: boolean, handleOnE
 const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleOnEdit: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
-      <Avatar avatar={comment.author.slack.avatar} />
+      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : null} />
     </div>
     <div className="comment-box-content">
       <div className="comment-box-header-status">
         <div className="comment-title-status">
-          {getStatusIcon(status)}
-          <div style={{ marginTop: '3px' }}>
+          {getStatusIcon(comment.status)}
+          <div style={{ marginTop: '6px' }}>
             <strong>{comment.author.username}</strong>
             <span>&nbsp;{getStatusText(comment.status)}&nbsp;{moment(comment.created).fromNow()}</span>
           </div>
         </div>
         {canEdit &&
-          <div className="comment-box-actions">
+          <div className="comment-box-actions-status">
             <Button
               className="comment-action-button"
               onClick={handleOnEdit}
@@ -154,7 +144,7 @@ class Comment extends Component {
   handleOnUpdate = (value) => {
     this.setState({ editMode: false })
     if (this.props.onUpdate) {
-      this.props.onUpdate(this.props.comment.id, value)
+      this.props.onUpdate(value)
     }
   }
 
@@ -164,7 +154,7 @@ class Comment extends Component {
 
   handleOnDelete = () => {
     if (this.props.onDelete) {
-      this.props.onDelete(this.props.comment.id)
+      this.props.onDelete()
     }
   }
 

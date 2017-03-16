@@ -1,20 +1,19 @@
 /* @flow */
 
 import React, { Component } from 'react'
-
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { types, createPullRequestDiscussionCommentNormalizer } from 'ducks/pullrequests/actions'
+import { types } from 'ducks/pullrequests/actions'
 import type { GeneralCommentType, UserType, OriginGraphType } from 'universal/types'
 import type { StatusType } from 'ducks/fetch/selectors'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
-import { fetchCommentEdit, fetchCommentCreate } from 'ducks/comments/actions'
+import { createComment, updateComment, deleteComment } from 'ducks/comments/actions'
 import LoadingComponent from 'components/LoadingComponent'
-import { getLoggedUsername } from 'ducks/session/selectors'
-import { getPullRequestGeneralComments, getPullRequest } from 'ducks/pullrequests/selectors'
-import { createSelector } from 'reselect'
+import GeneralCommentThread from 'components/GeneralCommentThread'
+import { getLoggedUser } from 'ducks/session/selectors'
+import { getPullRequestNormalized, getPullRequestGeneralComments } from 'ducks/pullrequests/selectors'
+// import { userEntitiesSelector } from 'ducks/users/selectors'
+
 
 export type Props = {
   createComment: Function,
@@ -24,71 +23,29 @@ export type Props = {
     owner: UserType,
     description: string,
     created: string,
-    comments: Array<GeneralCommentType>,
     origin: OriginGraphType,
   },
-  loggedUsername: string,
+  comments: Array<GeneralCommentType>,
+  loggedUser: UserType,
   status: StatusType
 }
 
 export const getFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DISCUSSION)
 
-
-const renderHeadComment = ({ owner, description, created }, loggedUsername) => {
-  if (!owner || !created) {
-    return null
-  }
-
-  const text = description || 'No description.'
-  const comment = {
-    author: owner,
-    text,
-    created,
-  }
-
-  return (
-    <Comment
-      loggedUsername={loggedUsername}
-      comment={comment}
-      onoStyle
-    />
-  )
-}
-
 class PullRequestDiscussion extends Component {
 
   props: Props
 
-  handleCommentEdit = (commentId: number, text: string) : void => {
-    this.props.editComment(commentId, text)
+  handleOnCommentUpdate = (id: string, text: string): void => {
+    this.props.dispatch(updateComment(id, text))
   }
 
-  handleCommentCreation = (commentId: any, text: string) : void => {
-    this.props.createComment({
-      repoId: this.props.pullRequest.origin.repository.id,
-      text,
-      pullRequestId: this.props.pullRequestId,
-    }, this.props.pullRequestId)
+  handleOnCommentCreate = (repoId: string, pullRequestId: string, text: string): void => {
+    this.props.dispatch(createComment(repoId, pullRequestId, text))
   }
 
-  renderComments(comments, loggedUsername) {
-    if (!comments) {
-      return null
-    }
-    return (
-      <div>
-        {comments.map(comment => (
-          <Comment
-            key={comment.id.toString()}
-            loggedUsername={loggedUsername}
-            onoStyle
-            simpleText
-            handleCommentSave={this.handleCommentEdit}
-            comment={comment}
-          />
-         ))}
-      </div>
-    )
+  handleOnCommentDelete = (id: any): void => {
+    this.props.dispatch(deleteComment(id))
   }
 
   render() {
@@ -97,51 +54,27 @@ class PullRequestDiscussion extends Component {
     }
     return (
       <LoadingComponent status={this.props.status}>
-        <div>
-          <Row>
-            <Col md={12}>
-              {renderHeadComment(this.props.pullRequest, this.props.loggedUsername)}
-            </Col>
-          </Row>
-          <hr style={{ margin: '15px 0' }} />
-          <Row>
-            <Col md={12}>
-              {this.renderComments(this.props.pullRequest.comments, this.props.loggedUsername)}
-              <div name="discussion-last" id="discussion-last" style={{ marginTop: '20px' }}>
-
-              </div>
-            </Col>
-          </Row>
-        </div>
+        <GeneralCommentThread
+          comments={this.props.comments}
+          repoId={3}
+          pullRequestId={this.props.pullRequestId}
+          loggedUser={this.props.loggedUser}
+          onDelete={this.handleOnCommentDelete}
+          onUpdate={this.handleOnCommentUpdate}
+          onSave={this.handleOnCommentCreate}
+        />
       </LoadingComponent>
     )
   }
 }
 
-export const getPRequest = createSelector(
-  getPullRequest, getPullRequestGeneralComments,
-  (pr, comments) => (
-    {
-      ..._.pick(pr, ['description', 'created', 'owner', 'origin']),
-      comments,
-    })
-)
 
 const mapStateToProps = (state: Object, props: Props): Props => ({
   ...props,
-  pullRequest: getPRequest(state, props),
+  pullRequest: getPullRequestNormalized(state, props),
+  comments: getPullRequestGeneralComments(state, props),
   status: getFetchStatus(state, props),
-  loggedUsername: getLoggedUsername(state, props),
+  loggedUser: getLoggedUser(state, props),
 })
 
-const mapDispatchToProps = (dispatch: Function): Object => ({
-  editComment: (commentId, text) => dispatch(
-    fetchCommentEdit(commentId, text)),
-  createComment: (commentInput, pullRequestId) => dispatch(
-    fetchCommentCreate(commentInput,
-                       createPullRequestDiscussionCommentNormalizer(pullRequestId))
-  ),
-})
-
-/* flow-disable */
-export default connect(mapStateToProps, mapDispatchToProps)(PullRequestDiscussion)
+export default connect(mapStateToProps)(PullRequestDiscussion)

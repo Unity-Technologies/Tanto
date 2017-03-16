@@ -1,49 +1,23 @@
 /* @flow */
-import _ from 'lodash'
-import { singleFetchActionCreator } from 'ducks/fetch'
-import { APPEND_ENTITY } from 'ducks/entities'
-import { comment } from 'ducks/schema'
-import { NewCommentInput } from 'universal/types'
-import editComment from 'ducks/comments/queries/editComment.graphql'
-import createComment from 'ducks/comments/queries/createComment.graphql'
+import type { FetchAction } from 'ducks/fetch'
+import { fetchAction } from 'ducks/fetch'
+
+
+import updateCommentQuery from 'ducks/comments/queries/updateComment.graphql'
+import createCommentQuery from 'ducks/comments/queries/createComment.graphql'
+import deleteCommentQuery from 'ducks/comments/queries/deleteComment.graphql'
 
 export const types = {
-  FETCH_COMMENT_DELETE: 'COMMENTS/FETCH_COMMENT_DELETE',
-  FETCH_COMMENT_EDIT: 'COMMENTS/FETCH_COMMENT_EDIT',
-  FETCH_COMMENT_CREATE: 'COMMENTS/FETCH_COMMENT_CREATE',
+  DELETE_COMMENT: 'COMMENTS/DELETE_COMMENT',
+  UPDATE_COMMENT: 'COMMENTS/UPDATE_COMMENT',
+  CREATE_COMMENT: 'COMMENTS/CREATE_COMMENT',
 }
 
-export const editCommentNormalizer = (
-  (response: Object) => {
-    const modifiedComment = _.get(response, ['editComment', 'comment'], null)
-    if (!modifiedComment) {
-      return null
-    }
-    return {
-      type: APPEND_ENTITY,
-      object: modifiedComment,
-      sourcePath: ['comments'],
-      referencePaths: [],
-      schema: comment,
-    }
-  }
-)
+export const updateComment = (commentId: string, text:string): FetchAction =>
+  fetchAction({ type: types.UPDATE_COMMENT, query: updateCommentQuery, variables: { commentId, text } })
 
+export const createComment = (repoId: string, pullRequestId: string, text: string): FetchAction =>
+  fetchAction({ type: types.UPDATE_COMMENT, query: createCommentQuery, variables: { repoId, pullRequestId, text } })
 
-export const fetchCommentEdit = (commentId: number, text: string) =>
-  singleFetchActionCreator(types.FETCH_COMMENT_EDIT,
-                           editComment,
-                           { commentId, text },
-                           '',
-                           undefined,
-                           editCommentNormalizer)
-
-
-export const fetchCommentCreate = (commentInput: NewCommentInput, normalize: Function) =>
-  singleFetchActionCreator(types.FETCH_COMMENT_CREATE,
-                           createComment,
-                           commentInput,
-                           '',
-                           undefined,
-                           normalize)
-
+export const deleteComment = (commentId: string): FetchAction =>
+  fetchAction({ type: types.UPDATE_COMMENT, query: deleteCommentQuery, variables: { commentId } })

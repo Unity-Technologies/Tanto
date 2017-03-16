@@ -64,6 +64,9 @@ export const tantoSchema = {
   users: [user],
   repository,
   changeset,
+  comment,
+  user,
+  issue,
   pullRequest,
   group,
   groups: {

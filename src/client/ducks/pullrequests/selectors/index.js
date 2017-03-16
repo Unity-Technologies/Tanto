@@ -101,6 +101,12 @@ export const getPullRequestIssues = createSelector(
  */
 export const getCommentsEntities = (state: Object) =>
   _.get(state, ['entities', 'comments'], {})
+// export const getEntities = (state: Object) => state.entities
+
+// export const getCommentsEntities = createSelector(
+//   getEntities,
+//   entities => entities.comments
+// )
 
 export const getPullRequestGeneralComments = createSelector(
   getCommentsEntities, userEntitiesSelector, getPullRequestNormalized,

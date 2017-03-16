@@ -49,7 +49,6 @@ export function* normalizeSaga(response: Object, action: Object): Generator<any,
 
   const { entities } = normalize(data, schema)
 
-
   if (entities.me) {
     const me = entities.me
     entities.me = me[Object.keys(me)[0]]

@@ -32,6 +32,12 @@
 .comment-box-actions {
     position: absolute;
     right: 0;
+    margin: 6px 3px;
+}
+
+.comment-box-actions-status {
+    position: absolute;
+    right: 0;
     margin: 3px;
 }
 
@@ -54,12 +60,37 @@
     position: relative;
     display: inline-flex;
     width: 100%;
+    margin-bottom: 5px;
 }
 
 .comment-status-icon {
     font-size: 2.5em;
+    background-color: white;
     color: #b9b9b9;
     margin-top: -5px;
     margin-left: -10px;
     margin-right: 10px;
+}
+
+.comment-status-glyph {
+    font-size: 2.2em;
+    margin-left: -10px;
+    margin-right: 12px;
+    background-color: white;
+}
+
+.status-green {
+    color: rgba(0, 128, 0, 0.67);
+}
+
+.status-red {
+    color: rgba(253, 0, 31, 0.72);
+}
+
+.status-orange {
+    color: rgba(255, 152, 0, 0.73);
+}
+
+.status-grey {
+    color: #afacac;
 }

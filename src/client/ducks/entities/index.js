@@ -16,7 +16,7 @@ const customizerQuery = (objValue: any, srcValue: any): any => {
   }
 }
 
-const customizerMutation = (objValue: any, srcValue: any): any => {
+const customizerMutation = (objValue: any, srcValue: any, key, object, source, stack): any => {
   if (_.isArray(objValue)) {
     return srcValue
   }
@@ -33,8 +33,6 @@ export const mergeOnMutation = (state: Object, entity: Object): Object => {
 
   return _.isEqual(updatedState, state) ? state : updatedState
 }
-
-/* TODO: Here I am going to explaing something about CRUD operations... */
 
 export const entities = (state: Object = {}, action: Object): Object => {
   switch (action.type) {
