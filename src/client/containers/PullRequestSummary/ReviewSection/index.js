@@ -19,7 +19,7 @@ import { getUsers } from 'ducks/users/selectors'
 import { createSelector } from 'reselect'
 import ReviewerList from './ReviewerList'
 import { ChangesetStatus } from 'universal/constants'
-import { fetchPullRequestChangeReviewers } from 'ducks/pullrequests/actions'
+import { addPullRequestReviewers, removePullRequestReviewers } from 'ducks/pullrequests/actions'
 
 export const getReviews = createSelector(
   getPullRequest,
@@ -117,10 +117,6 @@ class ReviewSection extends Component {
       selection: [],
       removed: [],
     }
-
-    this.reviewerSelectionChanged = this.reviewerSelectionChanged.bind(this)
-    this.removeReviewer = this.removeReviewer.bind(this)
-    this.saveReviewerChanges = this.saveReviewerChanges.bind(this)
   }
 
   state: {
@@ -141,17 +137,13 @@ class ReviewSection extends Component {
 
   props: ReviewersSectionProps
 
-  reviewerSelectionChanged: (string, Array<UserType>) => void
-
-  reviewerSelectionChanged(id: string, reviewers: Array<UserType>) : void {
+  reviewerSelectionChanged = (id: string, reviewers: Array<UserType>): void => {
     this.setState({
       selection: reviewers,
     })
   }
 
-  removeReviewer: UserType => void
-
-  removeReviewer(reviewer: UserType) : void {
+  removeReviewer = (reviewer: UserType) : void => {
     this.setState(
       {
         removed: this.state.removed.concat(reviewer),
@@ -159,14 +151,15 @@ class ReviewSection extends Component {
     )
   }
 
-  saveReviewerChanges: () => void
+  saveReviewerChanges = (): void => {
+    const removedReviewers = this.state.removed.map(r => ({ id: r.id }))
+    const addedReviewers = this.state.selection.map(r => ({ id: r.id }))
 
-  saveReviewerChanges() : void {
-    const toRemove = this.state.removed.map(r => ({ id: r.id }))
-    const toAdd = this.state.selection.map(r => ({ id: r.id }))
-
-    if (toRemove.length > 0 || toAdd.length > 0) {
-      this.props.changeReviewers(this.props.id, toAdd, toRemove)
+    if (addedReviewers.length) {
+      this.props.dispatch(addPullRequestReviewers(this.props.id, addedReviewers))
+    }
+    if (removedReviewers.length) {
+      this.props.dispatch(removePullRequestReviewers(this.props.id, removedReviewers))
     }
   }
 
@@ -174,6 +167,10 @@ class ReviewSection extends Component {
     const { reviews, users } = this.props
     const { status, statusColor, statusExtraText } = getStatus(this.state, this.props)
     const reviewers = new Set(reviews.map(x => x.user.username))
+
+    if (!reviews || !users) {
+      return null
+    }
 
     return (
       <div>
@@ -248,19 +245,14 @@ class ReviewSection extends Component {
 const mapStateToProps = (state, props: ReviewersSectionProps): ReviewersSectionProps => (
   {
     ...props,
-    reviews: getReviews(state, props) || [],
+    reviews: getReviews(state, props),
     users: getUsers(state, props),
-    notReviewed: getNotReviewed(state, props) || [],
-    approved: getApproved(state, props) || [],
-    rejected: getRejected(state, props) || [],
-    underReview: getUnderReview(state, props) || [],
+    notReviewed: getNotReviewed(state, props),
+    approved: getApproved(state, props),
+    rejected: getRejected(state, props),
+    underReview: getUnderReview(state, props),
   }
 )
 
-const mapDispatchToProps = (dispatch) => ({
-  changeReviewers: (id, addReviewers, removeReviewers) => dispatch(
-    fetchPullRequestChangeReviewers(id, addReviewers, removeReviewers)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewSection)
+export default connect(mapStateToProps)(ReviewSection)
 

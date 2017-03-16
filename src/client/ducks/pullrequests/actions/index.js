@@ -1,13 +1,12 @@
 /* @flow */
 
+import _ from 'lodash'
 import type { PullRequestSource } from 'universal/types'
 import type { OrderByType } from 'ducks/order'
 import { fetchActionCreator, fetchAction } from 'ducks/fetch'
 import type { FetchAction } from 'ducks/fetch'
 import { RECEIVE_PAGE } from 'ducks/pagination'
 
-import _ from 'lodash'
-import { UserInput } from 'universal/types'
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
 import pullRequestFilesList from 'ducks/pullrequests/queries/pullRequestFilesList.graphql'
 import pullRequestFile from 'ducks/pullrequests/queries/pullRequestFile.graphql'
@@ -17,7 +16,8 @@ import pullRequestIssues from 'ducks/pullrequests/queries/pullRequestIssues.grap
 import pullRequestChangeset from 'ducks/pullrequests/queries/pullRequestChangeset.graphql'
 
 import updateDescription from 'ducks/pullrequests/mutations/updateDescription.graphql'
-// import pullRequestChangeReviewers from 'ducks/pullrequests/queries/pullRequestChangeReviewers.graphql'
+import addReviewers from 'ducks/pullrequests/mutations/addReviewers.graphql'
+import removeReviewers from 'ducks/pullrequests/mutations/removeReviewers.graphql'
 
 /**
  * Action types
@@ -33,6 +33,8 @@ export const types = {
   FETCH_PULL_REQUEST_CHANGE_REVIEWERS: 'PULLREQUESTS/FETCH_PULL_REQUEST_CHANGE_REVIEWERS',
 
   UPDATE_PULL_REQUEST_DESCRIPTION: 'PULLREQUESTS/UPDATE_PULL_REQUEST_DESCRIPTION',
+  UPDATE_PULL_REQUEST_REVIEWERS: 'PULLREQUESTS/UPDATE_PULL_REQUEST_REVIEWERS',
+  DELETE_PULL_REQUEST_REVIEWERS: 'PULLREQUESTS/DELETE_PULL_REQUEST_REVIEWERS',
 }
 
 export const operationName = 'pullRequests'
@@ -91,20 +93,14 @@ export const fetchPullRequests = (variables: FetchPullRequestVariables): FetchAc
         { type: RECEIVE_PAGE, namespace: operationName, nodes, total, ...cbArgs }]
     })
 
-/* export const fetchPullRequestChangeReviewers = (
-  pullRequestId: string,
-  addReviewers: Array<UserInput>,
-  removeReviewers: Array<UserInput>) =>
-  singleFetchActionCreator(
-    types.FETCH_PULL_REQUEST_CHANGE_REVIEWERS,
-    pullRequestChangeReviewers,
-    { pullRequestId, addReviewers, removeReviewers },
-    '',
-  )*/
-
 /**
- *Action creators
+ *Mutations
  */
 export const updatePullRequestDescription = (id: string, description): FetchAction =>
   fetchPullRequestData(types.UPDATE_PULL_REQUEST_DESCRIPTION, updateDescription, { id, description })
 
+export const addPullRequestReviewers = (pullRequestId: string, reviewers: Array<string>): FetchAction =>
+  fetchPullRequestData(types.UPDATE_PULL_REQUEST_REVIEWERS, addReviewers, { pullRequestId, reviewers })
+
+export const removePullRequestReviewers = (pullRequestId: string, reviewers: Array<string>): FetchAction =>
+  fetchPullRequestData(types.DELETE_PULL_REQUEST_REVIEWERS, removeReviewers, { pullRequestId, reviewers })

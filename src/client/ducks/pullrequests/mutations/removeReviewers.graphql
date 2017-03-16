@@ -1,0 +1,15 @@
+mutation removeReviewers($pullRequestId: Int!, $reviewers: [UserInput]!) {
+  removeReviewers(pullRequestId: $pullRequestId, reviewers: $reviewers) {
+    pullRequest {
+      id
+      reviews {
+        status
+        user {
+          id
+          fullName
+          username
+        }
+      }
+    }
+  }
+}
