@@ -61,6 +61,20 @@ export const getPullRequestNormalized = createSelector(
     (id ? entities[id] || {} : {})
 )
 
+// Sometimes we don't need Denormalization of users, when we need just issues or comments
+export const getPullRequestDescription = createSelector(
+  getPullRequestNormalized, userEntitiesSelector,
+  (pr: Object, users: string): Object => ({
+    text: pr.description,
+    author: users[pr.owner],
+    created: pr.created,
+  })
+)
+
+export const getPullRequestRepoId = createSelector(
+  getPullRequestNormalized,
+  (pr: Object): Object => _.pick(pr, ['origin', 'repository', 'id'])
+)
 /**
  * Pull request page selectors
  */

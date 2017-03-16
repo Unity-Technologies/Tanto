@@ -14,14 +14,27 @@ export type UserType = {
   }
 }
 
+export type PullRequestDescriptionType = {
+  text: string,
+  created: string,
+  author: {
+    username: string,
+    slack: {
+      avatar: string
+    }
+  }
+}
+
 type Props = {
   pullRequestId: string,
   repoId: string,
   comments: Array<GeneralCommentType>,
   loggedUser: UserType,
+  description: PullRequestDescriptionType,
   onUpdate: (id: string, value: string) => void,
   onDelete: (id: string) => void,
   onSave: (repoId: string, pullrequestId: string, value: string) => void,
+  onDescriptionUpdate: (pullrequestId: string, value: string) => void,
 }
 
 const renderNewComment = (loggedUser: UserType, handleOnSave: Function, handleOnClose: Function) => (
@@ -31,7 +44,6 @@ const renderNewComment = (loggedUser: UserType, handleOnSave: Function, handleOn
     </div>
     <div className="comment-box-content" >
       <RichTextEditor
-        text={''}
         onCancel={handleOnClose}
         onSave={handleOnSave}
         cancelButtonTitle={'Close Pull Request'}
@@ -39,6 +51,15 @@ const renderNewComment = (loggedUser: UserType, handleOnSave: Function, handleOn
       />
     </div>
   </div>
+)
+
+const renderDescriptionComment = (description: PullRequestDescriptionType, loggedUser: UserType, handleOnDescriptionUpdate: Function) => (
+  <Comment
+    comment={description}
+    disableDelete
+    canEdit={description.author.username === loggedUser.username}
+    onUpdate={handleOnDescriptionUpdate}
+  />
 )
 
 class GeneralCommentThread extends Component {
@@ -68,9 +89,15 @@ class GeneralCommentThread extends Component {
     }
   }
 
-  handleOnPullRequestClose = (pullRequestId: string):void => {
+  handleOnPullRequestClose = (pullRequestId: string): void => {
     if (this.props.onSave) {
       this.props.onPullRequestClose(this.props.pullRequestId)
+    }
+  }
+
+  handleOnDescriptionUpdate = (value): Function => {
+    if (this.props.onSave) {
+      this.props.onDescriptionUpdate(this.props.pullRequestId, value)
     }
   }
 
@@ -79,6 +106,8 @@ class GeneralCommentThread extends Component {
       <div>
         <div style={{ position: 'relative' }}>
           <div className="comments-thread-timeline">
+            {this.props.description &&
+              renderDescriptionComment(this.props.description, this.props.loggedUser, this.handleOnDescriptionUpdate)}
             {this.props.comments.map(c =>
               <div className="comments-thread-timeline-item">
                 <Comment

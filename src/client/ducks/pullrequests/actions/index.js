@@ -2,11 +2,10 @@
 
 import type { PullRequestSource } from 'universal/types'
 import type { OrderByType } from 'ducks/order'
-import { singleFetchActionCreator, fetchActionCreator, fetchAction } from 'ducks/fetch'
+import { fetchActionCreator, fetchAction } from 'ducks/fetch'
 import type { FetchAction } from 'ducks/fetch'
-import { APPEND_ENTITY } from 'ducks/entities'
 import { RECEIVE_PAGE } from 'ducks/pagination'
-import { comment } from 'ducks/schema'
+
 import _ from 'lodash'
 import { UserInput } from 'universal/types'
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
@@ -16,7 +15,9 @@ import pullRequestMetadataQuery from 'ducks/pullrequests/queries/pullRequestMeta
 import pullRequestDiscussion from 'ducks/pullrequests/queries/pullRequestDiscussion.graphql'
 import pullRequestIssues from 'ducks/pullrequests/queries/pullRequestIssues.graphql'
 import pullRequestChangeset from 'ducks/pullrequests/queries/pullRequestChangeset.graphql'
-import pullRequestChangeReviewers from 'ducks/pullrequests/queries/pullRequestChangeReviewers.graphql'
+
+import updateDescription from 'ducks/pullrequests/mutations/updateDescription.graphql'
+// import pullRequestChangeReviewers from 'ducks/pullrequests/queries/pullRequestChangeReviewers.graphql'
 
 /**
  * Action types
@@ -30,6 +31,8 @@ export const types = {
   FETCH_PULL_REQUEST_METADATA: 'PULLREQUESTS/FETCH_PULL_REQUEST_METADATA',
   FETCH_PULL_REQUEST_DISCUSSION: 'PULLREQUESTS/FETCH_PULL_REQUEST_DISCUSSION',
   FETCH_PULL_REQUEST_CHANGE_REVIEWERS: 'PULLREQUESTS/FETCH_PULL_REQUEST_CHANGE_REVIEWERS',
+
+  UPDATE_PULL_REQUEST_DESCRIPTION: 'PULLREQUESTS/UPDATE_PULL_REQUEST_DESCRIPTION',
 }
 
 export const operationName = 'pullRequests'
@@ -53,6 +56,7 @@ export const parsePullRequest = (response: Object) =>
 
 export const createFileFetchActionType = (id: string, name: string) =>
   (`${types.FETCH_PULL_REQUEST_FILE}:${id}:${name}`)
+
 /**
  *Action creators
  */
@@ -87,7 +91,7 @@ export const fetchPullRequests = (variables: FetchPullRequestVariables): FetchAc
         { type: RECEIVE_PAGE, namespace: operationName, nodes, total, ...cbArgs }]
     })
 
-export const fetchPullRequestChangeReviewers = (
+/* export const fetchPullRequestChangeReviewers = (
   pullRequestId: string,
   addReviewers: Array<UserInput>,
   removeReviewers: Array<UserInput>) =>
@@ -96,20 +100,11 @@ export const fetchPullRequestChangeReviewers = (
     pullRequestChangeReviewers,
     { pullRequestId, addReviewers, removeReviewers },
     '',
-  )
+  )*/
 
-export const createPullRequestDiscussionCommentNormalizer = (pullRequestId: number): Function => (
-  (response: Object) => {
-    const newComment = _.get(response, ['createComment', 'comment'], null)
-    if (!newComment) {
-      return null
-    }
-    return {
-      type: APPEND_ENTITY,
-      object: newComment,
-      sourcePath: ['comments'],
-      referencePaths: [['pullRequests', pullRequestId.toString(), 'comments']],
-      schema: comment,
-    }
-  }
-)
+/**
+ *Action creators
+ */
+export const updatePullRequestDescription = (id: string, description): FetchAction =>
+  fetchPullRequestData(types.UPDATE_PULL_REQUEST_DESCRIPTION, updateDescription, { id, description })
+

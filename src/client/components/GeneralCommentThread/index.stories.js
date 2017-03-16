@@ -110,6 +110,17 @@ const loggedUser = {
 
 }
 
+const description = {
+  text: 'PULL request DESCRIPIOTN',
+  created: '2017-02-09T11:27:26.024159',
+  author: {
+    username: 'kate',
+    slack: {
+      avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
+    },
+  },
+}
+
 storiesOf('GeneralCommentThread', module)
   .addDecorator(muiTheme())
   .add('thread', () => (
@@ -119,9 +130,11 @@ storiesOf('GeneralCommentThread', module)
         repoId={23455}
         pullRequestId={18}
         loggedUser={loggedUser}
+        description={description}
         onDelete={action('onDelete')}
         onUpdate={action('onUpdate')}
         onSave={action('onSave')}
+        onDescriptionUpdate={action('onDescriptionUpdate')}
       />
     </div>
   ))

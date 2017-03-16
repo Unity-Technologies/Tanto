@@ -3,9 +3,9 @@ import type { FetchAction } from 'ducks/fetch'
 import { fetchAction } from 'ducks/fetch'
 
 
-import updateCommentQuery from 'ducks/comments/queries/updateComment.graphql'
-import createCommentQuery from 'ducks/comments/queries/createComment.graphql'
-import deleteCommentQuery from 'ducks/comments/queries/deleteComment.graphql'
+import updateCommentQuery from 'ducks/comments/mutations/updateComment.graphql'
+import createCommentQuery from 'ducks/comments/mutations/createComment.graphql'
+import deleteCommentQuery from 'ducks/comments/mutations/deleteComment.graphql'
 
 export const types = {
   DELETE_COMMENT: 'COMMENTS/DELETE_COMMENT',

@@ -1,0 +1,8 @@
+mutation editPullRequest($id: Int!, $description: String!,){
+  editPullRequest(id: $id, description: $description) {
+    pullRequest {
+      id
+      description
+    }
+  }
+}

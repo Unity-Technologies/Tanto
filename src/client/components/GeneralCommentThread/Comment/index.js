@@ -12,6 +12,7 @@ type Props = {
   comment: GeneralCommentType,
   canEdit: boolean,
   newMode: boolean,
+  disableDelete: boolean,
   onUpdate: (id: string, value: string) => void,
   onDelete: (id: string) => void,
 }
@@ -60,7 +61,7 @@ const renderEditMode = (comment: GeneralCommentType, handleOnCancel: Function, h
   </div>
 )
 
-const renderReadMode = (comment: GeneralCommentType, canEdit: boolean, handleOnEdit: Function, handleOnDelete: Function) => (
+const renderReadMode = (comment: GeneralCommentType, canEdit: boolean, disableDelete: boolean, handleOnEdit: Function, handleOnDelete: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
       <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : null} />
@@ -79,13 +80,14 @@ const renderReadMode = (comment: GeneralCommentType, canEdit: boolean, handleOnE
             >
               <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
             </Button>
-
-            <Button
-              onClick={handleOnDelete}
-              className="comment-action-button"
-            >
-              <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
-            </Button>
+            {!disableDelete &&
+              <Button
+                onClick={handleOnDelete}
+                className="comment-action-button"
+              >
+                <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+              </Button>
+            }
           </div>
         }
       </div>
@@ -167,7 +169,7 @@ class Comment extends Component {
       return renderStatusMode(this.props.comment, this.props.canEdit, this.handleOnEdit)
     }
 
-    return renderReadMode(this.props.comment, this.props.canEdit, this.handleOnEdit, this.handleOnDelete)
+    return renderReadMode(this.props.comment, this.props.canEdit, this.props.disableDelete, this.handleOnEdit, this.handleOnDelete)
   }
 }
 
