@@ -17,7 +17,7 @@ export const queryCustomizer = (objValue: any, srcValue: any): any => { // eslin
 }
 
 export const mutationCustomizer =
-  (objValue: any, srcValue: any, key, object, source, stack): any => { // eslint-disable-line consistent-return
+  (objValue: any, srcValue: any): any => { // eslint-disable-line consistent-return
     if (_.isArray(objValue)) {
       return srcValue
     }
