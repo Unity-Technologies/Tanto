@@ -233,6 +233,7 @@
     "react-simple-pie-chart": "^0.4.0",
     "react-sticky": "^5.0.5",
     "react-tap-event-plugin": "^2.0.1",
+    "react-textarea-autosize": "^4.0.5",
     "react-virtualized": "^9.2.2",
     "react-virtualized-select": "^2.3.0",
     "redis": "^2.6.5",

@@ -28,7 +28,7 @@ storiesOf('RichTextEditor', module)
   ))
   .add('read mode', () => (
     <RichTextEditor
-      text={'test ***test*** `aomething`'}
+      text={'test ***test*** `aomething` [test](test.com)'}
       readMode
     />
   ))

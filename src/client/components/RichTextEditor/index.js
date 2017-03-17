@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { default as RichTextEditorArea } from 'react-rte'
 import Button from 'react-bootstrap/lib/Button'
+import Textarea from 'react-textarea-autosize'
+import './styles.css'
 
 type Props = {
   onCancel: Function,
@@ -38,6 +40,12 @@ class RichTextEditor extends Component {
     this.setState({ value })
   }
 
+  handleOnChangeTextArea = (event) => {
+    this.setState({
+      value: RichTextEditorArea.createValueFromString(event.target.value, 'markdown'),
+    })
+  }
+
   handleOnCancel = () => {
     this.setState({
       value: this.getEditorInitialText(this.props),
@@ -67,6 +75,13 @@ class RichTextEditor extends Component {
         />
         {!this.props.readMode &&
           <div style={{ display: 'inline-block', width: '100%' }}>
+            <span style={{color: 'grey' }}>Markdown syntax:</span>
+            <Textarea
+              className="editor-source-preview"
+              minRows={3}
+              value={this.state.value.toString('markdown')}
+              onChange={this.handleOnChangeTextArea}
+            />
             <div style={{ marginTop: '5px', float: 'right' }}>
               <Button
                 onClick={this.handleOnCancel}
