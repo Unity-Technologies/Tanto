@@ -75,7 +75,7 @@ class RichTextEditor extends Component {
         />
         {!this.props.readMode &&
           <div style={{ display: 'inline-block', width: '100%' }}>
-            <span style={{color: 'grey' }}>Markdown syntax:</span>
+            <span style={{ color: 'grey' }}>Markdown syntax:</span>
             <Textarea
               className="editor-source-preview"
               minRows={3}

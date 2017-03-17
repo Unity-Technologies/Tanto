@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import chai from 'chai'
 import {
   merge,
@@ -6,7 +8,7 @@ import {
   types,
   entities,
 } from '../index'
-// import { schema } from 'normalizr'
+
 const expect = chai.expect
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)

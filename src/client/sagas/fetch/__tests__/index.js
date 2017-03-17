@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable  */
 import { call, put } from 'redux-saga/effects'
 import { actions } from 'ducks/fetch'
 import { get } from 'services/ono/api'
