@@ -3,15 +3,14 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
-import { types } from 'ducks/pullrequests/actions'
-import type { GeneralCommentType, UserType } from 'universal/types'
+import type { UserType } from 'universal/types'
 import type { StatusType } from 'ducks/fetch/selectors'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { createComment, updateComment, deleteComment } from 'ducks/comments/actions'
-import { updatePullRequestDescription } from 'ducks/pullrequests/actions'
+import { updatePullRequestDescription, types } from 'ducks/pullrequests/actions'
 import LoadingComponent from 'components/LoadingComponent'
 import GeneralCommentThread from 'components/GeneralCommentThread'
-import type { PullRequestDescriptionType } from 'components/GeneralCommentThread'
+import type { CommentType } from 'components/GeneralCommentThread'
 import { getLoggedUser } from 'ducks/session/selectors'
 import {
   getPullRequestGeneralComments,
@@ -22,10 +21,11 @@ import {
 export type Props = {
   createComment: Function,
   editComment: Function,
-  description: PullRequestDescriptionType,
+  description: CommentType,
   pullRequestId: number,
   repoId: string,
-  comments: Array<GeneralCommentType>,
+  dispatch: Function,
+  comments: Array<CommentType>,
   loggedUser: UserType,
   status: StatusType
 }

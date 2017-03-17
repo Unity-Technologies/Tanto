@@ -8,6 +8,7 @@ const comment = {
   id: 12,
   text: 'This is some test comment *with markdown*',
   created: '2017-02-09T11:27:26.024159',
+  status: '',
   author: {
     username: 'johne',
     slack: {
@@ -32,6 +33,7 @@ const commentApproved = {
 const commentRejected = {
   id: 12,
   text: 'This is some test comment *with markdown*',
+  created: '2017-02-09T11:27:26.024159',
   status: 'rejected',
   author: {
     username: 'johne',

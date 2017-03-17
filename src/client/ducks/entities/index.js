@@ -10,26 +10,20 @@ export const types = {
   SET_MUTATED_ENTITIES,
 }
 
-const customizerQuery = (objValue: any, srcValue: any): any => {
+const queryCustomizer = (objValue: any, srcValue: any): any => { // eslint-disable-line consistent-return
   if (_.isArray(objValue)) {
     return _.union(objValue, srcValue)
   }
 }
 
-const customizerMutation = (objValue: any, srcValue: any, key, object, source, stack): any => {
+const mutationCustomizer = (objValue: any, srcValue: any, key, object, source, stack): any => { // eslint-disable-line consistent-return
   if (_.isArray(objValue)) {
     return srcValue
   }
 }
 
-export const mergeOnQuery = (state: Object, entity: Object): Object => {
-  const updatedState = _.mergeWith({}, state, entity, customizerQuery)
-
-  return _.isEqual(updatedState, state) ? state : updatedState
-}
-
-export const mergeOnMutation = (state: Object, entity: Object): Object => {
-  const updatedState = _.mergeWith({}, state, entity, customizerMutation)
+export const merge = (state: Object, entity: Object, customizer: Function): Object => {
+  const updatedState = _.mergeWith({}, state, entity, customizer)
 
   return _.isEqual(updatedState, state) ? state : updatedState
 }
@@ -37,9 +31,9 @@ export const mergeOnMutation = (state: Object, entity: Object): Object => {
 export const entities = (state: Object = {}, action: Object): Object => {
   switch (action.type) {
     case types.SET_QUERIED_ENTITIES:
-      return mergeOnQuery(state, action.entities)
+      return merge(state, action.entities, queryCustomizer)
     case types.SET_MUTATED_ENTITIES:
-      return mergeOnMutation(state, action.entities)
+      return merge(state, action.entities, mutationCustomizer)
     default:
       return state
   }

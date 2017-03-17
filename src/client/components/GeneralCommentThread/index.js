@@ -4,7 +4,8 @@ import type { GeneralCommentType } from 'universal/types'
 import RichTextEditor from 'components/RichTextEditor'
 import Avatar from 'components/Avatar'
 import Comment from './Comment'
-
+import type { CommentType } from './Comment'
+export type { CommentType } from './Comment'
 import './GeneralCommentThread.css'
 
 export type UserType = {
@@ -13,24 +14,12 @@ export type UserType = {
     avatar: string
   }
 }
-
-export type PullRequestDescriptionType = {
-  text: string,
-  created: string,
-  author: {
-    username: string,
-    slack: {
-      avatar: string
-    }
-  }
-}
-
 type Props = {
   pullRequestId: string,
   repoId: string,
   comments: Array<GeneralCommentType>,
   loggedUser: UserType,
-  description: PullRequestDescriptionType,
+  description: CommentType,
   onUpdate: (id: string, value: string) => void,
   onDelete: (id: string) => void,
   onSave: (repoId: string, pullrequestId: string, value: string) => void,
@@ -40,7 +29,7 @@ type Props = {
 const renderNewComment = (loggedUser: UserType, handleOnSave: Function, handleOnClose: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
-      <Avatar avatar={loggedUser.slack ? loggedUser.slack.avatar : null} />
+      <Avatar avatar={loggedUser.slack ? loggedUser.slack.avatar : ''} />
     </div>
     <div className="comment-box-content" >
       <RichTextEditor
@@ -53,14 +42,15 @@ const renderNewComment = (loggedUser: UserType, handleOnSave: Function, handleOn
   </div>
 )
 
-const renderDescriptionComment = (description: PullRequestDescriptionType, loggedUser: UserType, handleOnDescriptionUpdate: Function) => (
-  <Comment
-    comment={description}
-    disableDelete
-    canEdit={description.author.username === loggedUser.username}
-    onUpdate={handleOnDescriptionUpdate}
-  />
-)
+const renderDescriptionComment =
+  (description: CommentType, loggedUser: UserType, handleOnDescriptionUpdate: Function) => (
+    <Comment
+      comment={description}
+      disableDelete
+      canEdit={description.author.username === loggedUser.username}
+      onUpdate={handleOnDescriptionUpdate}
+    />
+  )
 
 class GeneralCommentThread extends Component {
   constructor(props: Props) {
@@ -71,31 +61,37 @@ class GeneralCommentThread extends Component {
     }
   }
 
-  handleOnUpdate = (commentId: string) => {
-    if (this.props.onUpdate) {
-      return (value) => this.props.onUpdate(commentId, value)
-    }
+  state: {
+    editMode: boolean
   }
 
-  handleOnDelete = (commentId: string): Function => {
+  handleOnUpdate = (commentId: string): any => {
+    if (this.props.onUpdate) {
+      return (value: string) => this.props.onUpdate(commentId, value)
+    }
+    return null
+  }
+
+  handleOnDelete = (commentId: string): any => {
     if (this.props.onDelete) {
       return () => this.props.onDelete(commentId)
     }
+    return null
   }
 
-  handleOnSave = (value): Function => {
+  handleOnSave = (value: string): any => {
     if (this.props.onSave) {
       this.props.onSave(this.props.repoId, this.props.pullRequestId, value)
     }
   }
 
-  handleOnPullRequestClose = (pullRequestId: string): void => {
+  handleOnPullRequestClose = (pullRequestId: string) => {
     if (this.props.onSave) {
       this.props.onPullRequestClose(this.props.pullRequestId)
     }
   }
 
-  handleOnDescriptionUpdate = (value): Function => {
+  handleOnDescriptionUpdate = (value: string): any => {
     if (this.props.onSave) {
       this.props.onDescriptionUpdate(this.props.pullRequestId, value)
     }

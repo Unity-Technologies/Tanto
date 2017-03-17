@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 // import Comment from 'components/Comment'
-import _ from 'lodash'
+// import _ from 'lodash'
 import RaisedButton from 'material-ui/RaisedButton'
 
 export type Props = {
@@ -78,7 +78,7 @@ class UnifiedRow extends Component {
       operation,
       isBreak,
       newLineNumber,
-      loggedUsername,
+     // loggedUsername,
       oldLineNumber,
       comments,
     } = this.props

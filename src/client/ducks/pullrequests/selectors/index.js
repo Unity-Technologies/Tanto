@@ -73,7 +73,7 @@ export const getPullRequestDescription = createSelector(
 
 export const getPullRequestRepoId = createSelector(
   getPullRequestNormalized,
-  (pr: Object): Object => _.pick(pr, ['origin', 'repository', 'id'])
+  (pr: Object) => (pr && pr.origin && pr.origin.repository ? pr.origin.repository.id : null)
 )
 /**
  * Pull request page selectors

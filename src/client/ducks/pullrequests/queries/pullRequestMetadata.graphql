@@ -2,6 +2,7 @@ query pullRequestMetadata($id: Int!) {
   pullRequest(id: $id) {
     id
     title
+    description
     status
     created
     owner {

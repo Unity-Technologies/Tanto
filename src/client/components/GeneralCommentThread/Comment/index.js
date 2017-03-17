@@ -8,16 +8,29 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import type { GeneralCommentType } from 'universal/types'
 import './Comment.css'
 
-type Props = {
-  comment: GeneralCommentType,
-  canEdit: boolean,
-  newMode: boolean,
-  disableDelete: boolean,
-  onUpdate: (id: string, value: string) => void,
-  onDelete: (id: string) => void,
+
+export type CommentType = {
+  id?: any,
+  created: string,
+  modified?: string,
+  text?: string,
+  status: string,
+  author: {
+    username: string,
+    slack?: {
+      avatar: string
+    }
+  }
+}
+export type CommentProps = {
+  comment: CommentType,
+  canEdit?: boolean,
+  disableDelete?: boolean,
+  onUpdate?: (value: string) => void,
+  onDelete?: () => void,
 }
 
-export const getStatusText = (status) => {
+export const getStatusText = (status: string) => {
   switch (status) {
     case 'approved':
     case 'rejected':
@@ -31,7 +44,7 @@ export const getStatusText = (status) => {
   }
 }
 
-export const getStatusIcon = (status) => {
+export const getStatusIcon = (status: string) => {
   switch (status) {
     case 'approved':
       return (<Glyphicon glyph="ok-sign" className="comment-status-glyph status-green" />)
@@ -47,7 +60,7 @@ export const getStatusIcon = (status) => {
 const renderEditMode = (comment: GeneralCommentType, handleOnCancel: Function, handleOnUpdate: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
-      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : null} />
+      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : ''} />
     </div>
     <div className="comment-box-content" >
       <RichTextEditor
@@ -61,45 +74,47 @@ const renderEditMode = (comment: GeneralCommentType, handleOnCancel: Function, h
   </div>
 )
 
-const renderReadMode = (comment: GeneralCommentType, canEdit: boolean, disableDelete: boolean, handleOnEdit: Function, handleOnDelete: Function) => (
-  <div className="comment-box">
-    <div className="comment-box-avatar">
-      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : null} />
-    </div>
-    <div className="comment-box-content">
-      <div className="comment-box-header">
-        <div className="comment-title">
-          <strong>{comment.author.username}</strong>
-          <span>&nbsp;commented&nbsp;{moment(comment.created).fromNow()}</span>
-        </div>
-        {canEdit &&
-          <div className="comment-box-actions">
-            <Button
-              className="comment-action-button"
-              onClick={handleOnEdit}
-            >
-              <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
-            </Button>
-            {!disableDelete &&
-              <Button
-                onClick={handleOnDelete}
-                className="comment-action-button"
-              >
-                <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
-              </Button>
-            }
-          </div>
-        }
+const renderReadMode =
+  (comment: GeneralCommentType, canEdit: boolean, disableDelete: boolean, handleOnEdit: Function, handleOnDelete: Function) => (
+    <div className="comment-box">
+      <div className="comment-box-avatar">
+        <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : ''} />
       </div>
-      <RichTextEditor text={comment.text} readMode />
+      <div className="comment-box-content">
+        <div className="comment-box-header">
+          <div className="comment-title">
+            <strong>{comment.author.username}</strong>
+            <span>&nbsp;commented&nbsp;{moment(comment.created).fromNow()}</span>
+          </div>
+          {canEdit &&
+            <div className="comment-box-actions">
+              <Button
+                className="comment-action-button"
+                onClick={handleOnEdit}
+              >
+                <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+              </Button>
+              {!disableDelete &&
+                <Button
+                  onClick={handleOnDelete}
+                  className="comment-action-button"
+                >
+                  <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+                </Button>
+              }
+            </div>
+          }
+        </div>
+        <RichTextEditor text={comment.text} readMode />
+      </div>
     </div>
-  </div>
-)
+  )
+
 
 const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleOnEdit: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
-      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : null} />
+      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : ''} />
     </div>
     <div className="comment-box-content">
       <div className="comment-box-header-status">
@@ -129,7 +144,7 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
 )
 
 class Comment extends Component {
-  constructor(props: Props) {
+  constructor(props: CommentProps) {
     super(props)
 
     this.state = {
@@ -137,24 +152,28 @@ class Comment extends Component {
     }
   }
 
-  props: Props
+  state: {
+    editMode: boolean
+  }
+
+  props: CommentProps
 
   handleOnCancel = () => {
     this.setState({ editMode: false })
   }
 
-  handleOnUpdate = (value) => {
+  handleOnUpdate = (value: string): void => {
     this.setState({ editMode: false })
     if (this.props.onUpdate) {
       this.props.onUpdate(value)
     }
   }
 
-  handleOnEdit = () => {
+  handleOnEdit = (): void => {
     this.setState({ editMode: true })
   }
 
-  handleOnDelete = () => {
+  handleOnDelete = (): void => {
     if (this.props.onDelete) {
       this.props.onDelete()
     }
@@ -166,10 +185,11 @@ class Comment extends Component {
     }
 
     if (this.props.comment.status) {
-      return renderStatusMode(this.props.comment, this.props.canEdit, this.handleOnEdit)
+      return renderStatusMode(this.props.comment, this.props.canEdit || false, this.handleOnEdit)
     }
 
-    return renderReadMode(this.props.comment, this.props.canEdit, this.props.disableDelete, this.handleOnEdit, this.handleOnDelete)
+    return renderReadMode(
+      this.props.comment, this.props.canEdit || false, this.props.disableDelete || false, this.handleOnEdit, this.handleOnDelete)
   }
 }
 

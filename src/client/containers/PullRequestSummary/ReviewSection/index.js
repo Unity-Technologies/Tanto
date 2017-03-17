@@ -47,6 +47,7 @@ type ReviewersSectionProps = {
   rejected: Array<PullRequestReviewerType>,
   underReview: Array<PullRequestReviewerType>,
   users: Array<UserType>,
+  dispatch: Function,
   id: string,
   missingReviewers: PullRequestMissingReviewerType,
   changeReviewers: Function,

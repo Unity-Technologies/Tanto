@@ -20,12 +20,6 @@ class RichTextEditor extends Component {
     }
   }
 
-  props: Props
-
-  handleOnChange = (value) => {
-    this.setState({ value })
-  }
-
   componentWillReceiveProps(nextprops) {
     if (nextprops.text !== this.props.text && nextprops.text) {
       this.setState({
@@ -36,7 +30,13 @@ class RichTextEditor extends Component {
 
   getEditorInitialText = (props) => (props.text ?
       RichTextEditorArea.createValueFromString(this.props.text, 'markdown') :
-      RichTextEditorArea.createEmptyValue())
+    RichTextEditorArea.createEmptyValue())
+
+  props: Props
+
+  handleOnChange = (value) => {
+    this.setState({ value })
+  }
 
   handleOnCancel = () => {
     this.setState({
@@ -52,9 +52,8 @@ class RichTextEditor extends Component {
       value: this.getEditorInitialText(this.props),
     })
     if (this.props.onSave) {
-      this.props.onSave(
-        this.state.value.toString('markdown')
-      )
+      const text = this.state.value.toString('markdown')
+      this.props.onSave(text)
     }
   }
 

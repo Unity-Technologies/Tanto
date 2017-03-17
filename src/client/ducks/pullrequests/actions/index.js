@@ -96,11 +96,11 @@ export const fetchPullRequests = (variables: FetchPullRequestVariables): FetchAc
 /**
  *Mutations
  */
-export const updatePullRequestDescription = (id: string, description): FetchAction =>
+export const updatePullRequestDescription = (id: string, description: string): FetchAction =>
   fetchPullRequestData(types.UPDATE_PULL_REQUEST_DESCRIPTION, updateDescription, { id, description })
 
-export const addPullRequestReviewers = (pullRequestId: string, reviewers: Array<string>): FetchAction =>
+export const addPullRequestReviewers = (pullRequestId: string, reviewers: Array<any>): FetchAction =>
   fetchPullRequestData(types.UPDATE_PULL_REQUEST_REVIEWERS, addReviewers, { pullRequestId, reviewers })
 
-export const removePullRequestReviewers = (pullRequestId: string, reviewers: Array<string>): FetchAction =>
+export const removePullRequestReviewers = (pullRequestId: string, reviewers: Array<any>): FetchAction =>
   fetchPullRequestData(types.DELETE_PULL_REQUEST_REVIEWERS, removeReviewers, { pullRequestId, reviewers })

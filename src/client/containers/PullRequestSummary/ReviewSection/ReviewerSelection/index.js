@@ -1,8 +1,6 @@
 /* @flow */
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react'
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
 import type { UserType } from 'universal/types'
 import { default as Select } from 'components/VirtualizedSelect'
 import MissingReviewerList from '../MissingReviewerList'
