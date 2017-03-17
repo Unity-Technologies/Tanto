@@ -8,7 +8,7 @@ import {
   fetchRepositories,
   operationNames,
 } from 'ducks/repositories/actions'
-import { SET_NORMALIZED_ENTITIES } from 'ducks/entities'
+import { SET_QUERIED_ENTITIES } from 'ducks/entities'
 import schema from 'ducks/schema'
 import { normalize } from 'normalizr'
 
@@ -36,7 +36,7 @@ describe('repository actions', () => {
       { type: fetchTypes.CLEAR_ERROR, name: types.SEARCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: true },
       { type: fetchTypes.SENDING_REQUEST, name: types.SEARCH_REPOSITORY, sending: false },
-      { type: SET_NORMALIZED_ENTITIES, entities: normalize({ repositories: { nodes } }, schema).entities },
+      { type: SET_QUERIED_ENTITIES, entities: normalize({ repositories: { nodes } }, schema).entities },
     ]
 
     fetchMock.mock('*', {
@@ -83,7 +83,7 @@ describe('repository actions', () => {
       { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY, variables: { name: repositoryName }, query: repositoryQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY, sending: true },
-      { type: SET_NORMALIZED_ENTITIES, entities: normalize(repo, schema).entities },
+      { type: SET_QUERIED_ENTITIES, entities: normalize(repo, schema).entities },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY, sending: false },
     ]
 
@@ -133,7 +133,7 @@ describe('repository actions', () => {
       { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY_BRANCHES, variables: { id }, query: repoBranchesQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY_BRANCHES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: true },
-      { type: SET_NORMALIZED_ENTITIES, entities: normalize(repo, schema).entities },
+      { type: SET_QUERIED_ENTITIES, entities: normalize(repo, schema).entities },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: false },
     ]
 
@@ -191,7 +191,7 @@ describe('repository actions', () => {
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORIES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: true },
-      { type: SET_NORMALIZED_ENTITIES, entities: normalize(data, schema).entities },
+      { type: SET_QUERIED_ENTITIES, entities: normalize(data, schema).entities },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: false },
     ]
 
@@ -235,7 +235,7 @@ describe('repository actions', () => {
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORIES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: true },
-      { type: SET_NORMALIZED_ENTITIES, entities: normalize(data, schema).entities },
+      { type: SET_QUERIED_ENTITIES, entities: normalize(data, schema).entities },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORIES, sending: false },
     ]
 
