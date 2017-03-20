@@ -33,7 +33,6 @@ export type Props = {
 
 export const getFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DISCUSSION)
 
-
 const renderHeadComment = ({ owner, description, created }, loggedUsername) => {
   if (!owner || !created) {
     return null
