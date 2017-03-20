@@ -6,6 +6,7 @@ import {
   fetchRepository,
   fetchRepositoryBranches,
   fetchRepositories,
+  fetchChangelog,
   operationNames,
 } from 'ducks/repositories/actions'
 import { SET_NORMALIZED_ENTITIES } from 'ducks/entities'
@@ -19,6 +20,7 @@ import fetchMock from 'fetch-mock'
 import repositoriesQuery from 'ducks/repositories/queries/repositories.graphql'
 import repositoryQuery from 'ducks/repositories/queries/repository.graphql'
 import repoBranchesQuery from 'ducks/repositories/queries/branches.graphql'
+import changelogQuery from 'ducks/repositories/queries/changelog.graphql'
 
 describe('repository actions', () => {
   afterEach(() => fetchMock.restore())
@@ -269,5 +271,54 @@ describe('repository actions', () => {
     const store = storeMock({}, expectedActions, done)
 
     store.dispatch(fetchRepositories(name))
+  })
+
+  it('fetchChangelog success', (done) => {
+    const repositoryName = 'test/repo'
+
+    const repo = {
+      repository: {
+        id: 1,
+        name: 'testname',
+        fullName: 'test/test/name',
+      },
+    }
+    const expectedActions = [
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_CHANGELOG, variables: { name: repositoryName }, query: changelogQuery },
+      { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_CHANGELOG },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_CHANGELOG, sending: true },
+      { type: SET_NORMALIZED_ENTITIES, entities: normalize(repo, schema).entities },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_CHANGELOG, sending: false },
+    ]
+
+    fetchMock.mock('*', {
+      data: repo,
+    })
+
+    const store = storeMock({}, expectedActions, done)
+
+    store.dispatch(fetchChangelog(repositoryName))
+  })
+
+  it('fetchChangelog failure', (done) => {
+    const name = ''
+    const error = new Error('some error')
+
+    const expectedActions = [
+      {
+        type: fetchTypes.FETCH_DATA, name: types.FETCH_CHANGELOG, variables: { name },
+        query: changelogQuery,
+      },
+      { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_CHANGELOG },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_CHANGELOG, sending: true },
+      { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_CHANGELOG, error },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_CHANGELOG, sending: false },
+    ]
+
+    fetchMock.mock('*', { throws: error, status: 503 })
+
+    const store = storeMock({}, expectedActions, done)
+
+    store.dispatch(fetchChangelog(name))
   })
 })

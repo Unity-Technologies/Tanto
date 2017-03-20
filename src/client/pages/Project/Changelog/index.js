@@ -2,12 +2,15 @@
 
 import React, { Component } from 'react'
 import BranchSelect from 'components/BranchSelect'
-import ChangesetList from 'components/ChangesetList'
 import { connect } from 'react-redux'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Button from 'react-bootstrap/lib/Button'
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
+import { fetchChangelog } from 'ducks/repositories/actions'
+import { getChangelog } from 'ducks/repositories/selectors'
+import ChangesetList from 'components/ChangesetList'
+import LoadingComponent from 'components/LoadingComponent'
 
 
 export type Props = {
@@ -31,6 +34,12 @@ class Changelog extends Component {
     this.handleChangeDuration = this.handleChangeDuration.bind(this)
     this.handleRequestClose = this.handleRequestClose.bind(this)
     this.handleChange = this.handleChange.bind(this)
+  }
+
+  componentDidMount() {
+    if (this.props.params.splat) {
+      this.props.dispatch(fetchChangelog(this.props.params.splat))
+    }
   }
 
   props: Props
@@ -99,6 +108,7 @@ class Changelog extends Component {
     }
 
     const { params: { id }, data } = this.props
+
     return (
       <div>
         <div style={{ padding: '10px' }}>
@@ -148,13 +158,17 @@ class Changelog extends Component {
             </Col>
           </Row>
         </div>
-        <ChangesetList showCheckboxes data={data} />
+        <LoadingComponent status={status}>
+        {!status.isFetching && !data && !status.error &&
+          <div style={{ textAlign: 'center', padding: '10%' }} >
+            <h4>NO CHANGES</h4>
+          </div>
+          }
+          <ChangesetList commits={data} projectName={this.props.params.splat} />
+        </LoadingComponent>
       </div>
     )
   }
 }
 
-
-export default connect(state => ({ // eslint-disable-line no-unused-vars
-  data: [],
-}))(Changelog)
+export default connect(getChangelog)(Changelog)

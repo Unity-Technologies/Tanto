@@ -72,3 +72,12 @@ export const getRepositoryId = createSelector(
     _.findKey(entities, (v) => (v.fullName === repoName))
 )
 
+export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
+export const getChangelog = (state: Object, props: Object): Array<Object> => {
+  const changesets = _.get(state, ['entities', 'changesets'], [])[undefined]
+  return {
+    data: _.values(changesets),
+    status: getChangelogFetchStatus,
+  }
+}
+

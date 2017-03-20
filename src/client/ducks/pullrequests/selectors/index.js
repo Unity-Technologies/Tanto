@@ -144,4 +144,3 @@ export const getPullRequestFile = createSelector(
       .map(comment => denormalizeCommentAuthor(comment, userEntities)),
     }
   })
-
