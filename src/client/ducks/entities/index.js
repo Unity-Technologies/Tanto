@@ -34,7 +34,6 @@ export const entities = (state: Object = {}, action: Object): Object => {
     case types.SET_QUERIED_ENTITIES:
       return merge(state, action.entities, queryCustomizer)
     case types.SET_MUTATED_ENTITIES:
-      // return merge(state, action.entities, mutationCustomizer)
       return _.mergeWith({}, state, action.entities, mutationCustomizer)
     default:
       return state
