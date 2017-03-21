@@ -10,14 +10,6 @@ query pullRequestMetadata($id: Int!) {
       fullName
       username
     }
-    reviews {
-      status
-      user {
-        id
-        fullName
-        username
-      }
-    }
     origin {
       name
       repository {
@@ -45,14 +37,6 @@ query pullRequestMetadata($id: Int!) {
         fullName
       }
       assignee {
-        id
-        username
-        fullName
-      }
-    }
-    missingReviewers {
-      area
-      reviewers {
         id
         username
         fullName

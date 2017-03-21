@@ -9,6 +9,7 @@ import {
   updatePullRequestDescription,
   addPullRequestReviewers,
   removePullRequestReviewers,
+  fetchPullRequestReviews,
 } from '../index'
 
 import { types as fetchTypes } from 'ducks/fetch'
@@ -25,6 +26,7 @@ import fetchMock from 'fetch-mock'
 import updateDescription from 'ducks/pullrequests/mutations/updateDescription.graphql'
 import addReviewers from 'ducks/pullrequests/mutations/addReviewers.graphql'
 import removeReviewers from 'ducks/pullrequests/mutations/removeReviewers.graphql'
+import pullRequestReviews from 'ducks/pullrequests/queries/pullRequestReviews.graphql'
 
 const expect = chai.expect
 
@@ -360,6 +362,57 @@ describe('pullrequests actions', () => {
     const store = storeMock({}, expectedActions, done)
 
     store.dispatch(removePullRequestReviewers(pullRequestId, reviewers))
+  })
+
+  it('fetchPullRequestReviews success', (done) => {
+    const id = 2
+    const pr = {
+      pullRequest: {
+        id,
+        reviews: [
+          {
+            name: 'testpr',
+            title: 'test pr title',
+            description: 'test pr description',
+          },
+        ],
+      },
+    }
+
+    const expectedActions = [
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST_REVIEWS, variables: { id }, query: pullRequestReviews },
+      { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST_REVIEWS },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST_REVIEWS, sending: true },
+      { type: SET_QUERIED_ENTITIES, entities: normalize(pr, schema).entities },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST_REVIEWS, sending: false },
+    ]
+
+    fetchMock.mock('*', {
+      data: pr,
+    })
+
+    const store = storeMock({}, expectedActions, done)
+
+    store.dispatch(fetchPullRequestReviews(id))
+  })
+
+  it('fetchPullRequestReviews failure', (done) => {
+    const id = 2
+    const error = new Error('some error')
+    const expectedActions = [
+      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST_REVIEWS, variables: { id }, query: pullRequestReviews },
+      { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST_REVIEWS },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST_REVIEWS, sending: true },
+      { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUEST_REVIEWS, error },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST_REVIEWS, sending: false },
+    ]
+
+    fetchMock.mock('*', { throws: error, status: 503 })
+
+    const store = storeMock({}, expectedActions, done)
+
+
+    store.dispatch(fetchPullRequestReviews(id))
   })
 })
 

@@ -1,12 +1,12 @@
 import chai from 'chai'
 import {
-  getReviews,
+  getPullRequestReviews,
 } from '../index'
 
 const expect = chai.expect
 
 describe('PullRequestSummary/ReviewSection selectors', () => {
-  it('getReviews, full data', () => {
+  it('getPullRequestReviews, full data', () => {
     const user1 = 'user1'
     const user2 = 'user2'
     const users = {
@@ -41,9 +41,9 @@ describe('PullRequestSummary/ReviewSection selectors', () => {
         prid: 12,
       },
     }
-    expect(getReviews(state, props)).to.deep.eql(expectedData)
+    expect(getPullRequestReviews(state, props)).to.deep.eql(expectedData)
   })
-  it('getReviews, no users in state', () => {
+  it('getPullRequestReviews, no users in state', () => {
     const review1 = {
       status: 'ChangesetStatus.UNDER_REVIEW',
       user: 1,
@@ -72,9 +72,9 @@ describe('PullRequestSummary/ReviewSection selectors', () => {
         prid: 12,
       },
     }
-    expect(getReviews(state, props)).to.deep.eql(expectedData)
+    expect(getPullRequestReviews(state, props)).to.deep.eql(expectedData)
   })
-  it('getReviews, no pr in state', () => {
+  it('getPullRequestReviews, no pr in state', () => {
     const user1 = 'user1'
     const user2 = 'user2'
     const users = {
@@ -92,9 +92,9 @@ describe('PullRequestSummary/ReviewSection selectors', () => {
         prid: 12,
       },
     }
-    expect(getReviews(state, props)).to.deep.eql(expectedData)
+    expect(getPullRequestReviews(state, props)).to.deep.eql(expectedData)
   })
-  it('getReviews, no pr (no prid in props)', () => {
+  it('getPullRequestReviews, no pr (no prid in props)', () => {
     const user1 = 'user1'
     const user2 = 'user2'
     const users = {
@@ -124,6 +124,6 @@ describe('PullRequestSummary/ReviewSection selectors', () => {
     const props = {
       params: {},
     }
-    expect(getReviews(state, props)).to.deep.eql(expectedData)
+    expect(getPullRequestReviews(state, props)).to.deep.eql(expectedData)
   })
 })

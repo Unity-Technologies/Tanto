@@ -14,6 +14,7 @@ import pullRequestMetadataQuery from 'ducks/pullrequests/queries/pullRequestMeta
 import pullRequestDiscussion from 'ducks/pullrequests/queries/pullRequestDiscussion.graphql'
 import pullRequestIssues from 'ducks/pullrequests/queries/pullRequestIssues.graphql'
 import pullRequestChangeset from 'ducks/pullrequests/queries/pullRequestChangeset.graphql'
+import pullRequestReviews from 'ducks/pullrequests/queries/pullRequestReviews.graphql'
 
 import updateDescription from 'ducks/pullrequests/mutations/updateDescription.graphql'
 import addReviewers from 'ducks/pullrequests/mutations/addReviewers.graphql'
@@ -31,6 +32,7 @@ export const types = {
   FETCH_PULL_REQUEST_METADATA: 'PULLREQUESTS/FETCH_PULL_REQUEST_METADATA',
   FETCH_PULL_REQUEST_DISCUSSION: 'PULLREQUESTS/FETCH_PULL_REQUEST_DISCUSSION',
   FETCH_PULL_REQUEST_CHANGE_REVIEWERS: 'PULLREQUESTS/FETCH_PULL_REQUEST_CHANGE_REVIEWERS',
+  FETCH_PULL_REQUEST_REVIEWS: 'PULLREQUESTS/FETCH_PULL_REQUEST_REVIEWS',
 
   UPDATE_PULL_REQUEST_DESCRIPTION: 'PULLREQUESTS/UPDATE_PULL_REQUEST_DESCRIPTION',
   UPDATE_PULL_REQUEST_REVIEWERS: 'PULLREQUESTS/UPDATE_PULL_REQUEST_REVIEWERS',
@@ -74,6 +76,9 @@ export const fetchPullRequestFile = (id: string, name: string): FetchAction =>
 
 export const fetchPullRequestMetadata = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_METADATA, pullRequestMetadataQuery, { id })
+
+export const fetchPullRequestReviews = (id: string): FetchAction =>
+  fetchPullRequestData(types.FETCH_PULL_REQUEST_REVIEWS, pullRequestReviews, { id })
 
 export const fetchPullRequestDiscussion = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_DISCUSSION, pullRequestDiscussion, { id })

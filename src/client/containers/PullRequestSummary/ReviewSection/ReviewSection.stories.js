@@ -2,8 +2,7 @@
 import React, { Component } from 'react'
 import { storiesOf } from '@kadira/storybook'
 import { muiTheme } from 'storybook-addon-material-ui'
-
-import ReviewerSelection from './ReviewerSelection'
+import ReviewSection from './index'
 
 const USERS = [
   { username: 'alfredp', fullName: 'Alfred Pennyworth ' },
@@ -42,11 +41,7 @@ class WrappedReviewerSelection extends Component {
 
   render() {
     return (
-      <ReviewerSelection
-        users={USERS}
-        reviewers={this.state.reviewers}
-        onToggleReviewer={this.onToggleReviewer}
-      />
+      <ReviewSection users={USERS} />
     )
   }
 }

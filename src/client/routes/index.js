@@ -28,6 +28,7 @@ import {
   fetchPullRequestDiscussion,
   fetchPullRequestIssues,
   fetchPullRequestChangeset,
+  fetchPullRequestReviews,
 } from 'ducks/pullrequests/actions'
 
 import { app, project, pullrequest, changeset } from 'containers/SideBar/SideBarConfig'
@@ -59,6 +60,7 @@ export default (store) => {
     store.dispatch(fetchPullRequestFilesList(id))
     store.dispatch(fetchPullRequestIssues(id))
     store.dispatch(fetchPullRequestChangeset(id))
+    store.dispatch(fetchPullRequestReviews(id))
   }
 
   const onChangesetEnter = (nextState) => {
