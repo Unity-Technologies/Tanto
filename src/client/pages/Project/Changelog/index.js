@@ -81,7 +81,7 @@ class Changelog extends Component {
             <h4>NO CHANGES</h4>
           </div>
           }
-          <ChangesetList commits={data} projectName={this.props.params.splat} />
+          <ChangesetList showCheckboxes commits={data} projectName={this.props.params.splat} />
         </LoadingComponent>
       </div>
     )
