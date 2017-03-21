@@ -35,9 +35,10 @@ const greenStatus = { borderLeft: '4px solid #d1fad1' }
 const redStatus = { borderLeft: '4px solid #F44336' }
 const yellowStatus = { borderLeft: '4px solid #ffcbad' }
 const greyStatus = { borderLeft: '4px solid lightgrey' }
+const blueStatus = { borderLeft: '4px solid #337ab7' }
 
 const getStatusColor = (status) => {
-  switch (status) {
+  switch (status.toUpperCase()) {
     case ChangesetStatus.REJECTED:
       return redStatus
     case ChangesetStatus.UNDER_REVIEW:
