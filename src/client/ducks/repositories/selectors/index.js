@@ -75,9 +75,9 @@ export const getRepositoryId = createSelector(
 export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
 export const getChangelog = (state: Object, props: Object) => {
   const changesets = _.get(state, ['entities', 'changesets'], [])[undefined]
-  const changesetsSortedByBranch = _.sortBy(_.values(changesets), [o => o.branch])
+  const changesetsValues = _.values(changesets)
   return {
-    data: changesetsSortedByBranch,
+    data: changesetsValues,
     status: getChangelogFetchStatus,
   }
 }
