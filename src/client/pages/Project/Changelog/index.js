@@ -23,7 +23,6 @@ class Changelog extends Component {
     super(props)
 
     this.state = {
-      changesets: [],
       height: '100%',
       autoHideDuration: 4000,
       message: 'Hash has been copied to clipboard',
@@ -33,7 +32,6 @@ class Changelog extends Component {
     this.handleActionTouchTap = this.handleActionTouchTap.bind(this)
     this.handleChangeDuration = this.handleChangeDuration.bind(this)
     this.handleRequestClose = this.handleRequestClose.bind(this)
-    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
@@ -67,31 +65,6 @@ class Changelog extends Component {
     this.setState({
       open: false,
     })
-  }
-
-  handleChange(obj, isSelected) {
-    if (this.state.changesets.length < 2 && isSelected) {
-      this.state.changesets.push(obj.target.value)
-    }
-    if (this.state.changesets.length <= 2 && !isSelected) {
-      const index = this.state.changesets.indexOf(obj.target.value)
-      if (index !== -1) {
-        this.state.changesets.splice(index, 1)
-      }
-      this.props.data.map((item) => {
-        const ch = this.refs[item.hash]
-        ch.setState({ disabled: false })
-        return true
-      })
-    }
-
-    if (this.state.changesets.length === 2) {
-      this.props.data.map((item) => {
-        const ch = this.refs[item.hash]
-        ch.setState({ disabled: !this.state.changesets.includes(item.hash) })
-        return true
-      })
-    }
   }
 
   render() {
