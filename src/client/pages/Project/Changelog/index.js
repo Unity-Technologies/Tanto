@@ -54,12 +54,6 @@ class Changelog extends Component {
       color: 'white',
     }
 
-    const openPrButtonStyle = {
-      backgroundColor: 'rgb(162, 162, 171)',
-      borderColor: 'rgb(162, 162, 171)',
-      color: 'white',
-    }
-
     const { params: { id }, data } = this.props
 
     return (
@@ -75,10 +69,7 @@ class Changelog extends Component {
             <Col md={8}>
               <ButtonGroup style={{ float: 'right' }}>
                 <Button style={showChangesButtonStyle}>
-                  Show
-                </Button>
-                <Button style={openPrButtonStyle}>
-                  Open Pull
+                  Show changeset
                 </Button>
               </ButtonGroup>
             </Col>
