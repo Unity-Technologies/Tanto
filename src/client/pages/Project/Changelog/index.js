@@ -86,40 +86,13 @@ class Changelog extends Component {
       <div>
         <div style={{ padding: '10px' }}>
           <Row>
-            <Col md={4}>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  border: '1px solid lightgrey',
-                  borderRadius: '5px',
-                  padding: '7px',
-                  width: '100%',
-                  backgroundColor: 'white' }}
-              >
-                <span
-                  style={{ pagging: '10px', color: 'grey' }}
-                >
-                  <i className="fa fa-search" aria-hidden="true" />
-                </span>
-                <input
-                  type="text"
-                  style={{
-                    outline: 'none',
-                    border: 'none',
-                    marginLeft: '10px',
-                    fontSize: '14px',
-                    width: '100%' }}
-                />
-
-              </div>
-            </Col>
 
             <Col md={4}>
               <BranchSelect project={id} placeholder="Select branch ..." />
             </Col>
 
 
-            <Col md={4}>
+            <Col md={8}>
               <ButtonGroup style={{ float: 'right' }}>
                 <Button style={showChangesButtonStyle}>
                   Show
