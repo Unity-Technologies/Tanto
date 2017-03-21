@@ -28,10 +28,15 @@ class Changelog extends Component {
       message: 'Hash has been copied to clipboard',
       open: false,
     }
-    this.handleTouchTap = this.handleTouchTap.bind(this)
-    this.handleActionTouchTap = this.handleActionTouchTap.bind(this)
-    this.handleChangeDuration = this.handleChangeDuration.bind(this)
-    this.handleRequestClose = this.handleRequestClose.bind(this)
+    this.handleTouchTap = () => this.setState({ open: true })
+    this.handleActionTouchTap = () => this.setState({ open: false })
+    this.handleChangeDuration = (event) => {
+      const value = event.target.value
+      this.setState({
+        autoHideDuration: value.length > 0 ? parseInt(value, 10) : 0,
+      })
+    }
+    this.handleRequestClose = () => this.setState({ open: false })
   }
 
   componentDidMount() {
@@ -41,31 +46,6 @@ class Changelog extends Component {
   }
 
   props: Props
-
-  handleTouchTap() {
-    this.setState({
-      open: true,
-    })
-  }
-
-  handleActionTouchTap() {
-    this.setState({
-      open: false,
-    })
-  }
-
-  handleChangeDuration(event) {
-    const value = event.target.value
-    this.setState({
-      autoHideDuration: value.length > 0 ? parseInt(value, 10) : 0,
-    })
-  }
-
-  handleRequestClose() {
-    this.setState({
-      open: false,
-    })
-  }
 
   render() {
     const showChangesButtonStyle = {
