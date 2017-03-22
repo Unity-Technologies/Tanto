@@ -18,7 +18,9 @@ const changeset = new schema.Entity('changesets')
 
 const repository = new schema.Entity('repositories', {
   owner: user,
-  changelog: [changeset],
+  changelog: {
+    nodes: [changeset],
+  },
   changeset,
   pullRequests: {
     nodes: [pullRequest],
