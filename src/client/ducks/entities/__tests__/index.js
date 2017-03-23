@@ -1,9 +1,14 @@
+/* eslint-disable */
+
 import chai from 'chai'
 import {
   merge,
-  appendEntity,
+  queryCustomizer,
+  mutationCustomizer,
+  types,
+  entities,
 } from '../index'
-import { schema } from 'normalizr'
+
 const expect = chai.expect
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
@@ -123,70 +128,233 @@ describe('entities merge', () => {
     expect(merge(state, nodes)).to.equal(state)
   })
 
-  it('merge by id and accept upstream for certain keys', () => {
-    const nodes = {
-      reviews: [{ user: 1, status: null }],
-      missingReviewers: [{ area: 'x', reviewers: [{ id: 2, username: 'y' }] }],
-      nodes: [{ id: 2 }],
-    }
-
+  it('merge for query request should concat fields of Array type', () => {
     const state = {
-      reviews: [{ user: 2, status: null }, { user: 1, status: null }],
-      missingReviewers: [
-        { area: 'x', reviewers: [{ id: 2, username: 'y' }, { id: 1, username: 'x' }] }],
-      nodes: [{ id: 3 }, { id: 2 }],
+      nodes: {
+        1: { id: 1, title: 'test1', user: 'testuser', comments: [{ id: 12, text: 12 }, { id: 122, text: 122 }] },
+      },
+    }
+    const data = {
+      nodes: {
+        1: { id: 1, title: 'test1new', user: 'testuser2', description: 'test description1', comments: [{ id: 13, text: 13 }] },
+        4: { id: 4, message: 'messagewe' },
+      },
     }
 
     const expected = {
-      reviews: [{ user: 1, status: null }],
-      missingReviewers: [{ area: 'x', reviewers: [{ id: 2, username: 'y' }] }],
-      nodes: [{ id: 2 }, { id: 3 }],
+      nodes: {
+        1: {
+          id: 1,
+          title: 'test1new', user: 'testuser2', description: 'test description1', comments: [{ id: 12, text: 12 }, { id: 122, text: 122 }, { id: 13, text: 13 }],
+        },
+        4: { id: 4, message: 'messagewe' } },
     }
 
-    expect(merge(state, nodes)).to.eql(expected)
+    expect(merge(state, data, queryCustomizer)).to.eql(expected)
+  })
+
+  it('merge for mutation request should replace fields of Array type', () => {
+    const state = {
+      nodes: {
+        1: { id: 1, title: 'test1', user: 'testuser', comments: [{ id: 12, text: 12 }, { id: 122, text: 122 }] },
+      },
+    }
+    const data = {
+      nodes: {
+        1: { id: 1, title: 'test1new', user: 'testuser2', description: 'test description1', comments: [{ id: 13, text: 13 }] },
+        4: { id: 4, message: 'messagewe' },
+      },
+    }
+
+    const expected = {
+      nodes: {
+        1: {
+          id: 1,
+          title: 'test1new', user: 'testuser2', description: 'test description1', comments: [{ id: 13, text: 13 }],
+        },
+        4: { id: 4, message: 'messagewe' },
+      },
+    }
+
+    expect(merge(state, data, mutationCustomizer)).to.eql(expected)
   })
 })
 
-describe('appendEntity', () => {
-  it('should merge input with existing object if there', () => {
-    const id = '2'
-    const entityBefore = { text: 'test', number: 24, id }
-    const entityToAdd = { text: 'anothertest', id, email: 'test@test.test' }
-    const expectedEntity = { text: 'anothertest', number: 24, id, email: 'test@test.test' }
+describe('entities reducer', () => {
+  it('should handle SET_QUERIED_ENTITIES', () => {
+    const initialState = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+        },
+      },
+    }
 
-    const initialState = { objects: {}, otherObjects: 'dont change this' }
-    initialState.objects[id] = entityBefore
+    const action = {
+      type: types.SET_QUERIED_ENTITIES,
+      entities: {
+        entities: {
+          pullRequests: {
+            12: {
+              id: 12,
+              comments: [1, 2, 3],
+            },
+          },
+          comments: {
+            3: { id: 3, text: 1222, author: 1222 },
+          },
+        },
+      },
+    }
 
-    const expectedState = { objects: {}, otherObjects: 'dont change this' }
-    expectedState.objects[id] = expectedEntity
+    const expected = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2, 3],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+          3: { id: 3, text: 1222, author: 1222 },
+        },
+      },
+    }
 
-    const objectSchema = new schema.Entity('objects')
-
-    expect(appendEntity(initialState, ['objects'], [], entityToAdd, objectSchema)).to.eql(expectedState)
+    expect(entities(initialState, action)).to.eql(expected)
   })
 
-  it('should append references to specified lists', () => {
-    const initialList = [2, 4, 5]
-    const initialState = { objects: {}, path: { to: { refs: initialList } } }
-    const entityToAdd = { id: 7, data: 'test' }
-    const expectedList = [2, 4, 5, 7]
+  it('should handle SET_MUTATED_ENTITIES', () => {
+    const initialState = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+        },
+      },
+    }
 
-    const expectedState = { objects: { 7: entityToAdd }, path: { to: { refs: expectedList } } }
-    const objectSchema = new schema.Entity('objects')
+    const action = {
+      type: types.SET_MUTATED_ENTITIES,
+      entities: {
+        entities: {
+          pullRequests: {
+            12: {
+              id: 12,
+              comments: [3],
+            },
+          },
+          comments: {
+            3: { id: 3, text: 1222, author: 1222 },
+          },
+        },
+      },
+    }
 
-    expect(appendEntity(initialState, ['objects'], [['path', 'to', 'refs']], entityToAdd, objectSchema)).to.eql(expectedState)
+    const expected = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [3],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+          3: { id: 3, text: 1222, author: 1222 },
+        },
+      },
+    }
+
+    expect(entities(initialState, action)).to.eql(expected)
   })
 
-  it('should do nothing if the entity destination is nonexistant', () => {
-    const initialState = { objects: {}, otherObjects: 'dont change this' }
-    const entityToAdd = { text: 'anothertest', id: '2', email: 'test@test.test' }
-    expect(appendEntity(initialState, ['notThere'], [], entityToAdd, null)).to.eql(initialState)
+
+  it('should return state for unknown actions type', () => {
+    const initialState = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+        },
+      },
+    }
+
+    const action = {
+      type: 'STRANGE_ACTION',
+      entities: {
+        entities: {
+          pullRequests: {
+            12: {
+              id: 12,
+              comments: [3],
+            },
+          },
+          comments: {
+            3: { id: 3, text: 1222, author: 1222 },
+          },
+        },
+      },
+    }
+
+    expect(entities(initialState, action)).to.eql(initialState)
   })
 
-  it('should do nothing if the input enitity has no id', () => {
-    const initialState = { objects: {}, otherObjects: 'dont change this' }
-    const entityToAdd = { text: 'anothertest', email: 'test@test.test' }
-    const objectSchema = new schema.Entity('objects')
-    expect(appendEntity(initialState, ['objects'], [], entityToAdd, objectSchema)).to.eql(initialState)
+  it('no entities in action', () => {
+    const initialState = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+        },
+      },
+    }
+
+    const action = {
+      type: 'STRANGE_ACTION',
+      no_entities: {
+        entities: {
+          pullRequests: {
+            12: {
+              id: 12,
+              comments: [3],
+            },
+          },
+          comments: {
+            3: { id: 3, text: 1222, author: 1222 },
+          },
+        },
+      },
+    }
+
+    expect(entities(initialState, action)).to.eql(initialState)
   })
 })

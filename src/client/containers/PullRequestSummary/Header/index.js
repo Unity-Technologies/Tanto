@@ -34,7 +34,7 @@ const renderTitle = ({ title, owner, created }) => {
 
   return (
     <div>
-      <Avatar {...owner.slack} />
+      <Avatar avatar={owner.slack ? owner.slack.avatar : ''} />
       <div style={{ padding: '0 10px', display: 'table' }}>
         <div style={{ fontSize: '16px' }}>
           <strong>{title}</strong>

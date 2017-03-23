@@ -1,151 +1,87 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import Comment from 'components/Comment'
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
-import _ from 'lodash'
+
 import { connect } from 'react-redux'
-import { types, createPullRequestDiscussionCommentNormalizer } from 'ducks/pullrequests/actions'
-import type { GeneralCommentType, UserType, OriginGraphType } from 'universal/types'
+import type { UserType } from 'universal/types'
 import type { StatusType } from 'ducks/fetch/selectors'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
-import { fetchCommentEdit, fetchCommentCreate } from 'ducks/comments/actions'
+import { createComment, updateComment, deleteComment } from 'ducks/comments/actions'
+import { updatePullRequestDescription, types } from 'ducks/pullrequests/actions'
 import LoadingComponent from 'components/LoadingComponent'
-import { getLoggedUsername } from 'ducks/session/selectors'
-import { getPullRequestGeneralComments, getPullRequest } from 'ducks/pullrequests/selectors'
-import { createSelector } from 'reselect'
+import GeneralCommentThread from 'components/GeneralCommentThread'
+import type { CommentType } from 'components/GeneralCommentThread'
+import { getLoggedUser } from 'ducks/session/selectors'
+import {
+  getPullRequestGeneralComments,
+  getPullRequestDescription,
+  getPullRequestRepoId,
+} from 'ducks/pullrequests/selectors'
 
 export type Props = {
   createComment: Function,
   editComment: Function,
+  description: CommentType,
   pullRequestId: number,
-  pullRequest: {
-    owner: UserType,
-    description: string,
-    created: string,
-    comments: Array<GeneralCommentType>,
-    origin: OriginGraphType,
-  },
-  loggedUsername: string,
+  repoId: string,
+  dispatch: Function,
+  comments: Array<CommentType>,
+  loggedUser: UserType,
   status: StatusType
 }
 
 export const getFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DISCUSSION)
 
-const renderHeadComment = ({ owner, description, created }, loggedUsername) => {
-  if (!owner || !created) {
-    return null
-  }
-
-  const text = description || 'No description.'
-  const comment = {
-    author: owner,
-    text,
-    created,
-  }
-
-  return (
-    <Comment
-      loggedUsername={loggedUsername}
-      comment={comment}
-      onoStyle
-    />
-  )
-}
-
 class PullRequestDiscussion extends Component {
 
   props: Props
 
-  handleCommentEdit = (commentId: number, text: string) : void => {
-    this.props.editComment(commentId, text)
+  handleOnCommentUpdate = (id: string, text: string): void => {
+    this.props.dispatch(updateComment(id, text))
   }
 
-  handleCommentCreation = (commentId: any, text: string) : void => {
-    this.props.createComment({
-      repoId: this.props.pullRequest.origin.repository.id,
-      text,
-      pullRequestId: this.props.pullRequestId,
-    }, this.props.pullRequestId)
+  handleOnCommentCreate = (repoId: string, pullRequestId: string, text: string): void => {
+    this.props.dispatch(createComment(repoId, pullRequestId, text))
   }
 
-  renderComments(comments, loggedUsername) {
-    if (!comments) {
-      return null
-    }
-    return (
-      <div>
-        {comments.map(comment => (
-          <Comment
-            key={comment.id.toString()}
-            loggedUsername={loggedUsername}
-            onoStyle
-            simpleText
-            handleCommentSave={this.handleCommentEdit}
-            comment={comment}
-          />
-         ))}
-      </div>
-    )
+  handleOnCommentDelete = (id: any): void => {
+    this.props.dispatch(deleteComment(id))
+  }
+
+  handleOnDescriptionUpdate = (pullRequestId: any, text: string): void => {
+    this.props.dispatch(updatePullRequestDescription(pullRequestId, text))
   }
 
   render() {
-    if (!this.props.pullRequest) {
+    if (!this.props.comments || !this.props.loggedUser) {
       return null
     }
     return (
       <LoadingComponent status={this.props.status}>
-        <div>
-          <Row>
-            <Col md={12}>
-              {renderHeadComment(this.props.pullRequest, this.props.loggedUsername)}
-            </Col>
-          </Row>
-          <hr style={{ margin: '15px 0' }} />
-          <Row>
-            <Col md={12}>
-              {this.renderComments(this.props.pullRequest.comments, this.props.loggedUsername)}
-              <div name="discussion-last" id="discussion-last" style={{ marginTop: '20px' }}>
-                <Comment
-                  comment={{}}
-                  newComment
-                  handleCommentSave={this.handleCommentCreation}
-                  loggedUsername
-                />
-              </div>
-            </Col>
-          </Row>
-        </div>
+        <GeneralCommentThread
+          description={this.props.description}
+          comments={this.props.comments}
+          repoId={this.props.repoId}
+          pullRequestId={this.props.pullRequestId}
+          loggedUser={this.props.loggedUser}
+          onDelete={this.handleOnCommentDelete}
+          onUpdate={this.handleOnCommentUpdate}
+          onSave={this.handleOnCommentCreate}
+          onDescriptionUpdate={this.handleOnDescriptionUpdate}
+        />
       </LoadingComponent>
     )
   }
 }
 
-export const getPRequest = createSelector(
-  getPullRequest, getPullRequestGeneralComments,
-  (pr, comments) => (
-    {
-      ..._.pick(pr, ['description', 'created', 'owner', 'origin']),
-      comments,
-    })
-)
 
 const mapStateToProps = (state: Object, props: Props): Props => ({
   ...props,
-  pullRequest: getPRequest(state, props),
+  description: getPullRequestDescription(state, props),
+  repoId: getPullRequestRepoId(state, props),
+  comments: getPullRequestGeneralComments(state, props),
   status: getFetchStatus(state, props),
-  loggedUsername: getLoggedUsername(state, props),
+  loggedUser: getLoggedUser(state, props),
 })
 
-const mapDispatchToProps = (dispatch: Function): Object => ({
-  editComment: (commentId, text) => dispatch(
-    fetchCommentEdit(commentId, text)),
-  createComment: (commentInput, pullRequestId) => dispatch(
-    fetchCommentCreate(commentInput,
-                       createPullRequestDiscussionCommentNormalizer(pullRequestId))
-  ),
-})
-
-/* flow-disable */
-export default connect(mapStateToProps, mapDispatchToProps)(PullRequestDiscussion)
+export default connect(mapStateToProps)(PullRequestDiscussion)

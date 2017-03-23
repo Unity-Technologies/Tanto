@@ -3,7 +3,7 @@ import chai from 'chai'
 import fetchMock from 'fetch-mock'
 import schema from 'ducks/schema'
 import { normalize } from 'normalizr'
-import { SET_NORMALIZED_ENTITIES } from 'ducks/entities'
+import { SET_QUERIED_ENTITIES } from 'ducks/entities'
 import { DIRECTION } from 'ducks/order'
 import { RECEIVE_PAGE } from 'ducks/pagination'
 import pullRequestList from 'ducks/session/queries/userPullRequestList.graphql'
@@ -42,7 +42,7 @@ describe('session fetch actions', () => {
       type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PROFILE,
     }, {
       type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PROFILE, sending: true,
-    }, { type: SET_NORMALIZED_ENTITIES, entities: expected }, {
+    }, { type: SET_QUERIED_ENTITIES, entities: expected }, {
       type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PROFILE, sending: false,
     }]
 
@@ -131,7 +131,7 @@ describe('session fetch actions', () => {
       { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
-      { type: SET_NORMALIZED_ENTITIES, entities: expected },
+      { type: SET_QUERIED_ENTITIES, entities: expected },
       { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, page, repo, branch, orderBy },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: false },
     ]
@@ -206,7 +206,7 @@ describe('session fetch actions', () => {
       { type: fetchTypes.FETCH_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: true },
-      { type: SET_NORMALIZED_ENTITIES, entities: expected },
+      { type: SET_QUERIED_ENTITIES, entities: expected },
       { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsAssigned, nodes: data.me.pullRequestsAssigned.nodes, total, page, repo, branch, orderBy },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: false },
     ]

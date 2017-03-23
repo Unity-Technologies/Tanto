@@ -1,0 +1,96 @@
+.comment-box {
+    position: relative;
+}
+
+.comment-box-avatar {
+    padding: 0 5px;
+}
+
+.comment-box-content {
+    padding-left: 60px;
+}
+
+.comment-box-header {
+    background-color: #e6f1fd;
+    border: 1px solid #cedcea;
+    margin-bottom: -1px;
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+}
+
+.comment-box-header:before {
+    content: "\A";
+    border-style: solid;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent #cedcea transparent transparent;
+    position: absolute;
+    left: -10px;
+    top: 10px;
+}
+
+.comment-box-actions {
+    position: absolute;
+    right: 0;
+    margin: 3px;
+}
+
+.comment-box-actions-status {
+    position: absolute;
+    right: 0;
+    margin: 6px 3px;
+}
+
+.comment-title {
+    padding: 10px;
+    float: left;
+}
+
+.comment-action-button {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.comment-title-status {
+    padding: 7px 10px;
+    display: inherit;
+}
+
+.comment-box-header-status {
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.comment-status-icon {
+    font-size: 2.5em;
+    background-color: white;
+    color: #b9b9b9;
+    margin-top: -5px;
+    margin-left: -10px;
+    margin-right: 10px;
+}
+
+.comment-status-glyph {
+    font-size: 2.2em;
+    margin-left: -10px;
+    margin-right: 12px;
+    background-color: white;
+}
+
+.status-green {
+    color: rgba(0, 128, 0, 0.67);
+}
+
+.status-red {
+    color: rgba(253, 0, 31, 0.72);
+}
+
+.status-orange {
+    color: rgba(255, 152, 0, 0.73);
+}
+
+.status-grey {
+    color: #afacac;
+}

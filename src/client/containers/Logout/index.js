@@ -34,7 +34,7 @@ class Logout extends Component {
     const { avatar, username, persona, logoutRoute } = this.props
     return (
       <div>
-        <Avatar avatar={avatar} style={{ margin: '8px' }} />
+        <Avatar avatar={avatar} style={{ margin: '8px 15px 0 0' }} />
         <div
           style={{
             float: 'left',
