@@ -12,7 +12,10 @@ const noop = require('node-noop').noop
 
 describe('slack controller', () => {
 
-  beforeEach(() =>mockery.enable())
+  beforeEach(() => mockery.enable({
+    warnOnReplace: false,
+    warnOnUnregistered: false
+  }))
   afterEach(() => mockery.disable())
 
   const redisCache = {}
@@ -101,7 +104,7 @@ describe('slack controller', () => {
     SLACK_TOKEN: 'some slack tocken'
   }
   mockery.registerMock('redis', redisMock)
-  mockery.registerMock('slack', slackMock)
+  mockery.registerMock('slack-proxy', slackMock)
   mockery.registerMock('server/config', envMock)
 
   it('prefetchSlackAvatars success', () => {
@@ -114,13 +117,7 @@ describe('slack controller', () => {
   it('prefetchSlackAvatars error', () => {
     cbEerror = error
     const prefetchSlackAvatars = require('../slack').prefetchSlackAvatars
-    expect(() => prefetchSlackAvatars()).to.throw(error)
-  })
-
-  it('prefetchSlackAvatars error', () => {
-    cbEerror = error
-    const prefetchSlackAvatars = require('../slack').prefetchSlackAvatars
-    expect(() => prefetchSlackAvatars()).to.throw(error)
+    expect(() => prefetchSlackAvatars()).not.to.throw(error)
   })
 })
 
