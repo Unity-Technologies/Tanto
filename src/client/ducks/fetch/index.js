@@ -4,7 +4,8 @@ export const types = {
   SENDING_REQUEST: 'FETCH/SENDING_REQUEST',
   REQUEST_ERROR: 'FETCH/REQUEST_ERROR',
   CLEAR_ERROR: 'FETCH/CLEAR_ERROR',
-  FETCH_DATA: 'FETCH/FETCH_DATA',
+  FETCH_ONO_DATA: 'FETCH/FETCH_ONO_DATA',
+  FETCH_BFSTATS_DATA: 'FETCH/FETCH_BFSTATS_DATA',
 }
 
 /**
@@ -81,22 +82,28 @@ export const actions = {
 }
 
 export const fetchAction =
-  (action: ActionType): FetchAction => ({
+  (type: string, action: ActionType): FetchAction => ({
     ...action,
     name: action.type,
-    type: types.FETCH_DATA,
+    type,
   })
 
-export const fetchActionCreator =
+export const fetchOnoActionCreator =
   (type: string,
     query: string,
     variables: Object = {},
     operationName: string = '',
     callback: (data: Object, cbArgs: Object) => Array<Object>): FetchAction => ({
-      type: types.FETCH_DATA,
+      type: types.FETCH_ONO_DATA,
       operationName,
       name: type,
       query,
       variables,
       callback,
     })
+
+export const fetchOnoAction =
+  (action: ActionType): FetchAction => fetchAction(types.FETCH_ONO_DATA, action)
+
+export const fetchBfStatsAction =
+  (action: ActionType): FetchAction => fetchAction(types.FETCH_BFSTATS_DATA, action)

@@ -12,6 +12,7 @@ query pullRequestMetadata($id: Int!) {
     }
     origin {
       name
+      revision
       repository {
         id
         name

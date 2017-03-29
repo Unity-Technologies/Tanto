@@ -1,6 +1,6 @@
 /* @flow */
 import userProfileQuery from 'ducks/session/queries/me.graphql'
-import { fetchActionCreator, fetchAction } from 'ducks/fetch'
+import { fetchOnoActionCreator, fetchOnoAction } from 'ducks/fetch'
 import type { PullRequestSource } from 'universal/types'
 import type { FetchAction } from 'ducks/fetch'
 import type { OrderByType } from 'ducks/order'
@@ -45,7 +45,7 @@ export const parseCurrentUserAssignedPullRequests = (response: Object) => (
  * Action creators
  */
 export const fetchProfile = (): Object =>
-  fetchAction({ type: types.FETCH_USER_PROFILE, query: userProfileQuery })
+  fetchOnoAction({ type: types.FETCH_USER_PROFILE, query: userProfileQuery })
 
 export const setProfile = (profile: Object): Object => ({ type: types.SET_USER_PROFILE, profile })
 
@@ -54,7 +54,7 @@ export const setPersona = (persona: string): Object => ({ type: types.SET_USER_P
 
 // TODO:  move RECEIVE_PAGE into middleware or remove at leat callback
 export const fetchUserPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
-  fetchActionCreator(
+  fetchOnoActionCreator(
     types.FETCH_USER_PULL_REQUESTS, pullRequestList, variables,
     operationNames.pullRequestsOwned,
     (data: Object, cbArgs: Object): Array<Object> => {
@@ -70,7 +70,7 @@ export const fetchUserPullRequests = (variables: FetchPullRequestVariables): Fet
 
 // TODO:  move RECEIVE_PAGE into middleware or remove at leat callback
 export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
-  fetchActionCreator(
+  fetchOnoActionCreator(
     types.FETCH_USER_ASSIGNED_PULL_REQUESTS, pullRequestList, variables,
     operationNames.pullRequestsAssigned,
     (data: Object, cbArgs: Object): Array<Object> => {

@@ -8,6 +8,7 @@ import chalk from 'chalk'
 import ReactDOM from 'react-dom/server'
 import compression from 'compression'
 import session from 'express-session'
+import helmet from 'helmet'
 import errorHandler from 'errorhandler'
 import logger from 'morgan'
 import expressValidator from 'express-validator'
@@ -53,6 +54,7 @@ app.use(compression())
 app.use(logger('dev'))
 app.use(expressValidator())
 app.use(expressPromise())
+app.use(helmet())
 app.use(Express.static(path.join(__dirname, '../..', 'static')))
 app.use(cookieParser(sessionOptions.secret))
 app.use(session(sessionOptions))
@@ -88,23 +90,31 @@ app.use(routes.LOGIN_ROUTE, (req, res) => {
     <Login assets={webpackIsomorphicTools.assets()} />)}`)
 })
 
-const rewriteRouteRule = {}
-rewriteRouteRule[`^${routes.ONO_API_ROUTE}`] = env.ONO_GRAPHQL_API_ROUTE
+/**
+ * Ono GraphQL API proxy
+ */
 
-const options = {
+const proxyTable = {
+  '/api/bfstats': `${env.BFSTATS_API_HOST}/${env.BFSTSTS_GTAPHQL_API_ROUTE}`,
+}
+
+const proxyOptions = {
   target: env.ONO_API_HOST,
   changeOrigin: true,
-  ws: true,
+  router: proxyTable,
   logLevel: env.isDev ? 'debug' : 'silent',
-  pathRewrite: rewriteRouteRule,
+  pathRewrite: {
+    [`^${routes.ONO_API_ROUTE}`]: env.ONO_GRAPHQL_API_ROUTE,
+  },
   onProxyReq: (proxyReq, req, res) => {
     proxyReq.setHeader('Authorization', `Bearer ${req.user.token}`)
   },
 }
 
-const onoProxy = proxy(options)
+const apiProxy = proxy(proxyOptions)
 
-app.use(routes.ONO_API_ROUTE, passportConfig.isAuthenticated, onoProxy)
+app.use(routes.ONO_API_ROUTE, passportConfig.isAuthenticated, apiProxy)
+app.use(routes.BFSTATS_API_ROUTE, passportConfig.isAuthenticated, apiProxy)
 
 /**
  * Slack Web API routes
@@ -134,5 +144,4 @@ app.listen(app.get('port'), () => {
 /**
  * Scheduling job to prefetch slack users profiles ID and Avatar every month
  */
-
 scheduleSlackUserProfilesPrefetch(env.SLACK_AVATARS_PREFETCH_SCHEDULE)

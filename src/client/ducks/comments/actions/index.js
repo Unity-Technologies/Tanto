@@ -1,6 +1,6 @@
 /* @flow */
 import type { FetchAction } from 'ducks/fetch'
-import { fetchAction } from 'ducks/fetch'
+import { fetchOnoAction } from 'ducks/fetch'
 
 
 import updateCommentQuery from 'ducks/comments/mutations/updateComment.graphql'
@@ -14,10 +14,10 @@ export const types = {
 }
 
 export const updateComment = (commentId: string, text:string): FetchAction =>
-  fetchAction({ type: types.UPDATE_COMMENT, query: updateCommentQuery, variables: { commentId, text } })
+  fetchOnoAction({ type: types.UPDATE_COMMENT, query: updateCommentQuery, variables: { commentId, text } })
 
 export const createComment = (repoId: string, pullRequestId: string, text: string): FetchAction =>
-  fetchAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables: { repoId, pullRequestId, text } })
+  fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables: { repoId, pullRequestId, text } })
 
 export const deleteComment = (commentId: string): FetchAction =>
-  fetchAction({ type: types.DELETE_COMMENT, query: deleteCommentQuery, variables: { commentId } })
+  fetchOnoAction({ type: types.DELETE_COMMENT, query: deleteCommentQuery, variables: { commentId } })

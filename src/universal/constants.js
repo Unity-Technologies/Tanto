@@ -7,6 +7,7 @@ export const routes = {
   ONO_AUTH_LOGOUT_ROUTE: '/auth/logout',
   LOGIN_ROUTE: '/login',
   SLACK_API_ROUTE: '/api/slack/users',
+  BFSTATS_API_ROUTE: '/api/bfstats',
 }
 
 export const ChangesetStatus = {
@@ -39,6 +40,11 @@ export const PullRequestSource = {
 export const PullRequestOrderFields = {
   UPDATED: 'UPDATED',
   CREATED: 'CREATED',
+}
+
+export const BuildResults = {
+  0: 'SUCCESS',
+  1: 'FAILED',
 }
 
 /**

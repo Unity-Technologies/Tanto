@@ -1,7 +1,8 @@
 /* @flow */
 
 import { put, call } from 'redux-saga/effects'
-import { get } from 'services/ono/api'
+import { post as postONO } from 'services/ono'
+import { post as postBFStats } from 'services/bfstats'
 import { actions } from 'ducks/fetch'
 import type { FetchAction } from 'ducks/fetch'
 import { normalize } from 'normalizr'
@@ -13,7 +14,7 @@ export function* fetchSaga(
   try {
     yield put(actions.clearError(actionName))
     yield put(actions.sendingRequest(actionName, true))
-    return yield call(get, graphQuery, variables)
+    return yield call(postONO, graphQuery, variables)
   } catch (error) {
     yield put(actions.requestError(actionName, error))
   } finally {
@@ -58,11 +59,11 @@ export function* normalizeSaga(response: Object, action: Object): Generator<any,
   yield (put({ type, entities }))
 }
 
-export function* fetchAnythingSaga(action: FetchAction): Generator<any, any, any> {
+export function* fetchAnythingSaga(post: Function, action: FetchAction): Generator<any, any, any> {
   try {
     yield put(actions.clearError(action.name))
     yield put(actions.sendingRequest(action.name, true))
-    const response = yield call(get, action.query, action.variables || {}, action.operationName)
+    const response = yield call(post, action.query, action.variables || {}, action.operationName)
 
     yield call(normalizeSaga, response, action)
 
@@ -80,6 +81,14 @@ export function* fetchAnythingSaga(action: FetchAction): Generator<any, any, any
     yield put(actions.sendingRequest(action.name, false))
   }
   return null
+}
+
+export function* fetchOnoSaga(action: FetchAction): Generator<any, any, any> {
+  yield call(fetchAnythingSaga, postONO, action)
+}
+
+export function* fetchBfStatsSaga(action: FetchAction): Generator<any, any, any> {
+  yield call(fetchAnythingSaga, postBFStats, action)
 }
 
 export default fetchSaga
