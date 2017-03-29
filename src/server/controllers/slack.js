@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint-disable */
 
-import slack from 'slack'
+import slack from 'slack-proxy'
 import redis from '../redis'
 
 const client = redis.client()
@@ -16,7 +16,9 @@ export const prefetchSlackAvatars = () => {
   const env = require('server/config')
   slack.users.list({ token: env.SLACK_TOKEN }, (err, data) => {
     if (err) {
-      throw err
+      //TODO: replace with proper logging
+      console.error(err)
+      return
     }
     if (data.ok) {
       const reducedProfiles =
