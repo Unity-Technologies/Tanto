@@ -10,7 +10,7 @@ const issue = new schema.Entity('issues', {
   assignee: user,
 })
 
-export const comment = new schema.Entity('comments', {
+const comment = new schema.Entity('comments', {
   author: user,
 })
 
@@ -66,6 +66,9 @@ export const tantoSchema = {
   users: [user],
   repository,
   changeset,
+  comment,
+  user,
+  issue,
   pullRequest,
   group,
   groups: {

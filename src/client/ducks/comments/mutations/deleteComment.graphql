@@ -1,0 +1,18 @@
+mutation removeComment($commentId: Int!) {
+  removeComment(commentId: $commentId) {
+    pullRequest {
+      id
+      comments {
+        id
+        text
+        created
+        status
+        author {
+          id
+          username
+          fullName
+        }
+      }
+    }
+  }
+}

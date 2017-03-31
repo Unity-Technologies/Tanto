@@ -21,8 +21,7 @@ export type Props = {
   collapseComments?: boolean,
   viewType?: string,
   loggedUsername: string,
-};
-
+}
 
 class Code extends PureComponent {
   /* eslint-disable react/sort-comp */
@@ -52,7 +51,7 @@ class Code extends PureComponent {
     }
     const prfx = version || ''
 
-    const res = _.filter(fileComments, (x) => x.lineNumber.match(`${prfx}${lineNumber}`))
+    const res = _.filter(fileComments, (x) => x.location.lineNumber.match(`${prfx}${lineNumber}`))
 
     return res
   }
@@ -73,13 +72,18 @@ class Code extends PureComponent {
   }
 
   updateCode = (code) => {
-    this.setState((prevState, props) => ({
-      content: code,
-      ready: true,
-    }))
+    if (this.refs.contentContainer) {
+      this.setState((prevState, props) => ({
+        content: code,
+        ready: true,
+      }))
+    }
   }
 
   renderDiff = () => {
+    if (!this.state.content && !this.state.ready) {
+      return 'content is not ready ...'
+    }
     const { content } = this.state
     const { collapseComments, comments, viewType, loggedUsername } = this.props
     if (viewType === '0') {
@@ -127,15 +131,16 @@ class Code extends PureComponent {
 
 
   render() {
-    if (!this.state.ready) {
-      return <div>processing diff...</div>
-    }
+    // if (!this.state.ready) {
+    //   return <div>processing diff...</div>
+    // }
 
     if (!!this.state.error) {
       return <ErrorMessage text={this.state.error} />
     }
     return (
       <pre
+        ref="contentContainer"
         key={_.uniqueId('_code_')}
         className="diff-view"
       >

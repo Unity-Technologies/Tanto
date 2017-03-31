@@ -1,0 +1,21 @@
+query pullRequestReviews($id: Int!) {
+  pullRequest(id: $id) {
+    id
+    reviews {
+      status
+      user {
+        id
+        fullName
+        username
+      }
+    }
+    missingReviewers {
+      area
+      reviewers {
+        id
+        username
+        fullName
+      }
+    }
+  }
+}

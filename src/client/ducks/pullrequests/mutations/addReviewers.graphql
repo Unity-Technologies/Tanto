@@ -1,0 +1,23 @@
+mutation addReviewers($pullRequestId: Int!, $reviewers: [UserInput]!) {
+  addReviewers(pullRequestId: $pullRequestId, reviewers: $reviewers) {
+    pullRequest {
+      id
+      reviews {
+        status
+        user {
+          id
+          fullName
+          username
+        }
+      }
+      missingReviewers {
+        area
+        reviewers {
+          id
+          username
+          fullName
+        }
+      }
+    }
+  }
+}

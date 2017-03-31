@@ -46,4 +46,4 @@ export const PullRequestOrderFields = {
  */
 export const DEVELOPER_PERSONA = 'DEVELOPER_PERSONA'
 export const GUARDIAN_PERSONA = 'GUARDIAN_PERSONA'
-
+export const CONFLUENCE_REVIEW_PAGE = 'https://confluence.hq.unity3d.com/display/DEV/Code+Reviews'

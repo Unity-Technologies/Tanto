@@ -1,0 +1,21 @@
+mutation createComment($repoId: Int!, $text: String!, $pullRequestId: Int, $revision: String, $location: LocationInput,
+  $issue: IssueInput) {
+  createComment(repoId: $repoId, pullRequestId: $pullRequestId, revision: $revision, location: $location,
+    text: $text, issue: $issue) {
+
+    pullRequest {
+      id
+      comments {
+        id
+        text
+        created
+        status
+        author {
+          id
+          username
+          fullName
+        }
+      }
+    }
+  }
+}
