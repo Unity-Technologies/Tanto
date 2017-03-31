@@ -17,7 +17,7 @@ class Checkbox extends Component {
     super(props)
     this.state = {
       checked: this.props.checked,
-      disabled: this.props.disabled,
+      disabled: this.props.disabled ? this.props.disabled : false,
     }
   }
 
