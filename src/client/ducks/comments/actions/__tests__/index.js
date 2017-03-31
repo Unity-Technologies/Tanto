@@ -1,4 +1,5 @@
 // import chai from 'chai'
+/* eslint-disable */
 
 import schema from 'ducks/schema'
 import { normalize } from 'normalizr'

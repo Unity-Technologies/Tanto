@@ -42,11 +42,6 @@ export const PullRequestOrderFields = {
   CREATED: 'CREATED',
 }
 
-export const BuildResults = {
-  0: 'SUCCESS',
-  1: 'FAILED',
-}
-
 /**
  * Available user personas (for testing purposes only !!!)
  */

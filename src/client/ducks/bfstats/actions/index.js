@@ -15,7 +15,13 @@ export const types = {
  * Action creators
  */
 export const fetchLatestBuildsForRevision = (repository: string, revision: string): FetchAction =>
-  fetchBfStatsAction({ type: types.FETCH_LATEST_BUILDS, query: latestRepositoryBuilds, variables: { repository, revision: 'a8be7b8fcec0e2146ad43194a9d8fee2c8479c08' } })
+  fetchBfStatsAction(
+    {
+      type: types.FETCH_LATEST_BUILDS,
+      query: latestRepositoryBuilds, variables: {
+        repository, revision,
+      },
+    })
 
 export const fetchLatestBuildsForBranch = (repository: string, branch: string): FetchAction =>
   fetchBfStatsAction({ type: types.FETCH_LATEST_BUILDS, query: latestRepositoryBuilds, variables: { repository, branch } })
