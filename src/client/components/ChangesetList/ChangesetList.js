@@ -12,7 +12,7 @@ import ChangesetDelta from 'components/ChangesetDelta'
 import Avatar from 'components/Avatar'
 import { Link } from 'react-router'
 import { buildChangesetLink } from 'routes/helpers'
-import Checkbox from 'material-ui/Checkbox'
+import Checkbox from 'components/Checkbox'
 import { ChangesetStatus } from 'universal/constants'
 import _ from 'lodash'
 
@@ -29,6 +29,7 @@ export type Props = {
   compact?: boolean,
   projectName: string,
   showCheckboxes?: boolean,
+  selectedChangesetsChange?: (e: SyntheticInputEvent) => any,
 }
 
 const greenStatus = { borderLeft: '4px solid #d1fad1' }
@@ -78,29 +79,40 @@ class ChangesetList extends Component {
     this.setState({ activeKey })
   }
 
-  handleChange = (obj, isSelected) => {
+  handleChange = (event) => {
+
+    const isSelected = event.target.checked
+    const returnValue = false
+
     if (this.state.changesets.length < 2 && isSelected) {
-      this.state.changesets.push(obj.target.value)
+      this.state.changesets.push(event.target.value)
     }
     if (this.state.changesets.length <= 2 && !isSelected) {
-      const index = this.state.changesets.indexOf(obj.target.value)
+      const index = this.state.changesets.indexOf(event.target.value)
       if (index !== -1) {
         this.state.changesets.splice(index, 1)
       }
       this.props.commits.map((item) => {
-        const ch = this.refs[item.hash]
+        const ref = item.id
+        const ch = this.refs[ref]
         ch.setState({ disabled: false })
-        return true
+        const returnValue = true
       })
     }
-
-    if (this.state.changesets.length === 2) {
+    if (this.state.changesets.length >= 2) {
       this.props.commits.map((item) => {
-        const ch = this.refs[item.hash]
-        ch.setState({ disabled: !this.state.changesets.includes(item.hash) })
-        return true
+        const ref = item.id
+        const ch = this.refs[ref]
+        ch.setState({ disabled: !this.state.changesets.includes(ref) })
+        const returnValue = true
       })
     }
+    this.props.onSelectedChangesetsChange(event)
+    return returnValue
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.search != nextState.search
   }
 
   render() {
@@ -130,10 +142,13 @@ class ChangesetList extends Component {
                   <div style={{ display: 'table' }}>
                     {showCheckboxes ?
                       <Checkbox
+                        ref={item.id}
                         disableTouchRipple
+                        onChange={this.handleChange}
                         style={{ float: 'left', padding: '10px', width: 'auto' }}
+                        value={item.id}
                         /> : ''}
-                    <Avatar />
+                    <Avatar {...item.author.slack} />
                     <div style={{ paddingLeft: '10px', display: 'table' }}>
                       <Link
                         style={{
