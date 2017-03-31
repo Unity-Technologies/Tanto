@@ -221,6 +221,7 @@
     "react": "^15.1.0",
     "react-addons-transition-group": "^15.4.2",
     "react-bootstrap": "^0.30.7",
+    "react-copy-to-clipboard": "^4.0.0",
     "react-dom": "^15.1.0",
     "react-helmet": "^2.2.0",
     "react-redux": "^4.0.0",
