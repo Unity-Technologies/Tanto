@@ -61,7 +61,7 @@ const profile = new schema.Entity('me', {
 })
 
 /* BfStats responses */
-const build = new schema.Entity('build')
+const build = new schema.Entity('builds')
 
 const sourceStamp = new schema.Entity('sourceStamps', {
   latestBuilds: {

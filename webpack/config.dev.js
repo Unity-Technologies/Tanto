@@ -48,6 +48,7 @@ module.exports = Object.assign({}, baseConfig.config, {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/webpack-stats\.json$/),
     new webpack.DefinePlugin({
+      'process.env.KATANA_HOST': JSON.stringify(process.env.KATANA_HOST),
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: true,

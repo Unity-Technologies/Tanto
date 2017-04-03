@@ -21,20 +21,22 @@ export const storeMock =
     const actionLogger = st => next => action => {
       actions.push(action)
 
-      try {
-        if (action.type === fetchTypes.FETCH_ONO_DATA) {
-          expect(action).to.containSubset(expectedActions[i])
-        } else {
-          expect(action).to.eql(expectedActions[i])
+      if (expectedActions && expectedActions.length && done) {
+        try {
+          if (action.type === fetchTypes.FETCH_ONO_DATA) {
+            expect(action).to.containSubset(expectedActions[i])
+          } else {
+            expect(action).to.eql(expectedActions[i])
+          }
+        } catch (err) {
+          done(err)
+          errorCatched = true
         }
-      } catch (err) {
-        done(err)
-        errorCatched = true
+        if (!errorCatched && i === expectedActions.length - 1) {
+          done()
+        }
+        i++
       }
-      if (!errorCatched && i === expectedActions.length - 1) {
-        done()
-      }
-      i++
       return next(action)
     }
 

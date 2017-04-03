@@ -5,8 +5,7 @@ import { connect } from 'react-redux'
 import { fetchLatestBuildsForRevision } from 'ducks/bfstats/actions'
 import { getPullRequest } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
-// import { Builds } from 'containers/Builds'
-
+import Builds from './Builds'
 
 type BuildType = {
   builder: {
@@ -47,11 +46,8 @@ class BuildSection extends PureComponent {
   props: PropsType
 
   render() {
-    if (!this.props.repository || !this.props.revision) {
-      return null
-    }
     return (
-      <div></div>
+      <Builds repository={this.props.repository} revision={this.props.revision} />
     )
   }
 }

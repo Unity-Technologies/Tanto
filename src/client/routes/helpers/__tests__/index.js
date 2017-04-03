@@ -61,4 +61,13 @@ describe('routes helpers', () => {
   it('breadcrumbItems handles empty path', () => {
     expect(helpers.breadcrumbItems('')).to.eql([])
   })
+
+  it('buildKatanaBuildLink', () => {
+    const builderName = 'builderName'
+    const projectName = 'projectName'
+    const number = 12222
+    expect(helpers.buildKatanaBuildLink(projectName, builderName, number)).equals(
+      `${process.env.KATANA_HOST}/projects/${projectName}/builders/${builderName}/builds/${number}`
+    )
+  })
 })

@@ -8,8 +8,13 @@ query latestRepositoryBuilds($repository: String!, $revision: String){
         id
         number
         result
+        finish
+        start
+        buildTime
         builder {
           friendlyName
+          name
+          project
         }
       }
     }

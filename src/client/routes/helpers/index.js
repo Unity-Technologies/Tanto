@@ -30,10 +30,15 @@ export const buildProjectsLink =
 export const buildChangesetLink =
   (projectName: string, id: string): string => (`/project/${projectName}/changeset/${id}`)
 
+export const buildKatanaBuildLink = (project: any, builder: any, number: any) =>
+  (`${process.env.KATANA_HOST || ''}/projects/${project}/builders/${builder}/builds/${number}`)
+
 export const helpers = {
   buildPullRequestLink,
   buildProjectLink,
   buildProjectsLink,
   groupPathFromPath,
   breadcrumbItems,
+  buildKatanaBuildLink,
 }
+

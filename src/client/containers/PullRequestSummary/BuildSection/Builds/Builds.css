@@ -1,0 +1,26 @@
+.builds-table-row {
+    border: 1px solid rgba(231, 231, 231, 0.54);
+    border-bottom: transparent;
+    background-color: rgba(250, 250, 250, 0.61);
+}
+
+.expand-builds-icon {
+    padding: 15px 10px;
+    font-size: 20px;
+    color: #eec7aa;
+    cursor: pointer;
+}
+
+.sub-header {
+    color: #8c8c8c;
+    font-size: 13px;
+}
+
+.header-column {
+    text-transform: uppercase;
+    color: #10121b;
+}
+
+.sub-info {
+  font-size: 12px;
+}
