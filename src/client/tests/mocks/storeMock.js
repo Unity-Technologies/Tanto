@@ -22,7 +22,7 @@ export const storeMock =
       actions.push(action)
 
       try {
-        if (action.type === fetchTypes.FETCH_DATA) {
+        if (action.type === fetchTypes.FETCH_ONO_DATA) {
           expect(action).to.containSubset(expectedActions[i])
         } else {
           expect(action).to.eql(expectedActions[i])

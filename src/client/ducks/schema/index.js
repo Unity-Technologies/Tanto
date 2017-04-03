@@ -60,6 +60,15 @@ const profile = new schema.Entity('me', {
   },
 })
 
+/* BfStats responses */
+const build = new schema.Entity('build')
+
+const sourceStamp = new schema.Entity('sourceStamps', {
+  latestBuilds: {
+    nodes: [build],
+  },
+}, { idAttribute: 'revision' })
+
 export const tantoSchema = {
   users: [user],
   repository,
@@ -67,6 +76,9 @@ export const tantoSchema = {
   comment,
   user,
   issue,
+  build,
+  sourceStamp,
+  sourceStamps: [sourceStamp],
   pullRequest,
   group,
   groups: {

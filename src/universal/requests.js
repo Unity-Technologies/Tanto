@@ -28,3 +28,21 @@ export function checkForGraphQlErrors(responseJson: Object): Object {
   }
   return responseJson
 }
+
+export function graphQLFetch(route: string) {
+  return (query: string, variables: any, operationName: string) => fetch(route, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      variables: JSON.stringify(variables),
+      operationName,
+    }),
+  })
+    .then(checkHttpStatus)
+    .then(parseJSON)
+    .then(checkForGraphQlErrors)
+}

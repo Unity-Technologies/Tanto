@@ -3,7 +3,7 @@
 import _ from 'lodash'
 import type { PullRequestSource } from 'universal/types'
 import type { OrderByType } from 'ducks/order'
-import { fetchActionCreator, fetchAction } from 'ducks/fetch'
+import { fetchOnoActionCreator, fetchOnoAction } from 'ducks/fetch'
 import type { FetchAction } from 'ducks/fetch'
 import { RECEIVE_PAGE } from 'ducks/pagination'
 
@@ -66,7 +66,7 @@ export const createFileFetchActionType = (id: string, name: string) =>
  */
 export const fetchPullRequestData =
   (actionType: string, query: string, variables: Object = {}): FetchAction =>
-    fetchAction({ type: actionType, query, variables })
+    fetchOnoAction({ type: actionType, query, variables })
 
 export const fetchPullRequestFilesList = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_FILES_LIST, pullRequestFilesList, { id })
@@ -90,7 +90,7 @@ export const fetchPullRequestChangeset = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_CHANGESET, pullRequestChangeset, { id })
 
 export const fetchPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
-  fetchActionCreator(
+  fetchOnoActionCreator(
     types.FETCH_PULL_REQUESTS, pullRequestList, variables, operationName,
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parsePullRequests(data) || {}

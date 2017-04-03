@@ -19,7 +19,7 @@ export function checkForSlackErrors(responseJson: Object): Object {
   return responseJson
 }
 
-export function getSlackAvatars() {
+export function fetchSlackAvatars() {
   return fetch(routes.SLACK_API_ROUTE, { credentials: 'same-origin' })
     .then(checkHttpStatus)
     .then(parseJSON)

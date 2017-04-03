@@ -1,15 +1,15 @@
 import fetchMock from 'fetch-mock'
-import { get } from 'services/ono/api'
+import { post } from 'services/ono'
 import 'isomorphic-fetch'
 
 const expect = require('chai').expect
 
-describe('ono api get', () => {
+describe('ono api post', () => {
   it('handles http status', () => {
     const errorMessage = 'Error 503'
     fetchMock.mock('*', { throws: new Error(errorMessage), status: 503 })
 
-    get('query')
+    post('query')
     .catch((error) => {
       expect(error.message).to.be.eql(errorMessage)
     })
@@ -20,7 +20,7 @@ describe('ono api get', () => {
   it('fetches data', () => {
     const testResponse = { data: { profile: { username: 'test' } } }
     fetchMock.post('*', testResponse)
-    get('query')
+    post('query')
     .then((data) => {
       expect(data).to.be.eql(testResponse)
     })

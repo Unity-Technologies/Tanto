@@ -46,7 +46,7 @@ describe('pullrequests actions', () => {
 
     const testQuery = 'djhfkjshfjk'
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: normalize(pr, schema).entities },
@@ -67,7 +67,7 @@ describe('pullrequests actions', () => {
     const error = new Error('some error')
     const testQuery = 'djhfkjshfjk'
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUEST, variables: { id }, query: testQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUEST, error },
@@ -112,7 +112,7 @@ describe('pullrequests actions', () => {
 
     const variables = { page, orderBy, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: normalize(data, schema).entities },
@@ -160,7 +160,7 @@ describe('pullrequests actions', () => {
 
     const variables = { page, orderBy, branch, repo, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: normalize(data, schema).entities },
@@ -188,7 +188,7 @@ describe('pullrequests actions', () => {
 
     const variables = { page, orderBy, branch, repo, pageSize }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUESTS, error },
@@ -220,7 +220,7 @@ describe('pullrequests actions', () => {
     const variables = { id, description }
     const transformedData = transformMutationResponse(data)
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.UPDATE_PULL_REQUEST_DESCRIPTION, variables, query: updateDescription },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.UPDATE_PULL_REQUEST_DESCRIPTION, variables, query: updateDescription },
       { type: fetchTypes.CLEAR_ERROR, name: types.UPDATE_PULL_REQUEST_DESCRIPTION },
       { type: fetchTypes.SENDING_REQUEST, name: types.UPDATE_PULL_REQUEST_DESCRIPTION, sending: true },
       { type: SET_MUTATED_ENTITIES, entities: normalize(transformedData, schema).entities },
@@ -242,7 +242,7 @@ describe('pullrequests actions', () => {
     const variables = { id, description }
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.UPDATE_PULL_REQUEST_DESCRIPTION, variables, query: updateDescription },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.UPDATE_PULL_REQUEST_DESCRIPTION, variables, query: updateDescription },
       { type: fetchTypes.CLEAR_ERROR, name: types.UPDATE_PULL_REQUEST_DESCRIPTION },
       { type: fetchTypes.SENDING_REQUEST, name: types.UPDATE_PULL_REQUEST_DESCRIPTION, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.UPDATE_PULL_REQUEST_DESCRIPTION, error },
@@ -274,7 +274,7 @@ describe('pullrequests actions', () => {
     const variables = { pullRequestId, reviewers }
     const transformedData = transformMutationResponse(data)
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.UPDATE_PULL_REQUEST_REVIEWERS, variables, query: addReviewers },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.UPDATE_PULL_REQUEST_REVIEWERS, variables, query: addReviewers },
       { type: fetchTypes.CLEAR_ERROR, name: types.UPDATE_PULL_REQUEST_REVIEWERS },
       { type: fetchTypes.SENDING_REQUEST, name: types.UPDATE_PULL_REQUEST_REVIEWERS, sending: true },
       { type: SET_MUTATED_ENTITIES, entities: normalize(transformedData, schema).entities },
@@ -296,7 +296,7 @@ describe('pullrequests actions', () => {
     const variables = { pullRequestId, reviewers }
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.UPDATE_PULL_REQUEST_REVIEWERS, variables, query: addReviewers },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.UPDATE_PULL_REQUEST_REVIEWERS, variables, query: addReviewers },
       { type: fetchTypes.CLEAR_ERROR, name: types.UPDATE_PULL_REQUEST_REVIEWERS },
       { type: fetchTypes.SENDING_REQUEST, name: types.UPDATE_PULL_REQUEST_REVIEWERS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.UPDATE_PULL_REQUEST_REVIEWERS, error },
@@ -328,7 +328,7 @@ describe('pullrequests actions', () => {
     const variables = { pullRequestId, reviewers }
     const transformedData = transformMutationResponse(data)
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.DELETE_PULL_REQUEST_REVIEWERS, variables, query: removeReviewers },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.DELETE_PULL_REQUEST_REVIEWERS, variables, query: removeReviewers },
       { type: fetchTypes.CLEAR_ERROR, name: types.DELETE_PULL_REQUEST_REVIEWERS },
       { type: fetchTypes.SENDING_REQUEST, name: types.DELETE_PULL_REQUEST_REVIEWERS, sending: true },
       { type: SET_MUTATED_ENTITIES, entities: normalize(transformedData, schema).entities },
@@ -350,7 +350,7 @@ describe('pullrequests actions', () => {
     const variables = { pullRequestId, reviewers }
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.DELETE_PULL_REQUEST_REVIEWERS, variables, query: removeReviewers },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.DELETE_PULL_REQUEST_REVIEWERS, variables, query: removeReviewers },
       { type: fetchTypes.CLEAR_ERROR, name: types.DELETE_PULL_REQUEST_REVIEWERS },
       { type: fetchTypes.SENDING_REQUEST, name: types.DELETE_PULL_REQUEST_REVIEWERS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.DELETE_PULL_REQUEST_REVIEWERS, error },
@@ -380,7 +380,7 @@ describe('pullrequests actions', () => {
     }
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST_REVIEWS, variables: { id }, query: pullRequestReviews },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUEST_REVIEWS, variables: { id }, query: pullRequestReviews },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST_REVIEWS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST_REVIEWS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: normalize(pr, schema).entities },
@@ -400,7 +400,7 @@ describe('pullrequests actions', () => {
     const id = 2
     const error = new Error('some error')
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_PULL_REQUEST_REVIEWS, variables: { id }, query: pullRequestReviews },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUEST_REVIEWS, variables: { id }, query: pullRequestReviews },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUEST_REVIEWS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUEST_REVIEWS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUEST_REVIEWS, error },

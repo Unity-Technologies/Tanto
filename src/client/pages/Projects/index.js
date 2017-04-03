@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import { fetchRepositories } from 'ducks/repositories/actions'
-import type { StateType } from 'ducks/repositories'
 import { groupPathFromPath } from 'routes/helpers'
 import type { StatusType } from 'ducks/fetch/selectors'
 import { getRepositoriesFetchState } from 'ducks/repositories/selectors'
@@ -30,7 +29,7 @@ export class Projects extends Component {
     dispatch(fetchRepositories(groupPathFromPath(pathname)))
   }
 
-  componentWillReceiveProps(nextProp: any, nextState?: StateType) {
+  componentWillReceiveProps(nextProp: any, nextState?: Object) {
     if (this.props.pathname !== nextProp.pathname) {
       this.props.dispatch(fetchRepositories(groupPathFromPath(nextProp.pathname)))
     }
