@@ -8,17 +8,18 @@ import Row from 'react-bootstrap/lib/Row'
 import Button from 'react-bootstrap/lib/Button'
 import { fetchChangelog } from 'ducks/repositories/actions'
 import { getChangelog } from 'ducks/repositories/selectors'
+import { fetchUsers } from 'ducks/users'
 import ChangesetList from 'components/ChangesetList'
 import LoadingComponent from 'components/LoadingComponent'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
 export type Props = {
   params: Object,
-  data: Array < any >
+  data: Array<any>
 };
 
 class Changelog extends Component {
-  constructor(props : Props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -49,6 +50,7 @@ class Changelog extends Component {
       this
         .props
         .dispatch(fetchChangelog(this.props.params.splat))
+      this.props.dispatch(fetchUsers())
     }
   }
 

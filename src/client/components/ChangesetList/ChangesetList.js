@@ -161,7 +161,7 @@ class ChangesetList extends Component {
                       </Link>
 
                       <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
-                        <strong>{item.author}</strong>, added {moment(item.date).fromNow()}
+                        <strong>{item.author.name}</strong>, added {moment(item.date).fromNow()}
                       </div>
                     </div>
                   </div>

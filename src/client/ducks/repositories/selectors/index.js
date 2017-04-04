@@ -2,6 +2,7 @@
 
 import { createSelector, createStructuredSelector } from 'reselect'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
+import { userEntitiesSelector } from 'ducks/users/selectors'
 import { types } from '../actions'
 import _ from 'lodash'
 
@@ -72,13 +73,26 @@ export const getRepositoryId = createSelector(
     _.findKey(entities, (v) => (v.fullName === repoName))
 )
 
+export const getChangesetList = (state: Object) => _.values(state.entities.changesets)
+
+export const getChangesetsWithAvatars = (state: Object) => createSelector(
+  getChangesetList, userEntitiesSelector,
+  (changesets, users) => (
+    _.values(changesets.map(changeset => (
+      { ...changeset,
+        author: {
+          name: changeset.author,
+          slack: _.values(users).find(x => x.username === changeset.author).slack,
+        },
+      }
+    ))
+)))
+
 export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
-export const getChangelog = (state: Object, props: Object) => {
-  const changesets = _.get(state, ['entities', 'changesets'], [])
-  const changesetsValues = _.values(changesets)
-  return {
-    data: changesetsValues,
-    status: getChangelogFetchStatus,
-  }
-}
+
+export const getChangelog = (state: Object, props: Object) => createStructuredSelector({
+  data: getChangesetsWithAvatars(),
+  users: userEntitiesSelector,
+  status: getChangelogFetchStatus,
+})
 
