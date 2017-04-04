@@ -686,6 +686,6 @@ describe('repositories selectors', () => {
       },
     }
 
-    expect(getChangelog(state)(state)).to.equal(expectedChangelogData)
+    expect(getChangelog(state)(state)).to.deep.equal(expectedChangelogData)
   })
 })
