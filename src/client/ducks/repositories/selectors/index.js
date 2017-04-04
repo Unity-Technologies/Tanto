@@ -74,7 +74,7 @@ export const getRepositoryId = createSelector(
 
 export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
 export const getChangelog = (state: Object, props: Object) => {
-  const changesets = _.get(state, ['entities', 'changesets'], [])[undefined]
+  const changesets = _.get(state, ['entities', 'changesets'], [])
   const changesetsValues = _.values(changesets)
   return {
     data: changesetsValues,
