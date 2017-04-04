@@ -34,7 +34,7 @@ export const fetchRepository = (name: string): FetchAction =>
   fetchOnoAction({ type: types.FETCH_REPOSITORY, query: repository, variables: { name } })
 
 export const fetchChangelog = (name: string): FetchAction =>
-  fetchAction({ type: types.FETCH_CHANGELOG, query: changelog, variables: { name } })
+  fetchOnoAction({ type: types.FETCH_CHANGELOG, query: changelog, variables: { name } })
 
 export const fetchRepositoryBranches = (id: number): FetchAction =>
   fetchOnoAction({

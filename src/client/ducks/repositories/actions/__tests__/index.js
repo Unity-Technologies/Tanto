@@ -284,10 +284,10 @@ describe('repository actions', () => {
       },
     }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_CHANGELOG, variables: { name: repositoryName }, query: changelogQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_CHANGELOG, variables: { name: repositoryName }, query: changelogQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_CHANGELOG },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_CHANGELOG, sending: true },
-      { type: SET_NORMALIZED_ENTITIES, entities: normalize(repo, schema).entities },
+      { type: SET_QUERIED_ENTITIES, entities: normalize(repo, schema).entities },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_CHANGELOG, sending: false },
     ]
 
@@ -306,7 +306,7 @@ describe('repository actions', () => {
 
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_DATA, name: types.FETCH_CHANGELOG, variables: { name },
+        type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_CHANGELOG, variables: { name },
         query: changelogQuery,
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_CHANGELOG },
