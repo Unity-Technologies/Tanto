@@ -77,21 +77,22 @@ export const getChangesetList = (state: Object) => _.values(state.entities.chang
 
 export const getChangesetsWithAvatars = (state: Object) => createSelector(
   getChangesetList, userEntitiesSelector,
-  (changesets, users) => (
-    _.values(changesets.map(changeset => (
-      { ...changeset,
+  (changesets, users) =>
+    _.values(changesets.map(changeset => {
+      const user = _.values(users).find(x => x.username === changeset.author)
+      return { ...changeset,
         author: {
           name: changeset.author,
-          slack: _.values(users).find(x => x.username === changeset.author).slack,
+          slack: user ? user.slack : {},
         },
       }
-    ))
-)))
+    })
+))
 
 export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
 
 export const getChangelog = (state: Object, props: Object) => createStructuredSelector({
-  data: getChangesetsWithAvatars(),
+  data: getChangesetsWithAvatars(state),
   users: userEntitiesSelector,
   status: getChangelogFetchStatus,
 })
