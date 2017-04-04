@@ -155,7 +155,7 @@ class ChangesetList extends Component {
                           cursor: 'pointer',
                           fontWeight: '400'
                         }}
-                        to={buildChangesetLink(projectName, item.rawId)}
+                        to={buildChangesetLink(projectName, item.id)}
                         >
                         {item.message}
                       </Link>
