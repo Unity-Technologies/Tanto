@@ -1,4 +1,5 @@
 // import chai from 'chai'
+/* eslint-disable */
 
 import schema from 'ducks/schema'
 import { normalize } from 'normalizr'
@@ -47,7 +48,7 @@ describe('actions', () => {
     }
     const transformedData = transformMutationResponse(data)
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.UPDATE_COMMENT, variables: { commentId, text }, query: updateCommentQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.UPDATE_COMMENT, variables: { commentId, text }, query: updateCommentQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.UPDATE_COMMENT },
       { type: fetchTypes.SENDING_REQUEST, name: types.UPDATE_COMMENT, sending: true },
       { type: SET_MUTATED_ENTITIES, entities: normalize(transformedData, schema).entities },
@@ -70,7 +71,7 @@ describe('actions', () => {
     const error = new Error('some error')
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.UPDATE_COMMENT, variables: { commentId, text }, query: updateCommentQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.UPDATE_COMMENT, variables: { commentId, text }, query: updateCommentQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.UPDATE_COMMENT },
       { type: fetchTypes.SENDING_REQUEST, name: types.UPDATE_COMMENT, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.UPDATE_COMMENT, error },
@@ -115,7 +116,7 @@ describe('actions', () => {
     }
     const transformedData = transformMutationResponse(data)
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.CREATE_COMMENT, variables: { text, repoId, pullRequestId }, query: createCommentQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.CREATE_COMMENT, variables: { text, repoId, pullRequestId }, query: createCommentQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.CREATE_COMMENT },
       { type: fetchTypes.SENDING_REQUEST, name: types.CREATE_COMMENT, sending: true },
       { type: SET_MUTATED_ENTITIES, entities: normalize(transformedData, schema).entities },
@@ -139,7 +140,7 @@ describe('actions', () => {
     const error = new Error('some error')
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.CREATE_COMMENT, variables: { text, repoId, pullRequestId }, query: createCommentQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.CREATE_COMMENT, variables: { text, repoId, pullRequestId }, query: createCommentQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.CREATE_COMMENT },
       { type: fetchTypes.SENDING_REQUEST, name: types.CREATE_COMMENT, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.CREATE_COMMENT, error },
@@ -178,7 +179,7 @@ describe('actions', () => {
     }
     const transformedData = transformMutationResponse(data)
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.DELETE_COMMENT, variables: { commentId }, query: deleteCommentQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.DELETE_COMMENT, variables: { commentId }, query: deleteCommentQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.DELETE_COMMENT },
       { type: fetchTypes.SENDING_REQUEST, name: types.DELETE_COMMENT, sending: true },
       { type: SET_MUTATED_ENTITIES, entities: normalize(transformedData, schema).entities },
@@ -200,7 +201,7 @@ describe('actions', () => {
     const error = new Error('some error')
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.DELETE_COMMENT, variables: { commentId }, query: deleteCommentQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.DELETE_COMMENT, variables: { commentId }, query: deleteCommentQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.DELETE_COMMENT },
       { type: fetchTypes.SENDING_REQUEST, name: types.DELETE_COMMENT, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.DELETE_COMMENT, error },

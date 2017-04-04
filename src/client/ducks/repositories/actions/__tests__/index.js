@@ -82,7 +82,7 @@ describe('repository actions', () => {
       },
     }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY, variables: { name: repositoryName }, query: repositoryQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORY, variables: { name: repositoryName }, query: repositoryQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: normalize(repo, schema).entities },
@@ -103,7 +103,7 @@ describe('repository actions', () => {
     const error = new Error('some error')
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY, variables: { name: repositoryName }, query: repositoryQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORY, variables: { name: repositoryName }, query: repositoryQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_REPOSITORY, error },
@@ -132,7 +132,7 @@ describe('repository actions', () => {
       },
     }
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY_BRANCHES, variables: { id }, query: repoBranchesQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORY_BRANCHES, variables: { id }, query: repoBranchesQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY_BRANCHES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: normalize(repo, schema).entities },
@@ -152,7 +152,7 @@ describe('repository actions', () => {
     const id = 2
     const error = new Error('some error')
     const expectedActions = [
-      { type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORY_BRANCHES, variables: { id }, query: repoBranchesQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORY_BRANCHES, variables: { id }, query: repoBranchesQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY_BRANCHES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_REPOSITORY_BRANCHES, error },
@@ -187,7 +187,7 @@ describe('repository actions', () => {
     }
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, variables: { name },
+        type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORIES, variables: { name },
         query: repositoriesQuery,
         operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
       },
@@ -231,7 +231,7 @@ describe('repository actions', () => {
     }
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, variables: { name },
+        type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORIES, variables: { name },
         query: repositoriesQuery,
         operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
       },
@@ -256,7 +256,7 @@ describe('repository actions', () => {
 
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_DATA, name: types.FETCH_REPOSITORIES, variables: { name },
+        type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORIES, variables: { name },
         query: repositoriesQuery,
         operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
       },

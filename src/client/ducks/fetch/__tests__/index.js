@@ -5,8 +5,9 @@ import {
   actions,
   types,
   fetchStatus,
-  fetchAction,
-  fetchActionCreator,
+  fetchOnoAction,
+  fetchBfStatsAction,
+  fetchOnoActionCreator,
 } from '../index'
 
 const expect = chai.expect
@@ -101,16 +102,16 @@ describe('fetch error reducer', () => {
   })
 })
 
-describe('fetchActionCreator', () => {
-  it('fetchActionCreator should convert any action to FETCH_DATA action', () => {
+describe('fetchOnoActionCreator', () => {
+  it('fetchOnoActionCreator should convert any action to FETCH_ONO_DATA action', () => {
     const type = 'SOME_ACTOIN_TYPE'
     const query = 'query {test query}'
     const variables = { id: 'testid', limit: 123 }
     const operationName = 'someOperationName'
     const callback = (data: Object, cbvariables: Object) => 'some callback here'
-    expect(fetchActionCreator(type, query, variables, operationName, callback))
+    expect(fetchOnoActionCreator(type, query, variables, operationName, callback))
       .to.eql({
-        type: types.FETCH_DATA,
+        type: types.FETCH_ONO_DATA,
         name: type,
         operationName,
         query,
@@ -120,8 +121,8 @@ describe('fetchActionCreator', () => {
   })
 })
 
-describe('fetchAction', () => {
-  it('fetchAction should convert any action to FETCH_DATA action', () => {
+describe('fetchOnoAction', () => {
+  it('fetchOnoAction should convert any action to FETCH_ONO_DATA action', () => {
     const type = 'SOME_ACTOIN_TYPE'
     const query = 'query {test query}'
     const variables = { id: 'testid', limit: 123 }
@@ -132,11 +133,32 @@ describe('fetchAction', () => {
       variables,
       operationName,
     }
-    expect(fetchAction(action))
+    expect(fetchOnoAction(action))
       .to.eql({
         ...action,
         name: type,
-        type: types.FETCH_DATA,
+        type: types.FETCH_ONO_DATA,
+      })
+  })
+})
+
+describe('fetchBfStatsAction', () => {
+  it('fetchBfStatsAction should convert any action to FETCH_BFSTATS_DATA action', () => {
+    const type = 'SOME_ACTOIN_TYPE'
+    const query = 'query {test query}'
+    const variables = { id: 'testid', limit: 123 }
+    const operationName = 'someOperationName'
+    const action = {
+      type,
+      query,
+      variables,
+      operationName,
+    }
+    expect(fetchBfStatsAction(action))
+      .to.eql({
+        ...action,
+        name: type,
+        type: types.FETCH_BFSTATS_DATA,
       })
   })
 })

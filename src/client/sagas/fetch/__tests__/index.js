@@ -1,9 +1,11 @@
 /* eslint-disable  */
 import { call, put } from 'redux-saga/effects'
 import { actions } from 'ducks/fetch'
-import { get } from 'services/ono/api'
+import { post } from 'services/ono'
+import { post as postBFStats } from 'services/bfstats'
+
 import {
-  fetchSaga, fetchAnythingSaga,
+  fetchSaga, fetchAnythingSaga, fetchOnoSaga, fetchBfStatsSaga,
   normalizeSaga,
   transformMutationResponse,
   isMutationQuery,
@@ -21,7 +23,7 @@ describe('fetch saga', () => {
 
     expect(generator.next().value).to.deep.equal(put(actions.clearError(actionName)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, true)))
-    expect(generator.next().value).to.deep.equal(call(get, query, variables))
+    expect(generator.next().value).to.deep.equal(call(post, query, variables))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, false)))
   })
 
@@ -34,7 +36,7 @@ describe('fetch saga', () => {
 
     expect(generator.next().value).to.deep.equal(put(actions.clearError(actionName)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, true)))
-    expect(generator.next().value).to.deep.equal(call(get, query, variables))
+    expect(generator.next().value).to.deep.equal(call(post, query, variables))
     expect(generator.throw(error).value).to.deep.equal(put(actions.requestError(actionName, error)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, false)))
   })
@@ -65,13 +67,13 @@ describe('fetch anything saga', () => {
 
     const action = {
       name: actionName,
-      type: 'FETCH_DATA',
+      type: 'FETCH_ONO_DATA',
       query,
       variables,
       callback,
       operationName,
     }
-    const generator = fetchAnythingSaga(action)
+    const generator = fetchAnythingSaga(post, action)
 
     const testResponse = { data: { repos: [{ title: 'testrepo', id: '1' }, { title: 'testrepo2', id: '2' }] } }
     const cb1 = {
@@ -93,7 +95,7 @@ describe('fetch anything saga', () => {
     }
     expect(generator.next().value).to.deep.equal(put(actions.clearError(actionName)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, true)))
-    expect(generator.next().value).to.deep.equal(call(get, query, variables, operationName))
+    expect(generator.next().value).to.deep.equal(call(post, query, variables, operationName))
     expect(generator.next(testResponse).value).to.deep.equal(call(normalizeSaga, testResponse, action))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb1))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb2))
@@ -125,13 +127,13 @@ describe('fetch anything saga', () => {
 
     const action = {
       name: actionName,
-      type: 'FETCH_DATA',
+      type: 'FETCH_ONO_DATA',
       query,
       variables,
       callback,
       operationName,
     }
-    const generator = fetchAnythingSaga(action)
+    const generator = fetchAnythingSaga(post, action)
 
     const testResponse = { data: { repos: [{ title: 'testrepo', id: '1' }, { title: 'testrepo2', id: '2' }] } }
     const cb1 = {
@@ -144,7 +146,7 @@ describe('fetch anything saga', () => {
 
     expect(generator.next().value).to.deep.equal(put(actions.clearError(actionName)))
     expect(generator.next().value).to.deep.equal(put(actions.sendingRequest(actionName, true)))
-    expect(generator.next().value).to.deep.equal(call(get, query, variables, operationName))
+    expect(generator.next().value).to.deep.equal(call(post, query, variables, operationName))
     expect(generator.next(testResponse).value).to.deep.equal(call(normalizeSaga, testResponse, action))
     expect(generator.next(testResponse).value).to.deep.equal(put(cb1))
     expect(generator.throw(error).value).to.deep.equal(put(actions.requestError(actionName, error)))
@@ -476,5 +478,31 @@ describe('isMutation', () => {
 
     const mutation3 = '\nmutation{ comment() { id, text }}'
     expect(isMutationQuery(mutation3)).to.be.true
+  })
+})
+
+describe('fetchOnoSaga/fetchBfStatsSaga', () => {
+  it('fetchOnoSaga', () => {
+    const action = {
+      type: 'SOME_TEST_ACTION',
+      query: 'some test query',
+      variables: {
+        test: 'test'
+      }
+    }
+    const generator = fetchOnoSaga(action)
+    expect(generator.next().value).to.deep.equal(call(fetchAnythingSaga, post, action))
+  })
+
+  it('fetchBfStatsSaga', () => {
+    const action = {
+      type: 'SOME_TEST_ACTION',
+      query: 'some test query',
+      variables: {
+        test: 'test'
+      }
+    }
+    const generator = fetchBfStatsSaga(action)
+    expect(generator.next().value).to.deep.equal(call(fetchAnythingSaga, postBFStats, action))
   })
 })

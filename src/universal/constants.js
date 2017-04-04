@@ -7,6 +7,7 @@ export const routes = {
   ONO_AUTH_LOGOUT_ROUTE: '/auth/logout',
   LOGIN_ROUTE: '/login',
   SLACK_API_ROUTE: '/api/slack/users',
+  BFSTATS_API_ROUTE: '/api/bfstats',
 }
 
 export const ChangesetStatus = {
