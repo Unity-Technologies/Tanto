@@ -91,9 +91,8 @@ export const getChangesetsWithAvatars = (state: Object) => createSelector(
 
 export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
 
-export const getChangelog = (state: Object, props: Object) => createStructuredSelector({
+export const getChangelog = (state: Object) => createStructuredSelector({
   data: getChangesetsWithAvatars(state),
-  users: userEntitiesSelector,
   status: getChangelogFetchStatus,
 })
 
