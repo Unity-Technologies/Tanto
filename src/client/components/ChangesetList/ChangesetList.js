@@ -138,31 +138,33 @@ class ChangesetList extends Component {
             >
             <div>
               <Row>
-                <Col lg={5} md={7} sm={9} xs={12}>
-                  <div style={{ display: 'table' }}>
-                    {showCheckboxes ?
+                <Col lg={1} md={2} sm={2} xs={3}>
+                  <div style={{ float: 'right' }}>
+                    <Avatar {...item.author.slack} />
+                  </div>
+                  {showCheckboxes ?
                       <Checkbox
                         ref={item.id}
                         disableTouchRipple
                         onChange={this.handleChange}
-                        style={{ float: 'left', padding: '10px', width: 'auto' }}
                         value={item.id}
+                        style={{ float: 'left', height: '15px', marginTop: '10px' }}
                         /> : ''}
-                    <Avatar {...item.author.slack} />
-                    <div style={{ paddingLeft: '10px', display: 'table' }}>
-                      <Link
-                        style={{
-                          cursor: 'pointer',
-                          fontWeight: '400'
-                        }}
-                        to={buildChangesetLink(projectName, item.id)}
-                        >
-                        {item.message}
-                      </Link>
+                </Col>
+                <Col lg={5} md={9} sm={11} xs={12}>
+                  <div style={{ display: 'table' }}>
+                    <Link
+                      style={{
+                        cursor: 'pointer',
+                        fontWeight: '400'
+                      }}
+                      to={buildChangesetLink(projectName, item.id)}
+                      >
+                      {item.message}
+                    </Link>
 
-                      <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
-                        <strong>{item.author.name}</strong>, added {moment(item.date).fromNow()}
-                      </div>
+                    <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
+                      <strong>{item.author.name}</strong>, added {moment(item.date).fromNow()}
                     </div>
                   </div>
                 </Col>
