@@ -10,6 +10,7 @@ export type Props = {
   onChange?: (e: SyntheticInputEvent) => any,
   name: string,
   disabled?: boolean,
+  style?: any,
 }
 
 class Checkbox extends Component {
