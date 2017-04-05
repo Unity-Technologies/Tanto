@@ -32,17 +32,17 @@ class Changelog extends Component {
       copied: false,
       copiedValue: '',
     }
-    this.handleTouchTap = () => this.setState({ open: true })
-    this.handleActionTouchTap = () => this.setState({ open: false })
-    this.handleChangeDuration = (event) => {
-      const value = event.target.value
-      this.setState({
-        autoHideDuration: value.length > 0
-          ? parseInt(value, 10)
-          : 0,
-      })
-    }
-    this.handleRequestClose = () => this.setState({ open: false })
+    // this.handleTouchTap = () => this.setState({ open: true })
+    // this.handleActionTouchTap = () => this.setState({ open: false })
+    // this.handleChangeDuration = (event) => {
+    //   const value = event.target.value
+    //   this.setState({
+    //     autoHideDuration: value.length > 0
+    //       ? parseInt(value, 10)
+    //       : 0,
+    //   })
+    // }
+    // this.handleRequestClose = () => this.setState({ open: false })
   }
 
   componentDidMount() {
@@ -67,6 +67,31 @@ class Changelog extends Component {
 
   setClipboardContent = () => {
     this.setState({ copiedValue: this.refs.changesetList.state.changesets.join(), copied: false })
+  }
+
+  handleActionTouchTap() {
+    this.setState({
+      open: false,
+    })
+  }
+
+  handleChangeDuration(event) {
+    const value = event.target.value
+    this.setState({
+      autoHideDuration: value.length > 0 ? parseInt(value, 10) : 0,
+    })
+  }
+
+  handleRequestClose() {
+    this.setState({
+      open: false,
+    })
+  }
+
+  handleTouchTap() {
+    this.setState({
+      open: true,
+    })
   }
 
   props : Props
