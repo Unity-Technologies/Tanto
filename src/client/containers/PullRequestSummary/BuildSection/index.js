@@ -39,7 +39,8 @@ class BuildSection extends PureComponent {
     if (this.props.repository !== nextprops.repository ||
       this.props.revision !== nextprops.revision) {
       this.props.dispatch(
-        fetchLatestBuildsForRevision(nextprops.repository, nextprops.revision))
+
+        fetchLatestBuildsForRevision(nextprops.repository, '29a7efaab3ad6a82214c203f6c21553eb1571f5f'))
     }
   }
 
@@ -47,7 +48,7 @@ class BuildSection extends PureComponent {
 
   render() {
     return (
-      <Builds repository={this.props.repository} revision={this.props.revision} />
+      <Builds repository={this.props.repository} revision={'29a7efaab3ad6a82214c203f6c21553eb1571f5f'} />
     )
   }
 }

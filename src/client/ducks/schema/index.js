@@ -67,6 +67,9 @@ const sourceStamp = new schema.Entity('sourceStamps', {
   latestBuilds: {
     nodes: [build],
   },
+  builds: {
+    nodes: [build],
+  },
 }, { idAttribute: 'revision' })
 
 export const tantoSchema = {

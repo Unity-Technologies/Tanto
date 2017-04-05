@@ -141,7 +141,7 @@ describe('bfstats selectors', () => {
     const st1 = {
       id: 1,
       name: 'test1',
-      latestBuilds: {
+      builds: {
         nodes: [11, 13],
       },
     }
@@ -199,7 +199,7 @@ describe('bfstats selectors', () => {
     const st1 = {
       id: 1,
       name: 'test1',
-      latestBuilds: {
+      builds: {
         nodes: [11, 13],
       },
     }
@@ -207,7 +207,7 @@ describe('bfstats selectors', () => {
     const st2 = {
       id: 2,
       name: 'test3',
-      latestBuilds: {
+      builds: {
         nodes: [12, 14],
       },
     }
@@ -246,7 +246,7 @@ describe('bfstats selectors', () => {
     const st1 = {
       id: 1,
       name: 'test1',
-      latestBuilds: {
+      builds: {
         nodes: [11, 13],
       },
     }
@@ -318,7 +318,7 @@ describe('bfstats selectors', () => {
     const st1 = {
       id: 1,
       name: 'test1',
-      latestBuilds: {
+      builds: {
         nodes: [11, 13],
       },
     }

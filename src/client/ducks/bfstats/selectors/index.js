@@ -27,7 +27,7 @@ export const getBuilds = createSelector(
       return null
     }
 
-    return sourceStamp.latestBuilds.nodes.map(id => builds[id])
+    return sourceStamp.builds.nodes.map(id => builds[id])
   }
 )
 
