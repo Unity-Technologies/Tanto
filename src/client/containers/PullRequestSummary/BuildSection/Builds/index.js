@@ -46,7 +46,7 @@ const failureColor = '#e63b72'
 const renderBuildTime = (build: BuildType) => {
   let finish = build.finish
   if (!finish) {
-    finish = moment(build.start).add(build.buildTime, 'm')
+    finish = moment(build.start).add(build.buildTime, 's')
   }
   const buildDate = moment(finish)
   return <div style={{ fontSize: '12px' }}>{`${buildDate.format('MMM Do YY, h:mm:ss a')} (${buildDate.fromNow()})`}</div>
