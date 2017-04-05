@@ -11,7 +11,7 @@ import Panel from 'react-bootstrap/lib/Panel'
 
 import BranchSelect from 'components/BranchSelect'
 import Filter from 'components/Filter'
-import Comment from 'components/Comment'
+// import Comment from 'components/Comment'
 
 import Breadcrumb from 'components/Breadcrumb'
 
@@ -164,24 +164,7 @@ class File extends Component {
           {/* TODO: here should be placed prism.js code viewer */}
         </Panel>
 
-        <div>
-          <h4>{this.state.comments.length} comments</h4>
-          {this.state.comments.map(comment => (
-            <div style={{ marginTop: '10px' }}>
-              <Comment
-                simpleText={false}
-                key={_.uniqueId('_code_comment')}
-                {...comment}
-              />
-            </div>
-        ))}
-        </div>
-        <div style={{ marginTop: '20px' }}>
-          <Comment
-            newComment
-            onComment={message => this.onSaveComment(message)}
-          />
-        </div>
+
       </div>
     )
   }

@@ -1,0 +1,17 @@
+query latestRepositoryBuilds($repository: String!, $revision: String){
+  sourceStamp(repository: $repository, revision: $revision) {
+    id
+    revision
+    latestBuilds {
+      total
+      nodes {
+        id
+        number
+        result
+        builder {
+          friendlyName
+        }
+      }
+    }
+  }
+}

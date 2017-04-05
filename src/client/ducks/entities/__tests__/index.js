@@ -1,6 +1,12 @@
+/* eslint-disable */
+
 import chai from 'chai'
 import {
   merge,
+  queryCustomizer,
+  mutationCustomizer,
+  types,
+  entities,
 } from '../index'
 
 const expect = chai.expect
@@ -122,27 +128,233 @@ describe('entities merge', () => {
     expect(merge(state, nodes)).to.equal(state)
   })
 
-  it('merge by id and accept upstream for certain keys', () => {
-    const nodes = {
-      reviews: [{ user: 1, status: null }],
-      missingReviewers: [{ area: 'x', reviewers: [{ id: 2, username: 'y' }] }],
-      nodes: [{ id: 2 }],
-    }
-
+  it('merge for query request should concat fields of Array type', () => {
     const state = {
-      reviews: [{ user: 2, status: null }, { user: 1, status: null }],
-      missingReviewers: [
-        { area: 'x', reviewers: [{ id: 2, username: 'y' }, { id: 1, username: 'x' }] }],
-      nodes: [{ id: 3 }, { id: 2 }],
+      nodes: {
+        1: { id: 1, title: 'test1', user: 'testuser', comments: [{ id: 12, text: 12 }, { id: 122, text: 122 }] },
+      },
+    }
+    const data = {
+      nodes: {
+        1: { id: 1, title: 'test1new', user: 'testuser2', description: 'test description1', comments: [{ id: 13, text: 13 }] },
+        4: { id: 4, message: 'messagewe' },
+      },
     }
 
     const expected = {
-      reviews: [{ user: 1, status: null }],
-      missingReviewers: [{ area: 'x', reviewers: [{ id: 2, username: 'y' }] }],
-      nodes: [{ id: 2 }, { id: 3 }],
+      nodes: {
+        1: {
+          id: 1,
+          title: 'test1new', user: 'testuser2', description: 'test description1', comments: [{ id: 12, text: 12 }, { id: 122, text: 122 }, { id: 13, text: 13 }],
+        },
+        4: { id: 4, message: 'messagewe' } },
     }
 
-    expect(merge(state, nodes)).to.eql(expected)
+    expect(merge(state, data, queryCustomizer)).to.eql(expected)
+  })
+
+  it('merge for mutation request should replace fields of Array type', () => {
+    const state = {
+      nodes: {
+        1: { id: 1, title: 'test1', user: 'testuser', comments: [{ id: 12, text: 12 }, { id: 122, text: 122 }] },
+      },
+    }
+    const data = {
+      nodes: {
+        1: { id: 1, title: 'test1new', user: 'testuser2', description: 'test description1', comments: [{ id: 13, text: 13 }] },
+        4: { id: 4, message: 'messagewe' },
+      },
+    }
+
+    const expected = {
+      nodes: {
+        1: {
+          id: 1,
+          title: 'test1new', user: 'testuser2', description: 'test description1', comments: [{ id: 13, text: 13 }],
+        },
+        4: { id: 4, message: 'messagewe' },
+      },
+    }
+
+    expect(merge(state, data, mutationCustomizer)).to.eql(expected)
   })
 })
 
+describe('entities reducer', () => {
+  it('should handle SET_QUERIED_ENTITIES', () => {
+    const initialState = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+        },
+      },
+    }
+
+    const action = {
+      type: types.SET_QUERIED_ENTITIES,
+      entities: {
+        entities: {
+          pullRequests: {
+            12: {
+              id: 12,
+              comments: [1, 2, 3],
+            },
+          },
+          comments: {
+            3: { id: 3, text: 1222, author: 1222 },
+          },
+        },
+      },
+    }
+
+    const expected = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2, 3],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+          3: { id: 3, text: 1222, author: 1222 },
+        },
+      },
+    }
+
+    expect(entities(initialState, action)).to.eql(expected)
+  })
+
+  it('should handle SET_MUTATED_ENTITIES', () => {
+    const initialState = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+        },
+      },
+    }
+
+    const action = {
+      type: types.SET_MUTATED_ENTITIES,
+      entities: {
+        entities: {
+          pullRequests: {
+            12: {
+              id: 12,
+              comments: [3],
+            },
+          },
+          comments: {
+            3: { id: 3, text: 1222, author: 1222 },
+          },
+        },
+      },
+    }
+
+    const expected = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [3],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+          3: { id: 3, text: 1222, author: 1222 },
+        },
+      },
+    }
+
+    expect(entities(initialState, action)).to.eql(expected)
+  })
+
+
+  it('should return state for unknown actions type', () => {
+    const initialState = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+        },
+      },
+    }
+
+    const action = {
+      type: 'STRANGE_ACTION',
+      entities: {
+        entities: {
+          pullRequests: {
+            12: {
+              id: 12,
+              comments: [3],
+            },
+          },
+          comments: {
+            3: { id: 3, text: 1222, author: 1222 },
+          },
+        },
+      },
+    }
+
+    expect(entities(initialState, action)).to.eql(initialState)
+  })
+
+  it('no entities in action', () => {
+    const initialState = {
+      entities: {
+        pullRequests: {
+          12: {
+            id: 12,
+            comments: [1, 2],
+          },
+        },
+        comments: {
+          1: { id: 1, text: 12, author: 12 },
+          2: { id: 2, text: 122, author: 122 },
+        },
+      },
+    }
+
+    const action = {
+      type: 'STRANGE_ACTION',
+      no_entities: {
+        entities: {
+          pullRequests: {
+            12: {
+              id: 12,
+              comments: [3],
+            },
+          },
+          comments: {
+            3: { id: 3, text: 1222, author: 1222 },
+          },
+        },
+      },
+    }
+
+    expect(entities(initialState, action)).to.eql(initialState)
+  })
+})

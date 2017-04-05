@@ -23,7 +23,7 @@ type Props = {
 export const getData = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequestFiles, getLoggedUsername,
-    (files, status, user) => ({
+    (files, user) => ({
       files,
       loggedUsername: user,
     })

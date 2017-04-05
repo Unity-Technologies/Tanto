@@ -9,7 +9,7 @@ export type Props = {
 };
 
 const avatarStyle = {
-  borderRadius: '20%',
+  borderRadius: '10%',
   float: 'left',
   display: 'table-column',
   height: '40px',
@@ -30,7 +30,7 @@ function Avatar(props: Props) {
     <MaterialAvatar
       src={props.avatar}
       size={40}
-      style={{ ...avatarStyle, ...props.style }}
+      style={{ ...avatarStyle }}
     />
   )
 }

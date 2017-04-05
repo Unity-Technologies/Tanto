@@ -25,7 +25,7 @@ module.exports = {
         test: /\.graphql$/,
         loader: 'url-loader',
         query: { mimetype: 'text/plain' },
-      }
+      },
     ],
   },
   resolve: {

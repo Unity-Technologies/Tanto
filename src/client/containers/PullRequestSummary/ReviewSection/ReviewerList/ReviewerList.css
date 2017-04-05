@@ -13,3 +13,25 @@
 .not-reviewed {
     color: gray;
 }
+
+.reviewer-item a {
+    text-decoration: none;
+}
+
+.reviewer-item:hover {
+    background-color: #eeeeee;
+    border: 1px solid #d7d5d5;
+    text-decoration: none;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+
+.reviewer-item:hover .reviewer-remove-icon {
+    display: inline-block;
+}
+
+.reviewer-remove-icon {
+    display: none;
+    margin: 3px 2px 6px 7px;
+    color: #6a99ee;
+}

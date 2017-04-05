@@ -1,65 +1,59 @@
 /* @flow */
 
-import React from 'react'
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
-import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import pureComponent from 'universal/react-pure-render'
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import { fetchLatestBuildsForRevision } from 'ducks/bfstats/actions'
+import { getPullRequest } from 'ducks/pullrequests/selectors'
+import { createSelector } from 'reselect'
+// import { Builds } from 'containers/Builds'
 
-const subHeader = text => (
-  <div style={{ color: '#8c8c8c', fontSize: '13px' }}>
-    {text}
-  </div>
-)
 
-const success = {
-  borderLeft: '5px solid rgb(214, 247, 229)',
+type BuildType = {
+  builder: {
+    name: string
+  },
+  result: number
 }
 
-const headerColumnStyle = {
-  textTransform: 'uppercase',
-  color: '#10121b',
-}
-
-const approvedColor = '#3f855b'
-
-type BuildPropsType = {
+type PropsType = {
   id: string,
-  name: string,
-  katanaLink: string,
-  date: string,
-  status: number,
+  repository: string,
+  dispatch: Function,
+  revision: string,
+  builds: Array<BuildType>,
 }
 
-const BuildSection = (props: BuildPropsType) =>
-  <ListGroupItem style={success}>
-    <Row>
-      <Col md={2}>
-        <div style={headerColumnStyle}>
-          Katana build
-        </div>
-      </Col>
-      <Col md={3}>
-        {subHeader('Status:')}
-        <div>
-          <div style={{ color: approvedColor, textTransform: 'uppercase' }}>
-            Passed
-          </div>
-          <div style={{ fontSize: '12px' }}>(5 hours ago)</div>
-        </div>
-      </Col>
-      <Col md={6}>
-        <div>
-          <div>
-            {subHeader('Latest:')}
-            <a href="#">ABV-48147</a>
-            <div style={{ fontSize: '12px' }}>(5 builds in total)</div>
-          </div>
-        </div>
-      </Col>
-      <Col md={1} />
-    </Row>
-  </ListGroupItem>
+export const getPRSourceStamp = (state: Object, props: Object): Object =>
+  createSelector(
+    getPullRequest,
+    (pr) => ({
+      revision: pr && pr.origin ? pr.origin.revision : null,
+      repository: pr && pr.origin ? pr.origin.repository.fullName : null,
+    })
+  )
 
+class BuildSection extends PureComponent {
+  componentWillReceiveProps(nextprops) {
+    if (!nextprops.repository || !nextprops.revision) {
+      return
+    }
+    if (this.props.repository !== nextprops.repository ||
+      this.props.revision !== nextprops.revision) {
+      this.props.dispatch(
+        fetchLatestBuildsForRevision(nextprops.repository, nextprops.revision))
+    }
+  }
 
-export default pureComponent(BuildSection)
+  props: PropsType
+
+  render() {
+    if (!this.props.repository || !this.props.revision) {
+      return null
+    }
+    return (
+      <div></div>
+    )
+  }
+}
+
+export default connect(getPRSourceStamp)(BuildSection)

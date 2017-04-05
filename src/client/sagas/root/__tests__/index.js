@@ -3,7 +3,7 @@
 import { takeLatest, takeEvery } from 'redux-saga'
 import { fork } from 'redux-saga/effects'
 import { types as usersTypes } from 'ducks/users'
-import { fetchAnythingSaga } from 'sagas/fetch'
+import { fetchOnoSaga, fetchBfStatsSaga } from 'sagas/fetch'
 import { searchRepository } from 'sagas/repositories'
 import { fetchUsers } from 'sagas/users'
 import { types as repoTypes } from 'ducks/repositories/actions'
@@ -18,7 +18,9 @@ describe('root saga', () => {
   it('flow', () => {
     const generator = rootSaga()
     expect(generator.next().value).to.deep.equal(
-      fork(takeEvery, fetchTypes.FETCH_DATA, fetchAnythingSaga))
+      fork(takeEvery, fetchTypes.FETCH_ONO_DATA, fetchOnoSaga))
+    expect(generator.next().value).to.deep.equal(
+      fork(takeEvery, fetchTypes.FETCH_BFSTATS_DATA, fetchBfStatsSaga))
     expect(generator.next().value).to.deep.equal(
       fork(takeLatest, repoTypes.SEARCH_REPOSITORY, searchRepository))
     expect(generator.next().value).to.deep.equal(

@@ -45,8 +45,12 @@ export const getLoggedUserAvatar = createSelector(
   userEntitiesSelector, getLoggedUserId,
   (entities: Object, id: string) => {
     const user = entities[id]
-    return user ? user.slack.avatar : null
+    return user && user.slack ? user.slack.avatar : null
   })
+
+export const getLoggedUser = createSelector(
+  userEntitiesSelector, getLoggedUserId,
+  (entities: Object, id: string) => entities[id])
 
 export const getPullRequestsOwnedTotal = state =>
   _.get(state, ['entities', 'me', 'pullRequestsOwned', 'total'], 0)

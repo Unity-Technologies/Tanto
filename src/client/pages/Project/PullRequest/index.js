@@ -65,7 +65,6 @@ const PullRequest = (props: Props) => {
 
 export default connect(
   (state, props) => ({
-    params: props.params,
     persona: getPersona(state),
   })
 )(PullRequest)

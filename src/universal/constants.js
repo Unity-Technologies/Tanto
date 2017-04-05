@@ -7,6 +7,7 @@ export const routes = {
   ONO_AUTH_LOGOUT_ROUTE: '/auth/logout',
   LOGIN_ROUTE: '/login',
   SLACK_API_ROUTE: '/api/slack/users',
+  BFSTATS_API_ROUTE: '/api/bfstats',
 }
 
 export const ChangesetStatus = {
@@ -46,4 +47,4 @@ export const PullRequestOrderFields = {
  */
 export const DEVELOPER_PERSONA = 'DEVELOPER_PERSONA'
 export const GUARDIAN_PERSONA = 'GUARDIAN_PERSONA'
-
+export const CONFLUENCE_REVIEW_PAGE = 'https://confluence.hq.unity3d.com/display/DEV/Code+Reviews'

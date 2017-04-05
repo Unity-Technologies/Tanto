@@ -13,9 +13,10 @@ query pullRequestFile($id: Int!, $name: String) {
           fullName
           email
         }
-        lineNumber
-
-        filePath
+        location {
+          lineNumber
+          filePath
+        }
         created
         issue {
           id

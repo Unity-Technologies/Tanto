@@ -3,8 +3,10 @@
 import React from 'react'
 import type {
   PullRequestMissingReviewerType,
-  UserType,
+    UserType,
 } from 'universal/types'
+
+import { CONFLUENCE_REVIEW_PAGE } from 'universal/constants'
 import './MissingReviewerList.css'
 
 export type MissingReviewerListType = {
@@ -24,7 +26,7 @@ const areaHeader = text => (
   <div style={{ fontWeight: 'bold' }}>{text}</div>
 )
 
-const reviewerItem = (props : MissingReviewerListType, reviewer : UserType) => {
+const reviewerItem = (props: MissingReviewerListType, reviewer: UserType) => {
   const clickFunction = () => props.addReviewer(props.id, reviewer)
   return (<a className="missing-reviewer" onClick={clickFunction}>
     {reviewer.fullName || reviewer.username}
@@ -32,38 +34,39 @@ const reviewerItem = (props : MissingReviewerListType, reviewer : UserType) => {
 }
 
 const MissingReviewers = (props: MissingReviewerListType) => {
-  const missing = props.missingReviewers.filter(r => r.reviewers != null && r.reviewers.length > 0)
+  const missing = props.missingReviewers.filter(r => r.reviewers && r.reviewers.length)
 
+  if (!missing.length) {
+    return null
+  }
   return (
     <div>
-      {missing.length > 0 &&
-        <div>
-          <div>{subHeader('Potential additional reviewers:')}</div>
-          {missing.map(missingReviewer =>
-            <div key={missingReviewer.area}>
-              {areaHeader(missingReviewer.area)}
-              {missingReviewer.reviewers.map(reviewer => reviewerItem(props, reviewer))}
-            </div>
-          )}
-        </div>
-      }
+      <div>
+        <div>{subHeader('Potential additional reviewers:')}</div>
+        {missing.map(missingReviewer =>
+          <div key={missingReviewer.area}>
+            {areaHeader(missingReviewer.area)}
+            {missingReviewer.reviewers.map(reviewer => reviewerItem(props, reviewer))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
 
 const UnclaimedAreas = (props: MissingReviewerListType) => {
-  const unclaimed = props.missingReviewers.filter(r => r.reviewers === null || r.reviewers.length === 0)
-  const reviewPage = 'https://confluence.hq.unity3d.com/display/DEV/Code+Reviews'
-
+  const unclaimed = props.missingReviewers.filter(r => !r.reviewers || !r.reviewers.length)
+  const reviewPage = CONFLUENCE_REVIEW_PAGE
+  if (!unclaimed.length) {
+    return null
+  }
   return (
     <div>
-      {unclaimed.length > 0 &&
-        <div key="unclaimed">
-          {subHeader('One or more areas are unclaimed')}
-          Please update <a href={reviewPage}>Code Reviews</a> to claim/assign ownership of uncovered areas:
+      <div key="unclaimed">
+        {subHeader('One or more areas are unclaimed')}
+        Please update <a href={reviewPage}>Code Reviews</a> to claim/assign ownership of uncovered areas:
           {unclaimed.map(u => <div key={u.area} className="unclaimed-area">{u.area}</div>)}
-        </div>
-      }
+      </div>
     </div>
   )
 }

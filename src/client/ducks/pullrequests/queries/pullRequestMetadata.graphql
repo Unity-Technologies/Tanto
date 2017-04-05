@@ -2,6 +2,7 @@ query pullRequestMetadata($id: Int!) {
   pullRequest(id: $id) {
     id
     title
+    description
     status
     created
     owner {
@@ -9,16 +10,9 @@ query pullRequestMetadata($id: Int!) {
       fullName
       username
     }
-    reviews {
-      status
-      user {
-        id
-        fullName
-        username
-      }
-    }
     origin {
       name
+      revision
       repository {
         id
         name
@@ -44,14 +38,6 @@ query pullRequestMetadata($id: Int!) {
         fullName
       }
       assignee {
-        id
-        username
-        fullName
-      }
-    }
-    missingReviewers {
-      area
-      reviewers {
         id
         username
         fullName

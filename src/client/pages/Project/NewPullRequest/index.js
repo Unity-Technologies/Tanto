@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 
-import TextEditorBox from 'components/TextEditorBox'
+// import TextEditorBox from 'components/TextEditorBox'
 import BranchSelect from 'components/BranchSelect'
 // import CodeDiffView from 'components/CodeDiffView'
 
@@ -107,14 +107,7 @@ class NewPullRequest extends Component {
           fullWidth
           hintText="New pull request title"
         />
-        <Row style={rowStyle}>
-          <Col md={12}>
-            <TextEditorBox
-              style={{ border: '1px solid lightgrey' }}
-              placeholder="Pull request description"
-            />
-          </Col>
-        </Row>
+
         <Row style={rowStyle}>
           <Col md={12} >
             diff

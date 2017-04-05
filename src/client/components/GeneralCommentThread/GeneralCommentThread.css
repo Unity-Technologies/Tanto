@@ -1,0 +1,15 @@
+.comments-thread-timeline-item {
+    margin: 5px 0;
+}
+
+.comments-thread-timeline::before {
+    position: absolute;
+    top: 0;
+    bottom: -10px;
+    left: 75px;
+    z-index: 0;
+    display: block;
+    width: 2px;
+    content: "";
+    background-color: #efefef;
+}
