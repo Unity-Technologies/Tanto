@@ -15,6 +15,7 @@ import { buildChangesetLink } from 'routes/helpers'
 import Checkbox from 'components/Checkbox'
 import { ChangesetStatus } from 'universal/constants'
 import _ from 'lodash'
+import CopyToClipboard from 'react-copy-to-clipboard'
 
 const subHeader = text => (
   <div
@@ -70,7 +71,13 @@ const reduceCommitDelta = (files) => {
 class ChangesetList extends Component {
   constructor(props: Props) {
     super(props)
-    this.state = { search: null, activeKey: 3, changesets: [] }
+    this.state = { 
+      search: null, 
+      activeKey: 3, 
+      changesets: [],
+      copied: false,
+      copiedValue: '',
+    }
   }
 
   props: Props
@@ -176,7 +183,10 @@ class ChangesetList extends Component {
                       border: '1px solid lightgrey'
                     }}
                     >
-                    <i style={{ fontSize: '14px', padding: '2px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }} className="fa fa-clipboard" aria-hidden="true" />
+                    <CopyToClipboard text={item.id} onCopy={() => this.setState({ copied: true })}>
+                      <i style={{ fontSize: '14px', padding: '2px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }} 
+                      className="fa fa-clipboard" aria-hidden="true" />
+                    </CopyToClipboard>
                     <Link
                       style={{ padding: '10px', textDecoration: 'none', color: '#5a6082', textTransform: 'uppercase', fontSize: '12px' }}
                       to={buildChangesetLink(projectName, item.id)}
@@ -184,7 +194,6 @@ class ChangesetList extends Component {
                       {item.id.substring(0, 9)}
                     </Link>
                   </div>
-
                 </Col>
                 <Col lg={2} mdHidden smHidden xsHidden >
                   <div>

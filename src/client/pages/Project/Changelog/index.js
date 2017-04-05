@@ -11,7 +11,6 @@ import { getChangelog } from 'ducks/repositories/selectors'
 import { fetchUsers } from 'ducks/users'
 import ChangesetList from 'components/ChangesetList'
 import LoadingComponent from 'components/LoadingComponent'
-import CopyToClipboard from 'react-copy-to-clipboard'
 
 export type Props = {
   params: Object,
@@ -29,8 +28,6 @@ class Changelog extends Component {
       open: false,
       selectedChanges: 0,
       shouldButtonUpdate: false,
-      copied: false,
-      copiedValue: '',
     }
   }
 
@@ -51,11 +48,6 @@ class Changelog extends Component {
     this.setState({
       selectedChanges: this.refs.changesetList.state.changesets.length,
       shouldButtonUpdate: true })
-    this.setClipboardContent()
-  }
-
-  setClipboardContent = () => {
-    this.setState({ copiedValue: this.refs.changesetList.state.changesets.join(), copied: false })
   }
 
   handleActionTouchTap() {
@@ -98,20 +90,18 @@ class Changelog extends Component {
             </Col>
 
             <Col md={8}>
-              <CopyToClipboard text={this.state.copiedValue} onCopy={() => this.setState({ copied: true })}>
-                <Button
-                  ref={'button'}
-                  disabled={this.state.selectedChanges === 0}
-                  style={{
-                    backgroundColor: this.state.selectedChanges === 0 ? 'rgb(162, 162, 171)' : '#1fb5ad',
-                    borderColor: this.state.selectedChanges === 0 ? 'rgb(162, 162, 171)' : '#1fb5ad',
-                    color: 'white',
-                    float: 'right',
-                  }}
-                >
-                    Show changeset
-                </Button>
-              </CopyToClipboard>
+              <Button
+                ref={'button'}
+                disabled={this.state.selectedChanges === 0}
+                style={{
+                  backgroundColor: this.state.selectedChanges === 0 ? 'rgb(162, 162, 171)' : '#1fb5ad',
+                  borderColor: this.state.selectedChanges === 0 ? 'rgb(162, 162, 171)' : '#1fb5ad',
+                  color: 'white',
+                  float: 'right',
+                }}
+              >
+                  Show changeset
+              </Button>
             </Col>
           </Row>
         </div>
