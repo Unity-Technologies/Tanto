@@ -18,7 +18,7 @@ const comment = {
 
 
 const commentApproved = {
-  id: 12,
+  id: 13,
   created: '2017-02-09T11:27:26.024159',
   status: 'approved',
   author: {
@@ -30,7 +30,7 @@ const commentApproved = {
 }
 
 const commentRejected = {
-  id: 12,
+  id: 14,
   text: `Here's a numbered list:
 
  1. first item
@@ -47,7 +47,7 @@ const commentRejected = {
 }
 
 const comment2 = {
-  id: 12,
+  id: 15,
   text: `sjdhkjashldkajslkdjalksdjlakjdslaksjdl alsksjdlka lajsdlka  l aldsjlak
 `,
 
@@ -61,7 +61,7 @@ const comment2 = {
 
 
 const commentUnderReview = {
-  id: 12,
+  id: 16,
   text: `An h1 header
 ============
 
@@ -88,7 +88,7 @@ content starts at 4-columns in.
 }
 
 const commentNotReviewed = {
-  id: 12,
+  id: 17,
   created: '2017-02-09T11:27:26.024159',
   status: 'not_reviewed',
   author: {
@@ -100,7 +100,7 @@ const commentNotReviewed = {
 }
 
 
-const comments = [comment, commentApproved, comment2, commentNotReviewed, commentNotReviewed, commentRejected, commentUnderReview]
+const comments = [comment, commentApproved, comment2, commentNotReviewed, commentRejected, commentUnderReview]
 
 const loggedUser = {
   username: 'kate',

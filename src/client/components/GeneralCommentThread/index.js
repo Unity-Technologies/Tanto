@@ -105,7 +105,7 @@ class GeneralCommentThread extends Component {
             {this.props.description &&
               renderDescriptionComment(this.props.description, this.props.loggedUser, this.handleOnDescriptionUpdate)}
             {this.props.comments.map(c =>
-              <div className="comments-thread-timeline-item">
+              <div key={c.id} className="comments-thread-timeline-item">
                 <Comment
                   comment={c}
                   canEdit={c.author.username === this.props.loggedUser.username}
