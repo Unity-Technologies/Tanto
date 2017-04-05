@@ -620,7 +620,7 @@ describe('repositories selectors', () => {
     expect(repoIdSelector(state, props)).to.equal('1')
   })
 
-  it('getChangelog selector', () => {
+  it('getChangelog selector full data', () => {
     const user1 = {
       id: 1,
       email: 'user1@email.com',
@@ -684,6 +684,187 @@ describe('repositories selectors', () => {
           isFetching: false,
         },
       },
+    }
+
+    expect(getChangelog(state)(state)).to.deep.equal(expectedChangelogData)
+  })
+
+  it('getChangelog selector no users in state', () => {
+    const changeset1 = {
+      id: 1,
+      author: 'name2',
+      branch: 'default',
+      date: 'somedate',
+      message: 'some message',
+      status: 'not_reviewed',
+    }
+
+    const changeset2 = {
+      id: 2,
+      author: 'name1',
+      branch: 'default',
+      date: 'somedate2',
+      message: 'some message2',
+      status: 'not_reviewed',
+    }
+
+    const status = {
+      error: null,
+      isFetching: false,
+    }
+
+    const expectedChangelogData = {
+      status,
+      data: [{ ...changeset1, author: { name: 'name2', slack: {} } },
+      { ...changeset2, author: { name: 'name1', slack: {} } }],
+    }
+
+    const state = {
+      entities: {
+        changesets: {
+          1: changeset1,
+          2: changeset2,
+        },
+      },
+      fetch: {
+        [types.FETCH_CHANGELOG]: {
+          error: null,
+          isFetching: false,
+        },
+      },
+    }
+
+    expect(getChangelog(state)(state)).to.deep.equal(expectedChangelogData)
+  })
+
+  it('getChangelog selector no changesets in state', () => {
+    const user1 = {
+      id: 1,
+      email: 'user1@email.com',
+      username: 'name1',
+      slack: {
+        avatar: 'avatar1',
+      },
+    }
+
+    const user2 = {
+      id: 2,
+      email: 'user2@email.com',
+      username: 'name2',
+      slack: {
+        avatar: 'avatar2',
+      },
+    }
+
+    const users = [user1, user2]
+
+    const status = {
+      error: null,
+      isFetching: false,
+    }
+
+    const expectedChangelogData = {
+      status,
+      data: [],
+    }
+
+    const state = {
+      entities: {
+        users,
+      },
+      fetch: {
+        [types.FETCH_CHANGELOG]: {
+          error: null,
+          isFetching: false,
+        },
+      },
+    }
+
+    expect(getChangelog(state)(state)).to.deep.equal(expectedChangelogData)
+  })
+
+  it('getChangelog selector no entities in state', () => {
+    const status = {
+      error: null,
+      isFetching: false,
+    }
+
+    const expectedChangelogData = {
+      status,
+      data: [],
+    }
+
+    const state = {
+      entities: {},
+      fetch: {
+        [types.FETCH_CHANGELOG]: {
+          error: null,
+          isFetching: false,
+        },
+      },
+    }
+
+    expect(getChangelog(state)(state)).to.deep.equal(expectedChangelogData)
+  })
+  it('getChangelog selector empty fetch in state', () => {
+    const user1 = {
+      id: 1,
+      email: 'user1@email.com',
+      username: 'name1',
+      slack: {
+        avatar: 'avatar1',
+      },
+    }
+
+    const user2 = {
+      id: 2,
+      email: 'user2@email.com',
+      username: 'name2',
+      slack: {
+        avatar: 'avatar2',
+      },
+    }
+
+    const users = [user1, user2]
+
+    const changeset1 = {
+      id: 1,
+      author: 'name2',
+      branch: 'default',
+      date: 'somedate',
+      message: 'some message',
+      status: 'not_reviewed',
+    }
+
+    const changeset2 = {
+      id: 2,
+      author: 'name1',
+      branch: 'default',
+      date: 'somedate2',
+      message: 'some message2',
+      status: 'not_reviewed',
+    }
+
+    const status = {
+      error: null,
+      isFetching: false,
+    }
+
+    const expectedChangelogData = {
+      status,
+      data: [{ ...changeset1, author: { name: 'name2', slack: { avatar: 'avatar2' } } },
+      { ...changeset2, author: { name: 'name1', slack: { avatar: 'avatar1' } } }],
+    }
+
+    const state = {
+      entities: {
+        changesets: {
+          1: changeset1,
+          2: changeset2,
+        },
+        users,
+      },
+      fetch: {},
     }
 
     expect(getChangelog(state)(state)).to.deep.equal(expectedChangelogData)
