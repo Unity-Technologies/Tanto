@@ -107,7 +107,7 @@ class ChangesetGroupedList extends Component {
                             padding: '10px',
                             float: 'right',
                           }}
-                        >{chunk.commits[0].date}</span>
+                        >{chunk.commits.length > 0 ? chunk.commits[0].date : ''}</span>
                       </div>
                       <div
                         style={{
