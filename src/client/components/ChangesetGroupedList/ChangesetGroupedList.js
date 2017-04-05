@@ -41,7 +41,7 @@ class ChangesetGroupedList extends Component {
   }
 
   render() {
-    if (this.props.groups || this.props.groups.length) {
+    if (!this.props.groups || !this.props.groups.length) {
       return null
     }
     const { groups } = this.props
@@ -94,7 +94,7 @@ class ChangesetGroupedList extends Component {
               activeKey={this.state.activeKey}
               onSelect={this.handleSelect}
             >
-              {this.props.group.map(chunk => (
+              {groups.map(chunk => (
                 <Panel
                   key={_.uniqueId('panel')}
                   header={
@@ -107,7 +107,7 @@ class ChangesetGroupedList extends Component {
                             padding: '10px',
                             float: 'right',
                           }}
-                        >{chunk.date}</span>
+                        >{chunk.commits.length > 0 ? chunk.commits[0].date : ''}</span>
                       </div>
                       <div
                         style={{
