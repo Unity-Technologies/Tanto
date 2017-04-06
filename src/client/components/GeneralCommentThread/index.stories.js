@@ -14,6 +14,7 @@ const comment = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 
@@ -27,6 +28,7 @@ const commentApproved = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 const commentRejected = {
@@ -44,6 +46,7 @@ const commentRejected = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 const comment2 = {
@@ -57,6 +60,7 @@ const comment2 = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 
@@ -85,6 +89,7 @@ content starts at 4-columns in.
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 const commentNotReviewed = {
@@ -97,10 +102,55 @@ const commentNotReviewed = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
+const commentFixNowIssue = {
+  id: 18,
+  created: '2017-04-06T09:03:39.376974',
+  status: null,
+  text: 'Could you remove all commented code?\n\nCreated issue: 45\nStatus: Fix in this PR',
+  author: {
+    username: 'kate',
+    slack: {
+      avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
+    },
+  },
+  issue: {
+    id: 1,
+    status: 'now',
+    title: 'Could you remove all commented code?',
+  },
+}
 
-const comments = [comment, commentApproved, comment2, commentNotReviewed, commentRejected, commentUnderReview]
+const commentFixAvailableIssue = {
+  id: 19,
+  created: '2017-04-06T09:03:39.376974',
+  status: 'under_review',
+  text: '',
+  author: {
+    username: 'kate',
+    slack: {
+      avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
+    },
+  },
+  issue: {
+    id: 1,
+    status: 'available',
+    title: 'Could you remove all commented code?',
+  },
+}
+
+const comments = [
+  comment,
+  commentApproved,
+  comment2,
+  commentNotReviewed,
+  commentRejected,
+  commentUnderReview,
+  commentFixNowIssue,
+  commentFixAvailableIssue,
+]
 
 const loggedUser = {
   username: 'kate',

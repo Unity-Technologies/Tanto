@@ -14,6 +14,7 @@ export type UserType = {
     avatar: string
   }
 }
+
 type Props = {
   pullRequestId: string,
   repoId: string,
