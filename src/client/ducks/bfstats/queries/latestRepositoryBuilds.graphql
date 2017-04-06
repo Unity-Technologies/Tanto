@@ -1,15 +1,20 @@
-query latestRepositoryBuilds($repository: String!, $revision: String){
+query repositoryBuilds($repository: String!, $revision: String) {
   sourceStamp(repository: $repository, revision: $revision) {
     id
     revision
-    latestBuilds {
+    builds(rootOnly: true, limit: 10, orderBy: {field: FINISH, direction: DESC}) {
       total
       nodes {
         id
         number
         result
+        finish
+        start
+        buildTime
         builder {
           friendlyName
+          name
+          project
         }
       }
     }

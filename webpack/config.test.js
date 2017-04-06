@@ -1,5 +1,6 @@
 /* eslint-disable max-len, import/no-extraneous-dependencies */
 const nodeExternals = require('webpack-node-externals')
+const webpack = require('webpack')
 
 require('source-map-support').install({
   environment: 'node',
@@ -22,4 +23,9 @@ module.exports = Object.assign({}, baseConfig.config, {
       },
     ]),
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.KATANA_HOST': '"https://test-katana-host"',
+    }),
+  ],
 })

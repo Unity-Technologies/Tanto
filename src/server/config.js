@@ -25,9 +25,12 @@ const environment = envalid.cleanEnv(process.env, {
   APP_THEME: str({ default: 'cyan' }),
 
   SLACK_TOKEN: str({ default: '' }),
-  SLACK_CLIENT_ID: str({ default: '' }),
-  SLACK_CLIENT_SECRET: str({ default: '' }),
   SLACK_AVATARS_PREFETCH_SCHEDULE: str({ default: '0 0 1 * *' }),
+
+  BFSTATS_API_HOST: str({ default: '' }),
+  BFSTSTS_GTAPHQL_API_ROUTE: str({ default: 'graphql' }),
+
+  KATANA_NOST: str({ default: '' }),
 })
 
 module.exports = environment

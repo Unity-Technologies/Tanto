@@ -45,7 +45,8 @@
     "import/extensions": "off",
     "no-duplicate-imports": "off",
     "max-len": ["error", 140],
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-useless-computed-key": "off"
   },
   "globals": {
     "__DEVELOPMENT__": true,
