@@ -83,10 +83,6 @@ export const getStatusIcon = (status: string) => {
 
 const getIssueIcon = (issueStatus: string, commentStatus?: string) => {
   switch (issueStatus) {
-    case IssueStatus.LATER:
-    case IssueStatus.NEXT:
-    case IssueStatus.NOW:
-      return <i className="fa fa-bug comment-status-glyph" />
     case IssueStatus.AVAILABLE:
     case IssueStatus.CONFIRMED:
     case IssueStatus.OBSOLETE:
@@ -94,6 +90,9 @@ const getIssueIcon = (issueStatus: string, commentStatus?: string) => {
         return getStatusIcon(commentStatus)
       }
       return <Glyphicon glyph="ok-sign" className="comment-status-glyph status-green" />
+    case IssueStatus.LATER:
+    case IssueStatus.NEXT:
+    case IssueStatus.NOW:
     default:
       return <i className="fa fa-bug comment-status-glyph" />
   }
@@ -166,7 +165,7 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
             <strong>{comment.author.username}</strong>
             <span>
               &nbsp;
-              {comment.issue ? getIssueText(comment.issue.status) : getStatusText(comment.text)}
+              {comment.issue ? getIssueText(comment.issue.status) : getStatusText(comment.status)}
               &nbsp;
               {moment(comment.created).fromNow()}
             </span>
