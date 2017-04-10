@@ -14,11 +14,12 @@ const comment = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 
 const commentApproved = {
-  id: 12,
+  id: 13,
   created: '2017-02-09T11:27:26.024159',
   status: 'approved',
   author: {
@@ -27,10 +28,11 @@ const commentApproved = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 const commentRejected = {
-  id: 12,
+  id: 14,
   text: `Here's a numbered list:
 
  1. first item
@@ -44,10 +46,11 @@ const commentRejected = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 const comment2 = {
-  id: 12,
+  id: 15,
   text: `sjdhkjashldkajslkdjalksdjlakjdslaksjdl alsksjdlka lajsdlka  l aldsjlak
 `,
 
@@ -57,11 +60,12 @@ const comment2 = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 
 const commentUnderReview = {
-  id: 12,
+  id: 16,
   text: `An h1 header
 ============
 
@@ -85,10 +89,11 @@ content starts at 4-columns in.
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
 const commentNotReviewed = {
-  id: 12,
+  id: 17,
   created: '2017-02-09T11:27:26.024159',
   status: 'not_reviewed',
   author: {
@@ -97,10 +102,55 @@ const commentNotReviewed = {
       avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
     },
   },
+  issue: null,
 }
 
+const commentFixNowIssue = {
+  id: 18,
+  created: '2017-04-06T09:03:39.376974',
+  status: null,
+  text: 'Could you remove all commented code?\n\nCreated issue: 45\nStatus: Fix in this PR',
+  author: {
+    username: 'kate',
+    slack: {
+      avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
+    },
+  },
+  issue: {
+    id: 1,
+    status: 'now',
+    title: 'Could you remove all commented code?',
+  },
+}
 
-const comments = [comment, commentApproved, comment2, commentNotReviewed, commentNotReviewed, commentRejected, commentUnderReview]
+const commentFixAvailableIssue = {
+  id: 19,
+  created: '2017-04-06T09:03:39.376974',
+  status: 'under_review',
+  text: '',
+  author: {
+    username: 'kate',
+    slack: {
+      avatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
+    },
+  },
+  issue: {
+    id: 1,
+    status: 'available',
+    title: 'Could you remove all commented code?',
+  },
+}
+
+const comments = [
+  comment,
+  commentApproved,
+  comment2,
+  commentNotReviewed,
+  commentRejected,
+  commentUnderReview,
+  commentFixNowIssue,
+  commentFixAvailableIssue,
+]
 
 const loggedUser = {
   username: 'kate',

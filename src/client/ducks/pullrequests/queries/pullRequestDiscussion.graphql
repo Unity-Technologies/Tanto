@@ -11,6 +11,10 @@ query pullRequestDiscussion($id: Int!){
         username
         fullName
       }
+      issue {
+        id
+        status
+      }
     }
   }
 }

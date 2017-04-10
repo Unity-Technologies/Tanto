@@ -5,25 +5,36 @@ import _ from 'lodash'
 export type { StatusType } from 'ducks/fetch/selectors'
 
 export const getBuildsEntities = (state: Object) =>
-  _.get(state, ['entities', 'builds'], {})
+  _.get(state, ['entities', 'builds'], null)
 
 export const getSourceStampsEntities = (state: Object) =>
-  _.get(state, ['entities', 'sourceStamps'], {})
+  _.get(state, ['entities', 'sourceStamps'], null)
 
 export const getRevision = (state: Object, props: Object) =>
-  (props ? props.revision : null)
+  (props && props.revision ? props.revision : null)
 
 export const getSourceStamp = createSelector(
   getSourceStampsEntities, getRevision,
-  (sourceStamps, revision) => (sourceStamps && revision ? sourceStamps[revision] : null)
+  (sourceStamps, revision) => (
+    sourceStamps && revision && sourceStamps.hasOwnProperty(revision)
+      ? sourceStamps[revision] : null)
 )
 
 export const getBuilds = createSelector(
   getBuildsEntities, getSourceStamp,
   (builds, sourceStamp) => {
     if (!builds || !sourceStamp) {
-      return []
+      return null
     }
-    return sourceStamp.nodes.map(id => builds[id])
+
+    return sourceStamp.builds.nodes.map(id => builds[id])
+  }
+)
+
+export const getABVBuild = createSelector(
+  getBuilds,
+  builds => {
+    const index = _.findIndex(builds, build => build.builder.name === 'proj0-ABuildVerification')
+    return index > -1 ? builds[index] : null
   }
 )

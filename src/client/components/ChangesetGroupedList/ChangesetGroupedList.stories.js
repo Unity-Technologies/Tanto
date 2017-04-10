@@ -79,3 +79,15 @@ storiesOf('ChangesetGroupedList', module)
       accordion={false}
     />
   ))
+  .add('no commits', () => (
+    <ChangesetGroupedList
+      groups={[{ version: '1', commits: [] }, { version: '2', commits: [] }]}
+      accordion={false}
+    />
+  ))
+  .add('empty', () => (
+    <ChangesetGroupedList
+      groups={[]}
+      accordion={false}
+    />
+  ))

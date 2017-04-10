@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/lib/Button'
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import type { GeneralCommentType } from 'universal/types'
 import './Comment.css'
+import { IssueStatus } from 'universal/constants'
 
 
 export type CommentType = {
@@ -14,14 +15,18 @@ export type CommentType = {
   created: string,
   modified?: string,
   text?: string,
-  status: string,
+  status?: string,
   author: {
     username: string,
     slack?: {
-      avatar: string
-    }
+      avatar: string,
+    },
+  },
+  issue?: {
+    status: string,
   }
 }
+
 export type CommentProps = {
   comment: CommentType,
   canEdit?: boolean,
@@ -30,7 +35,7 @@ export type CommentProps = {
   onDelete?: () => void,
 }
 
-export const getStatusText = (status: string) => {
+export const getStatusText = (status: string): string => {
   switch (status) {
     case 'approved':
     case 'rejected':
@@ -39,6 +44,25 @@ export const getStatusText = (status: string) => {
       return 'started reviewing'
     case 'not_reviewed':
       return 'stopped reviewing'
+    default:
+      return 'commented'
+  }
+}
+
+const getIssueText = (status: string): string => {
+  switch (status) {
+    case IssueStatus.LATER:
+      return 'added an issue that can be fixed later'
+    case IssueStatus.NEXT:
+      return 'added an issue that should be fixed in next PR'
+    case IssueStatus.NOW:
+      return 'added an issue that should be fixed in this PR'
+    case IssueStatus.AVAILABLE:
+      return 'commented that the fix is available'
+    case IssueStatus.CONFIRMED:
+      return 'commented that the fix is confirmed'
+    case IssueStatus.OBSOLETE:
+      return 'commented that the issue is obsolete'
     default:
       return 'commented'
   }
@@ -54,6 +78,23 @@ export const getStatusIcon = (status: string) => {
       return (<Glyphicon glyph="eye-open" className="comment-status-glyph status-orange" />)
     default:
       return (<Glyphicon glyph="eye-close" className="comment-status-glyph status-grey" />)
+  }
+}
+
+const getIssueIcon = (issueStatus: string, commentStatus?: string) => {
+  switch (issueStatus) {
+    case IssueStatus.AVAILABLE:
+    case IssueStatus.CONFIRMED:
+    case IssueStatus.OBSOLETE:
+      if (commentStatus) {
+        return getStatusIcon(commentStatus)
+      }
+      return <Glyphicon glyph="ok-sign" className="comment-status-glyph status-green" />
+    case IssueStatus.LATER:
+    case IssueStatus.NEXT:
+    case IssueStatus.NOW:
+    default:
+      return <i className="fa fa-bug comment-status-glyph" />
   }
 }
 
@@ -119,10 +160,15 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
     <div className="comment-box-content">
       <div className="comment-box-header-status">
         <div className="comment-title-status">
-          {getStatusIcon(comment.status)}
+          {comment.issue ? getIssueIcon(comment.issue.status, comment.status) : getStatusIcon(comment.status)}
           <div style={{ marginTop: '6px' }}>
             <strong>{comment.author.username}</strong>
-            <span>&nbsp;{getStatusText(comment.status)}&nbsp;{moment(comment.created).fromNow()}</span>
+            <span>
+              &nbsp;
+              {comment.issue ? getIssueText(comment.issue.status) : getStatusText(comment.status)}
+              &nbsp;
+              {moment(comment.created).fromNow()}
+            </span>
           </div>
         </div>
         {canEdit &&
@@ -184,7 +230,7 @@ class Comment extends Component {
       return renderEditMode(this.props.comment, this.handleOnCancel, this.handleOnUpdate)
     }
 
-    if (this.props.comment.status) {
+    if (this.props.comment.status || this.props.comment.issue) {
       return renderStatusMode(this.props.comment, this.props.canEdit || false, this.handleOnEdit)
     }
 
