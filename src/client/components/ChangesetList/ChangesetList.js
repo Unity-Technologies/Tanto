@@ -30,7 +30,7 @@ export type Props = {
   compact?: boolean,
   projectName: string,
   showCheckboxes?: boolean,
-  selectedChangesetsChange?: (e: SyntheticInputEvent) => any,
+  selectedChangesetsChange?: (e: SyntheticInputEvent, number) => any,
 }
 
 const greenStatus = { borderLeft: '4px solid #d1fad1' }
@@ -89,7 +89,6 @@ class ChangesetList extends Component {
   handleChange = (event) => {
 
     const isSelected = event.target.checked
-    const returnValue = false
 
     if (this.state.changesets.length < 2 && isSelected) {
       this.state.changesets.push(event.target.value)
@@ -103,7 +102,6 @@ class ChangesetList extends Component {
         const ref = item.id
         const ch = this.refs[ref]
         ch.setState({ disabled: false })
-        const returnValue = true
       })
     }
     if (this.state.changesets.length >= 2) {
@@ -111,11 +109,9 @@ class ChangesetList extends Component {
         const ref = item.id
         const ch = this.refs[ref]
         ch.setState({ disabled: !this.state.changesets.includes(ref) })
-        const returnValue = true
       })
     }
-    this.props.onSelectedChangesetsChange(event)
-    return returnValue
+    this.props.onSelectedChangesetsChange(event, this.state.changesets.length)
   }
 
   shouldComponentUpdate(nextProps, nextState) {

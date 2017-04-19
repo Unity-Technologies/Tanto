@@ -8,7 +8,6 @@ import Row from 'react-bootstrap/lib/Row'
 import Button from 'react-bootstrap/lib/Button'
 import { fetchChangelog } from 'ducks/repositories/actions'
 import { getChangelog } from 'ducks/repositories/selectors'
-import { fetchUsers } from 'ducks/users'
 import ChangesetList from 'components/ChangesetList'
 import LoadingComponent from 'components/LoadingComponent'
 
@@ -20,7 +19,6 @@ export type Props = {
 class Changelog extends Component {
   constructor(props: Props) {
     super(props)
-
     this.state = {
       height: '100%',
       autoHideDuration: 4000,
@@ -36,7 +34,6 @@ class Changelog extends Component {
       this
         .props
         .dispatch(fetchChangelog(this.props.params.splat))
-      this.props.dispatch(fetchUsers())
     }
   }
 
@@ -44,9 +41,9 @@ class Changelog extends Component {
     return this.state.selectedChanges !== nextState.selectedChanges
   }
 
-  onSelectedChangesetsChange = (e) => {
+  onSelectedChangesetsChange = (e, selectedChangesNumber) => {
     this.setState({
-      selectedChanges: this.refs.changesetList.state.changesets.length,
+      selectedChanges: selectedChangesNumber,
       shouldButtonUpdate: true })
   }
 
