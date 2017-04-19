@@ -77,6 +77,7 @@ class ChangesetList extends Component {
       changesets: [],
       copied: false,
       copiedValue: '',
+      disabled: false,
     }
   }
 
@@ -99,16 +100,12 @@ class ChangesetList extends Component {
         this.state.changesets.splice(index, 1)
       }
       this.props.commits.map((item) => {
-        const ref = item.id
-        const ch = this.refs[ref]
         this.setState({ disabled: false })
       })
     }
     if (this.state.changesets.length >= 2) {
       this.props.commits.map((item) => {
-        const ref = item.id
-        const ch = this.refs[ref]
-        this.setState({ disabled: !this.state.changesets.includes(ref) })
+        this.setState({ disabled: !this.state.changesets.includes(item.id) })
       })
     }
     this.props.onSelectedChangesetsChange(event, this.state.changesets.length)
