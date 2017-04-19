@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
 import createSagaMiddleware from 'redux-saga'
+import workerMiddleware from './middleware/worker'
 
 import rootReducer from '../ducks'
 import rootSaga from '../sagas'
@@ -19,7 +20,7 @@ const configureStore = (initialState: Object, history: Object): Object => {
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()
 
-  const middleware = [reduxRouterMiddleware, sagaMiddleware]
+  const middleware = [reduxRouterMiddleware, workerMiddleware, sagaMiddleware]
 
   const composeEnhancers = global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose  // eslint-disable-line
   const finalCreateStore = composeEnhancers(applyMiddleware(...middleware))(createStore)

@@ -9,7 +9,7 @@ import { RECEIVE_PAGE } from 'ducks/pagination'
 
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
 import pullRequestFilesList from 'ducks/pullrequests/queries/pullRequestFilesList.graphql'
-import pullRequestFile from 'ducks/pullrequests/queries/pullRequestFile.graphql'
+import pullRequestFiles from 'ducks/pullrequests/queries/pullRequestFiles.graphql'
 import pullRequestMetadataQuery from 'ducks/pullrequests/queries/pullRequestMetadata.graphql'
 import pullRequestDiscussion from 'ducks/pullrequests/queries/pullRequestDiscussion.graphql'
 import pullRequestIssues from 'ducks/pullrequests/queries/pullRequestIssues.graphql'
@@ -25,7 +25,7 @@ import removeReviewers from 'ducks/pullrequests/mutations/removeReviewers.graphq
  */
 export const types = {
   FETCH_PULL_REQUEST_FILES_LIST: 'PULLREQUESTS/FETCH_PULL_REQUEST_FILES_LIST',
-  FETCH_PULL_REQUEST_FILE: 'PULLREQUESTS/FETCH_PULL_REQUEST_FILE',
+  FETCH_PULL_REQUEST_FILES: 'PULLREQUESTS/FETCH_PULL_REQUEST_FILES',
   FETCH_PULL_REQUESTS: 'PULLREQUESTS/FETCH_PULL_REQUESTS',
   FETCH_PULL_REQUEST_ISSUES: 'PULLREQUESTS/FETCH_PULL_REQUESTS_ISSUES',
   FETCH_PULL_REQUEST_CHANGESET: 'PULLREQUESTS/FETCH_PULL_REQUESTS_CHANGESET',
@@ -71,8 +71,8 @@ export const fetchPullRequestData =
 export const fetchPullRequestFilesList = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_FILES_LIST, pullRequestFilesList, { id })
 
-export const fetchPullRequestFile = (id: string, name: string): FetchAction =>
-  fetchPullRequestData(createFileFetchActionType(id, name), pullRequestFile, { id, name })
+export const fetchPullRequestFiles = (id: string, name: string): FetchAction =>
+  fetchPullRequestData(createFileFetchActionType(id, name), pullRequestFiles, { id, name })
 
 export const fetchPullRequestMetadata = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_METADATA, pullRequestMetadataQuery, { id })

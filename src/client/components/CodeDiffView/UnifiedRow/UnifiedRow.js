@@ -96,16 +96,9 @@ class UnifiedRow extends Component {
         <td className={`${cssClass} line-icon`}>
           {!isBreak && !isCommented && !this.state.commentState &&
             <i
-              onClick={() => this.addComment(line)}
+              onClick={this.addComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-hover"
               aria-hidden="true"
-            />
-          }
-          {isCommented &&
-            <i
-              className="fa fa-comment code-comment-thread"
-              aria-hidden="true"
-              onClick={this.collapseComments}
             />
           }
         </td>
@@ -115,38 +108,7 @@ class UnifiedRow extends Component {
           }
         </td>
         <td className="code-inner">
-
           <div className={`${cssClass}`} dangerouslySetInnerHTML={{ __html: line || '&nbsp;' }} />
-          {isCommented && !this.state.commentsCollapsed &&
-            <div className="code-line-comment">
-              {comments.map(comment => (
-                {/* <Comment
-                  markdown
-                  simpleText
-                  key={_.uniqueId('_code_comment')}
-                  comment={comment}
-                  loggedUsername={loggedUsername}
-                />*/}
-              ))}
-              {!this.state.commentState &&
-                <RaisedButton
-                  label="Add Comment"
-                  backgroundColor="#d9edf7"
-                  style={{ marginRight: '10px' }}
-                  onClick={() => this.addComment(line)}
-                />
-              }
-            </div>
-          }
-          {this.state.commentState &&
-            <div className="code-line-comment">
-              {/* <Comment
-                markdown
-                onCancel={this.cancelComment}
-                onComment={text => this.handleCommentSave(line, text)}
-              />*/}
-            </div>
-          }
         </td>
       </tr>
     )

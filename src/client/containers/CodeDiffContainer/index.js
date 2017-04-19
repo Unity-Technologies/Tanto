@@ -1,46 +1,61 @@
 /* @flow */
 
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import CodeDiffView from 'components/CodeDiffView'
 import _ from 'lodash'
-import { fetchPullRequestFile, createFileFetchActionType } from 'ducks/pullrequests/actions'
-import type { StatusType } from 'ducks/fetch/selectors'
-import { statusFetchFactory } from 'ducks/fetch/selectors'
-import LoadingComponent from 'components/LoadingComponent'
-import { getPullRequestFile } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 import { getLoggedUsername } from 'ducks/session/selectors'
-import type { FileType } from 'universal/types'
+import { processDiff } from 'ducks/diff'
 import DiffHeader from 'components/DiffHeader'
 import Scroll from 'react-scroll'
 import Collapse from 'components/Collapse'
+
+
 const Element = Scroll.Element
 
 type Props = {
-  fileName: string,
-  file: FileType,
+  id: string,
+  file: Object,
   pullRequestId: string,
-  status: StatusType,
   loggedUsername: string,
   dispatch: Function,
-  viewType: string
+  viewType: string,
+  unifiedDiff: any,
 }
 
-export const fetchStatus = (state: Object, props: Object): Function =>
-  statusFetchFactory(createFileFetchActionType(props.pullRequestId, props.fileName))
+export const getFile = (state: Object, props: Object) => {
+  console.log(`getFile: ${props.id}`)
+  const file = state.entities.files[props.id] || null
+  console.log(file && file.diff ? 'File diff is here' : 'No diff yet')
+  return file
+}
 
-export const getData = (state: Object, props: Object): Object =>
+export const getSideBySideFileDiff = (state: Object, props: Object) => {
+  console.log(`getSideBySideFileDiff: ${props.id}`)
+  const file = state.ui.diff[props.id] || null
+  return file ? file[1] : null
+}
+
+export const getUnifiedFileDiff = (state: Object, props: Object) => {
+  console.log(`getUnifiedFileDiff: ${props.id}`)
+  const file = state.ui.diff[props.id] || null
+  return file ? file[0] : null
+}
+
+export const getData =
   createSelector(
-    getPullRequestFile, fetchStatus, getLoggedUsername,
-    (file, status, user) => ({
+    getFile,
+    getLoggedUsername,
+    getUnifiedFileDiff,
+    (file, user, unifiedDiff) => ({
       file,
-      status,
+      unifiedDiff,
       loggedUsername: user,
     })
   )
 
-class CodeDiffContainer extends PureComponent {
+class CodeDiffContainer extends Component {
 
   constructor(props: Props) {
     super(props)
@@ -50,6 +65,35 @@ class CodeDiffContainer extends PureComponent {
       collapsed: false,
       commentLine: null,
     }
+
+    const { id, diff, type } = this.props.file
+    if (diff) {
+      this.props.dispatch(processDiff(id, type, diff, 0))
+    }
+  }
+
+  componentWillMount() {
+    // if (!this.props.file) {
+    //   return
+    // }
+    // const { id, diff, type, unifiedDiff } = this.props.file
+    // if (!diff || (unifiedDiff && unifiedDiff.length)) {
+    //   return
+    // }
+
+    // this.props.dispatch(processDiff(id, type, diff, 0))
+  }
+
+
+  componentWillReceiveProps(nextprops) {
+    const { diff, id, type } = this.props.file
+    if (diff !== nextprops.file.diff) {
+      this.props.dispatch(processDiff(id, type, diff, 0))
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.file.diff || nextProps.unifiedDiff
   }
 
   props: Props
@@ -58,11 +102,6 @@ class CodeDiffContainer extends PureComponent {
     startedComment: boolean,
     collapsed: boolean,
     commentLine: any,
-  }
-
-  componentWillMount() {
-    const { pullRequestId, fileName } = this.props
-    this.props.dispatch(fetchPullRequestFile(pullRequestId, fileName))
   }
 
   onCollapse = (collapsed: boolean) => {
@@ -78,36 +117,48 @@ class CodeDiffContainer extends PureComponent {
 
 
   render() {
-    if (!this.props.fileName) {
+    console.log('RENDERED')
+
+    const {
+      loggedUsername,
+      file: { type, comments, stats, diff, name },
+      unifiedDiff,
+    } = this.props
+
+    if (!diff) {
+      console.log('null return')
       return null
     }
-    const { file, loggedUsername, fileName } = this.props
+
     const { viewType, collapsed } = this.state
     return (
       <div>
         <Element
-          key={_.uniqueId(fileName)}
-          name={fileName.replace(/[/.]/g, '')}
+          key={_.uniqueId(name)}
+          name={name.replace(/[/.]/g, '')}
           style={{ marginBottom: '20px' }}
         >
           <DiffHeader
-            comments={file.comments ? file.comments.length > 0 : false}
+            comments={comments ? comments.length > 0 : false}
             collapsed={collapsed}
-            title={file.name}
-            stats={file.stats}
+            title={name}
+            stats={stats}
             onViewChangeClick={this.changeDiffViewType}
             onCollapse={this.onCollapse}
             selectedValue={this.state.viewType}
           />
-          <Collapse isOpened={!collapsed}>
-            <LoadingComponent status={this.props.status}>
+          {!diff || !unifiedDiff && <div> Loading...</div>}
+          {unifiedDiff &&
+            <Collapse isOpened={!collapsed}>
               <CodeDiffView
-                file={file}
+                type={type}
+                rawDiff={diff}
+                unifiedDiff={unifiedDiff}
                 loggedUsername={loggedUsername}
                 viewType={viewType}
               />
-            </LoadingComponent>
-          </Collapse>
+            </Collapse>
+          }
         </Element>
       </div>
 

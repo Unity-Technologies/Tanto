@@ -57,8 +57,7 @@ export const getPullRequest = createSelector(
 // Sometimes we don't need Denormalization of users, when we need just issues or comments
 export const getPullRequestNormalized = createSelector(
   getPullRequestsEntities, getPullRequestId,
-  (entities: Object, id: string): Object =>
-    (id ? entities[id] || {} : {})
+  (entities: Object, id: string): Object => (id ? entities[id] || {} : {})
 )
 
 // Sometimes we don't need Denormalization of users, when we need just issues or comments

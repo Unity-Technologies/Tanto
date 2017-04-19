@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react'
 import type { FileType } from 'universal/types'
 import { connect } from 'react-redux'
-
+// import { fetchPullRequestFile } from 'ducks/pullrequests/actions'
 import { getPullRequestFiles } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 import ChangesetFileList from 'components/ChangesetFileList'
@@ -30,13 +30,13 @@ export const getData = (state: Object, props: Object): Object =>
   )
 
 class PullRequestDiff extends PureComponent {
-
   props: Props
 
   render() {
-    if (!this.props.files) {
+    if (!this.props.files || !this.props.files.length) {
       return null
     }
+    console.log('DIFF rendered')
     const containerId = 'diffContainer'
     return (
       <StickyContainer>
@@ -52,14 +52,13 @@ class PullRequestDiff extends PureComponent {
           </Col>
           <Col md={8} id="containerElementName">
             {this.props.files.map(file =>
-              <CodeDiffContainer fileName={file.name} pullRequestId={this.props.pullRequestId} />
+              <CodeDiffContainer id={file.id} pullRequestId={this.props.pullRequestId} />
             )}
           </Col>
         </Row>
       </StickyContainer>
     )
   }
-
 }
-/* flow-disable */
+
 export default connect(getData)(PullRequestDiff)

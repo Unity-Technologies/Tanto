@@ -70,6 +70,7 @@ const config = {
       routes: 'client/routes',
       tests: 'client/tests',
       server: 'server',
+      workers: 'client/workers',
     },
   },
 }

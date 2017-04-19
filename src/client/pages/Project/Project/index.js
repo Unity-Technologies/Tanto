@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react'
+import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 
@@ -28,7 +28,6 @@ const Project = (props: Props) => {
     </div>
   )
 }
-
 
 export default connect(
   (state, props) => ({

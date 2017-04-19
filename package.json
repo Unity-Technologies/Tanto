@@ -136,7 +136,8 @@
     "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.10.0",
-    "webpack-node-externals": "^1.5.4"
+    "webpack-node-externals": "^1.5.4",
+    "worker-loader": "^0.8.0"
   },
   "dependencies": {
     "@kadira/storybook": "^2.21.0",
@@ -244,6 +245,7 @@
     "redux-logger": "^2.7.4",
     "redux-mock-store": "^1.2.1",
     "redux-saga": "^0.12.0",
+    "redux-worker-middleware": "^1.0.0",
     "request": "^2.76.0",
     "reselect": "^2.5.4",
     "scroll-behavior": "^0.3.2",
