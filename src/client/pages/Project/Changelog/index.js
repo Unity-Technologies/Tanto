@@ -31,9 +31,7 @@ class Changelog extends Component {
 
   componentDidMount() {
     if (this.props.params.splat) {
-      this
-        .props
-        .dispatch(fetchChangelog(this.props.params.splat))
+      this.props.dispatch(fetchChangelog(this.props.params.splat))
     }
   }
 
