@@ -101,21 +101,21 @@ class ChangesetList extends Component {
       this.props.commits.map((item) => {
         const ref = item.id
         const ch = this.refs[ref]
-        ch.setState({ disabled: false })
+        this.setState({ disabled: false })
       })
     }
     if (this.state.changesets.length >= 2) {
       this.props.commits.map((item) => {
         const ref = item.id
         const ch = this.refs[ref]
-        ch.setState({ disabled: !this.state.changesets.includes(ref) })
+        this.setState({ disabled: !this.state.changesets.includes(ref) })
       })
     }
     this.props.onSelectedChangesetsChange(event, this.state.changesets.length)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.search != nextState.search
+    return this.state.disabled != nextState.disabled
   }
 
   render() {
@@ -152,6 +152,8 @@ class ChangesetList extends Component {
                         onChange={this.handleChange}
                         value={item.id}
                         style={{ float: 'left', height: '15px', marginTop: '10px' }}
+                        checked={ this.state.changesets.indexOf(item.id) != -1 }
+                        disabled={ this.state.changesets.length >= 2 & this.state.changesets.indexOf(item.id) == -1 }
                         /> : ''}
                 </Col>
                 <Col lg={5} md={9} sm={11} xs={12}>

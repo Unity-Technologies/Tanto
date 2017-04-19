@@ -18,13 +18,11 @@ class Checkbox extends Component {
     super(props)
     this.state = {
       checked: this.props.checked,
-      disabled: this.props.disabled ? this.props.disabled : false,
     }
   }
 
   state: {
     checked: boolean,
-    disabled: boolean,
   }
 
   props: Props
@@ -40,7 +38,7 @@ class Checkbox extends Component {
 
   // TODO: apply material-ui  styling here
   render() {
-    const { value, name, style } = this.props
+    const { value, disabled, name, style } = this.props
 
     return (
       <div>
@@ -49,7 +47,7 @@ class Checkbox extends Component {
           name={name}
           value={value}
           checked={this.state.checked}
-          disabled={this.state.disabled}
+          disabled={disabled}
           onChange={this.handleClick}
           className="checkbox-box"
           style={{ ...style }}
