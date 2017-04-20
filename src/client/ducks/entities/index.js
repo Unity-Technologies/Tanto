@@ -23,16 +23,10 @@ export const mutationCustomizer =
     }
   }
 
-export const merge = (state: Object, entity: Object, customizer: Function): Object => {
-  const updatedState = _.mergeWith({}, state, entity, customizer)
-
-  return _.isEqual(updatedState, state) ? state : updatedState
-}
-
 export const entities = (state: Object = {}, action: Object): Object => {
   switch (action.type) {
     case types.SET_QUERIED_ENTITIES:
-      return _.mergeWith(state, action.entities, queryCustomizer)
+      return _.mergeWith({}, state, action.entities, queryCustomizer)
     case types.SET_MUTATED_ENTITIES:
       return _.mergeWith({}, state, action.entities, mutationCustomizer)
     default:

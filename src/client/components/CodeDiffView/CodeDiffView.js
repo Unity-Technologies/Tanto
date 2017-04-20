@@ -15,7 +15,6 @@ export type Props = {
   rawDiff: string,
   unifiedDiff: Array<any>,
   sideBySideDiff: Array<any>,
-  // collapseComments?: boolean,
   viewType?: string,
   loggedUsername: string,
 }
@@ -26,7 +25,7 @@ class CodeDiffView extends PureComponent {
   renderDiff = () => {
     const { viewType, loggedUsername } = this.props
 
-    if (viewType === '0') {
+    if (viewType === 0) {
       const content = this.props.unifiedDiff
       return (
         <table className="code-block diff-unified">
@@ -42,7 +41,7 @@ class CodeDiffView extends PureComponent {
           </tbody>
         </table>
       )
-    } else if (viewType === '1') {
+    } else if (viewType === 1) {
       const content = this.props.unifiedDiff
       return (
         <table className="code-block diff-split">
