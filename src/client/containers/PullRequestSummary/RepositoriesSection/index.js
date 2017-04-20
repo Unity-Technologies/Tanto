@@ -8,8 +8,8 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { getPullRequest } from 'ducks/pullrequests/selectors'
 import _ from 'lodash'
 import { createSelector } from 'reselect'
-import { buildProjectLink } from 'routes/helpers'
-import { Link } from 'react-router'
+import { buildReposLink } from 'routes/helpers'
+import { Link } from 'react-router-dom'
 
 const info = {
   borderLeft: '5px solid rgba(226, 231, 245, 0.62)',
@@ -56,7 +56,7 @@ export const OriginLink = (props: OriginType) =>
       <Link
         style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
         to={{
-          pathname: buildProjectLink(props.origin.repository.name),
+          pathname: buildReposLink(props.origin.repository.name),
           query: { branch: props.origin.name },
         }}
       >
@@ -72,7 +72,7 @@ export const TargetLink = (props: TargetType) =>
   {props.target &&
     <Link
       style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
-      to={buildProjectLink(props.target.repository.name)}
+      to={buildReposLink(props.target.repository.name)}
     >
       <span> {props.target.repository.name}</span>
     </Link>

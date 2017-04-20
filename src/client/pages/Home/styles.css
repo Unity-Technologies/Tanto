@@ -1,0 +1,12 @@
+.tab {
+  padding: 10px 0;
+}
+.tab-badge {
+    color: white;
+    font-weight: 900;
+    background-color: #8BC34A;
+    padding: 2px 7px 2px 6px;
+    margin: -3px 0 0 0;
+    border-radius: 50%;
+}
+

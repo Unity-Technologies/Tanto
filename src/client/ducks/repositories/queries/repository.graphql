@@ -2,6 +2,9 @@ query repository($name: String!) {
 	repository(name: $name) {
     id
     name,
-    fullName
+    fullName,
+    pullRequests{
+      total
+    }
   }
 }

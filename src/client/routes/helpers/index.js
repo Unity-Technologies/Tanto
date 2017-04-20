@@ -16,27 +16,28 @@ export const breadcrumbItems = (pathname: string): Array<LinkType> => {
 
 export const groupPathFromPath = (path: string): string => path.replace(/^\/projects(\/)?/, '')
 export const buildPullRequestLink =
-  (projectName: string, id: string): string => (`/project/${projectName}/pullrequest/${id}`)
-export const buildProjectLink =
-  (name: string, groupPath: string, branch: string = ''): string => {
+  (projectName: string, id: string): string => (`/repos/${projectName}/_/pull_requests/${id}`)
+
+export const buildRepoLink =
+  (name: string, groupPath: string = '', branch: string = ''): string => {
     const branchQuery = branch ? `?branch=${branch}` : ''
     const projectName = groupPath ? `${groupPath}/${name}` : name
-    return `/project/${projectName}${branchQuery}`
+    return `/repos/${projectName}${branchQuery}`
   }
 
-export const buildProjectsLink =
-  (suffix: string): string => (`/projects/${suffix}`)
+export const buildReposLink =
+  (suffix: string): string => (`/repos/${suffix}`)
 
 export const buildChangesetLink =
   (projectName: string, id: string): string => (`/project/${projectName}/changeset/${id}`)
 
 export const buildKatanaBuildLink = (project: any, builder: any, number: any) =>
-  (`${process.env.KATANA_HOST || ''}/projects/${project}/builders/${builder}/builds/${number}`)
+  (`${process.env.KATANA_HOST || ''}/repos/${project}/builders/${builder}/builds/${number}`)
 
 export const helpers = {
   buildPullRequestLink,
-  buildProjectLink,
-  buildProjectsLink,
+  buildRepoLink,
+  buildReposLink,
   groupPathFromPath,
   breadcrumbItems,
   buildKatanaBuildLink,

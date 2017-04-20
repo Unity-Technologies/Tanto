@@ -16,6 +16,7 @@ query pullRequestMetadata($id: Int!) {
       repository {
         id
         name
+        fullName
       }
     }
     target {
@@ -23,6 +24,7 @@ query pullRequestMetadata($id: Int!) {
       repository {
         id
         name
+        fullName
       }
     }
     issues {

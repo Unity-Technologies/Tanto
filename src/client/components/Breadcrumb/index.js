@@ -1,7 +1,7 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { default as BootstrapBreadcrumb } from 'react-bootstrap/lib/Breadcrumb'
 import _ from 'lodash'
 

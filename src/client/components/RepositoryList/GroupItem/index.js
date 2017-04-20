@@ -2,7 +2,7 @@
 
 import React from 'react'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 export type GroupType = {
   name: string,

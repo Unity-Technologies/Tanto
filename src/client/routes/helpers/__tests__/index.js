@@ -25,23 +25,23 @@ describe('routes helpers', () => {
 
   it('buildPullRequestLink', () => {
     expect(helpers.buildPullRequestLink('projectname', '1234'))
-      .equals('/project/projectname/pullrequest/1234')
+      .equals('/repos/projectname/_/pull_requests/1234')
   })
 
-  it('buildProjectLink with group', () => {
-    expect(helpers.buildProjectLink('projectname', 'group1/subgroup'))
-      .equals('/project/group1/subgroup/projectname')
+  it('buildRepoLink with group', () => {
+    expect(helpers.buildRepoLink('projectname', 'group1/subgroup'))
+      .equals('/repos/group1/subgroup/projectname')
   })
 
-  it('buildProjectLink with group and branch', () => {
-    expect(helpers.buildProjectLink('projectname', 'group1/subgroup', 'testbranch'))
-      .equals('/project/group1/subgroup/projectname?branch=testbranch')
+  it('buildRepoLink with group and branch', () => {
+    expect(helpers.buildRepoLink('projectname', 'group1/subgroup', 'testbranch'))
+      .equals('/repos/group1/subgroup/projectname?branch=testbranch')
   })
 
 
-  it('buildProjectsLink with empty group', () => {
-    expect(helpers.buildProjectsLink('projectname', null))
-      .equals('/projects/projectname')
+  it('buildReposLink with empty group', () => {
+    expect(helpers.buildReposLink('projectname', null))
+      .equals('/repos/projectname')
   })
 
   it('breadcrumbItems handles not empty path', () => {
@@ -67,7 +67,7 @@ describe('routes helpers', () => {
     const projectName = 'projectName'
     const number = 12222
     expect(helpers.buildKatanaBuildLink(projectName, builderName, number)).equals(
-      `${process.env.KATANA_HOST}/projects/${projectName}/builders/${builderName}/builds/${number}`
+      `${process.env.KATANA_HOST}/repos/${projectName}/builders/${builderName}/builds/${number}`
     )
   })
 })

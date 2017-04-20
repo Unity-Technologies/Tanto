@@ -6,20 +6,17 @@ import _ from 'lodash'
 import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
 import { ListItem } from 'material-ui/List'
-import { TOGGLE_SIDE_BAR } from 'ducks/sidebar'
+import { toggleSideBar } from 'ducks/sidebar'
 import IconButton from 'material-ui/IconButton'
 import Open from 'material-ui/svg-icons/navigation/menu'
-import { IndexLink } from 'react-router'
+import { Link } from 'react-router-dom'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
-import Scroll from 'react-scroll'
 import { getPersona } from 'ducks/session/selectors'
 import SelectableList from 'components/SelectableList'
 import './SideBar.css'
 
 import { DEVELOPER_PERSONA } from 'universal/constants'
-
-const Link = Scroll.Link
 
 const textColor = 'rgb(88, 89, 89)'
 
@@ -157,14 +154,14 @@ class SideBar extends Component {
             style={{ margin: '5px' }}
             disableTouchRipple
             iconStyle={{ fill: 'hsla(220, 13%, 49%, 0.98)' }}
-            onClick={() => this.props.dispatch({ type: TOGGLE_SIDE_BAR })}
+            onClick={() => this.props.dispatch(toggleSideBar())}
           >
             <Open />
           </IconButton>
           {open &&
-            <IndexLink style={brandStyle} to="/">
+            <Link style={brandStyle} to="/">
               {this.props.title || 'Logo'}
-            </IndexLink>
+            </Link>
           }
         </div>
 
@@ -205,13 +202,7 @@ class SideBar extends Component {
             <SelectableList defaultValue={defaultValue}>
               {subitems.map((item, index) => (
                 <Link
-                  key={_.uniqueId('_sidebar_item')}
-                  activeClass="active"
                   to={item.link}
-                  offset={-70}
-                  spy
-                  smooth
-                  duration={100}
                 >
                   <ListItem
                     value={index + 1}

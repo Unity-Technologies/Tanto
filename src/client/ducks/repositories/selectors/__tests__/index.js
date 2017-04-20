@@ -1,16 +1,12 @@
 import chai from 'chai'
 import {
-  repoEntitiesSelector,
-  getRepositories,
-  groupsEntitiesSelector,
-  getGroups,
-  getRepositoryId,
+  getToplevelRepos,
+  getToplevelGroups,
   getRepositoriesFetchStatus,
-  pathnameSelector,
+  getPath,
   getRepositoriesFetchState,
   repoBranchesSelector,
   getRepositoryBranches,
-  repoIdSelector,
 } from '../index'
 
 import { types } from 'ducks/repositories/actions'
@@ -18,35 +14,37 @@ import { types } from 'ducks/repositories/actions'
 const expect = chai.expect
 
 describe('repositories selectors', () => {
-  it('repoEntitiesSelector returns the first level projects', () => {
+  it('getToplevelRepos returns the first level projects', () => {
     const node1 = {
       id: 1,
       name: 'name1',
+      fullName: 'name1',
       description: 'description1',
       groupPath: null,
     }
     const node2 = {
       id: 2,
       name: 'name2',
+      fullName: 'name2',
       description: 'description2',
       groupPath: null,
     }
     const node3 = {
       id: 3,
       name: 'name3',
+      fullName: '/projects/testgroup/name3',
       description: 'description3',
       groupPath: '/projects/testgroup',
     }
 
     const state = {
-      entities: {
-        repositories: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
+      entities: { repositories: {} },
     }
+    state.entities.repositories[node1.fullName] = node1
+    state.entities.repositories[node2.fullName] = node2
+    state.entities.repositories[node3.fullName] = node3
+
+    const expected = [node1, node2]
 
     const props = {
       params: {
@@ -54,331 +52,48 @@ describe('repositories selectors', () => {
       },
     }
 
-    expect(repoEntitiesSelector(state, props)).to.eql({ 1: node1, 2: node2 })
+    expect(getToplevelRepos(state, props)).to.eql(expected)
   })
 
-  it('repoEntitiesSelector returns the nested level projects', () => {
+  it('getToplevelGroups returns the first level groups list', () => {
     const node1 = {
       id: 1,
       name: 'name1',
-      description: 'description1',
-      groupPath: null,
-    }
-    const node2 = {
-      id: 2,
-      name: 'name2',
-      description: 'description2',
-      groupPath: null,
-    }
-    const node3 = {
-      id: 3,
-      name: 'name3',
-      description: 'description3',
-      groupPath: '/projects/testgroup',
-    }
-
-    const state = {
-      entities: {
-        repositories: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
-    }
-
-    const props = {
-      params: {
-        splat: '/projects/testgroup',
-      },
-    }
-
-    expect(repoEntitiesSelector(state, props)).to.eql({ 3: node3 })
-  })
-
-  it('getRepositories selector returns the nested level projects list', () => {
-    const node1 = {
-      id: 1,
-      name: 'name1',
-      description: 'description1',
-      groupPath: null,
-    }
-    const node2 = {
-      id: 2,
-      name: 'name2',
-      description: 'description2',
-      groupPath: null,
-    }
-    const node3 = {
-      id: 3,
-      name: 'name3',
-      description: 'description3',
-      groupPath: '/projects/testgroup',
-    }
-
-    const state = {
-      entities: {
-        repositories: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
-    }
-
-    const props = {
-      params: {
-        splat: '/projects/testgroup',
-      },
-    }
-
-    expect(getRepositories(state, props)).to.eql([node3])
-  })
-
-  it('getRepositories selector returns the first level projects list', () => {
-    const node1 = {
-      id: 1,
-      name: 'name1',
-      description: 'description1',
-      groupPath: null,
-    }
-    const node2 = {
-      id: 2,
-      name: 'name2',
-      description: 'description2',
-      groupPath: null,
-    }
-    const node3 = {
-      id: 3,
-      name: 'name3',
-      description: 'description3',
-      groupPath: '/projects/testgroup',
-    }
-
-    const state = {
-      entities: {
-        repositories: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
-    }
-
-    const props = {
-      params: {
-        splat: undefined,
-      },
-    }
-
-    expect(getRepositories(state, props)).to.eql([node1, node2])
-  })
-
-  it('groupsEntitiesSelector returns the first level groups list', () => {
-    const node1 = {
-      id: 1,
-      name: 'name1',
+      path: 'name1',
       description: 'description1',
       parentGroupName: null,
     }
+
     const node2 = {
       id: 2,
       name: 'name2',
-      description: 'description2',
-      parentGroupName: '/group21',
-    }
-    const node3 = {
-      id: 3,
-      name: 'name3',
-      description: 'description3',
-      parentGroupName: '/group21',
-    }
-
-    const state = {
-      entities: {
-        groups: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
-    }
-
-    const props = {
-      params: {
-        splat: undefined,
-      },
-    }
-
-    expect(groupsEntitiesSelector(state, props)).to.eql({ 1: node1 })
-  })
-
-  it('groupsEntitiesSelector returns the nested level groups list', () => {
-    const node1 = {
-      id: 1,
-      name: 'name1',
+      path: 'group/name2',
       description: 'description1',
-      parentGroupName: null,
+      parentGroupName: 'group',
     }
-    const node2 = {
-      id: 2,
-      name: 'name2',
-      description: 'description2',
-      parentGroupName: '/group21',
-    }
+
     const node3 = {
       id: 3,
       name: 'name3',
-      description: 'description3',
-      parentGroupName: '/group21',
-    }
-
-    const state = {
-      entities: {
-        groups: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
-    }
-
-    const props = {
-      params: {
-        splat: '/group21',
-      },
-    }
-
-    expect(groupsEntitiesSelector(state, props)).to.eql({ 2: node2, 3: node3 })
-  })
-
-  it('getGroups selector returns the nested level groups list', () => {
-    const node1 = {
-      id: 1,
-      name: 'name1',
+      path: 'group/name3',
       description: 'description1',
-      parentGroupName: null,
-    }
-    const node2 = {
-      id: 2,
-      name: 'name2',
-      description: 'description2',
-      parentGroupName: '/group21',
-    }
-    const node3 = {
-      id: 3,
-      name: 'name3',
-      description: 'description3',
-      parentGroupName: '/group21',
+      parentGroupName: 'group',
     }
 
     const state = {
-      entities: {
-        groups: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
+      entities: { groups: {} },
     }
+    state.entities.groups[node1.path] = node1
+    state.entities.groups[node2.path] = node2
+    state.entities.groups[node3.path] = node3
 
-    const props = {
-      params: {
-        splat: '/group21',
-      },
-    }
+    const expected = [node1]
 
-    expect(getGroups(state, props)).to.eql([node2, node3])
+    const props = {}
+
+    expect(getToplevelGroups(state, props)).to.eql(expected)
   })
 
-  it('getGroups selector returns the first level groups list', () => {
-    const node1 = {
-      id: 1,
-      name: 'name1',
-      description: 'description1',
-      parentGroupName: null,
-    }
-    const node2 = {
-      id: 2,
-      name: 'name2',
-      description: 'description2',
-      parentGroupName: '/group21',
-    }
-    const node3 = {
-      id: 3,
-      name: 'name3',
-      description: 'description3',
-      parentGroupName: '/group21',
-    }
-
-    const state = {
-      entities: {
-        groups: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
-    }
-
-
-    const props = {
-      params: {
-        splat: undefined,
-      },
-    }
-
-    expect(getGroups(state, props)).to.eql([node1])
-  })
-
-  it('getRepositoryId selector', () => {
-    const node1 = {
-      id: 1,
-      name: 'name1',
-      description: 'description1',
-      fullName: 'group/name1',
-
-    }
-    const node2 = {
-      id: 2,
-      name: 'name2',
-      description: 'description2',
-      fullName: 'group/name2',
-
-    }
-    const node3 = {
-      id: 3,
-      name: 'name3',
-      description: 'description3',
-      fullName: 'group/name3',
-
-    }
-
-    const state = {
-      entities: {
-        repositories: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
-    }
-
-    const props = {
-      params: {
-        splat: 'group/name3',
-      },
-    }
-
-    expect(getRepositoryId(state, props)).to.equal('3')
-
-    const props2 = {
-      params: {
-      },
-    }
-
-    expect(getRepositoryId(state, props2)).to.equal(undefined)
-  })
 
   it('getRepositoriesFetchStatus', () => {
     const error = {
@@ -399,68 +114,67 @@ describe('repositories selectors', () => {
   })
 
 
-  it('pathnameSelector', () => {
-    const state = {
-      routing: {
-        locationBeforeTransitions: {
-          pathname: '/test/path',
-        },
+  it('getPath should retrieve the path from the match object', () => {
+    const props = {
+      match: {
+        url: '/test/path',
       },
     }
-    expect(pathnameSelector(state)).to.equal('/test/path')
+
+    expect(getPath({}, props)).to.equal('/test/path')
   })
 
-  it('getRepositoriesFetchState', () => {
+  it('getRepositoriesFetchState should return the group pointed to by the path param', () => {
     const node1 = {
       id: 1,
+      path: 'name1',
       name: 'name1',
       description: 'description1',
       parentGroupName: null,
     }
     const node2 = {
       id: 2,
+      path: 'projects/testgroup2',
       name: 'name2',
       description: 'description2',
-      parentGroupName: '/projects/testgroup',
+      parentGroupName: 'projects',
     }
     const node3 = {
       id: 3,
+      path: 'group21/name3',
       name: 'name3',
       description: 'description3',
-      parentGroupName: '/group21',
+      parentGroupName: 'group21',
     }
 
     const rnode1 = {
       id: 1,
+      fullName: 'name1',
       name: 'name1',
       description: 'description1',
       groupPath: null,
     }
     const rnode2 = {
       id: 2,
+      fullName: 'projects/testgroup/name2',
       name: 'name2',
       description: 'description2',
-      groupPath: '/projects/testgroup',
+      groupPath: 'projects/testgroup',
     }
     const rnode3 = {
       id: 3,
+      fullName: 'projects/testgroup/name3',
       name: 'name3',
       description: 'description3',
-      groupPath: '/projects/testgroup',
+      groupPath: 'projects/testgroup',
     }
 
 
     const state = {
       entities: {
         repositories: {
-          1: rnode1,
-          2: rnode2,
-          3: rnode3,
         },
         groups: {
-          1: node1,
-          2: node2,
-          3: node3,
         },
       },
       fetch: {
@@ -471,21 +185,32 @@ describe('repositories selectors', () => {
           isFetching: false,
         },
       },
-      routing: {
-        locationBeforeTransitions: {
-          pathname: '/test/path',
-        },
+    }
+
+    state.entities.repositories[rnode1.fullName] = rnode1
+    state.entities.repositories[rnode2.fullName] = rnode2
+    state.entities.repositories[rnode3.fullName] = rnode3
+
+    state.entities.groups[node1.path] = node1
+    state.entities.groups[node2.path] = node2
+    state.entities.groups[node3.path] = node3
+
+    const props = {
+      match: {
+        url: '/repos/projects/testgroup',
+        params: { path: 'projects/testgroup2' },
       },
     }
-    expect(getRepositoriesFetchState(state, { params: { splat: '/projects/testgroup' } })).to.eql({
+    expect(getRepositoriesFetchState(state, props)).to.eql({
       status:
       {
         isFetching: false,
         error: null,
       },
-      groups: [node2],
-      repositories: [rnode2, rnode3],
-      pathname: '/test/path',
+      fullName: 'projects/testgroup2',
+      group: node2,
+      repo: null,
+      path: '/repos/projects/testgroup',
     })
   })
 
@@ -574,48 +299,5 @@ describe('repositories selectors', () => {
     ]
 
     expect(getRepositoryBranches(state, props)).to.eql(expected)
-  })
-
-  it('repoNameSelector', () => {
-    const node1 = {
-      id: 1,
-      name: 'name1',
-      description: 'description1',
-      fullName: '/test/group/name1',
-    }
-    const node2 = {
-      id: 2,
-      name: 'name2',
-      description: 'description2',
-      parentGroupName: '/group21',
-      branches: [{ name: 'default', revision: '3452345' },
-      { name: 'test', revision: 'te456356st' },
-      { name: 'unity', revision: 'tes24524t' }],
-    }
-    const node3 = {
-      id: 3,
-      name: 'name3',
-      description: 'description3',
-      parentGroupName: '/group21',
-    }
-
-    const state = {
-      entities: {
-        repositories: {
-          1: node1,
-          2: node2,
-          3: node3,
-        },
-      },
-    }
-
-
-    const props = {
-      params: {
-        splat: '/test/group/name1',
-      },
-    }
-
-    expect(repoIdSelector(state, props)).to.equal('1')
   })
 })

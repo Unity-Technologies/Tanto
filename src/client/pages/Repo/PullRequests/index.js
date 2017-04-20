@@ -1,11 +1,8 @@
 // TODO: enable flow
 
 import React from 'react'
-import Helmet from 'react-helmet'
-import { connect } from 'react-redux'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchPullRequests } from 'ducks/pullrequests/actions'
-import { getRepositoryId } from 'ducks/repositories/selectors'
 
 import {
   getPageFetchStatus,
@@ -34,7 +31,6 @@ const mapStateToProps = (state, props) => ({
 function PullRequests(props: Props) {
   return (
     <div>
-      <Helmet title="Project Pull Requests" />
       <PullRequestsPaginated
         hideRepoSelect
         mapStateToProps={mapStateToProps}
@@ -45,9 +41,5 @@ function PullRequests(props: Props) {
   )
 }
 
-export default connect(
-  (state, props) => ({
-    repo: getRepositoryId(state, props),
-  })
-)(PullRequests)
+export default PullRequests
 

@@ -11,7 +11,7 @@ import { entities } from './entities'
 
 export default combineReducers({
   entities,
-  routing: routerReducer,
+  router: routerReducer,
   sidebar,
   fetch: fetchStatus,
   session: combineReducers({

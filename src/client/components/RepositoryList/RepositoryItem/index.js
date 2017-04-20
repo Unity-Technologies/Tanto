@@ -4,9 +4,9 @@ import React from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { fromNow } from 'utils/datetime'
-import { buildProjectLink } from 'routes/helpers'
+import { buildRepoLink } from 'routes/helpers'
 
 const subHeader = text => (
   <div className="sub-header">
@@ -41,7 +41,7 @@ function RepositoryItem(props: Props) {
           <div style={{ display: 'table' }}>
             <div style={{ paddingLeft: '10px', display: 'table' }}>
               <Link
-                to={buildProjectLink(repository.name, repository.groupPath)}
+                to={buildRepoLink(repository.name, repository.groupPath)}
               >
                 {repository.name}
               </Link>

@@ -1,6 +1,10 @@
 query repositoriesNested($name: String!) {
   group(name: $name) {
     id
+    name
+    path
+    parentGroupName
+    description
     repositories(limit: 50) {
       nodes {
         ...repo
@@ -11,6 +15,9 @@ query repositoriesNested($name: String!) {
         ...group
       }
     }
+  }
+  repository(name: $name) {
+    ...repo
   }
 }
 
@@ -29,6 +36,7 @@ query repositoriesTopLevel {
 
 fragment repo on Repository {
   id
+  fullName
   name
   owner {
     fullName
@@ -39,6 +47,9 @@ fragment repo on Repository {
   groupName
   description
   updated
+  pullRequests {
+    total
+  }
 }
 
 fragment group on RepositoryGroup {
@@ -47,4 +58,18 @@ fragment group on RepositoryGroup {
   path
   parentGroupName
   description
+  repositories(limit: 50) {
+    nodes {
+      ...repo
+    }
+  }
+  groups {
+    nodes {
+      id
+      name
+      path
+      parentGroupName
+      description
+    } 
+  }
 }

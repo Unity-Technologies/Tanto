@@ -5,36 +5,87 @@ import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { types } from '../actions'
 import _ from 'lodash'
 
-export const repoEntitiesSelector = (state : Object, props: Object): Object => {
-  const parentGroupName = props.params.splat || null
-  return _.pickBy(state.entities.repositories, repo => (repo.groupPath === parentGroupName))
+/**
+ * Denormalization
+ */
+
+const denormalizeRepo = (repo: Object, userEntities: Object) => {
+  if (!repo || !repo.owner) {
+    return repo
+  }
+
+  const denormalizedRepo = _.cloneDeep(repo)
+
+  denormalizedRepo.owner = userEntities[denormalizedRepo.owner]
+
+  return denormalizedRepo
 }
 
-export const getRepositories = createSelector(
-  repoEntitiesSelector,
-  repoEntities => _.values(repoEntities)
-)
+const denormalizeGroup = (group: Object, groupEntities: Object, repoEntities: Object, userEntities: Object) => {
+  if (!group) {
+    return group
+  }
 
-export const groupsEntitiesSelector = (state: Object, props: Object): Object => {
-  const parentGroupName = props.params.splat || null
-  return _.pickBy(state.entities.groups, group => (group.parentGroupName === parentGroupName))
+  const repoReferences = _.get(group, ['repositories', 'nodes'], [])
+  const groupReferences = _.get(group, ['groups', 'nodes'], [])
+
+  const denormalizedGroup = _.cloneDeep(group)
+
+  if (repoReferences.length) {
+    denormalizedGroup.repositories.nodes = _.map(repoReferences, (ref) => _.get(repoEntities, [ref]))
+    denormalizedGroup.repositories.nodes = _.map(denormalizedGroup.repositories.nodes, (r) => denormalizeRepo(r, userEntities))
+  }
+
+  if (groupReferences.length) {
+    denormalizedGroup.groups.nodes = _.map(groupReferences, (ref) => _.get(groupEntities, [ref]))
+  }
+
+  return denormalizedGroup
 }
 
-export const getGroups = createSelector(
-  groupsEntitiesSelector,
-  groupsEntities => _.values(groupsEntities)
+/**
+ * Selectors
+ */
+
+
+export const getPath = (state: Object, props: Object): string => (
+  props.match.url
 )
+
+export const getFullName = (state: Object, props: Object): string => _.get(props, ['match', 'params', 'path'])
+
+const getGroupEntities = (state: Object): Object => _.get(state, ['entities', 'groups'], null)
+
+const getRepoEntities = (state: Object): Object => _.get(state, ['entities', 'repositories'], null)
+
+const getUserEntities = (state: Object): Object => _.get(state, ['entities', 'users'], null)
+
+export const getToplevelGroups = createSelector(getGroupEntities,
+                                                (groups) => _.filter(_.values(groups), (g) => !g.parentGroupName))
+
+export const getToplevelRepos = createSelector(getRepoEntities, getUserEntities,
+                                               (repos, users) => _.map(_.filter(_.values(repos), (r) => !r.groupPath),
+                                                                       (r) => denormalizeRepo(r, users)))
+
+const getToplevelGroup = createSelector(getToplevelGroups, getToplevelRepos,
+                                        (groups, repos) => ({ repositories: { nodes: repos }, groups: { nodes: groups } }))
+
+
+const getGroup = createSelector(getFullName, getRepoEntities, getGroupEntities, getUserEntities, getToplevelGroup,
+                                (path, repos, groups, users, topLevel) =>
+                                  (path ? denormalizeGroup(_.get(groups, [path], null), groups, repos, users) : topLevel))
+
+export const getRepo = createSelector(getFullName, getRepoEntities, getUserEntities,
+                                      (path, repos, users) => (path ? denormalizeRepo(_.get(repos, [path], null), users) : null))
 
 export const getRepositoriesFetchStatus = statusFetchFactory(types.FETCH_REPOSITORIES)
 
-export const pathnameSelector = (state: Object): string =>
-  state.routing.locationBeforeTransitions.pathname
-
 export const getRepositoriesFetchState = createStructuredSelector({
-  pathname: pathnameSelector,
+  path: getPath,
+  fullName: getFullName,
   status: getRepositoriesFetchStatus,
-  repositories: getRepositories,
-  groups: getGroups,
+  group: getGroup,
+  repo: getRepo,
 })
 
 export const getSearchRepoFetchStatus = statusFetchFactory(types.SEARCH_REPOSITORY)
@@ -58,17 +109,5 @@ export const repoBranchesSelector =
 export const getRepositoryBranches = createSelector(
   repoBranchesSelector,
   repoBranches => repoBranches.map(x => ({ label: x.name, value: x.name }))
-)
-
-export const repositoryEntities = (state: Object) => state.entities.repositories
-export const repositoryName = (state: Object, props: Object) =>
-  (props.params ? props.params.splat : '')
-export const repoIdSelector = (state: Object, props: Object): any =>
-  _.findKey(state.entities.repositories, (v) => (v.fullName === props.params.splat))
-
-export const getRepositoryId = createSelector(
-  repositoryEntities, repositoryName,
-  (entities, repoName) =>
-    _.findKey(entities, (v) => (v.fullName === repoName))
 )
 

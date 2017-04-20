@@ -8,19 +8,6 @@ import {
   SIDE_BAR_SUBITEMS,
 } from 'ducks/sidebar'
 
-export const app = (store) => {
-  const items = [
-    { title: 'Home', route: '/', icon: 'home' },
-    { title: 'Projects', route: '/projects', icon: 'folder-open' },
-    { title: 'My Pull Requests', route: '/pullrequests', icon: 'tasks', badge: 23 },
-    { title: 'Gists', route: '/gists', icon: 'share-alt' },
-    { title: 'Journal', route: '/journal', icon: 'history' },
-  ]
-
-  store.dispatch({ type: SIDE_BAR_ITEMS, items })
-  const subitems = []
-  store.dispatch({ type: SIDE_BAR_SUBITEMS, subitems })
-}
 
 export const project = (store, name) => {
   const items = [

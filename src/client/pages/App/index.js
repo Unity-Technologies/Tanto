@@ -2,10 +2,20 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Route } from 'react-router'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Header from 'containers/Header'
 import SideBar from 'containers/SideBar'
+import { withRouter, Switch } from 'react-router-dom'
+
+import Home from 'pages/Home'
+import Repos from 'pages/Repos'
+
+import { fetchProfile } from 'ducks/session/actions'
+import { fetchUsers } from 'ducks/users'
+import { setSideBarToDefault,
+         clearSideBarSubItems } from 'ducks/sidebar'
 
 // TODO: these should be configurable:
 const APP_NAME = 'Tanto'
@@ -18,11 +28,16 @@ const muiTheme = getMuiTheme(theme)
 export type Props = {
   children: Object,
   open: boolean,
-};
+  dispatch: Function,
+}
 
 class App extends Component {
   constructor(props: Props) {
     super(props)
+    props.dispatch(fetchProfile())
+    props.dispatch(fetchUsers())
+    props.dispatch(setSideBarToDefault())
+    props.dispatch(clearSideBarSubItems())
     this.state = {
       sideBarWidth: 280,
       hiddenSideBarWidth: 60,
@@ -32,11 +47,6 @@ class App extends Component {
   props: Props
 
   render() {
-    const childrenWithProps = React.Children.map(this.props.children,
-      child => React.cloneElement(child, {
-        theme,
-      })
-    )
     const { open } = this.props
 
     const openStyle = {
@@ -60,7 +70,11 @@ class App extends Component {
             <div style={open ? openStyle : closeStyle} >
               <Header title={APP_NAME} />
               <div style={{ padding: '0px 20px' }}>
-                {childrenWithProps}
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route path="/home" component={Home} />
+                  <Route path="/repos/:path([a-zA-Z0-9\-]+)*" component={Repos} />
+                </Switch>
               </div>
             </div>
           </div>
@@ -70,6 +84,6 @@ class App extends Component {
   }
 }
 
-export default connect(state => ({
+export default withRouter(connect(state => ({
   open: state.sidebar.open,
-}))(App)
+}))(App))

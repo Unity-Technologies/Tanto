@@ -5,9 +5,9 @@ import React, { Component } from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import { buildPullRequestLink, buildProjectLink } from 'routes/helpers'
+import { buildPullRequestLink, buildReposLink } from 'routes/helpers'
 import Avatar from 'components/Avatar'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { fromNow } from 'utils/datetime'
 import { PullRequestGraphType } from 'universal/types'
 
@@ -37,7 +37,6 @@ class PullRequestListItem extends Component {
 
   render() {
     const { pullRequest, build, showRemoveButton } = this.props
-
     return (
       <ListGroupItem className={`${pullRequest.status.replace('_', '-')}-status`}>
         <Row>
@@ -64,7 +63,7 @@ class PullRequestListItem extends Component {
                 <Link
                   style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
                   to={{
-                    pathname: buildProjectLink(pullRequest.origin.repository.fullName),
+                    pathname: buildReposLink(pullRequest.origin.repository.fullName),
                     query: { branch: pullRequest.origin.name } }}
                 >
                   {pullRequest.origin.repository.name}
@@ -80,7 +79,7 @@ class PullRequestListItem extends Component {
                 <Link
                   style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
                   to={{
-                    pathname: buildProjectLink(pullRequest.target.repository.fullName),
+                    pathname: buildReposLink(pullRequest.target.repository.fullName),
                     query: { branch: pullRequest.target.name },
                   }}
                 >

@@ -8,12 +8,17 @@ export const TOGGLE_SIDE_BAR = 'TOGGLE_SIDE_BAR'
 export const SIDE_BAR_SUBITEMS = 'SIDE_BAR_SUBITEMS'
 
 const initialState = {
-  open: true,
+  open: false,
   items: [],
   selected: 1,
 }
 
-export default function auth(state = initialState, action) {
+/**
+ * Reducer
+ */
+
+
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case OPEN_SIDE_BAR:
       return {
@@ -50,3 +55,32 @@ export default function auth(state = initialState, action) {
       return state
   }
 }
+
+/**
+ * Action Creators
+ */
+
+
+export const selectSideBarItem = (item: Number) => (
+  { type: SIDE_BAR_SELECTED_ITEM,
+    selected: item,
+  }
+)
+
+export const toggleSideBar = () => (
+  { type: TOGGLE_SIDE_BAR }
+)
+
+export const setSideBarToDefault = () => {
+  const items = [
+    { title: 'Home', route: '/', icon: 'home' },
+    { title: 'Projects', route: '/repos', icon: 'folder-open' },
+  ]
+  return { type: SIDE_BAR_ITEMS, items }
+}
+
+export const clearSideBarSubItems = () => (
+  { type: SIDE_BAR_SUBITEMS,
+    items: [],
+  }
+)
