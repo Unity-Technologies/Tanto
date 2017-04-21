@@ -12,7 +12,6 @@ const assetsPath = path.resolve(projectRootPath, './static/dist')
 const baseConfig = require('./config.base')
 
 module.exports = Object.assign({}, baseConfig.config, {
-  devtool: 'inline-source-map',
   entry: {
     main: [
       'bootstrap-sass-loader!./src/client/theme/bootstrap.config.prod.js',
