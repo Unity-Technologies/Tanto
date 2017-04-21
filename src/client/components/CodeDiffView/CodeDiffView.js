@@ -1,8 +1,6 @@
 // TODO: finish flow annotations
 
 import React, { PureComponent } from 'react'
-// import Prism from 'prismjs'
-// import ErrorMessage from 'components/ErrorMessage'
 import _ from 'lodash'
 import 'prismjs/themes/prism.css'
 import UnifiedRow from './UnifiedRow/UnifiedRow'

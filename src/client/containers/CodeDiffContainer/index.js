@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint-disable no-console */
 
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
@@ -11,7 +12,7 @@ import DiffHeader from 'components/DiffHeader'
 import Scroll from 'react-scroll'
 import Collapse from 'components/Collapse'
 import LinearProgress from 'material-ui/LinearProgress'
-
+import { DiffTypes } from 'universal/constants'
 const Element = Scroll.Element
 
 type Props = {
@@ -20,7 +21,7 @@ type Props = {
   pullRequestId: string,
   loggedUsername: string,
   dispatch: Function,
-  viewType: string,
+  viewType: number,
   unifiedDiff: any,
   sideBySideDiff: any,
 }
@@ -33,6 +34,7 @@ export const getFile = (state: Object, props: Object) => {
 
 export const getSideBySideFileDiff = (state: Object, props: Object) => {
   const file = state.ui.diff[props.id] || null
+  console.log(file && file[1] ? 'SidebySide diff is here' : 'No SidebySide diff yet')
   return file ? file[1] : null
 }
 
@@ -90,7 +92,7 @@ class CodeDiffContainer extends PureComponent {
 
   props: Props
   state: {
-    viewType: string,
+    viewType: number,
     startedComment: boolean,
     collapsed: boolean,
     commentLine: any,
@@ -105,21 +107,25 @@ class CodeDiffContainer extends PureComponent {
 
   changeDiffViewType = (value) => {
     this.setState({ viewType: value })
-    const { diff, id, type } = this.props.file
-    this.props.dispatch(processDiff(id, type, diff, value))
+
+    if ((value === DiffTypes.UNIFIED && !this.props.unifiedDiff) ||
+      (value === DiffTypes.SIDE_BY_SIDE && !this.props.sideBySideDiff)) {
+      const { diff, id, type } = this.props.file
+      this.props.dispatch(processDiff(id, type, diff, value))
+    }
   }
 
-
   render() {
-    console.log('RENDERED')
-
+    console.log('RENDERED container')
     const {
       loggedUsername,
       file: { type, comments, stats, diff, name },
       unifiedDiff,
+      sideBySideDiff,
     } = this.props
 
     const { viewType, collapsed } = this.state
+    const anyDiff = unifiedDiff || sideBySideDiff
     return (
       <div>
         <Element
@@ -136,13 +142,14 @@ class CodeDiffContainer extends PureComponent {
             onCollapse={this.onCollapse}
             selectedValue={this.state.viewType}
           />
-          {!unifiedDiff && <LinearProgress />}
-          {unifiedDiff &&
+          {!anyDiff && <LinearProgress />}
+          {anyDiff &&
             <Collapse isOpened={!collapsed}>
               <CodeDiffView
                 type={type}
                 rawDiff={diff}
                 unifiedDiff={unifiedDiff}
+                sideBySideDiff={sideBySideDiff}
                 loggedUsername={loggedUsername}
                 viewType={viewType}
               />

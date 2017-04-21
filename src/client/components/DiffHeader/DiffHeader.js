@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import IconButton from 'material-ui/IconButton'
 import View from 'material-ui/svg-icons/action/view-module'
-
+import { DiffTypes } from 'universal/constants'
 import Nav from 'react-bootstrap/lib/Nav'
 import NavItem from 'react-bootstrap/lib/NavItem'
 import Navbar from 'react-bootstrap/lib/Navbar'
@@ -99,35 +99,15 @@ class DiffHeader extends Component {
           </NavItem>
         </Nav>
         <Nav pullRight>
-          {/* {comments &&
-            <div>
-              <IconButton
-                tooltipPosition="top-left"
-                tooltip="Expand inline all comments"
-                disableTouchRipple
-                onClick={this.handleExpandClick}
-              >
-                <MessageOpen />
-              </IconButton>
-              <IconButton
-                tooltipPosition="top-left"
-                tooltip="Collapse inline all comments"
-                disableTouchRipple
-                onClick={this.handleCollapseClick}
-              >
-                <MessageClose />
-              </IconButton>
-            </div>
-          }*/}
           <IconMenu
             menuStyle={{ border: '1px solid lightgrey' }}
             iconButtonElement={<IconButton><View /></IconButton>}
             onChange={this.handleChangeSingle}
             value={this.state.selectedValue}
           >
-            <MenuItem value="0" primaryText="Unified diff" />
-            <MenuItem value="1" primaryText="Split diff" />
-            <MenuItem value="2" primaryText="Raw view" />
+            <MenuItem value={DiffTypes.UNIFIED} primaryText="Unified diff" />
+            <MenuItem value={DiffTypes.SIDE_BY_SIDE} primaryText="Side by side diff" />
+            <MenuItem value={DiffTypes.RAW} primaryText="Raw view" />
           </IconMenu>
         </Nav>
       </Navbar>

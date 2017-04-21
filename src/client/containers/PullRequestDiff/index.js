@@ -36,7 +36,7 @@ class PullRequestDiff extends PureComponent {
     if (!this.props.files || !this.props.files.length) {
       return null
     }
-    console.log('DIFF rendered')
+
     const containerId = 'diffContainer'
     return (
       <StickyContainer>

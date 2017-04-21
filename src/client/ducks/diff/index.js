@@ -6,7 +6,6 @@ export const types = {
   INVALIDATE_DIFF: 'DIFF/INVALIDATE_DIFF',
 }
 
-export const setDiff = (id: string, diff: any) => ({ type: types.SET_DIFF, diff, id })
 export const invalidateDiff = (id: string) => ({ type: types.INVALIDATE_DIFF, id })
 export const processDiff = (id: string, type: string, diff: any, diffType: number) => ({
   type: types.PROCESS_DIFF,
@@ -34,7 +33,7 @@ export const diff = (state: Object = {}, action: Object): Object => {
     case types.INVALIDATE_DIFF:
       return {
         ...state,
-        [action.payload.id]: null,
+        [action.id]: null,
       }
     default:
       return state
