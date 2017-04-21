@@ -65,7 +65,6 @@ class CodeDiffContainer extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = {
-      viewType: props.viewType || 0,
       startedComment: false,
       collapsed: false,
       commentLine: null,
@@ -77,22 +76,22 @@ class CodeDiffContainer extends PureComponent {
     const { id, diff, type } = this.props.file
     if (diff) {
       console.log('componentWillMount dispatched process')
-      this.props.dispatch(processDiff(id, type, diff, this.state.viewType))
+      this.props.dispatch(processDiff(id, type, diff, this.props.viewType))
     }
   }
 
   componentWillReceiveProps(nextProps, nextState) {
     console.log('componentWillReceiveProps')
-    const { diff, id, type } = this.props.file
-    if (diff !== nextProps.file.diff && nextProps.file.diff) {
-      console.log('componentWillReceiveProps dispatched process')
-      this.props.dispatch(processDiff(id, type, nextProps.file.diff, 0))
+    const { file: { diff, id, type } } = this.props
+    if ((diff !== nextProps.file.diff && nextProps.file.diff) ||
+      ((nextProps.viewType === DiffTypes.UNIFIED && !nextProps.unifiedDiff) ||
+      (nextProps.viewType === DiffTypes.SIDE_BY_SIDE && !nextProps.sideBySideDiff))) {
+      this.props.dispatch(processDiff(id, type, nextProps.file.diff, nextProps.viewType))
     }
   }
 
   props: Props
   state: {
-    viewType: number,
     startedComment: boolean,
     collapsed: boolean,
     commentLine: any,
@@ -105,16 +104,6 @@ class CodeDiffContainer extends PureComponent {
     })
   }
 
-  changeDiffViewType = (value) => {
-    this.setState({ viewType: value })
-
-    if ((value === DiffTypes.UNIFIED && !this.props.unifiedDiff) ||
-      (value === DiffTypes.SIDE_BY_SIDE && !this.props.sideBySideDiff)) {
-      const { diff, id, type } = this.props.file
-      this.props.dispatch(processDiff(id, type, diff, value))
-    }
-  }
-
   render() {
     console.log('RENDERED container')
     const {
@@ -122,10 +111,13 @@ class CodeDiffContainer extends PureComponent {
       file: { type, comments, stats, diff, name },
       unifiedDiff,
       sideBySideDiff,
+      viewType,
     } = this.props
 
-    const { viewType, collapsed } = this.state
-    const anyDiff = unifiedDiff || sideBySideDiff
+    const { collapsed } = this.state
+    const anyDiff = unifiedDiff && viewType === DiffTypes.UNIFIED ||
+      sideBySideDiff && viewType === DiffTypes.SIDE_BY_SIDE ||
+      viewType === DiffTypes.RAW && diff
     return (
       <div>
         <Element

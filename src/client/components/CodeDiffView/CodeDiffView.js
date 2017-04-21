@@ -40,7 +40,7 @@ class CodeDiffView extends PureComponent {
         </table>
       )
     } else if (viewType === 1) {
-      const content = this.props.unifiedDiff
+      const content = this.props.sideBySideDiff
       return (
         <table className="code-block diff-split">
           <tbody>{content.map(line => (
