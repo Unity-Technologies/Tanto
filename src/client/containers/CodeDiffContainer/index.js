@@ -130,9 +130,7 @@ class CodeDiffContainer extends PureComponent {
             collapsed={collapsed}
             title={name}
             stats={stats}
-            onViewChangeClick={this.changeDiffViewType}
             onCollapse={this.onCollapse}
-            selectedValue={this.state.viewType}
           />
           {!anyDiff && <LinearProgress />}
           {anyDiff &&

@@ -20,7 +20,6 @@ export type Props = {
     added: number,
     deleted: number
   },
-  onViewChangeClick: Function,
   collapsed: boolean,
   collapsedComments: boolean,
   onCollapse?: Function,

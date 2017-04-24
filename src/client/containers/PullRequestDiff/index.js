@@ -43,6 +43,9 @@ class PullRequestDiff extends PureComponent {
     }
   }
   props: Props
+  state: {
+    viewType: number,
+  }
 
   handleChangeSingle = (event, value) => {
     this.setState({
@@ -75,7 +78,7 @@ class PullRequestDiff extends PureComponent {
                   menuStyle={{ border: '1px solid lightgrey' }}
                   iconButtonElement={<IconButton><View /></IconButton>}
                   onChange={this.handleChangeSingle}
-                  value={this.state.selectedValue}
+                  value={this.state.viewType}
                 >
                   <MenuItem value={DiffTypes.UNIFIED} primaryText="Unified diff" />
                   <MenuItem value={DiffTypes.SIDE_BY_SIDE} primaryText="Side by side diff" />
