@@ -10,6 +10,7 @@ export type Props = {
   onChange?: (e: SyntheticInputEvent) => any,
   name: string,
   disabled?: boolean,
+  style?: any,
 }
 
 class Checkbox extends Component {
@@ -37,7 +38,7 @@ class Checkbox extends Component {
 
   // TODO: apply material-ui  styling here
   render() {
-    const { value, disabled, name } = this.props
+    const { value, disabled, name, style } = this.props
 
     return (
       <div>
@@ -49,6 +50,7 @@ class Checkbox extends Component {
           disabled={disabled}
           onChange={this.handleClick}
           className="checkbox-box"
+          style={{ ...style }}
         />
         <label htmlFor={name} />
       </div>

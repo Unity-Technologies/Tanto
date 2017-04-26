@@ -1,160 +1,79 @@
-// TODO: add flow annotations
+/* flow */
 
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import BranchSelect from 'components/BranchSelect'
-import ChangesetList from 'components/ChangesetList'
 import { connect } from 'react-redux'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Button from 'react-bootstrap/lib/Button'
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
-
+import { fetchChangelog } from 'ducks/repositories/actions'
+import { getChangelog, getChangelogFetchStatus } from 'ducks/repositories/selectors'
+import ChangesetList from 'components/ChangesetList'
+import LoadingComponent from 'components/LoadingComponent'
+import _ from 'lodash'
+import './Changelog.css'
 
 export type Props = {
   params: Object,
-  data: Array<any>,
+  data: Array<any>
 };
 
-class Changelog extends Component {
+class Changelog extends PureComponent {
   constructor(props: Props) {
     super(props)
-
     this.state = {
-      changesets: [],
-      height: '100%',
-      autoHideDuration: 4000,
-      message: 'Hash has been copied to clipboard',
-      open: false,
-    }
-    this.handleTouchTap = this.handleTouchTap.bind(this)
-    this.handleActionTouchTap = this.handleActionTouchTap.bind(this)
-    this.handleChangeDuration = this.handleChangeDuration.bind(this)
-    this.handleRequestClose = this.handleRequestClose.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-  }
-
-  props: Props
-
-  handleTouchTap() {
-    this.setState({
-      open: true,
-    })
-  }
-
-  handleActionTouchTap() {
-    this.setState({
-      open: false,
-    })
-  }
-
-  handleChangeDuration(event) {
-    const value = event.target.value
-    this.setState({
-      autoHideDuration: value.length > 0 ? parseInt(value, 10) : 0,
-    })
-  }
-
-  handleRequestClose() {
-    this.setState({
-      open: false,
-    })
-  }
-
-  handleChange(obj, isSelected) {
-    if (this.state.changesets.length < 2 && isSelected) {
-      this.state.changesets.push(obj.target.value)
-    }
-    if (this.state.changesets.length <= 2 && !isSelected) {
-      const index = this.state.changesets.indexOf(obj.target.value)
-      if (index !== -1) {
-        this.state.changesets.splice(index, 1)
-      }
-      this.props.data.map((item) => {
-        const ch = this.refs[item.hash]
-        ch.setState({ disabled: false })
-        return true
-      })
-    }
-
-    if (this.state.changesets.length === 2) {
-      this.props.data.map((item) => {
-        const ch = this.refs[item.hash]
-        ch.setState({ disabled: !this.state.changesets.includes(item.hash) })
-        return true
-      })
+      enabled: false,
     }
   }
+
+  componentDidMount() {
+    if (this.props.params.splat) {
+      this.props.dispatch(fetchChangelog(this.props.params.splat))
+    }
+  }
+
+  onSelectedChangesetsChange = (e, selectedChangesNumber) => {
+    this.setState({ enabled: selectedChangesNumber in [2, 1] })
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.data || this.state.disabled !== nextState.disabled || !_.isEqual(nextProps.status, this.props.status)
+  }
+
+  props : Props
 
   render() {
-    const showChangesButtonStyle = {
-      backgroundColor: '#1fb5ad',
-      borderColor: '#1fb5ad',
-      color: 'white',
-    }
+    const { params: { id }, data, status } = this.props
 
-    const openPrButtonStyle = {
-      backgroundColor: 'rgb(162, 162, 171)',
-      borderColor: 'rgb(162, 162, 171)',
-      color: 'white',
-    }
-
-    const { params: { id }, data } = this.props
     return (
       <div>
-        <div style={{ padding: '10px' }}>
+        <div className="changelog-list">
           <Row>
-            <Col md={4}>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  border: '1px solid lightgrey',
-                  borderRadius: '5px',
-                  padding: '7px',
-                  width: '100%',
-                  backgroundColor: 'white' }}
-              >
-                <span
-                  style={{ pagging: '10px', color: 'grey' }}
-                >
-                  <i className="fa fa-search" aria-hidden="true" />
-                </span>
-                <input
-                  type="text"
-                  style={{
-                    outline: 'none',
-                    border: 'none',
-                    marginLeft: '10px',
-                    fontSize: '14px',
-                    width: '100%' }}
-                />
-
-              </div>
-            </Col>
-
             <Col md={4}>
               <BranchSelect project={id} placeholder="Select branch ..." />
             </Col>
 
-
-            <Col md={4}>
-              <ButtonGroup style={{ float: 'right' }}>
-                <Button style={showChangesButtonStyle}>
-                  Show
-                </Button>
-                <Button style={openPrButtonStyle}>
-                  Open Pull
-                </Button>
-              </ButtonGroup>
+            <Col md={8}>
+              <Button disabled={this.state.enabled} className="changelog-btn">
+                Show changeset
+              </Button>
             </Col>
           </Row>
         </div>
-        <ChangesetList showCheckboxes data={data} />
+        <LoadingComponent status={status}>
+          <ChangesetList
+            showCheckboxes
+            commits={data}
+            projectName={this.props.params.splat}
+            onSelectedChangesetsChange={this.onSelectedChangesetsChange}
+          />
+        </LoadingComponent>
       </div>
     )
   }
 }
 
-
-export default connect(state => ({ // eslint-disable-line no-unused-vars
-  data: [],
+export default connect((state, props) => ({
+  status: getChangelogFetchStatus(state, props),
+  data: getChangelog(state, props),
 }))(Changelog)

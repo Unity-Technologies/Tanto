@@ -12,9 +12,10 @@ import ChangesetDelta from 'components/ChangesetDelta'
 import Avatar from 'components/Avatar'
 import { Link } from 'react-router'
 import { buildChangesetLink } from 'routes/helpers'
-import Checkbox from 'material-ui/Checkbox'
+import Checkbox from 'components/Checkbox'
 import { ChangesetStatus } from 'universal/constants'
 import _ from 'lodash'
+import CopyToClipboard from 'react-copy-to-clipboard'
 
 const subHeader = text => (
   <div
@@ -29,15 +30,17 @@ export type Props = {
   compact?: boolean,
   projectName: string,
   showCheckboxes?: boolean,
+  selectedChangesetsChange?: (e: SyntheticInputEvent, number) => any,
 }
 
 const greenStatus = { borderLeft: '4px solid #d1fad1' }
 const redStatus = { borderLeft: '4px solid #F44336' }
 const yellowStatus = { borderLeft: '4px solid #ffcbad' }
 const greyStatus = { borderLeft: '4px solid lightgrey' }
+const blueStatus = { borderLeft: '4px solid #337ab7' }
 
 const getStatusColor = (status) => {
-  switch (status) {
+  switch (status.toUpperCase()) {
     case ChangesetStatus.REJECTED:
       return redStatus
     case ChangesetStatus.UNDER_REVIEW:
@@ -68,7 +71,14 @@ const reduceCommitDelta = (files) => {
 class ChangesetList extends Component {
   constructor(props: Props) {
     super(props)
-    this.state = { search: null, activeKey: 3, changesets: [] }
+    this.state = {
+      search: null,
+      activeKey: 3,
+      changesets: [],
+      copied: false,
+      copiedValue: '',
+      disabled: false,
+    }
   }
 
   props: Props
@@ -77,33 +87,36 @@ class ChangesetList extends Component {
     this.setState({ activeKey })
   }
 
-  handleChange = (obj, isSelected) => {
+  handleChange = (event) => {
+    const isSelected = event.target.checked
+
     if (this.state.changesets.length < 2 && isSelected) {
-      this.state.changesets.push(obj.target.value)
+      this.state.changesets.push(event.target.value)
     }
     if (this.state.changesets.length <= 2 && !isSelected) {
-      const index = this.state.changesets.indexOf(obj.target.value)
+      const index = this.state.changesets.indexOf(event.target.value)
       if (index !== -1) {
         this.state.changesets.splice(index, 1)
       }
       this.props.commits.map((item) => {
-        const ch = this.refs[item.hash]
-        ch.setState({ disabled: false })
-        return true
+        this.setState({ disabled: false })
       })
     }
-
-    if (this.state.changesets.length === 2) {
+    if (this.state.changesets.length >= 2) {
       this.props.commits.map((item) => {
-        const ch = this.refs[item.hash]
-        ch.setState({ disabled: !this.state.changesets.includes(item.hash) })
-        return true
+        this.setState({ disabled: !this.state.changesets.includes(item.id) })
       })
     }
+    this.props.onSelectedChangesetsChange(event, this.state.changesets.length)
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.commits && !_.isEqual(this.props.commits, nextProps.commits) ||
+    this.state.disabled !== nextState.disabled
   }
 
   render() {
-    if (!this.props.commits) {
+    if (!this.props.commits || !this.props.commits.length) {
       return null
     }
 
@@ -125,32 +138,25 @@ class ChangesetList extends Component {
             >
             <div>
               <Row>
-                <Col lg={5} md={7} sm={9} xs={12}>
-                  <div style={{ display: 'table' }}>
-                    {showCheckboxes ?
-                      <Checkbox
-                        disableTouchRipple
-                        style={{ float: 'left', padding: '10px', width: 'auto' }}
-                        /> : ''}
-                    <Avatar />
-                    <div style={{ paddingLeft: '10px', display: 'table' }}>
-                      <Link
-                        style={{
-                          cursor: 'pointer',
-                          fontWeight: '400'
-                        }}
-                        to={buildChangesetLink(projectName, item.rawId)}
-                        >
-                        {item.message}
-                      </Link>
+                <Col md={4}>
+                  <Avatar {...item.author.slack} />
+                  <div style={{ display: 'table' , paddingLeft: '10px' }}>
+                    <Link
+                      style={{
+                        cursor: 'pointer',
+                        fontWeight: '400'
+                      }}
+                      to={buildChangesetLink(projectName, item.id)}
+                      >
+                      {item.message}
+                    </Link>
 
-                      <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
-                        <strong>{item.author}</strong>, added {moment(item.date).fromNow()}
-                      </div>
+                    <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
+                      <strong>{item.authorUser.fullName}</strong>, added {moment(item.date).fromNow()}
                     </div>
                   </div>
                 </Col>
-                <Col lg={2} md={3} smHidden xsHidden>
+                <Col md={3}>
                   <div
                     style={{
                       color: '#5a6082',
@@ -158,7 +164,10 @@ class ChangesetList extends Component {
                       border: '1px solid lightgrey'
                     }}
                     >
-                    <i style={{ fontSize: '14px', padding: '2px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }} className="fa fa-clipboard" aria-hidden="true" />
+                    <CopyToClipboard text={item.id} onCopy={() => this.setState({ copied: true })}>
+                      <i style={{ fontSize: '14px', padding: '2px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }}
+                      className="fa fa-clipboard" aria-hidden="true" />
+                    </CopyToClipboard>
                     <Link
                       style={{ padding: '10px', textDecoration: 'none', color: '#5a6082', textTransform: 'uppercase', fontSize: '12px' }}
                       to={buildChangesetLink(projectName, item.id)}
@@ -166,39 +175,29 @@ class ChangesetList extends Component {
                       {item.id.substring(0, 9)}
                     </Link>
                   </div>
-
                 </Col>
-                <Col lg={2} mdHidden smHidden xsHidden >
+                <Col md={2}>
                   <div>
                     {subHeader('Branch:')}
                     <div>
                       <a style={{ textDecoration: 'none', color: '#5a6082' }} href="#">{item.branch}</a>
                     </div>
                   </div>
-
                 </Col>
-                <Col lg={1} mdHidden smHidden xsHidden>
-                  {item.build &&
-                    <div>
-                      {subHeader('Status:')}
-                      <div style={{ color: item.build.status === 0 ? '#51b583' : '#ca5757', textTransform: 'uppercase' }}>
-                        Passed
-                        </div>
-                    </div>
-                  }
-                </Col>
-                <Col lg={1} mdHidden smHidden xsHidden>
-                  {item.build &&
-                    <div>
-                      {subHeader('Builds:')}
-                      <a href="#" style={{ color: '#5a6082', textTransform: 'uppercase', textDecoration: 'none' }}>
-                        {item.build.name}
-                      </a>
-                    </div>
-                  }
-                </Col>
-                <Col lg={1} md={2} sm={3} xsHidden>
+                <Col md={2}>
                   <ChangesetDelta {...reduceCommitDelta(item.files)} />
+                </Col>
+                <Col md={1}>
+                  {showCheckboxes ?
+                    <Checkbox
+                      ref={item.id}
+                        disableTouchRipple
+                        onChange={this.handleChange}
+                        value={item.id}
+                        style={{ float: 'left', height: '15px', marginTop: '10px' }}
+                        checked={ this.state.changesets.indexOf(item.id) != -1 }
+                        disabled={ this.state.changesets.length >= 2 & this.state.changesets.indexOf(item.id) == -1 }
+                        /> : ''}
                 </Col>
               </Row>
             </div>

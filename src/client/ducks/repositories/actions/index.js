@@ -5,6 +5,7 @@ import type { FetchAction } from 'ducks/fetch'
 import repositoriesQuery from '../queries/repositories.graphql'
 import repoBranchesQuery from '../queries/branches.graphql'
 import repository from '../queries/repository.graphql'
+import changelog from '../queries/changelog.graphql'
 
 /**
  * Action types
@@ -14,6 +15,7 @@ export const types = {
   FETCH_REPOSITORY: 'REPOSITORIES/FETCH_REPOSITORY',
   SEARCH_REPOSITORY: 'REPOSITORIES/SEARCH_REPOSITORY',
   FETCH_REPOSITORY_BRANCHES: 'REPOSITORIES/FETCH_REPOSITORY_BRANCHES',
+  FETCH_CHANGELOG: 'REPOSITORIES/FETCH_CHANGELOG',
 }
 
 export const operationNames = {
@@ -30,6 +32,9 @@ export const searchRepository =
 
 export const fetchRepository = (name: string): FetchAction =>
   fetchOnoAction({ type: types.FETCH_REPOSITORY, query: repository, variables: { name } })
+
+export const fetchChangelog = (name: string): FetchAction =>
+  fetchOnoAction({ type: types.FETCH_CHANGELOG, query: changelog, variables: { name } })
 
 export const fetchRepositoryBranches = (id: number): FetchAction =>
   fetchOnoAction({

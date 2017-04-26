@@ -1,0 +1,26 @@
+query repositoryBranches($name: String!) {
+  repository(name: $name){
+    id
+    changelog (limit: 100, offset: 0) {
+      nodes {
+        id
+        message
+        date
+        status
+        branch
+        author
+        files {
+          stats {
+            added
+            deleted
+          }
+        }
+        authorUser {
+          username
+          email
+          fullName
+        }
+      }
+    }
+  }
+}

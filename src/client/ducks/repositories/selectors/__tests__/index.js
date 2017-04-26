@@ -11,6 +11,8 @@ import {
   repoBranchesSelector,
   getRepositoryBranches,
   repoIdSelector,
+  getChangelog,
+  parseMercurialAuthor,
 } from '../index'
 
 import { types } from 'ducks/repositories/actions'
@@ -617,5 +619,416 @@ describe('repositories selectors', () => {
     }
 
     expect(repoIdSelector(state, props)).to.equal('1')
+  })
+})
+
+describe('getChangelog', () => {
+  it('should return denormalized repository changelog', () => {
+    const user1 = {
+      id: 1,
+      email: 'user1@email.com',
+      username: 'name1',
+      slack: {
+        avatar: 'avatar1',
+      },
+    }
+
+    const user2 = {
+      id: 2,
+      email: 'user2@email.com',
+      username: 'name2',
+      slack: {
+        avatar: 'avatar2',
+      },
+    }
+
+    const changeset1 = {
+      id: 1,
+      authorUser: 1,
+      branch: 'default',
+      date: 'somedate',
+      message: 'some message',
+      status: 'not_reviewed',
+    }
+
+    const changeset2 = {
+      id: 2,
+      authorUser: 2,
+      branch: 'default',
+      date: 'somedate2',
+      message: 'some message2',
+      status: 'not_reviewed',
+    }
+
+    const changeset3 = {
+      id: 3,
+      authorUser: 1,
+      branch: 'default',
+      date: 'somedate3',
+      message: 'some message3',
+      status: 'not_reviewed',
+    }
+
+    const expectedChangelogData = [{ ...changeset1, authorUser: user1 },
+      { ...changeset2, authorUser: user2 }]
+
+    const state = {
+      entities: {
+        users: {
+          1: user1,
+          2: user2,
+        },
+        repositories: {
+          1: {
+            fullName: '/unity/unity',
+            changelog: {
+              nodes: [1, 2],
+            },
+          },
+          2: {
+            changelog: {
+              nodes: [3],
+            },
+          },
+        },
+        changesets: {
+          1: changeset1,
+          2: changeset2,
+          3: changeset3,
+        },
+      },
+    }
+
+    const props = {
+      params: {
+        splat: '/unity/unity',
+      },
+    }
+
+    expect(getChangelog(state, props)).to.eql(expectedChangelogData)
+  })
+
+  it('should parse mercurial user if authorUser is undefined', () => {
+    const user1 = {
+      id: 1,
+      email: 'user1@email.com',
+      username: 'name1',
+      slack: {
+        avatar: 'avatar1',
+      },
+    }
+
+    const user2 = {
+      id: 2,
+      email: 'user2@email.com',
+      username: 'name2',
+      slack: {
+        avatar: 'avatar2',
+      },
+    }
+
+    const changeset1 = {
+      id: 1,
+      author: 'Test User Name 1 <testuser1@email.com>',
+      branch: 'default',
+      date: 'somedate',
+      message: 'some message',
+      status: 'not_reviewed',
+    }
+
+    const changeset2 = {
+      id: 2,
+      author: 'Test User Name 2 <testuser2@email.com>',
+      branch: 'default',
+      date: 'somedate2',
+      message: 'some message2',
+      status: 'not_reviewed',
+    }
+
+    const changeset3 = {
+      id: 3,
+      authorUser: 1,
+      branch: 'default',
+      date: 'somedate3',
+      message: 'some message3',
+      status: 'not_reviewed',
+    }
+
+    const expectedChangelogData = [{ ...changeset1, authorUser: { fullName: 'Test User Name 1', email: 'testuser1@email.com' } },
+      { ...changeset2, authorUser: { fullName: 'Test User Name 2', email: 'testuser2@email.com' } }]
+
+    const state = {
+      entities: {
+        users: {
+          1: user1,
+          2: user2,
+        },
+        repositories: {
+          1: {
+            fullName: '/unity/unity',
+            changelog: {
+              nodes: [1, 2],
+            },
+          },
+          2: {
+            changelog: {
+              nodes: [3],
+            },
+          },
+        },
+        changesets: {
+          1: changeset1,
+          2: changeset2,
+          3: changeset3,
+        },
+      },
+    }
+
+    const props = {
+      params: {
+        splat: '/unity/unity',
+      },
+    }
+
+    expect(getChangelog(state, props)).to.eql(expectedChangelogData)
+  })
+
+  it('should return null if no changelog in repository', () => {
+    const state = {
+      entities: {
+        repositories: {
+          1: {
+            fullName: '/unity/unity',
+          },
+          2: {
+            changelog: {
+              nodes: [3],
+            },
+          },
+        },
+      },
+    }
+
+    const props = {
+      params: {
+        splat: '/unity/unity',
+      },
+    }
+
+    expect(getChangelog(state, props)).to.eql(null)
+  })
+
+  it('should return null if no changesets entities', () => {
+    const props = {
+      params: {
+        splat: '/unity/unity',
+      },
+    }
+
+    expect(getChangelog({ entities: { repositories: {} } }, props)).to.eql(null)
+  })
+
+  it('should return null if no repositories entities', () => {
+    const props = {
+      params: {
+        splat: '/unity/unity',
+      },
+    }
+
+    expect(getChangelog({ entities: { changesets: {} } }, props)).to.eql(null)
+  })
+
+
+  it('should return null if no users entities', () => {
+    const props = {
+      params: {
+        splat: '/unity/unity',
+      },
+    }
+
+    expect(getChangelog({ entities: { changesets: {}, repositories: {} } }, props)).to.eql(null)
+  })
+
+  it('should return null if no params', () => {
+    const user1 = {
+      id: 1,
+      email: 'user1@email.com',
+      username: 'name1',
+      slack: {
+        avatar: 'avatar1',
+      },
+    }
+
+    const user2 = {
+      id: 2,
+      email: 'user2@email.com',
+      username: 'name2',
+      slack: {
+        avatar: 'avatar2',
+      },
+    }
+
+    const changeset1 = {
+      id: 1,
+      authorUser: 1,
+      branch: 'default',
+      date: 'somedate',
+      message: 'some message',
+      status: 'not_reviewed',
+    }
+
+    const changeset2 = {
+      id: 2,
+      authorUser: 2,
+      branch: 'default',
+      date: 'somedate2',
+      message: 'some message2',
+      status: 'not_reviewed',
+    }
+
+    const changeset3 = {
+      id: 3,
+      authorUser: 1,
+      branch: 'default',
+      date: 'somedate3',
+      message: 'some message3',
+      status: 'not_reviewed',
+    }
+
+
+    const state = {
+      entities: {
+        users: {
+          1: user1,
+          2: user2,
+        },
+        repositories: {
+          1: {
+            fullName: '/unity/unity',
+            changelog: {
+              nodes: [1, 2],
+            },
+          },
+          2: {
+            changelog: {
+              nodes: [3],
+            },
+          },
+        },
+        changesets: {
+          1: changeset1,
+          2: changeset2,
+          3: changeset3,
+        },
+      },
+    }
+    expect(getChangelog(state, {})).to.eql(null)
+  })
+
+  it('should return null if repo not found ', () => {
+    const user1 = {
+      id: 1,
+      email: 'user1@email.com',
+      username: 'name1',
+      slack: {
+        avatar: 'avatar1',
+      },
+    }
+
+    const user2 = {
+      id: 2,
+      email: 'user2@email.com',
+      username: 'name2',
+      slack: {
+        avatar: 'avatar2',
+      },
+    }
+
+    const changeset1 = {
+      id: 1,
+      authorUser: 1,
+      branch: 'default',
+      date: 'somedate',
+      message: 'some message',
+      status: 'not_reviewed',
+    }
+
+    const changeset2 = {
+      id: 2,
+      authorUser: 2,
+      branch: 'default',
+      date: 'somedate2',
+      message: 'some message2',
+      status: 'not_reviewed',
+    }
+
+    const changeset3 = {
+      id: 3,
+      authorUser: 1,
+      branch: 'default',
+      date: 'somedate3',
+      message: 'some message3',
+      status: 'not_reviewed',
+    }
+
+
+    const state = {
+      entities: {
+        users: {
+          1: user1,
+          2: user2,
+        },
+        repositories: {
+          1: {
+            fullName: '/unity/unity',
+            changelog: {
+              nodes: [1, 2],
+            },
+          },
+          2: {
+            changelog: {
+              nodes: [3],
+            },
+          },
+        },
+        changesets: {
+          1: changeset1,
+          2: changeset2,
+          3: changeset3,
+        },
+      },
+    }
+
+    const props = {
+      params: {
+        splat: '/unity/unity2',
+      },
+    }
+
+    expect(getChangelog(state, props)).to.eql(null)
+  })
+})
+
+
+describe('parseMercurialAuthor', () => {
+  it('returns fullName and email by parsing the mercurial user string', () => {
+    const fullName = 'Test User name'
+    const email = 'testusername@email.com'
+    const author = `${fullName} <${email}>`
+
+    expect(parseMercurialAuthor(author)).to.eql({ fullName, email })
+  })
+
+  it('returns fullName if format of mercurial author unexpected', () => {
+    const fullName = 'Test User name'
+    const email = 'testusername@email.com'
+    const author = `${fullName} ${email}`
+
+    expect(parseMercurialAuthor(author)).to.eql({ fullName: author })
+  })
+
+  it('returns fullName if format of mercurial author is undefined', () => {
+    expect(parseMercurialAuthor(undefined)).to.eql(undefined)
+    expect(parseMercurialAuthor(null)).to.eql(null)
   })
 })
