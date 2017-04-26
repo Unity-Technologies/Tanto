@@ -1,7 +1,7 @@
-query repositoryBranches($name: String!) {
+query repositoryBranches($name: String, $branch: String) {
   repository(name: $name){
     id
-    changelog (limit: 100, offset: 0) {
+    changelog (limit: 100, offset: 0, branch: $branch) {
       nodes {
         id
         message

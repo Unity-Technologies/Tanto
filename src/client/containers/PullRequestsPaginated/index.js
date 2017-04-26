@@ -51,7 +51,7 @@ class PullRequestsPaginated extends Component {
     page: this.props.activePage,
     orderBy: this.props.orderBy,
     branch: this.props.branch,
-    repo: this.props.repo || -1,
+    repo: this.props.repo,
   })
 
   props: Props
@@ -121,7 +121,7 @@ class PullRequestsPaginated extends Component {
           }
           <div style={selectBoxStyle}>
             <BranchSelect
-              repoId={this.props.repo}
+              repoName={this.props.repo}
               onSelect={this.handleBranchSelect}
             />
           </div>

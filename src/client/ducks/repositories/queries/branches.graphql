@@ -1,9 +1,11 @@
-query repositoryBranches($id: Int!) {
-	repository(id: $id) {
+query repositoryBranches($name: String!, $branch: String) {
+	repository(name: $name) {
     id
-    branches {
-      name
-      revision
+    branches(limit: 20, name: $branch) {
+      nodes {
+        name
+        revision
+      }
     }
   }
 }

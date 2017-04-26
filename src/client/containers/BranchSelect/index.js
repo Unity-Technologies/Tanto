@@ -12,13 +12,12 @@ type SelectItemType = {
 }
 
 type BranchProps = {
-  repoId: number,
+  repoName: string,
   options: Array<SelectItemType>,
   onSelect: Function,
   style: ?Object,
   dispatch: Function,
 }
-
 
 class BranchSelect extends Component {
   constructor(props: BranchProps) {
@@ -32,14 +31,15 @@ class BranchSelect extends Component {
 
   componentDidMount() {
     // TODO : enable search instead of fetching all branches
-    // if (this.props.repoId) {
-    //   this.props.dispatch(fetchRepositoryBranches(this.props.repoId))
-    // }
+
+    if (this.props.repoName) {
+      this.props.dispatch(fetchRepositoryBranches(this.props.repoName))
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.repoId !== nextProps.repoId) {
-      this.props.dispatch(fetchRepositoryBranches(nextProps.repoId))
+    if (this.props.repoName !== nextProps.repoName) {
+      this.props.dispatch(fetchRepositoryBranches(nextProps.repoName))
     }
   }
 

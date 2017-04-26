@@ -118,10 +118,10 @@ describe('repository actions', () => {
   })
 
   it('fetchRepositoryBranches success', (done) => {
-    const id = 2
+    const name = 'repotest'
     const repo = {
       repository: {
-        id,
+        id: 1,
         branches: [{
           name: 'testbranch',
           revision: 12,
@@ -132,7 +132,7 @@ describe('repository actions', () => {
       },
     }
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORY_BRANCHES, variables: { id }, query: repoBranchesQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORY_BRANCHES, variables: { name }, query: repoBranchesQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY_BRANCHES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: normalize(repo, schema).entities },
@@ -145,14 +145,14 @@ describe('repository actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchRepositoryBranches(id))
+    store.dispatch(fetchRepositoryBranches(name))
   })
 
   it('fetchRepositoryBranches failure', (done) => {
-    const id = 2
+    const name = 'repotest'
     const error = new Error('some error')
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORY_BRANCHES, variables: { id }, query: repoBranchesQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORY_BRANCHES, variables: { name }, query: repoBranchesQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_REPOSITORY_BRANCHES },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_REPOSITORY_BRANCHES, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_REPOSITORY_BRANCHES, error },
@@ -163,7 +163,7 @@ describe('repository actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(fetchRepositoryBranches(id))
+    store.dispatch(fetchRepositoryBranches(name))
   })
 
   it('fetchRepositories success(top level)', (done) => {

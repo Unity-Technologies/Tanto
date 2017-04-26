@@ -1,21 +1,21 @@
 /* flow */
 
 import React, { PureComponent } from 'react'
-import BranchSelect from 'components/BranchSelect'
+import BranchSelect from 'containers/BranchSelect'
 import { connect } from 'react-redux'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Button from 'react-bootstrap/lib/Button'
 import { fetchChangelog } from 'ducks/repositories/actions'
-import { getChangelog, getChangelogFetchStatus } from 'ducks/repositories/selectors'
-import ChangesetList from 'components/ChangesetList'
+import { getChangelogFetchStatus } from 'ducks/repositories/selectors'
+import RepoChangelog from 'containers/RepoChangelog'
 import LoadingComponent from 'components/LoadingComponent'
-import _ from 'lodash'
+
 import './Changelog.css'
 
 export type Props = {
   params: Object,
-  data: Array<any>
+  repoName: string,
 };
 
 class Changelog extends PureComponent {
@@ -23,12 +23,13 @@ class Changelog extends PureComponent {
     super(props)
     this.state = {
       enabled: false,
+      branch: '',
     }
   }
 
   componentDidMount() {
-    if (this.props.params.splat) {
-      this.props.dispatch(fetchChangelog(this.props.params.splat))
+    if (this.props.repoName) {
+      this.props.dispatch(fetchChangelog(this.props.repoName, this.state.branch))
     }
   }
 
@@ -36,21 +37,28 @@ class Changelog extends PureComponent {
     this.setState({ enabled: selectedChangesNumber in [2, 1] })
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.data || this.state.disabled !== nextState.disabled || !_.isEqual(nextProps.status, this.props.status)
+
+  handleBranchSelect = (branch: string): void => {
+    if (branch !== this.state.branch) {
+      this.setState({ branch })
+      this.props.dispatch(fetchChangelog(this.props.repoName, this.state.branch))
+    }
   }
 
   props : Props
 
   render() {
-    const { params: { id }, data, status } = this.props
+    const { repoName, status } = this.props
 
     return (
       <div>
         <div className="changelog-list">
           <Row>
             <Col md={4}>
-              <BranchSelect project={id} placeholder="Select branch ..." />
+              <BranchSelect
+                repoName={repoName}
+                onSelect={this.handleBranchSelect} placeholder="Select branch ..."
+              />
             </Col>
 
             <Col md={8}>
@@ -61,12 +69,7 @@ class Changelog extends PureComponent {
           </Row>
         </div>
         <LoadingComponent status={status}>
-          <ChangesetList
-            showCheckboxes
-            commits={data}
-            projectName={this.props.params.splat}
-            onSelectedChangesetsChange={this.onSelectedChangesetsChange}
-          />
+          <RepoChangelog branch={this.state.branch} repoName={repoName} />
         </LoadingComponent>
       </div>
     )
@@ -75,5 +78,5 @@ class Changelog extends PureComponent {
 
 export default connect((state, props) => ({
   status: getChangelogFetchStatus(state, props),
-  data: getChangelog(state, props),
+  repoName: props.params.splat,
 }))(Changelog)

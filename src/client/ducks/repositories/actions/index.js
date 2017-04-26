@@ -33,12 +33,12 @@ export const searchRepository =
 export const fetchRepository = (name: string): FetchAction =>
   fetchOnoAction({ type: types.FETCH_REPOSITORY, query: repository, variables: { name } })
 
-export const fetchChangelog = (name: string): FetchAction =>
-  fetchOnoAction({ type: types.FETCH_CHANGELOG, query: changelog, variables: { name } })
+export const fetchChangelog = (name: string, branch: string): FetchAction =>
+  fetchOnoAction({ type: types.FETCH_CHANGELOG, query: changelog, variables: { name, branch } })
 
-export const fetchRepositoryBranches = (id: number): FetchAction =>
+export const fetchRepositoryBranches = (name:string): FetchAction =>
   fetchOnoAction({
-    type: types.FETCH_REPOSITORY_BRANCHES, query: repoBranchesQuery, variables: { id },
+    type: types.FETCH_REPOSITORY_BRANCHES, query: repoBranchesQuery, variables: { name },
   })
 
 export const fetchRepositories = (name: string): FetchAction =>

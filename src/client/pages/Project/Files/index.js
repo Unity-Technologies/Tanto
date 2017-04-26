@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import { connect } from 'react-redux'
 import FileList from 'components/FileList'
-import BranchSelect from 'components/BranchSelect'
+import BranchSelect from 'containers/BranchSelect'
 import Filter from 'components/Filter'
 import Breadcrumb from 'components/Breadcrumb'
 
