@@ -5,6 +5,7 @@ import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
 import Tooltip from 'react-bootstrap/lib/Tooltip'
 import './ReviewerList.css'
 import type { PullRequestReviewerType } from 'universal/types'
+import _ from 'lodash'
 
 const getClass = (icon: string, color: string) => `fa ${icon} ${color}`
 
@@ -42,7 +43,7 @@ class ReviewerList extends Component {
               />
             </OverlayTrigger>
             {this.props.reviews.map((r, i) => (
-              <span>
+              <span key={_.uniqueId()}>
                 <span className="reviewer-item" onClick={() => this.handleRemoveReviewer(r.user.id)}>
                   <a >
                     {r.user.fullName.trim() || r.user.username.trim()}

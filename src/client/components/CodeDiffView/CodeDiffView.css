@@ -13,6 +13,7 @@ pre[data-line] {
 
 .diff-view {
     border-right: 1px solid lightgrey;
+    padding: 0;
     border-bottom: 1px solid lightgrey;
 }
 

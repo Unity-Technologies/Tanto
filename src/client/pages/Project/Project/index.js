@@ -29,7 +29,6 @@ const Project = (props: Props) => {
   )
 }
 
-
 export default connect(
   (state, props) => ({
     name: props.params.splat,

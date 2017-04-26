@@ -12,7 +12,7 @@ export const types = {
 
 export const queryCustomizer = (objValue: any, srcValue: any): any => { // eslint-disable-line consistent-return
   if (_.isArray(objValue)) {
-    return _.union(objValue, srcValue)
+    return _.union([], objValue, srcValue)
   }
 }
 
@@ -32,7 +32,7 @@ export const merge = (state: Object, entity: Object, customizer: Function): Obje
 export const entities = (state: Object = {}, action: Object): Object => {
   switch (action.type) {
     case types.SET_QUERIED_ENTITIES:
-      return merge(state, action.entities, queryCustomizer)
+      return _.mergeWith({}, state, action.entities, queryCustomizer)
     case types.SET_MUTATED_ENTITIES:
       return _.mergeWith({}, state, action.entities, mutationCustomizer)
     default:

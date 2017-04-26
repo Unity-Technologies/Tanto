@@ -9,6 +9,7 @@ import { fetchOnoSaga, fetchBfStatsSaga } from 'sagas/fetch'
 import { searchRepository } from 'sagas/repositories'
 import { fetchUsers } from 'sagas/users'
 
+
 export default function* rootSaga(): Generator<*, *, *> {
   yield fork(
     takeEvery, fetchTypes.FETCH_ONO_DATA, fetchOnoSaga)

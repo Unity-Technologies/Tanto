@@ -1,68 +1,100 @@
 /* @flow */
+/* eslint-disable no-console */
 
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import CodeDiffView from 'components/CodeDiffView'
 import _ from 'lodash'
-import { fetchPullRequestFile, createFileFetchActionType } from 'ducks/pullrequests/actions'
-import type { StatusType } from 'ducks/fetch/selectors'
-import { statusFetchFactory } from 'ducks/fetch/selectors'
-import LoadingComponent from 'components/LoadingComponent'
-import { getPullRequestFile } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 import { getLoggedUsername } from 'ducks/session/selectors'
-import type { FileType } from 'universal/types'
+import { processDiff } from 'ducks/diff'
 import DiffHeader from 'components/DiffHeader'
 import Scroll from 'react-scroll'
 import Collapse from 'components/Collapse'
+import LinearProgress from 'material-ui/LinearProgress'
+import { DiffTypes } from 'universal/constants'
 const Element = Scroll.Element
 
 type Props = {
-  fileName: string,
-  file: FileType,
+  id: string,
+  file: Object,
   pullRequestId: string,
-  status: StatusType,
   loggedUsername: string,
   dispatch: Function,
-  viewType: string
+  viewType: number,
+  unifiedDiff: any,
+  sideBySideDiff: any,
 }
 
-export const fetchStatus = (state: Object, props: Object): Function =>
-  statusFetchFactory(createFileFetchActionType(props.pullRequestId, props.fileName))
+export const getFile = (state: Object, props: Object) => {
+  const file = state.entities.files[props.id] || null
+  console.log(file && file.diff ? `File diff is here: ${file.diff.length}` : 'No diff yet')
+  return file
+}
 
-export const getData = (state: Object, props: Object): Object =>
+export const getSideBySideFileDiff = (state: Object, props: Object) => {
+  const file = state.ui.diff[props.id] || null
+  console.log(file && file[1] ? 'SidebySide diff is here' : 'No SidebySide diff yet')
+  return file ? file[1] : null
+}
+
+export const getUnifiedFileDiff = (state: Object, props: Object) => {
+  const file = state.ui.diff[props.id] || null
+  console.log(file && file[0] ? 'Unified diff is here' : 'No unified diff yet')
+  return file ? file[0] : null
+}
+
+export const getData =
   createSelector(
-    getPullRequestFile, fetchStatus, getLoggedUsername,
-    (file, status, user) => ({
-      file,
-      status,
-      loggedUsername: user,
-    })
+    getFile,
+    getLoggedUsername,
+    getUnifiedFileDiff,
+    getSideBySideFileDiff,
+    (file, user, unifiedDiff, sideBySideDiff) => {
+      console.log('get data CALLED')
+      return {
+        file,
+        unifiedDiff,
+        sideBySideDiff,
+        loggedUsername: user,
+      }
+    }
   )
 
 class CodeDiffContainer extends PureComponent {
-
   constructor(props: Props) {
     super(props)
     this.state = {
-      viewType: props.viewType || '0',
       startedComment: false,
       collapsed: false,
       commentLine: null,
     }
   }
 
+  componentWillMount() {
+    console.log('componentWillMount')
+    const { id, diff, type } = this.props.file
+    if (diff) {
+      console.log('componentWillMount dispatched process')
+      this.props.dispatch(processDiff(id, type, diff, this.props.viewType))
+    }
+  }
+
+  componentWillReceiveProps(nextProps, nextState) {
+    console.log('componentWillReceiveProps')
+    const { file: { diff, id, type } } = this.props
+    if ((diff !== nextProps.file.diff && nextProps.file.diff) ||
+      ((nextProps.viewType === DiffTypes.UNIFIED && !nextProps.unifiedDiff) ||
+      (nextProps.viewType === DiffTypes.SIDE_BY_SIDE && !nextProps.sideBySideDiff))) {
+      this.props.dispatch(processDiff(id, type, nextProps.file.diff, nextProps.viewType))
+    }
+  }
+
   props: Props
   state: {
-    viewType: string,
     startedComment: boolean,
     collapsed: boolean,
     commentLine: any,
-  }
-
-  componentWillMount() {
-    const { pullRequestId, fileName } = this.props
-    this.props.dispatch(fetchPullRequestFile(pullRequestId, fileName))
   }
 
   onCollapse = (collapsed: boolean) => {
@@ -72,42 +104,47 @@ class CodeDiffContainer extends PureComponent {
     })
   }
 
-  changeDiffViewType = (value) => {
-    this.setState({ viewType: value })
-  }
-
-
   render() {
-    if (!this.props.fileName) {
-      return null
-    }
-    const { file, loggedUsername, fileName } = this.props
-    const { viewType, collapsed } = this.state
+    console.log('RENDERED container')
+    const {
+      loggedUsername,
+      file: { type, comments, stats, diff, name },
+      unifiedDiff,
+      sideBySideDiff,
+      viewType,
+    } = this.props
+
+    const { collapsed } = this.state
+    const anyDiff = unifiedDiff && viewType === DiffTypes.UNIFIED ||
+      sideBySideDiff && viewType === DiffTypes.SIDE_BY_SIDE ||
+      viewType === DiffTypes.RAW && diff
     return (
       <div>
         <Element
-          key={_.uniqueId(fileName)}
-          name={fileName.replace(/[/.]/g, '')}
+          key={_.uniqueId(name)}
+          name={name.replace(/[/.]/g, '')}
           style={{ marginBottom: '20px' }}
         >
           <DiffHeader
-            comments={file.comments ? file.comments.length > 0 : false}
+            comments={comments ? comments.length > 0 : false}
             collapsed={collapsed}
-            title={file.name}
-            stats={file.stats}
-            onViewChangeClick={this.changeDiffViewType}
+            title={name}
+            stats={stats}
             onCollapse={this.onCollapse}
-            selectedValue={this.state.viewType}
           />
-          <Collapse isOpened={!collapsed}>
-            <LoadingComponent status={this.props.status}>
+          {!anyDiff && <LinearProgress />}
+          {anyDiff &&
+            <Collapse isOpened={!collapsed}>
               <CodeDiffView
-                file={file}
+                type={type}
+                rawDiff={diff}
+                unifiedDiff={unifiedDiff}
+                sideBySideDiff={sideBySideDiff}
                 loggedUsername={loggedUsername}
                 viewType={viewType}
               />
-            </LoadingComponent>
-          </Collapse>
+            </Collapse>
+          }
         </Element>
       </div>
 
