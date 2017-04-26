@@ -1,0 +1,10 @@
+.changelog-btn {
+  background-color: #1fb5ad;
+  border-color:#1fb5ad;
+  color: white;
+  float: right;
+}
+
+.changelog-list {
+  padding: 10px;
+}

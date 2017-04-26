@@ -14,7 +14,9 @@ const comment = new schema.Entity('comments', {
   author: user,
 })
 
-const changeset = new schema.Entity('changesets')
+const changeset = new schema.Entity('changesets', {
+  authorUser: user,
+})
 
 const repository = new schema.Entity('repositories', {
   owner: user,

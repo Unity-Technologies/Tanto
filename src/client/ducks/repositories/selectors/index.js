@@ -2,6 +2,7 @@
 
 import { createSelector, createStructuredSelector } from 'reselect'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
+import { userEntitiesSelector } from 'ducks/users/selectors'
 import { types } from '../actions'
 import _ from 'lodash'
 
@@ -72,25 +73,43 @@ export const getRepositoryId = createSelector(
     _.findKey(entities, (v) => (v.fullName === repoName))
 )
 
-export const getChangesetList = (state: Object) => _.values(state.entities.changesets)
-
-export const getChangesetsWithAvatars = (state: Object) => createSelector(
-  getChangesetList,
-  (changesets) =>
-    _.values(changesets.map(changeset =>
-      ({ ...changeset,
-        author: {
-          name: changeset.authorUser ? changeset.authorUser.username : 'unknown',
-          slack: changeset.authorUser ? changeset.authorUser.slack : {},
-        },
-      }
-    ))
-))
-
 export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
+export const parseMercurialAuthor = (author:string) => {
+  if (!author) {
+    return author
+  }
+  const match = author.match(/([^)]+)\s\<([^)]+)\>/) // eslint-disable-line  no-useless-escape
 
-export const getChangelog = (state: Object) => createStructuredSelector({
-  data: getChangesetsWithAvatars(state),
-  status: getChangelogFetchStatus,
-})
+  if (!match || match.length !== 3) {
+    return {
+      fullName: author,
+    }
+  }
 
+  // two captured groups expected here, 1st one is default
+  return {
+    fullName: match[1],
+    email: match[2],
+  }
+}
+
+export const getChangesetsEntities = (state: Object, props: Object) => state.entities.changesets
+export const getRepositoriesEntities = (state: Object, props: Object) => state.entities.repositories
+export const getChangelog = createSelector(
+  getChangesetsEntities, getRepositoriesEntities, userEntitiesSelector, getRepositoryId,
+  (changesets, repositories, users, repoId) => {
+    if (!changesets || !repositories || ! users || !repoId) {
+      return null
+    }
+    const repo = repositories[repoId]
+    if (!repo || !repo.changelog || !repo.changelog.nodes) {
+      return null
+    }
+
+    const changelog = _.values(_.pick(changesets, repo.changelog.nodes))
+    return changelog.map(ch => ({
+      ...ch,
+      authorUser: ch.authorUser ? users[ch.authorUser] : parseMercurialAuthor(ch.author),
+    }))
+  }
+)

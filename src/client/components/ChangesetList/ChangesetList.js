@@ -71,9 +71,9 @@ const reduceCommitDelta = (files) => {
 class ChangesetList extends Component {
   constructor(props: Props) {
     super(props)
-    this.state = { 
-      search: null, 
-      activeKey: 3, 
+    this.state = {
+      search: null,
+      activeKey: 3,
       changesets: [],
       copied: false,
       copiedValue: '',
@@ -88,7 +88,6 @@ class ChangesetList extends Component {
   }
 
   handleChange = (event) => {
-
     const isSelected = event.target.checked
 
     if (this.state.changesets.length < 2 && isSelected) {
@@ -112,11 +111,12 @@ class ChangesetList extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.disabled != nextState.disabled
+    return nextProps.commits && !_.isEqual(this.props.commits, nextProps.commits) ||
+    this.state.disabled !== nextState.disabled
   }
 
   render() {
-    if (!this.props.commits) {
+    if (!this.props.commits || !this.props.commits.length) {
       return null
     }
 
@@ -138,23 +138,9 @@ class ChangesetList extends Component {
             >
             <div>
               <Row>
-                <Col lg={1} md={2} sm={2} xs={3}>
-                  <div style={{ float: 'right' }}>
-                    <Avatar {...item.author.slack} />
-                  </div>
-                  {showCheckboxes ?
-                      <Checkbox
-                        ref={item.id}
-                        disableTouchRipple
-                        onChange={this.handleChange}
-                        value={item.id}
-                        style={{ float: 'left', height: '15px', marginTop: '10px' }}
-                        checked={ this.state.changesets.indexOf(item.id) != -1 }
-                        disabled={ this.state.changesets.length >= 2 & this.state.changesets.indexOf(item.id) == -1 }
-                        /> : ''}
-                </Col>
-                <Col lg={5} md={9} sm={11} xs={12}>
-                  <div style={{ display: 'table' }}>
+                <Col md={4}>
+                  <Avatar {...item.author.slack} />
+                  <div style={{ display: 'table' , paddingLeft: '10px' }}>
                     <Link
                       style={{
                         cursor: 'pointer',
@@ -166,11 +152,11 @@ class ChangesetList extends Component {
                     </Link>
 
                     <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
-                      <strong>{item.author.name}</strong>, added {moment(item.date).fromNow()}
+                      <strong>{item.authorUser.fullName}</strong>, added {moment(item.date).fromNow()}
                     </div>
                   </div>
                 </Col>
-                <Col lg={2} md={3} smHidden xsHidden>
+                <Col md={3}>
                   <div
                     style={{
                       color: '#5a6082',
@@ -179,7 +165,7 @@ class ChangesetList extends Component {
                     }}
                     >
                     <CopyToClipboard text={item.id} onCopy={() => this.setState({ copied: true })}>
-                      <i style={{ fontSize: '14px', padding: '2px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }} 
+                      <i style={{ fontSize: '14px', padding: '2px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }}
                       className="fa fa-clipboard" aria-hidden="true" />
                     </CopyToClipboard>
                     <Link
@@ -190,37 +176,28 @@ class ChangesetList extends Component {
                     </Link>
                   </div>
                 </Col>
-                <Col lg={2} mdHidden smHidden xsHidden >
+                <Col md={2}>
                   <div>
                     {subHeader('Branch:')}
                     <div>
                       <a style={{ textDecoration: 'none', color: '#5a6082' }} href="#">{item.branch}</a>
                     </div>
                   </div>
-
                 </Col>
-                <Col lg={1} mdHidden smHidden xsHidden>
-                  {item.build &&
-                    <div>
-                      {subHeader('Status:')}
-                      <div style={{ color: item.build.status === 0 ? '#51b583' : '#ca5757', textTransform: 'uppercase' }}>
-                        Passed
-                        </div>
-                    </div>
-                  }
-                </Col>
-                <Col lg={1} mdHidden smHidden xsHidden>
-                  {item.build &&
-                    <div>
-                      {subHeader('Builds:')}
-                      <a href="#" style={{ color: '#5a6082', textTransform: 'uppercase', textDecoration: 'none' }}>
-                        {item.build.name}
-                      </a>
-                    </div>
-                  }
-                </Col>
-                <Col lg={1} md={2} sm={3} xsHidden>
+                <Col md={2}>
                   <ChangesetDelta {...reduceCommitDelta(item.files)} />
+                </Col>
+                <Col md={1}>
+                  {showCheckboxes ?
+                    <Checkbox
+                      ref={item.id}
+                        disableTouchRipple
+                        onChange={this.handleChange}
+                        value={item.id}
+                        style={{ float: 'left', height: '15px', marginTop: '10px' }}
+                        checked={ this.state.changesets.indexOf(item.id) != -1 }
+                        disabled={ this.state.changesets.length >= 2 & this.state.changesets.indexOf(item.id) == -1 }
+                        /> : ''}
                 </Col>
               </Row>
             </div>
