@@ -1,4 +1,4 @@
-mutation editComment($commentId: Int!, $text: String!) {
+mutation updateComment($commentId: Int!, $text: String!) {
   editComment(commentId: $commentId, text: $text) {
     comment {
       id

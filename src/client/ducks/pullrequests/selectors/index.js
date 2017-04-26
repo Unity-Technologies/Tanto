@@ -5,6 +5,7 @@ import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { createSelector } from 'reselect'
 export type { StatusType } from 'ducks/fetch/selectors'
 import { userEntitiesSelector } from 'ducks/users/selectors'
+import { parseMercurialAuthor } from 'ducks/repositories/selectors'
 
 import _ from 'lodash'
 
@@ -138,22 +139,36 @@ export const getPullRequestFiles = createSelector(
     return _.values(_.pick(files, pr.files))
   })
 
-export const fileNameSelector = (state:Object, props:Object): string => props.fileName
-export const getPullRequestFile = createSelector(
-  getPullRequestFiles, fileNameSelector, getCommentsEntities, userEntitiesSelector,
-  (files, fileName, commentEntities, userEntities) => {
-    if (!files || !fileName) {
-      return {}
-    }
-    const file = files.find(x => x.name === fileName)
-    if (!file) {
-      return {}
-    }
 
+export const getFile = (state: Object, props: Object) => (props.id ? state.entities.files[props.id] : null)
+
+export const getFileComments = createSelector(
+  getFile, getCommentsEntities, userEntitiesSelector,
+  (file, commentEntities, userEntities) => {
     // Denormalization of inline comments
-    return {
-      ...file,
-      comments: _.values(_.pick(commentEntities, file.comments))
-      .map(comment => denormalizeCommentAuthor(comment, userEntities)),
-    }
+    const comments = _.values(_.pick(commentEntities, file.comments))
+      .map(comment => denormalizeCommentAuthor(comment, userEntities))
+    const reduced = _.reduce(comments, (result, value, key) => {
+      if (value.location) {
+        (result[value.location.lineNumber] || (result[value.location.lineNumber] = [])).push(value) //eslint-disable-line
+      }
+      return result
+    }, {})
+
+    return reduced
   })
+
+export const getChangesetsEntities = (state: Object, props: Object) => state.entities.changesets
+export const getPullRequestChangeset = createSelector(
+  getPullRequestNormalized, getChangesetsEntities, userEntitiesSelector,
+  (pullRequest, changesets, users) => {
+    if (!pullRequest || !pullRequest.changeset || !changesets || !users) {
+      return null
+    }
+    const changeset = _.values(_.pick(changesets, pullRequest.changeset))
+    return changeset.map(ch => ({
+      ...ch,
+      authorUser: ch.authorUser ? users[ch.authorUser] : parseMercurialAuthor(ch.author),
+    }))
+  }
+)

@@ -9,9 +9,9 @@ import ChangesetDelta from 'components/ChangesetDelta'
 const navbarStyle = {
   backgroundColor: 'transparent',
   border: '1px solid lightgrey',
-  marginBottom: '0px',
   borderRadius: '0px',
   fontSize: '14px',
+  marginBottom: '-1px',
 }
 
 export type Props = {

@@ -38,13 +38,14 @@ const Header = ({ currentCategory, rootPath }) =>
 export type Props = {
   currentCategory: string,
   pullRequestId: string,
+  repoName: string,
   rootPath: string,
 }
 
-const LayoutDeveloper = ({ currentCategory, pullRequestId, rootPath } : Props) =>
+const LayoutDeveloper = ({ repoName, currentCategory, pullRequestId, rootPath } : Props) =>
   <div style={{ padding: '0 20px' }}>
     <Header currentCategory={currentCategory} rootPath={rootPath} />
-    <CategoryModule pullRequestId={pullRequestId} type={currentCategory} />
+    <CategoryModule repoName={repoName} pullRequestId={pullRequestId} type={currentCategory} />
   </div>
 
 export default LayoutDeveloper

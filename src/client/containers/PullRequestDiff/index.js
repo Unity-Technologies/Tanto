@@ -15,7 +15,7 @@ import { DiffTypes } from 'universal/constants'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import IconButton from 'material-ui/IconButton'
-
+import { createInlineComment, updateComment, deleteInlineComment } from 'ducks/comments/actions'
 import Nav from 'react-bootstrap/lib/Nav'
 import View from 'material-ui/svg-icons/action/view-module'
 import Navbar from 'react-bootstrap/lib/Navbar'
@@ -24,12 +24,13 @@ type Props = {
   files: Array<FileType>,
   pullRequestId: string,
   loggedUsername: string,
+  repoName: string,
+  dispatch: Function,
 }
 
-export const getData = (state: Object, props: Object): Object =>
-  createSelector(
+export const getData = createSelector(
     getPullRequestFiles, getLoggedUsername,
-    (files, user) => ({
+    (files, user, repoName) => ({
       files,
       loggedUsername: user,
     })
@@ -45,6 +46,28 @@ class PullRequestDiff extends PureComponent {
   props: Props
   state: {
     viewType: number,
+  }
+
+  handleCreateInlineComment = (filePath: string, lineNumber: string, text: string) => {
+    if (!lineNumber || !text) {
+      return
+    }
+    const { repoName, pullRequestId } = this.props
+    this.props.dispatch(createInlineComment(repoName, pullRequestId, filePath, lineNumber, text))
+  }
+
+  handleUpdateInlineComment = (commentId: string, text: string) => {
+    if (!commentId || !text) {
+      return
+    }
+    this.props.dispatch(updateComment(commentId, text))
+  }
+
+  handleDeleteInlineComment = (commentId: string, filePath: string) => {
+    if (!commentId) {
+      return
+    }
+    this.props.dispatch(deleteInlineComment(commentId, filePath))
   }
 
   handleChangeSingle = (event, value) => {
@@ -87,7 +110,14 @@ class PullRequestDiff extends PureComponent {
               </Nav>
             </Navbar>
             {this.props.files.map(file =>
-              <CodeDiffContainer viewType={this.state.viewType} id={file.id} pullRequestId={this.props.pullRequestId} />
+              <CodeDiffContainer
+                viewType={this.state.viewType}
+                id={file.id}
+                pullRequestId={this.props.pullRequestId}
+                onUpdateInlineComment={this.handleUpdateInlineComment}
+                onDeleteInlineComment={this.handleDeleteInlineComment}
+                onCreateInlineComment={this.handleCreateInlineComment}
+              />
             )}
           </Col>
         </Row>

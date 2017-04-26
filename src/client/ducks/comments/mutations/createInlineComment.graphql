@@ -1,0 +1,26 @@
+mutation createInlineComment($repoName: String!, $text: String!, $pullRequestId: Int, $revision: String, $lineNumber: String!, $filePath: String!) {
+  createComment(repository: { name: $repoName }, pullRequestId: $pullRequestId, revision: $revision, text: $text, location: {lineNumber: $lineNumber, filePath: $filePath} ) {
+
+    pullRequest {
+      id
+      files(name: $filePath) {
+        id
+        comments {
+          id
+          text
+          author {
+            id
+            username
+            fullName
+            email
+          }
+          location {
+            lineNumber
+            filePath
+          }
+          created
+        }
+      }
+    }
+  }
+}

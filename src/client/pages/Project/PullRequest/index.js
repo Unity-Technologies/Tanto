@@ -3,12 +3,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  GUARDIAN_PERSONA,
   DEVELOPER_PERSONA,
 } from 'universal/constants'
 import type { PullRequestGraphType } from 'universal/types'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
-import LayoutGuardian from './Layouts/LayoutGuardian'
 import Helmet from 'react-helmet'
 import { getPersona } from 'ducks/session/selectors'
 import ActionBar from './ActionBar'
@@ -21,6 +19,7 @@ type Props = {
     id: string,
     prid: string,
     category: ?string,
+    splat:string,
   },
   location: {
     pathname: string,
@@ -48,16 +47,12 @@ const PullRequest = (props: Props) => {
     <div>
       <ActionBar />
       <Helmet title={`Pull Request: ${title}`} />
-
-      {persona === GUARDIAN_PERSONA ?
-        <LayoutGuardian pullRequestId={params.prid} />
-        :
-        <LayoutDeveloper
-          pullRequestId={params.prid}
-          currentCategory={currentCategory}
-          rootPath={rootPath}
-        />
-      }
+      <LayoutDeveloper
+        repoName={params.splat}
+        pullRequestId={params.prid}
+        currentCategory={currentCategory}
+        rootPath={rootPath}
+      />
     </div>
   )
 }

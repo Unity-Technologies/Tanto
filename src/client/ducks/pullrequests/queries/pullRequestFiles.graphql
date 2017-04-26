@@ -18,23 +18,6 @@ query pullRequestFiles($id: Int!, $name: String) {
           filePath
         }
         created
-        issue {
-          id
-          title
-          created
-          description
-          status
-          branch
-          owner {
-            id
-            username
-            fullName
-            email
-          }
-          assignee {
-            id
-          }
-        }
       }
     }
   }

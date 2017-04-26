@@ -1,0 +1,25 @@
+mutation deleteInlineCommentComment($commentId: Int!, $filePath: String) {
+  removeComment(commentId: $commentId) {
+    pullRequest {
+      id
+      files(name: $filePath) {
+        id
+        comments {
+          id
+          text
+          author {
+            id
+            username
+            fullName
+            email
+          }
+          location {
+            lineNumber
+            filePath
+          }
+          created
+        }
+      }
+    }
+  }
+}

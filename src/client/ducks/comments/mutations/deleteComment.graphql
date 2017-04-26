@@ -1,4 +1,4 @@
-mutation removeComment($commentId: Int!) {
+mutation deleteComment($commentId: Int!) {
   removeComment(commentId: $commentId) {
     pullRequest {
       id

@@ -15,7 +15,6 @@ import { getLoggedUser } from 'ducks/session/selectors'
 import {
   getPullRequestGeneralComments,
   getPullRequestDescription,
-  getPullRequestRepoId,
 } from 'ducks/pullrequests/selectors'
 
 export type Props = {
@@ -23,7 +22,7 @@ export type Props = {
   editComment: Function,
   description: CommentType,
   pullRequestId: number,
-  repoId: string,
+  repoName: string,
   dispatch: Function,
   comments: Array<CommentType>,
   loggedUser: UserType,
@@ -40,8 +39,8 @@ class PullRequestDiscussion extends Component {
     this.props.dispatch(updateComment(id, text))
   }
 
-  handleOnCommentCreate = (repoId: string, pullRequestId: string, text: string): void => {
-    this.props.dispatch(createComment(repoId, pullRequestId, text))
+  handleOnCommentCreate = (repoName: string, pullRequestId: string, text: string): void => {
+    this.props.dispatch(createComment(repoName, pullRequestId, text))
   }
 
   handleOnCommentDelete = (id: any): void => {
@@ -61,7 +60,7 @@ class PullRequestDiscussion extends Component {
         <GeneralCommentThread
           description={this.props.description}
           comments={this.props.comments}
-          repoId={this.props.repoId}
+          repoName={this.props.repoName}
           pullRequestId={this.props.pullRequestId}
           loggedUser={this.props.loggedUser}
           onDelete={this.handleOnCommentDelete}
@@ -78,7 +77,6 @@ class PullRequestDiscussion extends Component {
 const mapStateToProps = (state: Object, props: Props): Props => ({
   ...props,
   description: getPullRequestDescription(state, props),
-  repoId: getPullRequestRepoId(state, props),
   comments: getPullRequestGeneralComments(state, props),
   status: getFetchStatus(state, props),
   loggedUser: getLoggedUser(state, props),
