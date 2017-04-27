@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import Panel from 'react-bootstrap/lib/Panel'
 
-import BranchSelect from 'components/BranchSelect'
+import BranchSelect from 'containers/BranchSelect'
 import Filter from 'components/Filter'
 // import Comment from 'components/Comment'
 

@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 
 // import TextEditorBox from 'components/TextEditorBox'
-import BranchSelect from 'components/BranchSelect'
+import BranchSelect from 'containers/BranchSelect'
 // import CodeDiffView from 'components/CodeDiffView'
 
 import FlatButton from 'material-ui/FlatButton'

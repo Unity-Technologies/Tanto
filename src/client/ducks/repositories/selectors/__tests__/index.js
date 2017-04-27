@@ -8,9 +8,11 @@ import {
   getRepositoriesFetchStatus,
   pathnameSelector,
   getRepositoriesFetchState,
-  repoBranchesSelector,
   getRepositoryBranches,
-  repoIdSelector,
+  getRepository,
+  getRepositoriesNames,
+  getBranchName,
+  getRepositoryName,
   getChangelog,
   parseMercurialAuthor,
 } from '../index'
@@ -400,7 +402,6 @@ describe('repositories selectors', () => {
     })
   })
 
-
   it('pathnameSelector', () => {
     const state = {
       routing: {
@@ -490,26 +491,30 @@ describe('repositories selectors', () => {
       pathname: '/test/path',
     })
   })
+})
 
-  it('repoBranchesSelector', () => {
+describe('getRepositoriesNames', () => {
+  it('returns repositories names', () => {
     const node1 = {
       id: 1,
       name: 'name1',
+      fullName: 'group1/name1',
       description: 'description1',
-      parentGroupName: null,
+      groupPath: null,
     }
     const node2 = {
       id: 2,
       name: 'name2',
+      fullName: 'group1/name2',
       description: 'description2',
-      parentGroupName: '/group21',
-      branches: ['default', 'test'],
+      groupPath: null,
     }
     const node3 = {
       id: 3,
       name: 'name3',
+      fullName: 'group1/name3',
       description: 'description3',
-      parentGroupName: '/group21',
+      groupPath: '/projects/testgroup',
     }
 
     const state = {
@@ -521,17 +526,26 @@ describe('repositories selectors', () => {
         },
       },
     }
-
-
-    const props = {
-      repoId: 2,
-    }
-
-    expect(repoBranchesSelector(state, props)).to.eql(['default', 'test'])
+    const expected = [
+      { label: 'group1/name1', value: 'group1/name1' },
+       { label: 'group1/name2', value: 'group1/name2' },
+        { label: 'group1/name3', value: 'group1/name3' },
+    ]
+    expect(getRepositoriesNames(state)).to.eql(expected)
   })
 
+  it('returns empty list  if no repositories', () => {
+    const state = {
+      entities: {
+      },
+    }
 
-  it('getRepositoryBranches', () => {
+    expect(getRepositoriesNames(state)).to.eql([])
+  })
+})
+
+describe('getRepositoryBranches', () => {
+  it('returns list of branches for repository', () => {
     const node1 = {
       id: 1,
       name: 'name1',
@@ -541,11 +555,14 @@ describe('repositories selectors', () => {
     const node2 = {
       id: 2,
       name: 'name2',
+      fullName: '/group21/name2',
       description: 'description2',
       parentGroupName: '/group21',
-      branches: [{ name: 'default', revision: '3452345' },
+      branches: {
+        nodes: [{ name: 'default', revision: '3452345' },
       { name: 'test', revision: 'te456356st' },
       { name: 'unity', revision: 'tes24524t' }],
+      },
     }
     const node3 = {
       id: 3,
@@ -566,7 +583,7 @@ describe('repositories selectors', () => {
 
 
     const props = {
-      repoId: 2,
+      repoName: '/group21/name2',
     }
 
     const expected = [
@@ -578,7 +595,145 @@ describe('repositories selectors', () => {
     expect(getRepositoryBranches(state, props)).to.eql(expected)
   })
 
-  it('repoNameSelector', () => {
+  it('returns null if no branches in repository', () => {
+    const node1 = {
+      id: 1,
+      fullName: 'name1',
+      description: 'description1',
+      parentGroupName: null,
+    }
+    const node2 = {
+      id: 2,
+      name: 'name2',
+      fullName: '/group21/name2',
+      description: 'description2',
+      parentGroupName: '/group21',
+      branches: {
+        nodes: [{ name: 'default', revision: '3452345' },
+      { name: 'test', revision: 'te456356st' },
+      { name: 'unity', revision: 'tes24524t' }],
+      },
+    }
+    const node3 = {
+      id: 3,
+      name: 'name3',
+      description: 'description3',
+      parentGroupName: '/group21',
+    }
+
+    const state = {
+      entities: {
+        repositories: {
+          1: node1,
+          2: node2,
+          3: node3,
+        },
+      },
+    }
+
+
+    const props = {
+      repoName: 'name1',
+    }
+
+    expect(getRepositoryBranches(state, props)).to.eql(null)
+  })
+
+  it('returns null if no repository', () => {
+    const node1 = {
+      id: 1,
+      fullName: 'name1',
+      description: 'description1',
+      parentGroupName: null,
+    }
+    const node2 = {
+      id: 2,
+      name: 'name2',
+      fullName: '/group21/name2',
+      description: 'description2',
+      parentGroupName: '/group21',
+      branches: {
+        nodes: [{ name: 'default', revision: '3452345' },
+      { name: 'test', revision: 'te456356st' },
+      { name: 'unity', revision: 'tes24524t' }],
+      },
+    }
+    const node3 = {
+      id: 3,
+      name: 'name3',
+      description: 'description3',
+      parentGroupName: '/group21',
+    }
+
+    const state = {
+      entities: {
+        repositories: {
+          1: node1,
+          2: node2,
+          3: node3,
+        },
+      },
+    }
+
+
+    const props = {
+      repoName: 'name341',
+    }
+
+    expect(getRepositoryBranches(state, props)).to.eql(null)
+  })
+
+  it('returns null if no repositories entities', () => {
+    const props = {
+      repoName: 'name341',
+    }
+
+    expect(getRepositoryBranches({ entities: {} }, props)).to.eql(null)
+  })
+
+  it('returns null if no repository name', () => {
+    const node1 = {
+      id: 1,
+      fullName: 'name1',
+      description: 'description1',
+      parentGroupName: null,
+    }
+    const node2 = {
+      id: 2,
+      name: 'name2',
+      fullName: '/group21/name2',
+      description: 'description2',
+      parentGroupName: '/group21',
+      branches: {
+        nodes: [{ name: 'default', revision: '3452345' },
+      { name: 'test', revision: 'te456356st' },
+      { name: 'unity', revision: 'tes24524t' }],
+      },
+    }
+    const node3 = {
+      id: 3,
+      name: 'name3',
+      description: 'description3',
+      parentGroupName: '/group21',
+    }
+
+    const state = {
+      entities: {
+        repositories: {
+          1: node1,
+          2: node2,
+          3: node3,
+        },
+      },
+    }
+
+
+    expect(getRepositoryBranches(state, {})).to.eql(null)
+  })
+})
+
+describe('getRepository', () => {
+  it('returns repository object', () => {
     const node1 = {
       id: 1,
       name: 'name1',
@@ -618,7 +773,88 @@ describe('repositories selectors', () => {
       },
     }
 
-    expect(repoIdSelector(state, props)).to.equal('1')
+    expect(getRepository(state, props)).to.equal(node1)
+  })
+
+  it('returns repository object if repoName in props', () => {
+    const node1 = {
+      id: 1,
+      name: 'name1',
+      description: 'description1',
+      fullName: '/test/group/name1',
+    }
+    const node2 = {
+      id: 2,
+      name: 'name2',
+      description: 'description2',
+      parentGroupName: '/group21',
+      branches: [{ name: 'default', revision: '3452345' },
+      { name: 'test', revision: 'te456356st' },
+      { name: 'unity', revision: 'tes24524t' }],
+    }
+    const node3 = {
+      id: 3,
+      name: 'name3',
+      description: 'description3',
+      parentGroupName: '/group21',
+    }
+
+    const state = {
+      entities: {
+        repositories: {
+          1: node1,
+          2: node2,
+          3: node3,
+        },
+      },
+    }
+
+
+    const props = {
+      repoName: '/test/group/name1',
+    }
+
+    expect(getRepository(state, props)).to.equal(node1)
+  })
+})
+
+describe('getRepositoryName', () => {
+  it('returns props repoName', () => {
+    const props = {
+      repoName: '/test/group/name1',
+    }
+
+    expect(getRepositoryName({}, props)).to.equal('/test/group/name1')
+  })
+
+  it('returns props splat value if no repoName', () => {
+    const props = {
+      params: {
+        splat: '/test/group/name1',
+      },
+    }
+
+    expect(getRepositoryName({}, props)).to.equal('/test/group/name1')
+  })
+})
+
+describe('getBranchName', () => {
+  it('returns props branch', () => {
+    const props = {
+      branch: 'branchName',
+    }
+
+    expect(getBranchName({}, props)).to.equal('branchName')
+  })
+
+  it('returns null if no branch in props', () => {
+    const props = {
+      params: {
+        splat: '/test/group/name1',
+      },
+    }
+
+    expect(getBranchName({}, props)).to.equal(null)
   })
 })
 
@@ -1008,7 +1244,6 @@ describe('getChangelog', () => {
     expect(getChangelog(state, props)).to.eql(null)
   })
 })
-
 
 describe('parseMercurialAuthor', () => {
   it('returns fullName and email by parsing the mercurial user string', () => {

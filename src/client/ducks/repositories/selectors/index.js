@@ -6,6 +6,10 @@ import { userEntitiesSelector } from 'ducks/users/selectors'
 import { types } from '../actions'
 import _ from 'lodash'
 
+export const repositoryEntities = (state: Object) => state.entities.repositories
+export const getRepositoryName = (state: Object, props: Object) =>
+ (props.repoName || (props.params ? props.params.splat : ''))
+
 export const repoEntitiesSelector = (state : Object, props: Object): Object => {
   const parentGroupName = props.params.splat || null
   return _.pickBy(state.entities.repositories, repo => (repo.groupPath === parentGroupName))
@@ -39,36 +43,32 @@ export const getRepositoriesFetchState = createStructuredSelector({
 })
 
 export const getSearchRepoFetchStatus = statusFetchFactory(types.SEARCH_REPOSITORY)
-export const repoNamesSelector = (state: Object): Array<Object> => state.entities.repositories || []
+
 export const getRepositoriesNames = createSelector(
-  repoNamesSelector,
-  repoNames => _.values(repoNames).map(x => ({ label: x.fullName, value: x.id }))
+  repositoryEntities,
+  repoNames => _.values(repoNames).map(x => ({ label: x.fullName, value: x.fullName }))
 )
 
-export const getSearchRepoResultState = createStructuredSelector({
-  status: getSearchRepoFetchStatus,
-  options: getRepositoriesNames,
-})
-
-export const repoBranchesSelector =
-  (state: Object, props: Object): Array<Object> => {
-    const repo = _.get(state, ['entities', 'repositories'], {})[props.repoId]
-    return repo && repo.branches ? repo.branches : []
-  }
+export const getRepository = createSelector(
+  repositoryEntities, getRepositoryName,
+  (entities, repoName) => _.find(entities, (v) => (v.fullName === repoName))
+)
 
 export const getRepositoryBranches = createSelector(
-  repoBranchesSelector,
-  repoBranches => repoBranches.map(x => ({ label: x.name, value: x.name }))
+  getRepository,
+  repo => {
+    if (repo && repo.branches) {
+      return repo.branches.nodes.map(x => ({ label: x.name, value: x.name }))
+    }
+    return null
+  }
 )
 
-export const repositoryEntities = (state: Object) => state.entities.repositories
-export const repositoryName = (state: Object, props: Object) =>
-  (props.params ? props.params.splat : '')
 export const repoIdSelector = (state: Object, props: Object): any =>
   _.findKey(state.entities.repositories, (v) => (v.fullName === props.params.splat))
 
 export const getRepositoryId = createSelector(
-  repositoryEntities, repositoryName,
+  repositoryEntities, getRepositoryName,
   (entities, repoName) =>
     _.findKey(entities, (v) => (v.fullName === repoName))
 )
@@ -95,18 +95,19 @@ export const parseMercurialAuthor = (author:string) => {
 
 export const getChangesetsEntities = (state: Object, props: Object) => state.entities.changesets
 export const getRepositoriesEntities = (state: Object, props: Object) => state.entities.repositories
+export const getBranchName = (state: Object, props: Object) => (props && props.branch ? props.branch : null)
 export const getChangelog = createSelector(
-  getChangesetsEntities, getRepositoriesEntities, userEntitiesSelector, getRepositoryId,
-  (changesets, repositories, users, repoId) => {
-    if (!changesets || !repositories || ! users || !repoId) {
-      return null
-    }
-    const repo = repositories[repoId]
-    if (!repo || !repo.changelog || !repo.changelog.nodes) {
+  getChangesetsEntities, userEntitiesSelector, getRepository, getBranchName,
+  (changesets, users, repo, branch) => {
+    if (!changesets || ! users || !repo || !repo.changelog || !repo.changelog.nodes) {
       return null
     }
 
-    const changelog = _.values(_.pick(changesets, repo.changelog.nodes))
+    let changelog = _.values(_.pick(changesets, repo.changelog.nodes))
+
+    if (branch) {
+      changelog = changelog.filter(ch => ch.branch === branch)
+    }
     return changelog.map(ch => ({
       ...ch,
       authorUser: ch.authorUser ? users[ch.authorUser] : parseMercurialAuthor(ch.author),
