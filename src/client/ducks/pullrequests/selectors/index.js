@@ -162,13 +162,13 @@ export const getChangesetsEntities = (state: Object, props: Object) => state.ent
 export const getPullRequestChangeset = createSelector(
   getPullRequestNormalized, getChangesetsEntities, userEntitiesSelector,
   (pullRequest, changesets, users) => {
-    if (!pullRequest || !pullRequest.changeset || !changesets || !users) {
+    if (!pullRequest || !pullRequest.changeset || !changesets) {
       return null
     }
     const changeset = _.values(_.pick(changesets, pullRequest.changeset))
     return changeset.map(ch => ({
       ...ch,
-      authorUser: ch.authorUser ? users[ch.authorUser] : parseMercurialAuthor(ch.author),
+      authorUser: users && ch.authorUser && ch.authorUser in users ? users[ch.authorUser] : parseMercurialAuthor(ch.author),
     }))
   }
 )

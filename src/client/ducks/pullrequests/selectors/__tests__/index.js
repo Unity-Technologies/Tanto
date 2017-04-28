@@ -15,7 +15,8 @@ import {
   getPullRequestId,
   getPullRequestFiles,
   getPullRequestGeneralComments,
-  getPullRequestFile
+  getPullRequestFile,
+  getPullRequestChangeset
 } from '../index'
 
 import { types } from '../../actions'
@@ -850,47 +851,347 @@ describe('getFilesEntities', () => {
   })
 })
 
-describe('fileNameSelector', () => {
-  it('empty props', () => {
-    const files =
-      {
-        12: {
-          id: 12,
-          title: 'test file',
-          description: 'test pr description',
-        },
-      }
-    const state = { entities: { files } }
-    expect(fileNameSelector(state, {})).to.eql(undefined)
-  })
 
-  it('not empty props', () => {
-    const state = { entities: {} }
-    expect(fileNameSelector(state, { fileName: 'testFilename.cs' })).to.eql('testFilename.cs')
-  })
-})
-
-describe('getPullRequestFile', () => {
-  const users =
-    {
-      1: { id: 1, username: 'testusername1' },
-      3: { id: 3, username: 'testusername3' },
-      6: { id: 6, username: 'testusername6' },
-    }
-  const comments = {
-    1: { id: 1, message: 'test pr', author: 3 },
-    12: { id: 12, message: 'test pr12', author: 1 },
-    21: { id: 21, message: 'test pr21', author: 6 },
-  }
-
-  it('not empty state', () => {
-    const pullRequests =
+describe('getPullRequestChangeset', () => {
+  it('should return pull request changeset with parsed mercurial users', () => {
+   const pullRequests =
       {
         92: {
           id: 92,
           owner: 3,
           title: 'test pr92',
           description: 'test pr description92',
+          comments: [1, 12],
+          changeset: ['d7fdb5f9d95e446ea42865e6abbff9abf04a93c6'],
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+    const users =
+      {
+        1: { id: 1, username: 'testusername1' },
+        3: { id: 3, username: 'testusername3' },
+        6: { id: 6, username: 'testusername6' },
+      }
+
+    const changesets =  {
+      d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
+        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+        branch: 'test2',
+        message: 'sadfdsf',
+        author: 'Kateryna Musina <kateryna@unity3d.com>',
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'not_reviewed'
+      },
+     asf: {
+        id: 'asf',
+        branch: 'default',
+        message: 'sadfdsf',
+        author: '',
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'reviewed'
+      }
+    }
+
+
+    const expected = [{
+        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+        branch: 'test2',
+        message: 'sadfdsf',
+        author: 'Kateryna Musina <kateryna@unity3d.com>',
+        files: [
+          'C--f2907f116ca3'
+        ],
+        authorUser: {
+          fullName: 'Kateryna Musina',
+          email: 'kateryna@unity3d.com',
+        },
+        date: '2017-04-19T10:42:03',
+        status: 'not_reviewed'
+      }]
+
+    const props = {
+      params: {
+        prid: 92
+      }
+    }
+
+    const state = { entities: { pullRequests, users, changesets } }
+    expect(getPullRequestChangeset(state, props)).to.eql(expected)
+  })
+
+  it('should return pull request changeset with denormalized users', () => {
+   const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          comments: [1, 12],
+          changeset: ['d7fdb5f9d95e446ea42865e6abbff9abf04a93c6'],
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+    const users =
+      {
+        1: { id: 1, username: 'testusername1' },
+        3: { id: 3, username: 'testusername3' },
+        6: { id: 6, username: 'testusername6' },
+      }
+
+    const changesets =  {
+      d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
+        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+        branch: 'test2',
+        message: 'sadfdsf',
+        author: 'Kateryna Musina <kateryna@unity3d.com>',
+        authorUser: 3,
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'not_reviewed'
+      },
+     asf: {
+        id: 'asf',
+        branch: 'default',
+        message: 'sadfdsf',
+        author: '',
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'reviewed'
+      }
+    }
+
+
+    const expected = [{
+        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+        branch: 'test2',
+        message: 'sadfdsf',
+        author: 'Kateryna Musina <kateryna@unity3d.com>',
+        authorUser: { id: 3, username: 'testusername3' },
+        files: [
+          'C--f2907f116ca3'
+        ],
+
+        date: '2017-04-19T10:42:03',
+        status: 'not_reviewed'
+      }]
+
+    const props = {
+      params: {
+        prid: 92
+      }
+    }
+
+    const state = { entities: { pullRequests, users, changesets } }
+    expect(getPullRequestChangeset(state, props)).to.eql(expected)
+  })
+
+  it('should return null if no pull request', () => {
+   const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          comments: [1, 12],
+          changeset: ['d7fdb5f9d95e446ea42865e6abbff9abf04a93c6'],
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+    const users =
+      {
+        1: { id: 1, username: 'testusername1' },
+        3: { id: 3, username: 'testusername3' },
+        6: { id: 6, username: 'testusername6' },
+      }
+
+    const changesets =  {
+      d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
+        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+        branch: 'test2',
+        message: 'sadfdsf',
+        author: 'Kateryna Musina <kateryna@unity3d.com>',
+        authorUser: 3,
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'not_reviewed'
+      },
+     asf: {
+        id: 'asf',
+        branch: 'default',
+        message: 'sadfdsf',
+        author: '',
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'reviewed'
+      }
+    }
+
+    const props = {
+      params: {
+        prid: 95
+      }
+    }
+
+    const state = { entities: { pullRequests, users, changesets } }
+    expect(getPullRequestChangeset(state, props)).to.eql(null)
+  })
+
+  it('should return null if pull request has no changeset', () => {
+   const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+    const users =
+      {
+        1: { id: 1, username: 'testusername1' },
+        3: { id: 3, username: 'testusername3' },
+        6: { id: 6, username: 'testusername6' },
+      }
+
+    const changesets =  {
+      d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
+        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+        branch: 'test2',
+        message: 'sadfdsf',
+        author: 'Kateryna Musina <kateryna@unity3d.com>',
+        authorUser: 3,
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'not_reviewed'
+      },
+     asf: {
+        id: 'asf',
+        branch: 'default',
+        message: 'sadfdsf',
+        author: '',
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'reviewed'
+      }
+    }
+
+    const props = {
+      params: {
+        prid: 95
+      }
+    }
+
+    const state = { entities: { pullRequests, users, changesets } }
+    expect(getPullRequestChangeset(state, props)).to.eql(null)
+  })
+
+  it('should return null if no changeseets', () => {
+   const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          comments: [1, 12],
+          changeset: ['d7fdb5f9d95e446ea42865e6abbff9abf04a93c6'],
+          files: [2, 1],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+    const users =
+      {
+        1: { id: 1, username: 'testusername1' },
+        3: { id: 3, username: 'testusername3' },
+        6: { id: 6, username: 'testusername6' },
+      }
+
+    const props = {
+      params: {
+        prid: 95
+      }
+    }
+
+    const state = { entities: { pullRequests, users } }
+    expect(getPullRequestChangeset(state, props)).to.eql(null)
+  })
+
+  it('should not return null if no users', () => {
+  const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          comments: [1, 12],
+          changeset: ['d7fdb5f9d95e446ea42865e6abbff9abf04a93c6'],
           files: [2, 1],
         },
 
@@ -904,159 +1205,56 @@ describe('getPullRequestFile', () => {
         },
       }
 
-    const files = {
-      2: { id: 2, name: 'file name2', comments: [31] },
-      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
+    const changesets =  {
+      d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
+        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+        branch: 'test2',
+        message: 'sadfdsf',
+        author: 'Kateryna Musina <kateryna@unity3d.com>',
+        authorUser: 2,
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'not_reviewed'
+      },
+     asf: {
+        id: 'asf',
+        branch: 'default',
+        message: 'sadfdsf',
+        author: '',
+        files: [
+          'C--f2907f116ca3'
+        ],
+        date: '2017-04-19T10:42:03',
+        status: 'reviewed'
+      }
     }
-    const state = { entities: { comments, pullRequests, users, files } }
-    const props = { params: { prid: 92 }, fileName: 'file name1' }
-    const expected =
-      {
-        id: 1, name: 'file name1', id: 1, name: 'file name1', comments:
-        [
-          { id: 1, message: 'test pr', author: { id: 3, username: 'testusername3' } },
-          { id: 12, message: 'test pr12', author: { id: 1, username: 'testusername1' } },
-          { id: 21, message: 'test pr21', author: { id: 6, username: 'testusername6' } },
-        ]
-      }
 
-    expect(getPullRequestFile(state, props)).to.eql(expected)
-  })
 
-  it('empty comments state', () => {
-    const pullRequests =
-      {
-        92: {
-          id: 92,
-          owner: 3,
-          title: 'test pr92',
-          description: 'test pr description92',
-          files: [2, 1],
+    const expected = [{
+        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+        branch: 'test2',
+        message: 'sadfdsf',
+        author: 'Kateryna Musina <kateryna@unity3d.com>',
+        files: [
+          'C--f2907f116ca3'
+        ],
+        authorUser: {
+          fullName: 'Kateryna Musina',
+          email: 'kateryna@unity3d.com',
         },
+        date: '2017-04-19T10:42:03',
+        status: 'not_reviewed'
+      }]
 
-        93: {
-          id: 93,
-          owner: 1,
-          title: 'test pr93',
-          description: 'test pr description92',
-          comments: [1, 12],
-          files: [],
-        },
+    const props = {
+      params: {
+        prid: 92
       }
-
-    const files = {
-      2: { id: 2, name: 'file name2', comments: [31] },
-      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
     }
-    const state = { entities: { pullRequests, users, files } }
-    const props = { params: { prid: 92 }, fileName: 'file name1' }
-    const expected =
-      {
-        id: 1, name: 'file name1', id: 1, name: 'file name1', comments:[]
-      }
 
-    expect(getPullRequestFile(state, props)).to.eql(expected)
-  })
-
-  it('empty files state', () => {
-    const pullRequests =
-      {
-        92: {
-          id: 92,
-          owner: 3,
-          title: 'test pr92',
-          description: 'test pr description92',
-          files: [2, 1],
-        },
-
-        93: {
-          id: 93,
-          owner: 1,
-          title: 'test pr93',
-          description: 'test pr description92',
-          comments: [1, 12],
-          files: [],
-        },
-      }
-
-    const files = {
-      2: { id: 2, name: 'file name2', comments: [31] },
-      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
-    }
-    const state = { entities: { comments, pullRequests, users } }
-    const props = { params: { prid: 92 }, fileName: 'file name1' }
-
-    expect(getPullRequestFile(state, props)).to.eql({})
-  })
-
-  it('empty pullRequests state', () => {
-    const pullRequests =
-      {
-        92: {
-          id: 92,
-          owner: 3,
-          title: 'test pr92',
-          description: 'test pr description92',
-          files: [2, 1],
-        },
-
-        93: {
-          id: 93,
-          owner: 1,
-          title: 'test pr93',
-          description: 'test pr description92',
-          comments: [1, 12],
-          files: [],
-        },
-      }
-
-    const files = {
-      2: { id: 2, name: 'file name2', comments: [31] },
-      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
-    }
-    const state = { entities: { comments, files, users } }
-    const props = { params: { prid: 92 }, fileName: 'file name1' }
-
-    expect(getPullRequestFile(state, props)).to.eql({})
-  })
-
-  it('empty users state', () => {
-    const pullRequests =
-      {
-        92: {
-          id: 92,
-          owner: 3,
-          title: 'test pr92',
-          description: 'test pr description92',
-          files: [2, 1],
-        },
-
-        93: {
-          id: 93,
-          owner: 1,
-          title: 'test pr93',
-          description: 'test pr description92',
-          comments: [1, 12],
-          files: [],
-        },
-      }
-
-    const files = {
-      2: { id: 2, name: 'file name2', comments: [31] },
-      1: { id: 1, name: 'file name1', comments: [1, 21, 12] }
-    }
-    const state = { entities: { comments, pullRequests, files } }
-    const props = { params: { prid: 92 }, fileName: 'file name1' }
-    const expected =
-      {
-        id: 1, name: 'file name1', id: 1, name: 'file name1', comments:
-        [
-          { id: 1, message: 'test pr', author: {}},
-          { id: 12, message: 'test pr12', author: {}},
-          { id: 21, message: 'test pr21', author: {}},
-        ]
-      }
-
-    expect(getPullRequestFile(state, props)).to.eql(expected)
+    const state = { entities: { pullRequests, changesets } }
+    expect(getPullRequestChangeset(state, props)).to.eql(expected)
   })
 })

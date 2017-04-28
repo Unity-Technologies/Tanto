@@ -3,10 +3,8 @@
 import React, { PureComponent } from 'react'
 import type { FileType } from 'universal/types'
 import { connect } from 'react-redux'
-import { getPullRequestFiles } from 'ducks/pullrequests/selectors'
-import { createSelector } from 'reselect'
 import ChangesetFileList from 'components/ChangesetFileList'
-import { getLoggedUsername } from 'ducks/session/selectors'
+import { getData } from './selectors'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import CodeDiffContainer from 'containers/CodeDiffContainer'
@@ -27,14 +25,6 @@ type Props = {
   repoName: string,
   dispatch: Function,
 }
-
-export const getData = createSelector(
-    getPullRequestFiles, getLoggedUsername,
-    (files, user, repoName) => ({
-      files,
-      loggedUsername: user,
-    })
-  )
 
 class PullRequestDiff extends PureComponent {
   constructor(props) {

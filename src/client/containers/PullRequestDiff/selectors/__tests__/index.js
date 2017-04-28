@@ -42,7 +42,7 @@ describe('PullRequestDiff selectors', () => {
         prid: 12,
       },
     }
-    expect(getData(state, props)(state, props)).to.deep.eql(expectedData)
+    expect(getData(state, props)).to.deep.eql(expectedData)
   })
   it('no PRs in state: getData should return data without files', () => {
     const file1 = { id: 1, name: 'file name1', comments: [1, 2] }
@@ -69,7 +69,7 @@ describe('PullRequestDiff selectors', () => {
         prid: 12,
       },
     }
-    expect(getData(state, props)(state, props)).to.deep.eql(expectedData)
+    expect(getData(state, props)).to.deep.eql(expectedData)
   })
   it('no files in state: getData should return data without files', () => {
     const expectedData = {
@@ -93,7 +93,7 @@ describe('PullRequestDiff selectors', () => {
         prid: 12,
       },
     }
-    expect(getData(state, props)(state, props)).to.deep.eql(expectedData)
+    expect(getData(state, props)).to.deep.eql(expectedData)
   })
   it('no entities in state: getData should return empty data', () => {
     const expectedData = {
@@ -109,7 +109,7 @@ describe('PullRequestDiff selectors', () => {
         prid: 12,
       },
     }
-    expect(getData(state, props)(state, props)).to.deep.eql(expectedData)
+    expect(getData(state, props)).to.deep.eql(expectedData)
   })
   it('nonexistent key in status.fetch: getData should return data with no status', () => {
     const file1 = { id: 1, name: 'file name1', comments: [1, 2] }
@@ -146,6 +146,6 @@ describe('PullRequestDiff selectors', () => {
         prid: 12,
       },
     }
-    expect(getData(state, props)(state, props)).to.deep.eql(expectedData)
+    expect(getData(state, props)).to.deep.eql(expectedData)
   })
 })
