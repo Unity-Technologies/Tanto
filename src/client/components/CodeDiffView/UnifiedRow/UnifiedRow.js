@@ -41,19 +41,19 @@ class UnifiedRow extends PureComponent {
     })
   }
 
+  getLineNumber = () => (this.props.newLineNumber ? `n${this.props.newLineNumber}` : `o${this.props.oldLineNumber}`)
   handleOnSave = (text: string): any => {
     this.setState({
       newCommentStarted: false,
     })
     if (this.props.onCreateInlineComment) {
-      this.props.onCreateInlineComment(this.props.line, text)
+      this.props.onCreateInlineComment(this.getLineNumber(), text)
     }
   }
 
   handleOnCreateInlineComment = () => {
     if (this.props.onCreateInlineComment) {
-      const line = this.props.newLineNumber ? `n${this.props.newLineNumber}` : `o${this.props.oldLineNumber}`
-      return (text: string) => this.props.onCreateInlineComment(line, text)
+      return (text: string) => this.props.onCreateInlineComment(this.getLineNumber(), text)
     }
     return null
   }
