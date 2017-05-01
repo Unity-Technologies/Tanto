@@ -14,8 +14,13 @@ const comment = new schema.Entity('comments', {
   author: user,
 })
 
+const file = new schema.Entity('files', {
+  comments: [comment],
+})
+
 const changeset = new schema.Entity('changesets', {
   authorUser: user,
+  files: [file],
 })
 
 const repository = new schema.Entity('repositories', {
@@ -40,14 +45,12 @@ group.define({
   },
 })
 
-const file = new schema.Entity('files', {
-  comments: [comment],
-})
 
 pullRequest.define({
   owner: user,
   issues: [issue],
   files: [file],
+  changeset: [changeset],
   reviews: [{
     user,
   }],

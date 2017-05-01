@@ -1,0 +1,30 @@
+.inline-comments-thread-timeline-item {
+    margin: 5px 0;
+}
+
+.inline-comments-thread-timeline::before {
+    position: absolute;
+    top: 0;
+    bottom: -10px;
+    left: 28px;
+    z-index: 0;
+    display: block;
+    width: 2px;
+    content: "";
+    background-color: #efefef;
+}
+
+.reply-box {
+    height: 40px;
+    font-size: 15px;
+}
+
+.inline-comments-thread {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.65);
+    margin: 5px 5px 5px 0;
+    padding: 10px;
+    border: 1px solid #ededed;
+    border-radius: 4px;
+}

@@ -1,9 +1,8 @@
-// TODO: add flow annotations
+/* flow */
 
-import React, { Component } from 'react'
-// import Comment from 'components/Comment'
-// import _ from 'lodash'
-// import RaisedButton from 'material-ui/RaisedButton'
+import React, { PureComponent } from 'react'
+import InlineCommentThread from 'components/CodeDiffView/InlineCommentThread'
+import NewComment from 'components/CodeDiffView/InlineCommentThread/NewComment'
 
 export type Props = {
   line: string,
@@ -13,62 +12,50 @@ export type Props = {
   operation: string,
   cssClass: string,
   comments?: Array<any>,
-  collapseComments?: boolean,
-  onComment?: Function,
-  loggedUsername: string,
-};
+  loggedUser: Object,
 
-class UnifiedRow extends Component {
-  /* eslint-disable react/sort-comp */
+  onCreateInlineComment: (lineNumber: string, text: string) => void,
+  onUpdateInlineComment: (commentId: string, text: string) => void,
+  onDeleteInlineComment: (commentId: string) => void,
+}
 
-  constructor(props: Props) {
+class UnifiedRow extends PureComponent {
+  constructor(props) {
     super(props)
     this.state = {
-      commentState: false,
-      commentText: '',
-      commentsCollapsed: false || props.collapseComments,
+      newCommentStarted: false,
     }
-    this.addComment = this.addComment.bind(this)
-    this.cancelComment = this.cancelComment.bind(this)
-    this.collapseComments = this.collapseComments.bind(this)
-    this.handleCommentSave = this.handleCommentSave.bind(this)
   }
 
   props: Props
 
-  componentWillReceiveProps(nextProps) {
+  addComment = () => {
     this.setState({
-      commentsCollapsed: this.commentsCollapsed && nextProps.collapseComments,
+      newCommentStarted: true,
     })
   }
 
-  addComment() {
+  handleOnClose = (): any => {
     this.setState({
-      commentState: true,
+      newCommentStarted: false,
     })
   }
 
-  cancelComment() {
+  getLineNumber = () => (this.props.newLineNumber ? `n${this.props.newLineNumber}` : `o${this.props.oldLineNumber}`)
+  handleOnSave = (text: string): any => {
     this.setState({
-      commentState: false,
+      newCommentStarted: false,
     })
-  }
-
-  collapseComments() {
-    this.setState({
-      commentsCollapsed: !this.state.commentsCollapsed,
-    })
-  }
-
-  handleCommentSave() {
-    this.setState({
-      commentState: false,
-    })
-
-    if (this.props.onComment) {
-      const line = this.props.oldLineNumber || this.props.newLineNumber
-      this.props.onComment(line, this.state.commentText)
+    if (this.props.onCreateInlineComment) {
+      this.props.onCreateInlineComment(this.getLineNumber(), text)
     }
+  }
+
+  handleOnCreateInlineComment = () => {
+    if (this.props.onCreateInlineComment) {
+      return (text: string) => this.props.onCreateInlineComment(this.getLineNumber(), text)
+    }
+    return null
   }
 
   render() {
@@ -78,12 +65,12 @@ class UnifiedRow extends Component {
       operation,
       isBreak,
       newLineNumber,
-     // loggedUsername,
+      loggedUser,
       oldLineNumber,
       comments,
     } = this.props
     const codeBreakClass = isBreak ? 'code-break-line' : ''
-    const isCommented = comments.length > 0
+    const isCommented = comments && comments.length > 0
 
     return (
       <tr className={`code-line ${codeBreakClass}`}>
@@ -94,7 +81,7 @@ class UnifiedRow extends Component {
           <div className={`${cssClass}`}>{!isBreak && (newLineNumber || ' ')}</div>
         </td>
         <td className={`${cssClass} line-icon`}>
-          {!isBreak && !isCommented && !this.state.commentState &&
+          {!isBreak && !isCommented && !this.state.newComment &&
             <i
               onClick={this.addComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-hover"
@@ -109,6 +96,19 @@ class UnifiedRow extends Component {
         </td>
         <td className="code-inner">
           <div className={`${cssClass}`} dangerouslySetInnerHTML={{ __html: line || '&nbsp;' }} />
+          {isCommented &&
+            <InlineCommentThread
+              comments={comments}
+              loggedUser={loggedUser}
+              onUpdate={this.props.onUpdateInlineComment}
+              onDelete={this.props.onDeleteInlineComment}
+              onCreate={this.handleOnCreateInlineComment()}
+            />}
+          {this.state.newCommentStarted &&
+            <div>
+              <NewComment loggedUser={loggedUser} handleOnSave={this.handleOnSave} handleOnClose={this.handleOnClose} />
+            </div>
+          }
         </td>
       </tr>
     )

@@ -17,13 +17,13 @@ export type UserType = {
 
 type Props = {
   pullRequestId: string,
-  repoId: string,
+  repoName: string,
   comments: Array<GeneralCommentType>,
   loggedUser: UserType,
   description: CommentType,
   onUpdate: (id: string, value: string) => void,
   onDelete: (id: string) => void,
-  onSave: (repoId: string, pullrequestId: string, value: string) => void,
+  onSave: (repoName: string, pullrequestId: string, value: string) => void,
   onDescriptionUpdate: (pullrequestId: string, value: string) => void,
 }
 
@@ -82,7 +82,7 @@ class GeneralCommentThread extends Component {
 
   handleOnSave = (value: string): any => {
     if (this.props.onSave) {
-      this.props.onSave(this.props.repoId, this.props.pullRequestId, value)
+      this.props.onSave(this.props.repoName, this.props.pullRequestId, value)
     }
   }
 

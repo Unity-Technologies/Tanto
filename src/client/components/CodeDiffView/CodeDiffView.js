@@ -1,4 +1,4 @@
-// TODO: finish flow annotations
+/* flow */
 
 import React, { PureComponent } from 'react'
 import _ from 'lodash'
@@ -14,14 +14,33 @@ export type Props = {
   unifiedDiff: Array<any>,
   sideBySideDiff: Array<any>,
   viewType?: string,
-  loggedUsername: string,
+  loggedUser: Object,
+  comments: Object,
+  onCreateInlineComment: (lineNumber: string, text: string) => void,
+  onUpdateInlineComment: (commentId: string, text: string) => void,
+  onDeleteInlineComment: (commentId: string, text: string) => void,
 }
 
 class CodeDiffView extends PureComponent {
   props: Props
 
+  selectUnifiedComments = (oldLine: number, newLine: number) => {
+    if (!this.props.comments) {
+      return []
+    }
+    if (oldLine && !newLine) {
+      return this.props.comments[`o${oldLine}`] || []
+    }
+    if (newLine && !oldLine) {
+      return this.props.comments[`n${newLine}`] || []
+    }
+
+    return oldLine === newLine ?
+      this.props.comments[`n${oldLine}`] || this.props.comments[`o${oldLine}`] : []
+  }
+
   renderDiff = () => {
-    const { viewType, loggedUsername } = this.props
+    const { viewType, loggedUser } = this.props
 
     if (viewType === 0) {
       const content = this.props.unifiedDiff
@@ -31,9 +50,11 @@ class CodeDiffView extends PureComponent {
             {content.map(line => (
               <UnifiedRow
                 key={_.uniqueId('_split_code_row')}
-                collapseComments={false}
-                loggedUsername={loggedUsername}
-                comments={[]}
+                loggedUser={loggedUser}
+                comments={this.selectUnifiedComments(line.oldLineNumber, line.newLineNumber)}
+                onCreateInlineComment={this.props.onCreateInlineComment}
+                onUpdateInlineComment={this.props.onUpdateInlineComment}
+                onDeleteInlineComment={this.props.onDeleteInlineComment}
                 {...line}
               />))}
           </tbody>
@@ -46,10 +67,12 @@ class CodeDiffView extends PureComponent {
           <tbody>{content.map(line => (
             <SplitRow
               key={_.uniqueId('_split_code_row')}
-              collapseComments={false}
-              loggedUsername={loggedUsername}
-              leftComments={[]}
-              rightComments={[]}
+              loggedUser={loggedUser}
+              leftComments={this.props.comments[`o${line.leftLineNumber}`]}
+              rightComments={this.props.comments[`n${line.rightLineNumber}`]}
+              onCreateInlineComment={this.props.onCreateInlineComment}
+              onUpdateInlineComment={this.props.onUpdateInlineComment}
+              onDeleteInlineComment={this.props.onDeleteInlineComment}
               {...line}
             />
           ))}</tbody>
@@ -63,7 +86,6 @@ class CodeDiffView extends PureComponent {
       </div>
     )
   }
-
 
   render() {
     if (!this.props.rawDiff && !this.props.unifiedDiff && !this.props.sideBySideDiff) {

@@ -9,20 +9,21 @@ import PullRequestSummary from 'containers/PullRequestSummary'
 type Props = {
   type: string,
   pullRequestId: string,
+  repoName: string,
 }
 
-const CategoryModule = ({ type, pullRequestId }: Props) =>
+const CategoryModule = ({ type, pullRequestId, repoName }: Props) =>
   (<div>
     {type === 'summary' &&
-      <PullRequestSummary pullRequestId={pullRequestId} />
+      <PullRequestSummary pullRequestId={pullRequestId} repoName={repoName} />
     }
-    {type === 'discussion' && <PullRequestDiscussion pullRequestId={pullRequestId} />}
-    {type === 'diff' && <PullRequestDiff pullRequestId={pullRequestId} />}
+    {type === 'discussion' && <PullRequestDiscussion pullRequestId={pullRequestId} repoName={repoName} />}
+    {type === 'diff' && <PullRequestDiff pullRequestId={pullRequestId} repoName={repoName} />}
     {type === 'commits' &&
-      <PullRequestCommits pullRequestId={pullRequestId} />
+      <PullRequestCommits pullRequestId={pullRequestId} repoName={repoName} />
     }
     {type === 'issues' &&
-      <PullRequestIssues pullRequestId={pullRequestId} />
+      <PullRequestIssues pullRequestId={pullRequestId} repoName={repoName} />
     }
   </div>)
 

@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 import CodeDiffView from 'components/CodeDiffView'
 import _ from 'lodash'
 import { createSelector } from 'reselect'
-import { getLoggedUsername } from 'ducks/session/selectors'
+import { getLoggedUser } from 'ducks/session/selectors'
+import { getFile, getFileComments } from 'ducks/pullrequests/selectors'
 import { processDiff } from 'ducks/diff'
 import DiffHeader from 'components/DiffHeader'
 import Scroll from 'react-scroll'
@@ -18,47 +19,41 @@ const Element = Scroll.Element
 type Props = {
   id: string,
   file: Object,
-  pullRequestId: string,
-  loggedUsername: string,
+  loggedUser: Object,
   dispatch: Function,
   viewType: number,
   unifiedDiff: any,
   sideBySideDiff: any,
-}
-
-export const getFile = (state: Object, props: Object) => {
-  const file = state.entities.files[props.id] || null
-  console.log(file && file.diff ? `File diff is here: ${file.diff.length}` : 'No diff yet')
-  return file
+  comments: Object, // NOTE: not an array but object with comments reduced by line numbers
+  onCreateInlineComment: (filePath: string, lineNumber: string, text: string) => void,
+  onUpdateInlineComment: (commentId: string, text: string) => void,
+  onDeleteInlineComment: (commentId: string, text: string) => void,
 }
 
 export const getSideBySideFileDiff = (state: Object, props: Object) => {
   const file = state.ui.diff[props.id] || null
-  console.log(file && file[1] ? 'SidebySide diff is here' : 'No SidebySide diff yet')
-  return file ? file[1] : null
+  return file ? file[DiffTypes.SIDE_BY_SIDE] : null
 }
 
 export const getUnifiedFileDiff = (state: Object, props: Object) => {
   const file = state.ui.diff[props.id] || null
-  console.log(file && file[0] ? 'Unified diff is here' : 'No unified diff yet')
-  return file ? file[0] : null
+  return file ? file[DiffTypes.UNIFIED] : null
 }
 
 export const getData =
   createSelector(
     getFile,
-    getLoggedUsername,
+    getLoggedUser,
     getUnifiedFileDiff,
     getSideBySideFileDiff,
-    (file, user, unifiedDiff, sideBySideDiff) => {
-      console.log('get data CALLED')
-      return {
-        file,
-        unifiedDiff,
-        sideBySideDiff,
-        loggedUsername: user,
-      }
-    }
+    getFileComments,
+    (file, user, unifiedDiff, sideBySideDiff, comments) => ({
+      file,
+      unifiedDiff,
+      sideBySideDiff,
+      loggedUser: user,
+      comments,
+    })
   )
 
 class CodeDiffContainer extends PureComponent {
@@ -72,16 +67,13 @@ class CodeDiffContainer extends PureComponent {
   }
 
   componentWillMount() {
-    console.log('componentWillMount')
     const { id, diff, type } = this.props.file
     if (diff) {
-      console.log('componentWillMount dispatched process')
       this.props.dispatch(processDiff(id, type, diff, this.props.viewType))
     }
   }
 
   componentWillReceiveProps(nextProps, nextState) {
-    console.log('componentWillReceiveProps')
     const { file: { diff, id, type } } = this.props
     if ((diff !== nextProps.file.diff && nextProps.file.diff) ||
       ((nextProps.viewType === DiffTypes.UNIFIED && !nextProps.unifiedDiff) ||
@@ -98,20 +90,31 @@ class CodeDiffContainer extends PureComponent {
   }
 
   onCollapse = (collapsed: boolean) => {
-    // NOTE: slow operation, the whole component will be rerendered
-    this.setState({
-      collapsed,
-    })
+    this.setState({ collapsed })
+  }
+
+  handleCreateInlineComment = () => {
+    if (this.props.onCreateInlineComment) {
+      return (lineNumber: string, text: string) => this.props.onCreateInlineComment(this.props.file.name, lineNumber, text)
+    }
+    return null
+  }
+
+  handleDeleteInlineComment = () => {
+    if (this.props.onDeleteInlineComment) {
+      return (commentId: string) => this.props.onDeleteInlineComment(commentId, this.props.file.name)
+    }
+    return null
   }
 
   render() {
-    console.log('RENDERED container')
     const {
-      loggedUsername,
-      file: { type, comments, stats, diff, name },
+      loggedUser,
+      file: { type, stats, diff, name },
       unifiedDiff,
       sideBySideDiff,
       viewType,
+      comments,
     } = this.props
 
     const { collapsed } = this.state
@@ -137,11 +140,15 @@ class CodeDiffContainer extends PureComponent {
             <Collapse isOpened={!collapsed}>
               <CodeDiffView
                 type={type}
+                comments={comments}
                 rawDiff={diff}
                 unifiedDiff={unifiedDiff}
                 sideBySideDiff={sideBySideDiff}
-                loggedUsername={loggedUsername}
+                loggedUser={loggedUser}
                 viewType={viewType}
+                onCreateInlineComment={this.handleCreateInlineComment()}
+                onDeleteInlineComment={this.handleDeleteInlineComment()}
+                onUpdateInlineComment={this.props.onUpdateInlineComment}
               />
             </Collapse>
           }

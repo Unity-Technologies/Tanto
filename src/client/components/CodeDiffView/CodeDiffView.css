@@ -4,6 +4,7 @@ pre[class*="language-"] {
     padding: 0;
     margin: 0;
     font-size: 13px;
+    background-color: white;
 }
 
 pre[data-line] {
