@@ -27,11 +27,16 @@ export const types = {
 /*
    Pull requests general comments actions
 */
+type RepositorySelectorType = {
+  id?: string,
+  name?: string,
+}
+
 export const updateComment = (commentId: string, text:string): FetchAction =>
   fetchOnoAction({ type: types.UPDATE_COMMENT, query: updateCommentQuery, variables: { commentId, text } })
 
-export const createComment = (repoName: string, pullRequestId: string, text: string): FetchAction =>
-  fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables: { repoName, pullRequestId, text } })
+export const createComment = (repository: RepositorySelectorType, pullRequestId: string, text: string): FetchAction =>
+  fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables: { repository, pullRequestId, text } })
 
 export const deleteComment = (commentId: string): FetchAction =>
   fetchOnoAction({ type: types.DELETE_COMMENT, query: deleteCommentQuery, variables: { commentId } })

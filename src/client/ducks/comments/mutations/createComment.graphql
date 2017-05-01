@@ -1,5 +1,7 @@
-mutation createComment($repoName: String!, $text: String!, $pullRequestId: Int, $revision: String, $issue: IssueInput) {
-  createComment(repository: { name: $repoName }, pullRequestId: $pullRequestId, revision: $revision, text: $text, issue: $issue) {
+mutation createComment($repository: RepositorySelector!, $text: String!, $pullRequestId: Int, $revision: String, $location: LocationInput,
+  $issue: IssueInput) {
+  createComment(repository: $repository, pullRequestId: $pullRequestId, revision: $revision, location: $location,
+    text: $text, issue: $issue) {
 
     pullRequest {
       id

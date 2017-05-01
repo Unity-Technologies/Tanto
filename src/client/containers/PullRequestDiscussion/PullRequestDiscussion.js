@@ -40,7 +40,7 @@ class PullRequestDiscussion extends Component {
   }
 
   handleOnCommentCreate = (repoName: string, pullRequestId: string, text: string): void => {
-    this.props.dispatch(createComment(repoName, pullRequestId, text))
+    this.props.dispatch(createComment({ name: repoName }, pullRequestId, text))
   }
 
   handleOnCommentDelete = (id: any): void => {
