@@ -86,7 +86,7 @@ describe('actions', () => {
   })
 
   it('createComment success', (done) => {
-    const repoId = 2
+    const repository = { id: 2 }
     const pullRequestId = 3
     const text = 'NEW COMMENT TEXT'
     const data = {
@@ -116,7 +116,7 @@ describe('actions', () => {
     }
     const transformedData = transformMutationResponse(data)
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.CREATE_COMMENT, variables: { text, repoId, pullRequestId }, query: createCommentQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.CREATE_COMMENT, variables: { text, repository, pullRequestId }, query: createCommentQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.CREATE_COMMENT },
       { type: fetchTypes.SENDING_REQUEST, name: types.CREATE_COMMENT, sending: true },
       { type: SET_MUTATED_ENTITIES, entities: normalize(transformedData, schema).entities },
@@ -129,18 +129,18 @@ describe('actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(createComment(repoId, pullRequestId, text))
+    store.dispatch(createComment(repository, pullRequestId, text))
   })
 
   it('createComment failure', (done) => {
     const text = 'NEW COMMENT TEXT'
-    const repoId = 2
+    const repository = { id: 2 }
     const pullRequestId = 3
 
     const error = new Error('some error')
 
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.CREATE_COMMENT, variables: { text, repoId, pullRequestId }, query: createCommentQuery },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.CREATE_COMMENT, variables: { text, repository, pullRequestId }, query: createCommentQuery },
       { type: fetchTypes.CLEAR_ERROR, name: types.CREATE_COMMENT },
       { type: fetchTypes.SENDING_REQUEST, name: types.CREATE_COMMENT, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.CREATE_COMMENT, error },
@@ -151,7 +151,7 @@ describe('actions', () => {
 
     const store = storeMock({}, expectedActions, done)
 
-    store.dispatch(createComment(repoId, pullRequestId, text))
+    store.dispatch(createComment(repository, pullRequestId, text))
   })
 
   it('deleteComment success', (done) => {

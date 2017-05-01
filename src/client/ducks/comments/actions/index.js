@@ -13,11 +13,16 @@ export const types = {
   CREATE_COMMENT: 'COMMENTS/CREATE_COMMENT',
 }
 
+type RepositorySelectorType = {
+  id?: string,
+  name?: string,
+}
+
 export const updateComment = (commentId: string, text:string): FetchAction =>
   fetchOnoAction({ type: types.UPDATE_COMMENT, query: updateCommentQuery, variables: { commentId, text } })
 
-export const createComment = (repoId: string, pullRequestId: string, text: string): FetchAction =>
-  fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables: { repoId, pullRequestId, text } })
+export const createComment = (repository: RepositorySelectorType, pullRequestId: string, text: string): FetchAction =>
+  fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables: { repository, pullRequestId, text } })
 
 export const deleteComment = (commentId: string): FetchAction =>
   fetchOnoAction({ type: types.DELETE_COMMENT, query: deleteCommentQuery, variables: { commentId } })
