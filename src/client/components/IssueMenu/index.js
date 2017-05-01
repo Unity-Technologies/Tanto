@@ -3,6 +3,7 @@ import React from 'react'
 import Dropdown from 'react-bootstrap/lib/Dropdown'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 import { IssueStatus, IssueStatusText } from 'universal/constants'
+import RemoveIcon from 'components/Icon/RemoveIcon'
 
 import './IssueMenu.css'
 
@@ -55,7 +56,7 @@ class IssueMenu extends React.Component {
           eventKey="4"
           onClick={(e) => this.onCreateIssueAction(IssueStatus.NONE)}
         >
-          <IssueIcon color={getStatusClass(IssueStatus.NONE)} /> {IssueStatusText.NONE}
+          <RemoveIcon /> {IssueStatusText.NONE}
         </MenuItem>
       </Dropdown.Menu>
     </Dropdown>

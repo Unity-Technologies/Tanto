@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/lib/Button'
 import Popover from 'react-bootstrap/lib/Popover'
 import Overlay from 'react-bootstrap/lib/Overlay'
 import { ChangesetStatus as status } from 'universal/constants'
+import RemoveIcon from 'components/Icon/RemoveIcon'
 
 import './VoteForPullRequestMenu.css'
 
@@ -37,7 +38,7 @@ const PopoverVoteForPR = ({ onReviewAction, ...props }) => (
           <RequestChangesIcon />
         </Button>
         <Button className="popover-action" onClick={(e) => onReviewAction(status.NONE)}>
-          <VoteIcon />
+          <RemoveIcon />
         </Button>
       </div>
     </Popover>
