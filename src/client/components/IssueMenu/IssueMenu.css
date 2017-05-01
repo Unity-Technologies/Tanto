@@ -1,0 +1,19 @@
+.action-button {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.action-icon {
+    font-size: 18px;
+    color: rgba(87, 89, 90, 0.69);
+}
+
+.red {
+    font-size: 18px;
+    color: #F44336;
+}
+
+.yellow {
+    font-size: 18px;
+    color: #f49936;
+}

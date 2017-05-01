@@ -17,6 +17,7 @@
     position: relative;
     display: inline-flex;
     width: 100%;
+    min-height: 40px
 }
 
 .comment-box-header:before {
@@ -27,6 +28,15 @@
     position: absolute;
     left: -10px;
     top: 10px;
+}
+
+.edit-mode {
+    background-color: #fbfbfb;
+    border: 1px solid #d6d6d6;
+}
+
+.edit-mode:before {
+    border-color: transparent #d1d5da transparent transparent;
 }
 
 .comment-box-actions {
@@ -93,4 +103,9 @@
 
 .status-grey {
     color: #afacac;
+}
+
+.comment-action-icon {
+    font-size: 18px;
+    color: rgba(87, 89, 90, 0.69);
 }

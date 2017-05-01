@@ -39,12 +39,6 @@ class RichTextEditor extends Component {
     this.setState({ value })
   }
 
-  handleOnChangeTextArea = (event) => {
-    this.setState({
-      value: RichTextEditorArea.createValueFromString(event.target.value, 'markdown'),
-    })
-  }
-
   handleOnCancel = () => {
     this.setState({
       value: this.getEditorInitialText(this.props),

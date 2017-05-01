@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import type { GeneralCommentType } from 'universal/types'
 import RichTextEditor from 'components/RichTextEditor'
 import Avatar from 'components/Avatar'
+import CommentHeaderMenu from './Comment/CommentHeaderMenu'
 import Comment from './Comment'
 import type { CommentType } from './Comment'
 export type { CommentType } from './Comment'
@@ -33,6 +34,7 @@ const renderNewComment = (loggedUser: UserType, handleOnSave: Function, handleOn
       <Avatar avatar={loggedUser.slack ? loggedUser.slack.avatar : ''} />
     </div>
     <div className="comment-box-content" >
+      <CommentHeaderMenu Title="New comment" />
       <RichTextEditor
         onCancel={handleOnClose}
         onSave={handleOnSave}

@@ -1,0 +1,23 @@
+.action-button {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.action-icon {
+    font-size: 18px;
+    color: rgba(87, 89, 90, 0.69);
+}
+
+.approve {
+    font-size: 18px;
+    color: rgba(0, 128, 0, 0.84);
+}
+
+.request-changes {
+    font-size: 18px;
+    color: #F44336;
+}
+
+.popover-action {
+    margin-right: 5px;
+}
