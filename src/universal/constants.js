@@ -13,6 +13,7 @@ export const routes = {
 export const ChangesetStatus = {
   TEST: 'test',
   NEW: 'new',
+  NONE: 'none',
   NOT_REVIEWED: 'NOT_REVIEWED',
   UNDER_REVIEW: 'UNDER_REVIEW',
   APPROVED: 'APPROVED',
@@ -28,6 +29,17 @@ export const IssueStatus = {
   NEXT: 'next',
   CONFIRMED: 'confirmed',
 }
+
+export const IssueStatusText = {
+  NONE: 'No issue',
+  NOW: 'Fix in this PR',
+  LATER: 'Can fix later',
+  AVAILABLE: 'Fix submitted',
+  OBSOLETE: 'obsolete',
+  NEXT: 'Fix in next PR',
+  CONFIRMED: 'Fix confirmed',
+}
+
 
 export const PullRequestSource = {
   BRANCH: 'BRANCH',

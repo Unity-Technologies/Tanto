@@ -10,7 +10,7 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
 import Tooltip from 'react-bootstrap/lib/Tooltip'
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
-import { IssueStatus } from 'universal/constants'
+import { IssueStatus, IssueStatusText } from 'universal/constants'
 import moment from 'moment'
 
 import _ from 'lodash'
@@ -46,32 +46,32 @@ const getStatus = (status: string): IssueStatusType => {
   switch (status) {
     case IssueStatus.LATER:
       return {
-        text: 'Can fix later',
+        text: IssueStatusText.LATER,
         color: yellowStatus,
       }
     case IssueStatus.NEXT:
       return {
-        text: 'Fix in next PR',
+        text: IssueStatusText.NEXT,
         color: yellowStatus,
       }
     case IssueStatus.NOW:
       return {
-        text: 'Fix in this PR',
+        text: IssueStatusText.NOW,
         color: redStatus,
       }
     case IssueStatus.AVAILABLE:
       return {
-        text: 'Fix submitted',
+        text: IssueStatusText.AVAILABLE,
         color: greenStatus,
       }
     case IssueStatus.CONFIRMED:
       return {
-        text: 'Fix confirmed',
+        text: IssueStatusText.CONFIRMED,
         color: greenStatus,
       }
     case IssueStatus.OBSOLETE:
       return {
-        text: 'Obsolete',
+        text: IssueStatusText.OBSOLETE,
         color: greenStatus,
       }
     default:
