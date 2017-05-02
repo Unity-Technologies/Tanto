@@ -2,7 +2,7 @@ mutation deleteInlineCommentComment($commentId: Int!, $filePath: String) {
   removeComment(commentId: $commentId) {
     pullRequest {
       id
-      files(name: $filePath) {
+      file(name: $filePath) {
         id
         comments {
           id
