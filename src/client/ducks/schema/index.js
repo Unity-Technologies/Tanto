@@ -21,6 +21,7 @@ const file = new schema.Entity('files', {
 const changeset = new schema.Entity('changesets', {
   authorUser: user,
   files: [file],
+  file,
 })
 
 const repository = new schema.Entity('repositories', {
@@ -50,6 +51,7 @@ pullRequest.define({
   owner: user,
   issues: [issue],
   files: [file],
+  file,
   changeset: [changeset],
   reviews: [{
     user,
