@@ -23,7 +23,7 @@ export type Props = {
 
 const mapStateToProps = (state, props) => ({
   branch: state.session.pullRequests.filters.branch,
-  pageSize: 10,
+  pageSize: 50,
   activePage: state.session.pullRequests.pagination.currentPage,
   total: state.session.pullRequests.pagination.total,
   status: getPageFetchStatus(state),

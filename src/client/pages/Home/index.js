@@ -28,7 +28,7 @@ const tabTitle = (text, badge) => (
 const mapStateToPropsOwned = (state, props) => ({
   repo: state.session.pullRequestsOwned.filters.repo,
   branch: state.session.pullRequestsOwned.filters.branch,
-  pageSize: 3,
+  pageSize: 50,
   activePage: state.session.pullRequestsOwned.pagination.currentPage,
   total: state.session.pullRequestsOwned.pagination.total,
   status: getOwnedFetchStatus(state),
@@ -39,7 +39,7 @@ const mapStateToPropsOwned = (state, props) => ({
 const mapStateToPropsAssigned = (state, props) => ({
   repo: state.session.pullRequestsAssigned.filters.repo,
   branch: state.session.pullRequestsAssigned.filters.branch,
-  pageSize: 3,
+  pageSize: 50,
   activePage: state.session.pullRequestsAssigned.pagination.currentPage,
   total: state.session.pullRequestsAssigned.pagination.total,
   status: getAssignedFetchStatus(state),
