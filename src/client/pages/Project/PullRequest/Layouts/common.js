@@ -3,7 +3,6 @@ import React from 'react'
 import PullRequestCommits from 'containers/PullRequestCommits'
 import PullRequestDiff from 'containers/PullRequestDiff'
 import PullRequestIssues from 'containers/PullRequestIssues'
-import PullRequestDiscussion from 'containers/PullRequestDiscussion'
 import PullRequestSummary from 'containers/PullRequestSummary'
 
 type Props = {
@@ -17,7 +16,6 @@ const CategoryModule = ({ type, pullRequestId, repoName }: Props) =>
     {type === 'summary' &&
       <PullRequestSummary pullRequestId={pullRequestId} repoName={repoName} />
     }
-    {type === 'discussion' && <PullRequestDiscussion pullRequestId={pullRequestId} repoName={repoName} />}
     {type === 'diff' && <PullRequestDiff pullRequestId={pullRequestId} repoName={repoName} />}
     {type === 'commits' &&
       <PullRequestCommits pullRequestId={pullRequestId} repoName={repoName} />
