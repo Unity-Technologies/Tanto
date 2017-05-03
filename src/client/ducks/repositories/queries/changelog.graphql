@@ -10,6 +10,7 @@ query repositoryChangelog($name: String, $branch: String) {
         branch
         author
         files {
+          id
           stats {
             added
             deleted
