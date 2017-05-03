@@ -6,20 +6,13 @@ import _ from 'lodash'
 import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
 import { ListItem } from 'material-ui/List'
-import { TOGGLE_SIDE_BAR } from 'ducks/sidebar'
-import IconButton from 'material-ui/IconButton'
-import Open from 'material-ui/svg-icons/navigation/menu'
-import { IndexLink } from 'react-router'
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
-import Scroll from 'react-scroll'
-import { getPersona } from 'ducks/session/selectors'
+import Avatar from 'components/Avatar'
+
+import { getLoggedUserAvatar, getLoggedUsername } from 'ducks/session/selectors'
+
+
 import SelectableList from 'components/SelectableList'
 import './SideBar.css'
-
-import { DEVELOPER_PERSONA } from 'universal/constants'
-
-const Link = Scroll.Link
 
 const textColor = 'rgb(88, 89, 89)'
 
@@ -48,50 +41,6 @@ const listItem = (title, icon, badge, open) => (
   </div>
 )
 
-const subItem = (icon, title, color, badge, iconbadge, open) => (
-  <div style={{ fontSize: '16px' }}>
-    {!open &&
-      <div style={{ display: 'inline-table', width: '100%', textAlign: 'center', color }}>
-        <i className={`fa fa-${icon}`} aria-hidden="true" />
-        {!!badge && <div className="badge badge-small">{badge}</div>}
-        {!!iconbadge &&
-          <div className="badge badge-small">
-            <i className={`fa fa-${iconbadge}`} aria-hidden="true" />
-          </div>
-        }
-      </div>
-    }
-
-    {open &&
-      <Row>
-        <Col xs={10}>
-          <span
-            style={{
-              fontSize: '13px',
-              color: color || textColor,
-              textTransform: 'uppercase',
-              marginLeft: '20px',
-            }}
-          >
-            {title}
-          </span>
-        </Col>
-        {!!badge &&
-          <Col xs={2}>
-            <div className="badge">{badge}</div>
-          </Col>
-        }
-        {!!iconbadge &&
-          <Col xs={2}>
-            <div className="badge"><i className={`fa fa-${iconbadge}`} aria-hidden="true" /></div>
-          </Col>
-        }
-      </Row>
-    }
-
-
-  </div>
-)
 
 export type Props = {
   width: number,
@@ -104,8 +53,9 @@ export type Props = {
   dispatch: Function,
   defaultValue: number,
   title: string,
-  persona: string,
-};
+  avatar: string,
+  username: string,
+}
 
 class SideBar extends Component {
   props: Props
@@ -116,29 +66,13 @@ class SideBar extends Component {
   render() {
     const {
       items,
+      avatar,
+      username,
       open,
-      subitems,
       width,
       hiddenWidth,
-      persona,
       defaultValue,
     } = this.props
-
-    const titleStyle = {
-      fontFamily: 'Montez',
-      fontSize: '48px',
-      color: textColor,
-      textTransform: 'capitalize',
-      //borderBottom: '1px solid rgba(181, 179, 179, 0.258824)',
-    }
-
-    const brandStyle = {
-      textDecoration: 'none',
-      fontSize: '36px',
-      color: textColor,
-      fontFamily: 'Montez, cursive',
-      marginLeft: '10px',
-    }
 
     const drawerStyle = {
       backgroundColor: '#f2f2f2',
@@ -152,24 +86,25 @@ class SideBar extends Component {
         width={open ? width : hiddenWidth}
         containerStyle={drawerStyle}
       >
-        <div style={titleStyle}>
-          <IconButton
-            style={{ margin: '5px' }}
-            disableTouchRipple
-            iconStyle={{ fill: 'hsla(220, 13%, 49%, 0.98)' }}
-            onClick={() => this.props.dispatch({ type: TOGGLE_SIDE_BAR })}
+        <div>
+          <Avatar avatar={avatar} style={{ margin: '15px', height: '30px', width: '30px' }} />
+          {open && <div
+            style={{
+              float: 'left',
+              fontSize: '16px',
+              marginTop: '17px',
+              color: 'black',
+              fontWeight: 'bold',
+            }}
           >
-            <Open />
-          </IconButton>
-          {open &&
-            <IndexLink style={brandStyle} to="/">
-              {this.props.title || 'Logo'}
-            </IndexLink>
+            {username}
+          </div>
           }
         </div>
 
         <div
           style={{
+            marginTop: '50px',
             padding: '50px 0 30px 0',
           }}
         >
@@ -188,45 +123,6 @@ class SideBar extends Component {
           )}
           </SelectableList>
         </div>
-
-        {subitems.length > 0 && persona !== DEVELOPER_PERSONA &&
-          <div style={{ borderTop: '1px solid rgba(248, 248, 248, 0.26)' }}>
-            {open &&
-              <div
-                style={{
-                  color: 'lightgrey',
-                  textTransform: 'uppercase',
-                  fontSize: '12px',
-                  padding: '15px 20px 5px' }}
-              >
-                  Page navigation
-              </div>
-            }
-            <SelectableList defaultValue={defaultValue}>
-              {subitems.map((item, index) => (
-                <Link
-                  key={_.uniqueId('_sidebar_item')}
-                  activeClass="active"
-                  to={item.link}
-                  offset={-70}
-                  spy
-                  smooth
-                  duration={100}
-                >
-                  <ListItem
-                    value={index + 1}
-                    style={{ color: 'black' }}
-                    innerDivStyle={{ padding: '10px' }}
-                    disableTouchRipple
-                  >
-                    {subItem(item.icon, item.title, item.color, item.badge, item.iconbadge, open)}
-                  </ListItem>
-                </Link>
-                )
-            )}
-            </SelectableList>
-          </div>
-        }
       </Drawer>
     )
   }
@@ -235,8 +131,8 @@ class SideBar extends Component {
 
 export default connect(state => ({
   open: state.sidebar.open,
-  persona: getPersona(state),
   items: state.sidebar.items || [],
-  subitems: state.sidebar.subitems || [],
   defaultValue: state.sidebar.selected,
+  username: getLoggedUsername(state),
+  avatar: getLoggedUserAvatar(state),
 }))(SideBar)
