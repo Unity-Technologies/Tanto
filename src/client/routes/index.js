@@ -8,7 +8,6 @@ import { fetchUsers } from 'ducks/users'
 import App from 'pages/App'
 import Home from 'pages/Home'
 import Projects from 'pages/Projects'
-import PullRequests from 'pages/PullRequests'
 import File from 'pages/Project/File'
 import Files from 'pages/Project/Files'
 import Project from 'pages/Project/Project'
@@ -74,7 +73,7 @@ export default (store) => {
       <Route onEnter={onAppEnter} >
         <IndexRoute component={Home} />
         <Route path="/home" component={Home} />
-        <Route path="/pullrequests" component={PullRequests} />
+        <Route path="/pullrequests" component={Home} />
         <Route path="/projects(/**)" component={Projects} />
       </Route>
 

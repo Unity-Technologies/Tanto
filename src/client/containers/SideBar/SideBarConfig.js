@@ -12,9 +12,6 @@ export const app = (store) => {
   const items = [
     { title: 'Home', route: '/', icon: 'home' },
     { title: 'Projects', route: '/projects', icon: 'folder-open' },
-    { title: 'My Pull Requests', route: '/pullrequests', icon: 'tasks', badge: 23 },
-    { title: 'Gists', route: '/gists', icon: 'share-alt' },
-    { title: 'Journal', route: '/journal', icon: 'history' },
   ]
 
   store.dispatch({ type: SIDE_BAR_ITEMS, items })
@@ -38,7 +35,6 @@ export const project = (store, name) => {
   store.dispatch({ type: SIDE_BAR_SELECTED_ITEM, selected })
 }
 
-
 export const pullrequest = (store) => {
   const subitems = [
     { title: 'Top', link: 'page-top', icon: 'arrow-up', color: 'rgba(109, 120, 141, 0.980392)', badge: null, iconbadge: null },
@@ -55,7 +51,6 @@ export const pullrequest = (store) => {
   const selected = 2
   store.dispatch({ type: SIDE_BAR_SELECTED_ITEM, selected })
 }
-
 
 export const changeset = (store) => {
   const subitems = [
