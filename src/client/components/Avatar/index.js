@@ -30,7 +30,7 @@ function Avatar(props: Props) {
     <MaterialAvatar
       src={props.avatar}
       size={40}
-      style={{ ...avatarStyle }}
+      style={{ ...avatarStyle, ...props.style }}
     />
   )
 }
