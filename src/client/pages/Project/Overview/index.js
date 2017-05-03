@@ -18,7 +18,7 @@ function Overview({ repoName, description }: Props) {
     <div>
       <Helmet title={`Project ${repoName}`} />
       <div style={{ fontSize: '14px' }}>
-        {description}
+        <strong>Description:</strong> {description}
       </div>
     </div>
   )
