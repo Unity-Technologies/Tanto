@@ -1,9 +1,8 @@
 mutation createInlineComment($repoName: String!, $text: String!, $pullRequestId: Int, $revision: String, $lineNumber: String!, $filePath: String!) {
   createComment(repository: { name: $repoName }, pullRequestId: $pullRequestId, revision: $revision, text: $text, location: {lineNumber: $lineNumber, filePath: $filePath} ) {
-
     pullRequest {
       id
-      files(name: $filePath) {
+      file(name: $filePath) {
         id
         comments {
           id

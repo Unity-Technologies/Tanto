@@ -1,7 +1,7 @@
-query pullRequestFiles($id: Int!, $pattern: String) {
+query pullRequestFile($id: Int!, $name: String) {
   pullRequest(id: $id) {
     id
-    files (pattern: $pattern) {
+    file (name: $name) {
       id
       diff
       comments {
