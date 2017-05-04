@@ -119,7 +119,9 @@ class GeneralCommentThread extends Component {
             )}
           </div>
         </div>
-        {<div style={{ marginTop: '10px' }}>{renderNewComment(this.props.loggedUser, this.handleOnSave, this.handleOnPullRequestClose)}</div>}
+        <div style={{ marginTop: '10px' }}>
+          {renderNewComment(this.props.loggedUser, this.handleOnSave, this.handleOnPullRequestClose)}
+        </div>
       </div>
     )
   }

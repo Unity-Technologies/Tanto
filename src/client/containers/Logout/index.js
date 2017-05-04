@@ -11,9 +11,8 @@ import IconButton from 'material-ui/IconButton'
 import More from 'material-ui/svg-icons/navigation/more-vert'
 
 export type Props = {
-
   logoutRoute: string,
-  dispatch: Function
+  dispatch?: Function
 }
 
 

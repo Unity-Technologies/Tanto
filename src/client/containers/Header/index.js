@@ -14,6 +14,7 @@ import './styles.css'
 
 export type Props = {
   showMenuIconButton?: boolean,
+  dispatch: Function
 }
 
 function Header(props: Props) {
