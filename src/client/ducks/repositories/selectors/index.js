@@ -114,3 +114,13 @@ export const getChangelog = createSelector(
     }))
   }
 )
+
+export const getRepoDescription = createSelector(
+  repositoryEntities, getRepositoryName,
+  (entities, repoName) => {
+    if (!entities || ! repoName) {
+      return null
+    }
+    const repo = _.find(entities, (v) => (v.fullName === repoName))
+    return repo ? repo.description : null
+  })

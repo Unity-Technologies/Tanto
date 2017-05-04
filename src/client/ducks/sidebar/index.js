@@ -8,7 +8,7 @@ export const TOGGLE_SIDE_BAR = 'TOGGLE_SIDE_BAR'
 export const SIDE_BAR_SUBITEMS = 'SIDE_BAR_SUBITEMS'
 
 const initialState = {
-  open: true,
+  open: false,
   items: [],
   selected: 1,
 }

@@ -7,10 +7,9 @@ import CategoryModule from './common'
 
 const CATEGORIES = [
   { url: 'summary', name: 'Summary' },
-  { url: 'discussion', name: 'Discussion' },
+  { url: 'diff', name: 'Files changed' },
   { url: 'commits', name: 'Commits' },
   { url: 'issues', name: 'Issues' },
-  { url: 'diff', name: 'Diff' },
 ]
 
 const TabTitle = ({ text, badge }) =>

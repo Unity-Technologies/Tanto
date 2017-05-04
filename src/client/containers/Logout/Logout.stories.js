@@ -6,5 +6,5 @@ import Logout from './index.js'
 
 storiesOf('Logout', module)
   .add('default', () => (
-    <Logout />
+    <Logout logoutRoute="test/route" />
   ))

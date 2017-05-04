@@ -144,7 +144,6 @@ class PullRequestsPaginated extends Component {
           </Alert>
         }
         <PullRequestList
-          showRemoveButton
           onPageSelect={this.handlePageSelect}
           onRemoveClick={this.handleRemove} {...this.props}
         />

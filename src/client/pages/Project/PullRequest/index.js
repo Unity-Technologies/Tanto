@@ -45,7 +45,7 @@ const PullRequest = (props: Props) => {
 
   return (
     <div>
-      <ActionBar />
+      <ActionBar pullRequestId={params.prid} />
       <Helmet title={`Pull Request: ${title}`} />
       <LayoutDeveloper
         repoName={params.splat}
@@ -56,7 +56,6 @@ const PullRequest = (props: Props) => {
     </div>
   )
 }
-
 
 export default connect(
   (state, props) => ({
