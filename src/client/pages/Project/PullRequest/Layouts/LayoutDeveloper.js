@@ -7,7 +7,7 @@ import CategoryModule from './common'
 
 const CATEGORIES = [
   { url: 'summary', name: 'Summary' },
-  { url: 'diff', name: 'Files' },
+  { url: 'diff', name: 'Files changed' },
   { url: 'commits', name: 'Commits' },
   { url: 'issues', name: 'Issues' },
 ]
