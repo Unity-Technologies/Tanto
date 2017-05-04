@@ -46,7 +46,7 @@ class ReviewerList extends Component {
               <span key={_.uniqueId(r.user.username)}>
                 <span className="reviewer-item" onClick={() => this.handleRemoveReviewer(r.user.id)}>
                   <a>
-                    {r.user.fullName.trim() || r.user.username.trim() || 'no name'}
+                    {r.user.fullName.trim() || r.user.username.trim()}
                   </a>
                   <i className="fa fa-times-circle reviewer-remove-icon" aria-hidden="true"></i>
                 </span>
