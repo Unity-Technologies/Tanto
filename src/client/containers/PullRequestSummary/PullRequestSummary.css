@@ -1,0 +1,8 @@
+.summary-item-title {
+  border-left: 5px solid rgba(226, 231, 245, 0.62);
+}
+
+.summary-header-column {
+  text-transform: uppercase;
+  color: #10121b;
+}

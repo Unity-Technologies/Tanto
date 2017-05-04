@@ -25,6 +25,15 @@ query pullRequestMetadata($id: Int!) {
         name
       }
     }
+    iterations {
+      id
+      title
+      origin {
+        repository {
+          fullName
+        }
+      }
+    }
     issues {
       id
       title

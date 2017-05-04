@@ -52,6 +52,7 @@ pullRequest.define({
   issues: [issue],
   files: [file],
   file,
+  iterations: [pullRequest],
   changeset: [changeset],
   reviews: [{
     user,

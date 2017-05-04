@@ -101,7 +101,7 @@ const getIssueIcon = (issueStatus: string, commentStatus?: string) => {
 const renderEditMode = (comment: GeneralCommentType, handleOnCancel: Function, handleOnUpdate: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
-      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : ''} />
+      <Avatar avatar={comment.author && comment.author.slack ? comment.author.slack.avatar : ''} />
     </div>
     <div className="comment-box-content" >
       <RichTextEditor
@@ -119,12 +119,12 @@ const renderReadMode =
   (comment: GeneralCommentType, canEdit: boolean, disableDelete: boolean, handleOnEdit: Function, handleOnDelete: Function) => (
     <div className="comment-box">
       <div className="comment-box-avatar">
-        <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : ''} />
+        <Avatar avatar={comment.author && comment.author.slack ? comment.author.slack.avatar : ''} />
       </div>
       <div className="comment-box-content">
         <div className="comment-box-header">
           <div className="comment-title">
-            <strong>{comment.author.username}</strong>
+            <strong>{comment.author && comment.author.username}</strong>
             <span>&nbsp;commented&nbsp;{moment(comment.created).fromNow()}</span>
           </div>
           {canEdit &&
@@ -155,7 +155,7 @@ const renderReadMode =
 const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleOnEdit: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
-      <Avatar avatar={comment.author.slack ? comment.author.slack.avatar : ''} />
+      <Avatar avatar={comment.author && comment.author.slack ? comment.author.slack.avatar : ''} />
     </div>
     <div className="comment-box-content">
       <div className="comment-box-header-status">
