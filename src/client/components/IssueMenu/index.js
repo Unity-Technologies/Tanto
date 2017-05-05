@@ -23,8 +23,12 @@ const IssueIcon = ({ color }) => (
   <i className={`fa fa-bug ${color}`} aria-hidden="true" />
 )
 
+type Props = {
+  onCreateIssueAction?: (issue: string) => void,
+}
+
 class IssueMenu extends React.Component {
-  constructor(props: Object) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -36,10 +40,13 @@ class IssueMenu extends React.Component {
     issueStatus: string,
   }
 
-  onCreateIssueAction = (action: string) => {
+  handleCreateIssueAction = (issue: string) => {
     this.setState({
-      issueStatus: action,
+      issueStatus: issue,
     })
+    if (this.props.onCreateIssueAction) {
+      this.props.onCreateIssueAction(issue)
+    }
   }
 
   render() {
@@ -48,13 +55,13 @@ class IssueMenu extends React.Component {
         <IssueIcon color={getStatusClass(this.state.issueStatus)} />
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <MenuItem eventKey="1" onClick={(e) => this.onCreateIssueAction(IssueStatus.NOW)}>{IssueStatusText.NOW}</MenuItem>
-        <MenuItem eventKey="2" onClick={(e) => this.onCreateIssueAction(IssueStatus.NEXT)}>{IssueStatusText.NEXT}</MenuItem>
-        <MenuItem eventKey="3" onClick={(e) => this.onCreateIssueAction(IssueStatus.LATER)}>{IssueStatusText.LATER}</MenuItem>
+        <MenuItem eventKey="1" onClick={(e) => this.handleCreateIssueAction(IssueStatus.NOW)}>{IssueStatusText.NOW}</MenuItem>
+        <MenuItem eventKey="2" onClick={(e) => this.handleCreateIssueAction(IssueStatus.NEXT)}>{IssueStatusText.NEXT}</MenuItem>
+        <MenuItem eventKey="3" onClick={(e) => this.handleCreateIssueAction(IssueStatus.LATER)}>{IssueStatusText.LATER}</MenuItem>
         <MenuItem divider />
         <MenuItem
           eventKey="4"
-          onClick={(e) => this.onCreateIssueAction(IssueStatus.NONE)}
+          onClick={(e) => this.handleCreateIssueAction(IssueStatus.NONE)}
         >
           <RemoveIcon /> {IssueStatusText.NONE}
         </MenuItem>

@@ -45,8 +45,12 @@ const PopoverVoteForPR = ({ onReviewAction, ...props }) => (
   </Overlay>
 )
 
+type Props = {
+  onReviewAction: (action: string) => void,
+}
+
 class VoteForPullRequestMenu extends React.Component {
-  constructor(props: Object) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -66,6 +70,9 @@ class VoteForPullRequestMenu extends React.Component {
     this.setState({
       reviewStatus: action,
     })
+    if (this.props.onReviewAction) {
+      this.props.onReviewAction(action)
+    }
     this.hide()
   }
 

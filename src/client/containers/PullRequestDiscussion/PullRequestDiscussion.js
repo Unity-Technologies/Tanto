@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
 import type { UserType } from 'universal/types'
+import { ChangesetStatus } from 'universal/constants'
 import type { StatusType } from 'ducks/fetch/selectors'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { createComment, updateComment, deleteComment } from 'ducks/comments/actions'
@@ -39,8 +40,10 @@ class PullRequestDiscussion extends Component {
     this.props.dispatch(updateComment(id, text))
   }
 
-  handleOnCommentCreate = (repoName: string, pullRequestId: string, text: string): void => {
-    this.props.dispatch(createComment({ name: repoName }, pullRequestId, text))
+  handleOnCommentCreate = (
+    repoName: string, pullRequestId: string, text: string, status?: typeof ChangesetStatus, issue?: string
+  ): void => {
+    this.props.dispatch(createComment({ name: repoName }, pullRequestId, text, status))
   }
 
   handleOnCommentDelete = (id: any): void => {
