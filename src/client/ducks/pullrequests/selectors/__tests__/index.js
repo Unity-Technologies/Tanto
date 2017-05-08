@@ -16,7 +16,8 @@ import {
   getPullRequestFiles,
   getPullRequestGeneralComments,
   getPullRequestFile,
-  getPullRequestChangeset
+  getPullRequestChangeset,
+  getPullRequestIterations
 } from '../index'
 
 import { types } from '../../actions'
@@ -1256,5 +1257,131 @@ describe('getPullRequestChangeset', () => {
 
     const state = { entities: { pullRequests, changesets } }
     expect(getPullRequestChangeset(state, props)).to.eql(expected)
+  })
+})
+
+
+describe('getPullRequestIterations', () => {
+  it('should return iterations', () => {
+    const repo1Name = 'repo1Name'
+    const repo2Name = 'repo2Name'
+    const iterations = [{ id: 93, title: 'test pr93', repositoryName: repo1Name},
+      { id: 94, title: 'test pr94', repositoryName: repo2Name }]
+
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          comments: [1, 12],
+          changeset: ['d7fdb5f9d95e446ea42865e6abbff9abf04a93c6'],
+          iterations: [92, 93, 94],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          origin: {
+            repository: {
+              fullName: repo1Name,
+            }
+          },
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+
+        94: {
+          id: 94,
+          owner: 1,
+          origin: {
+            repository: {
+              fullName: repo2Name,
+            }
+          },
+          title: 'test pr94',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const props = {
+      params: {
+        prid: 92
+      }
+    }
+    const state = { entities: { pullRequests } }
+
+    expect(getPullRequestIterations(state, props)).to.eql(iterations)
+  })
+
+  it('should return null if pull request is undefined', () => {
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          comments: [1, 12],
+          changeset: ['d7fdb5f9d95e446ea42865e6abbff9abf04a93c6'],
+          iterations: [93],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const props = {
+      params: {
+        prid: 94
+      }
+    }
+    const state = { entities: { pullRequests } }
+
+    expect(getPullRequestIterations(state, props)).to.eql(null)
+  })
+
+  it('should return null if pull request iterations list is undefined', () => {
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          comments: [1, 12],
+          changeset: ['d7fdb5f9d95e446ea42865e6abbff9abf04a93c6'],
+          iterations: [93],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+          files: [],
+        },
+      }
+
+    const props = {
+      params: {
+        prid: 93
+      }
+    }
+    const state = { entities: { pullRequests } }
+
+    expect(getPullRequestIterations(state, props)).to.eql(null)
   })
 })

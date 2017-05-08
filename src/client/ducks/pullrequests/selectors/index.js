@@ -114,7 +114,7 @@ export const getPullRequestIssues = createSelector(
  * Pull request  comments
  */
 export const getCommentsEntities = (state: Object) =>
-   _.get(state, ['entities', 'comments'], {})
+  _.get(state, ['entities', 'comments'], {})
 
 export const getPullRequestGeneralComments = createSelector(
   getCommentsEntities, userEntitiesSelector, getPullRequestNormalized,
@@ -172,3 +172,28 @@ export const getPullRequestChangeset = createSelector(
     }))
   }
 )
+
+export const getPullRequestIterations = createSelector(
+  getPullRequest, getPullRequestsEntities,
+  (pr, entities) => {
+    if (!pr || !pr.iterations) {
+      return null
+    }
+
+    const prs = entities ? _.values(_.pick(entities, _.filter(pr.iterations, p => p !== pr.id))) : null
+    if (!prs) {
+      return null
+    }
+
+    return prs.map(p => ({
+      id: p.id,
+      title: p.title,
+      repositoryName: p.origin.repository.fullName,
+    }))
+  }
+)
+
+// export const getPullRequestIterations = createSelector(
+//   getPullRequest, getPullRequestsEntities,
+//   (pr, entities) => (pr && pr.iterations ? pr.iterations : null)
+// )

@@ -50,7 +50,7 @@ const renderDescriptionComment =
     <Comment
       comment={description}
       disableDelete
-      canEdit={description.author.username === loggedUser.username}
+      canEdit={description.author ? description.author.username === loggedUser.username : false}
       onUpdate={handleOnDescriptionUpdate}
     />
   )

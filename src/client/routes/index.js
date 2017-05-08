@@ -45,6 +45,7 @@ export default (store) => {
     app(store)
   }
   const onProjectEnter = (nextState) => {
+    console.log('onProjectEnter')
     const name = nextState.params.splat
     project(store, name)
     if (name) {
@@ -53,6 +54,7 @@ export default (store) => {
   }
 
   const onPullRequestEnter = (nextState) => {
+    console.log('onPullRequestEnter')
     const id = nextState.params.prid
     pullrequest(store, nextState.params.splat, id)
     store.dispatch(fetchPullRequestMetadata(id))
@@ -85,7 +87,7 @@ export default (store) => {
           <Route path="**/changelog" component={Changelog} />
           <Route path="**/pullrequests" component={ProjectPullRequests} />
 
-          <Route onEnter={onPullRequestEnter}>
+          <Route onEnter={onPullRequestEnter} onChange={onPullRequestEnter}>
             <Route path="**/pullrequest/:prid(/:category)" component={PullRequest} />
           </Route>
           <Route onEnter={onChangesetEnter}>

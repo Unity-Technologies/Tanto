@@ -14,8 +14,9 @@ import RepositoriesSection from './RepositoriesSection'
 import ReviewSection from './ReviewSection'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import PullRequestDiscussion from 'containers/PullRequestDiscussion'
+import Iterations from './Iterations'
 import LoadingComponent from 'components/LoadingComponent'
-
+import './PullRequestSummary.css'
 export const fetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_METADATA)
 
 export type PullRequestSummaryPropsType = {
@@ -42,6 +43,7 @@ const PullRequestSummary = (props: PullRequestSummaryPropsType) =>
           <ReviewSection id={props.pullRequestId} />
           <BuildSection id={props.pullRequestId} />
           <IssuesSection id={props.pullRequestId} />
+          <Iterations id={props.pullRequestId} />
         </ListGroup>
       </div>
     </LoadingComponent>
