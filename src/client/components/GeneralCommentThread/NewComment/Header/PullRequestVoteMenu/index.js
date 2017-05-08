@@ -6,7 +6,7 @@ import Overlay from 'react-bootstrap/lib/Overlay'
 import { ChangesetStatus as status } from 'universal/constants'
 import RemoveIcon from 'components/Icon/RemoveIcon'
 
-import './VoteForPullRequestMenu.css'
+import './PullRequestVoteMenu.css'
 
 const ApproveIcon = () => <i className="fa fa-thumbs-o-up approve" aria-hidden="true" />
 const RequestChangesIcon = () => <i className="fa fa-hand-paper-o request-changes" aria-hidden="true" />
@@ -49,7 +49,7 @@ type Props = {
   onReviewAction: (action: string) => void,
 }
 
-class VoteForPullRequestMenu extends React.Component {
+class PullRequestVoteMenu extends React.Component {
   constructor(props: Props) {
     super(props)
 
@@ -110,4 +110,4 @@ class VoteForPullRequestMenu extends React.Component {
 
 }
 
-export default VoteForPullRequestMenu
+export default PullRequestVoteMenu

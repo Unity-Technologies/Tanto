@@ -39,7 +39,7 @@ export const updateComment = (commentId: string, text:string): FetchAction =>
 export const createComment =
   (repository: RepositorySelectorType, pullRequestId: string, text: string, status?: typeof ChangesetStatus, issue?: string):
     FetchAction => {
-    const variables: Object = { repository, pullRequestId, text }
+    const variables = { repository, pullRequestId, text, issue }
     if (status && status !== ChangesetStatus.NONE) {
       variables.status = status
     }

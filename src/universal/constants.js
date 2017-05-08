@@ -22,22 +22,22 @@ export const ChangesetStatus = {
 
 export const IssueStatus = {
   NONE: 'none',
-  NOW: 'now',
-  LATER: 'later',
-  AVAILABLE: 'available',
-  OBSOLETE: 'obsolete',
-  NEXT: 'next',
-  CONFIRMED: 'confirmed',
+  OBSOLETE: 'OBSOLETE',
+  FIX_LATER: 'FIX_LATER',
+  FIX_NEXT_PR: 'FIX_NEXT_PR',
+  FIX_NOW: 'FIX_NOW',
+  FIX_AVAILABLE: 'FIX_AVAILABLE',
+  FIX_CONFIRMED: 'FIX_CONFIRMED',
 }
 
 export const IssueStatusText = {
   NONE: 'No issue',
-  NOW: 'Fix in this PR',
-  LATER: 'Can fix later',
-  AVAILABLE: 'Fix submitted',
+  FIX_NOW: 'Fix in this PR',
+  FIX_LATER: 'Can fix later',
+  FIX_AVAILABLE: 'Fix submitted',
   OBSOLETE: 'obsolete',
-  NEXT: 'Fix in next PR',
-  CONFIRMED: 'Fix confirmed',
+  FIX_NEXT_PR: 'Fix in next PR',
+  FIX_CONFIRMED: 'Fix confirmed',
 }
 
 

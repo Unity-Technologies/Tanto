@@ -12,6 +12,7 @@ const issue = new schema.Entity('issues', {
 
 const comment = new schema.Entity('comments', {
   author: user,
+  issue,
 })
 
 const file = new schema.Entity('files', {

@@ -2,9 +2,9 @@
 import React from 'react'
 import { storiesOf } from '@kadira/storybook'
 
-import VoteForPullRequestMenu from './index.js'
+import PullRequestVoteMenu from './index.js'
 
-storiesOf('VoteForPullRequestMenu', module)
+storiesOf('PullRequestVoteMenu', module)
   .add('empty default', () => (
-    <VoteForPullRequestMenu />
+    <PullRequestVoteMenu />
   ))

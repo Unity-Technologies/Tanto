@@ -2,8 +2,8 @@
 import React from 'react'
 import Avatar from 'components/Avatar'
 import RichTextEditor from 'components/RichTextEditor'
-import CommentHeaderMenu from 'components/GeneralCommentThread/Comment/CommentHeaderMenu'
-import type { UserType } from '../index.js'
+import Header from './Header'
+import type { UserType } from 'components/GeneralCommentThread'
 import { ChangesetStatus, IssueStatus } from 'universal/constants'
 
 
@@ -55,8 +55,8 @@ class NewComment extends React.Component {
           <Avatar avatar={this.props.loggedUser.slack ? this.props.loggedUser.slack.avatar : ''} />
         </div>
         <div className="comment-box-content" >
-          <CommentHeaderMenu
-            Title="New comment"
+          <Header
+            Title="Leave a comment"
             onReviewAction={this.handleReviewAction}
             onCreateIssueAction={this.handleCreateIssueAction}
           />

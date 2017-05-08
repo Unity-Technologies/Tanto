@@ -1,9 +1,8 @@
 /* @flow */
 import React from 'react'
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
-import VoteForPullRequestMenu from 'components/VoteForPullRequestMenu'
-import IssueMenu from 'components/IssueMenu'
-import './Comment.css'
+import PullRequestVoteMenu from './PullRequestVoteMenu'
+import IssueMenu from './IssueMenu'
 
 type Props = {
   Title: string,
@@ -11,17 +10,17 @@ type Props = {
   onCreateIssueAction?: (issue: string) => void,
 }
 
-const CommentHeaderMenu = ({ Title, onReviewAction, onCreateIssueAction }: Props) => (
+const Header = ({ Title, onReviewAction, onCreateIssueAction }: Props) => (
   <div className="comment-box-header edit-mode">
     <div className="comment-title">{Title}</div>
     <div className="comment-box-actions">
       <ButtonToolbar>
-        <VoteForPullRequestMenu onReviewAction={onReviewAction} />
+        <PullRequestVoteMenu onReviewAction={onReviewAction} />
         <IssueMenu onCreateIssueAction={onCreateIssueAction} />
       </ButtonToolbar>
     </div>
   </div>
 )
 
-export default CommentHeaderMenu
+export default Header
 

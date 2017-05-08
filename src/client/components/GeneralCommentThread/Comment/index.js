@@ -182,7 +182,7 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
           </div>
         }
       </div>
-      {comment.text &&
+      {comment.text.replace(/\u200B/g, '').trim() &&
         <RichTextEditor text={comment.text} readMode />
       }
     </div>

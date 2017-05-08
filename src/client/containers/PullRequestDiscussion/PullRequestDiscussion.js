@@ -36,23 +36,17 @@ class PullRequestDiscussion extends Component {
 
   props: Props
 
-  handleOnCommentUpdate = (id: string, text: string): void => {
+  handleOnCommentUpdate = (id: string, text: string) =>
     this.props.dispatch(updateComment(id, text))
-  }
 
-  handleOnCommentCreate = (
-    repoName: string, pullRequestId: string, text: string, status?: typeof ChangesetStatus, issue?: string
-  ): void => {
-    this.props.dispatch(createComment({ name: repoName }, pullRequestId, text, status))
-  }
+  handleOnCommentCreate = (repoName: string, pullRequestId: string, text: string, status?: typeof ChangesetStatus, issue?: string) =>
+    this.props.dispatch(createComment({ name: repoName }, pullRequestId, text, status, issue))
 
-  handleOnCommentDelete = (id: any): void => {
+  handleOnCommentDelete = (id: any) =>
     this.props.dispatch(deleteComment(id))
-  }
 
-  handleOnDescriptionUpdate = (pullRequestId: any, text: string): void => {
+  handleOnDescriptionUpdate = (pullRequestId: any, text: string) =>
     this.props.dispatch(updatePullRequestDescription(pullRequestId, text))
-  }
 
   render() {
     if (!this.props.comments || !this.props.loggedUser) {

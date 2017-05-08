@@ -9,10 +9,10 @@ import './IssueMenu.css'
 
 const getStatusClass = (status: string) => {
   switch (status) {
-    case IssueStatus.LATER:
-    case IssueStatus.NEXT:
+    case IssueStatus.FIX_LATER:
+    case IssueStatus.FIX_NEXT_PR:
       return 'yellow'
-    case IssueStatus.NOW:
+    case IssueStatus.FIX_NOW:
       return 'red'
     default:
       return 'action-icon'
@@ -55,9 +55,9 @@ class IssueMenu extends React.Component {
         <IssueIcon color={getStatusClass(this.state.issueStatus)} />
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <MenuItem eventKey="1" onClick={(e) => this.handleCreateIssueAction(IssueStatus.NOW)}>{IssueStatusText.NOW}</MenuItem>
-        <MenuItem eventKey="2" onClick={(e) => this.handleCreateIssueAction(IssueStatus.NEXT)}>{IssueStatusText.NEXT}</MenuItem>
-        <MenuItem eventKey="3" onClick={(e) => this.handleCreateIssueAction(IssueStatus.LATER)}>{IssueStatusText.LATER}</MenuItem>
+        <MenuItem eventKey="1" onClick={(e) => this.handleCreateIssueAction(IssueStatus.FIX_NOW)}>{IssueStatusText.FIX_NOW}</MenuItem>
+        <MenuItem eventKey="2" onClick={(e) => this.handleCreateIssueAction(IssueStatus.FIX_NEXT_PR)}>{IssueStatusText.FIX_NEXT_PR}</MenuItem>
+        <MenuItem eventKey="3" onClick={(e) => this.handleCreateIssueAction(IssueStatus.FIX_LATER)}>{IssueStatusText.FIX_LATER}</MenuItem>
         <MenuItem divider />
         <MenuItem
           eventKey="4"

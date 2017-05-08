@@ -1,7 +1,7 @@
 mutation createComment($repository: RepositorySelector!, $text: String!, $pullRequestId: Int, $revision: String, $location: LocationInput,
-  $issue: IssueInput, $status: ChangesetStatus) {
+  $issue: IssueStatus!, $status: ChangesetStatus) {
   createComment(repository: $repository, pullRequestId: $pullRequestId, revision: $revision, location: $location,
-    text: $text, issue: $issue, status: $status) {
+    text: $text, issue: {status: $issue}, status: $status) {
     pullRequest {
       id
       comments {
@@ -9,6 +9,13 @@ mutation createComment($repository: RepositorySelector!, $text: String!, $pullRe
         text
         created
         status
+        issue {
+          id
+          title
+          status
+          created
+          description
+        }
         author {
           id
           username
