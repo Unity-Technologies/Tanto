@@ -14,9 +14,11 @@ import type {
 } from 'universal/types'
 import { default as Select } from 'components/VirtualizedSelect'
 import MissingReviewerList from './MissingReviewerList'
-import { getPullRequest } from 'ducks/pullrequests/selectors'
+import {
+  getPullRequestReviewStatus,
+  getPullRequestReviews,
+  getMissingReviewers } from './selectors'
 import { getUsers } from 'ducks/users/selectors'
-import { createSelector } from 'reselect'
 import ReviewerList from './ReviewerList'
 import { ChangesetStatus } from 'universal/constants'
 import { addPullRequestReviewers, removePullRequestReviewers } from 'ducks/pullrequests/actions'
@@ -34,21 +36,6 @@ type ReviewsSectionProps = {
   dispatch: Function,
   id: string,
 }
-
-export const getPullRequestReviewStatus = createSelector(
-  getPullRequest,
-  (pr) => (pr ? pr.status : null)
-)
-
-export const getPullRequestReviews = createSelector(
-  getPullRequest,
-  (pr) => (pr && pr.reviews ? pr.reviews : [])
-)
-
-export const getMissingReviewers = createSelector(
-  getPullRequest,
-  (pr) => (pr && pr.missingReviewers ? pr.missingReviewers : [])
-)
 
 const headerColumnStyle = {
   textTransform: 'uppercase',

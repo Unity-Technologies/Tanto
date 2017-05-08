@@ -1,4 +1,4 @@
-mutation removeReviewers($pullRequestId: Int!, $reviewers: [UserInput]!) {
+mutation removeReviewers($pullRequestId: Int!, $reviewers: [UserSelector]!) {
   removeReviewers(pullRequestId: $pullRequestId, reviewers: $reviewers) {
     pullRequest {
       id

@@ -43,9 +43,9 @@ class ReviewerList extends Component {
               />
             </OverlayTrigger>
             {this.props.reviews.map((r, i) => (
-              <span key={_.uniqueId()}>
+              <span key={_.uniqueId(r.user.username)}>
                 <span className="reviewer-item" onClick={() => this.handleRemoveReviewer(r.user.id)}>
-                  <a >
+                  <a>
                     {r.user.fullName.trim() || r.user.username.trim()}
                   </a>
                   <i className="fa fa-times-circle reviewer-remove-icon" aria-hidden="true"></i>
