@@ -63,6 +63,10 @@ class ActionBar extends Component {
       showModal: false,
     }
   }
+
+  state: {
+    showModal: boolean
+  }
   props: Props
 
   handleApprovePullRequest = () => {

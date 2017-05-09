@@ -42,6 +42,9 @@ class PullRequestDiscussion extends Component {
     }
   }
 
+  state: {
+    showModal: boolean
+  }
   props: Props
 
   handleOnCommentUpdate = (id: string, text: string) =>

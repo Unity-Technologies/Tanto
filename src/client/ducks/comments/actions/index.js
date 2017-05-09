@@ -49,12 +49,12 @@ export const createComment =
     return fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables })
   }
 
-export const approvePullRequest = (repository: RepositorySelectorType, pullRequestId: string) => {
+export const approvePullRequest = (repository: RepositorySelectorType, pullRequestId: any) => {
   const variables: Object = { repository, pullRequestId, status: ChangesetStatus.APPROVED, text: '' }
   return fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables })
 }
 
-export const closePullRequest = (repository: RepositorySelectorType, pullRequestId: string) => {
+export const closePullRequest = (repository: RepositorySelectorType, pullRequestId: any) => {
   const variables: Object = { repository, pullRequestId, text: '', close: true }
   return fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables })
 }
