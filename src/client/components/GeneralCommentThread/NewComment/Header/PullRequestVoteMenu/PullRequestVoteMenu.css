@@ -9,15 +9,14 @@
 }
 
 .approve {
-    font-size: 18px;
     color: rgba(0, 128, 0, 0.84);
 }
 
-.request-changes {
-    font-size: 18px;
+.rejected {
     color: #F44336;
 }
 
 .popover-action {
     margin-right: 5px;
+    font-size: 13px;
 }

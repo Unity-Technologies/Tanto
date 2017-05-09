@@ -49,17 +49,32 @@ export const getStatusText = (status: string): string => {
   }
 }
 
+// NOTE: this should be fixed on ONO sideð
+const convertResponseIssueStatus = (value: string) => {
+  switch (value) {
+    case 'later':
+      return IssueStatus.FIX_LATER
+    case 'next':
+      return IssueStatus.FIX_NEXT_PR
+    case 'now':
+      return IssueStatus.FIX_NOW
+    default:
+      return value
+  }
+}
+
 const getIssueText = (status: string): string => {
-  switch (status) {
-    case IssueStatus.LATER:
+  const converted = convertResponseIssueStatus(status)
+  switch (converted) {
+    case IssueStatus.FIX_LATER:
       return 'added an issue that can be fixed later'
-    case IssueStatus.NEXT:
+    case IssueStatus.FIX_NEXT_PR:
       return 'added an issue that should be fixed in next PR'
-    case IssueStatus.NOW:
+    case IssueStatus.FIX_NOW:
       return 'added an issue that should be fixed in this PR'
-    case IssueStatus.AVAILABLE:
+    case IssueStatus.FIX_AVAILABLE:
       return 'commented that the fix is available'
-    case IssueStatus.CONFIRMED:
+    case IssueStatus.FIX_CONFIRMED:
       return 'commented that the fix is confirmed'
     case IssueStatus.OBSOLETE:
       return 'commented that the issue is obsolete'
@@ -67,6 +82,7 @@ const getIssueText = (status: string): string => {
       return 'commented'
   }
 }
+
 
 export const getStatusIcon = (status: string) => {
   switch (status) {
@@ -82,17 +98,21 @@ export const getStatusIcon = (status: string) => {
 }
 
 const getIssueIcon = (issueStatus: string, commentStatus?: string) => {
-  switch (issueStatus) {
-    case IssueStatus.AVAILABLE:
-    case IssueStatus.CONFIRMED:
+  const converted = convertResponseIssueStatus(issueStatus)
+  switch (converted) {
+    case IssueStatus.FIX_AVAILABLE:
+    case IssueStatus.FIX_CONFIRMED:
     case IssueStatus.OBSOLETE:
       if (commentStatus) {
         return getStatusIcon(commentStatus)
       }
       return <Glyphicon glyph="ok-sign" className="comment-status-glyph status-green" />
-    case IssueStatus.LATER:
-    case IssueStatus.NEXT:
-    case IssueStatus.NOW:
+    case IssueStatus.FIX_LATER:
+      return <i className="fa fa-bug yellow comment-status-glyph" />
+    case IssueStatus.FIX_NEXT_PR:
+      return <i className="fa fa-bug orange comment-status-glyph" />
+    case IssueStatus.FIX_NOW:
+      return <i className="fa fa-bug red comment-status-glyph" />
     default:
       return <i className="fa fa-bug comment-status-glyph" />
   }
@@ -151,7 +171,6 @@ const renderReadMode =
     </div>
   )
 
-
 const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleOnEdit: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
@@ -182,7 +201,7 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
           </div>
         }
       </div>
-      {comment.text &&
+      {comment.text.replace(/\u200B/g, '').trim() &&
         <RichTextEditor text={comment.text} readMode />
       }
     </div>

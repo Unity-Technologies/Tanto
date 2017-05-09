@@ -1,9 +1,7 @@
 /* @flow */
 import React, { Component } from 'react'
 import type { GeneralCommentType } from 'universal/types'
-import RichTextEditor from 'components/RichTextEditor'
-import Avatar from 'components/Avatar'
-import CommentHeaderMenu from './Comment/CommentHeaderMenu'
+import NewComment from './NewComment'
 import Comment from './Comment'
 import type { CommentType } from './Comment'
 export type { CommentType } from './Comment'
@@ -27,23 +25,6 @@ type Props = {
   onSave: (repoName: string, pullrequestId: string, value: string) => void,
   onDescriptionUpdate: (pullrequestId: string, value: string) => void,
 }
-
-const renderNewComment = (loggedUser: UserType, handleOnSave: Function, handleOnClose: Function) => (
-  <div className="comment-box">
-    <div className="comment-box-avatar">
-      <Avatar avatar={loggedUser.slack ? loggedUser.slack.avatar : ''} />
-    </div>
-    <div className="comment-box-content" >
-      <CommentHeaderMenu Title="New comment" />
-      <RichTextEditor
-        onCancel={handleOnClose}
-        onSave={handleOnSave}
-        cancelButtonTitle={'Close Pull Request'}
-        saveButtonTitle={'Add comment'}
-      />
-    </div>
-  </div>
-)
 
 const renderDescriptionComment =
   (description: CommentType, loggedUser: UserType, handleOnDescriptionUpdate: Function) => (
@@ -82,9 +63,9 @@ class GeneralCommentThread extends Component {
     return null
   }
 
-  handleOnSave = (value: string): any => {
+  handleOnSave = (text: string, status?: string, issue?: any): any => {
     if (this.props.onSave) {
-      this.props.onSave(this.props.repoName, this.props.pullRequestId, value)
+      this.props.onSave(this.props.repoName, this.props.pullRequestId, text, status, issue)
     }
   }
 
@@ -120,7 +101,11 @@ class GeneralCommentThread extends Component {
           </div>
         </div>
         <div style={{ marginTop: '10px' }}>
-          {renderNewComment(this.props.loggedUser, this.handleOnSave, this.handleOnPullRequestClose)}
+          <NewComment
+            loggedUser={this.props.loggedUser}
+            onSave={this.handleOnSave}
+            onCancel={this.handleOnPullRequestClose}
+          />
         </div>
       </div>
     )
