@@ -47,6 +47,10 @@ class NewComment extends React.Component {
     })
     const issue = this.state.issueStatus !== IssueStatus.NONE ? { status: this.state.issueStatus } : null
     this.props.onSave(text, this.state.reviewStatus, issue)
+    this.setState({
+      reviewStatus: ChangesetStatus.NONE,
+      issueStatus: IssueStatus.NONE,
+    })
   }
 
   render() {
@@ -57,7 +61,9 @@ class NewComment extends React.Component {
         </div>
         <div className="comment-box-content" >
           <Header
-            Title="Leave a comment"
+            title="Leave a comment"
+            issueStatus={this.state.issueStatus}
+            reviewStatus={this.state.reviewStatus}
             onReviewAction={this.handleReviewAction}
             onCreateIssueAction={this.handleCreateIssueAction}
           />
