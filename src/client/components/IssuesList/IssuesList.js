@@ -46,27 +46,27 @@ const getStatus = (status: string): IssueStatusType => {
   switch (status) {
     case IssueStatus.LATER:
       return {
-        text: IssueStatusText.LATER,
+        text: IssueStatusText.FIX_LATER,
         color: yellowStatus,
       }
     case IssueStatus.NEXT:
       return {
-        text: IssueStatusText.NEXT,
+        text: IssueStatusText.FIX_NEXT_PR,
         color: yellowStatus,
       }
     case IssueStatus.NOW:
       return {
-        text: IssueStatusText.NOW,
+        text: IssueStatusText.FIX_NOW,
         color: redStatus,
       }
-    case IssueStatus.AVAILABLE:
+    case IssueStatus.FIX_AVAILABLE:
       return {
-        text: IssueStatusText.AVAILABLE,
+        text: IssueStatusText.FIX_AVAILABLE,
         color: greenStatus,
       }
-    case IssueStatus.CONFIRMED:
+    case IssueStatus.FIX_CONFIRMED:
       return {
-        text: IssueStatusText.CONFIRMED,
+        text: IssueStatusText.FIX_CONFIRMED,
         color: greenStatus,
       }
     case IssueStatus.OBSOLETE:
@@ -111,9 +111,9 @@ class IssuesList extends Component {
       return null
     }
     const statuses = calculateStatuses(this.props.issues)
-    const newTotal = IssueStatus.NOW in statuses ? statuses[IssueStatus.NOW] : 0
-    const nextTotal = IssueStatus.NEXT in statuses ? statuses[IssueStatus.NEXT] : 0
-    const laterTotal = IssueStatus.LATER in statuses ? statuses[IssueStatus.LATER] : 0
+    const newTotal = IssueStatus.FIX_NOW in statuses ? statuses[IssueStatus.FIX_NOW] : 0
+    const nextTotal = IssueStatus.FIX_NEXT_PR in statuses ? statuses[IssueStatus.FIX_NEXT_PR] : 0
+    const laterTotal = IssueStatus.FIX_LATER in statuses ? statuses[IssueStatus.FIX_LATER] : 0
     const tooltip = status => <Tooltip id="tooltip">{getStatus(status).text}</Tooltip>
 
     return (

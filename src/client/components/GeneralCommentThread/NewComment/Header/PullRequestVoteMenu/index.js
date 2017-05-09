@@ -23,7 +23,7 @@ const VoteStatus = ({ status, showTitle, title }: Object) => {
 }
 
 type Props = {
-  reviewStatus: String,
+  reviewStatus?: String,
   onStatusSelect: (action: string) => void,
 }
 

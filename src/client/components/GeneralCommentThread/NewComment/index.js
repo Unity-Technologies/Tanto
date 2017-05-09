@@ -24,8 +24,8 @@ class NewComment extends React.Component {
   }
 
   state: {
-    issueStatus: string,
-    reviewStatus: string,
+    issueStatus: any,
+    reviewStatus: any,
     text?: string,
   }
 
@@ -45,7 +45,7 @@ class NewComment extends React.Component {
     this.setState({
       text,
     })
-    const issue = this.state.issueStatus !== IssueStatus.NONE ? { status: this.state.issueStatus } : null
+    const issue = this.state.issueStatus !== IssueStatus.NONE ? { status: this.state.issueStatus } : {}
     this.props.onSave(text, this.state.reviewStatus, issue)
     this.setState({
       reviewStatus: ChangesetStatus.NONE,

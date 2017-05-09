@@ -598,9 +598,9 @@ describe('getPullRequestGeneralComments', () => {
     const expected = [
       {
         id: 1, message: 'test pr',
-        author: { id: 3, username: 'testusername3' },
+        author: { id: 3, username: 'testusername3', }, issue: undefined,
       },
-      { id: 12, message: 'test pr12', author: { id: 1, username: 'testusername1' } },
+      { id: 12, message: 'test pr12', author: { id: 1, username: 'testusername1' }, issue: undefined, },
     ]
     expect(getPullRequestGeneralComments(state, props)).to.eql(expected)
   })
@@ -631,9 +631,70 @@ describe('getPullRequestGeneralComments', () => {
     const expected = [
       {
         id: 1, message: 'test pr',
-        author: {},
+        author: {}, issue: undefined,
       },
-      { id: 12, message: 'test pr12', author: {} },
+      { id: 12, message: 'test pr12', author: {}, issue: undefined, },
+    ]
+    expect(getPullRequestGeneralComments(state, props)).to.eql(expected)
+  })
+
+  it('denormilizes comment issue', () => {
+    const comments =
+      {
+        1: { id: 1, message: 'test pr', author: 3, issue: 123 },
+        12: { id: 12, message: 'test pr12', author: 1, issue: 128 },
+        21: { id: 21, message: 'test pr21', author: 6 },
+        31: { id: 31, message: 'test pr31', author: 3 },
+      }
+    const pullRequests =
+      {
+        92: {
+          id: 92,
+          owner: 3,
+          title: 'test pr92',
+          description: 'test pr description92',
+          comments: [21, 31],
+        },
+
+        93: {
+          id: 93,
+          owner: 1,
+          title: 'test pr93',
+          description: 'test pr description92',
+          comments: [1, 12],
+        },
+      }
+
+    const issues = {
+      123: {
+        id: '123',
+        title: 'some issue',
+        status: 'fix now'
+      },
+      128: {
+        id: '128',
+        title: 'other issue',
+        status: 'fix later'
+      },
+    }
+
+    const state = { entities: { comments, pullRequests, users: {}, issues } }
+    const props = { params: { prid: 93 } }
+    const expected = [
+      {
+        id: 1, message: 'test pr',
+        author: {}, issue: {
+          id: '123',
+          title: 'some issue',
+          status: 'fix now'
+        },
+      },
+      {
+        id: 12, message: 'test pr12', author: {}, issue: {
+          id: '128',
+          title: 'other issue',
+          status: 'fix later'
+        }, },
     ]
     expect(getPullRequestGeneralComments(state, props)).to.eql(expected)
   })
@@ -670,10 +731,10 @@ describe('getPullRequestGeneralComments', () => {
     const props = { params: { prid: 93 } }
     const expected = [
       {
-        id: 1, message: 'test pr',
+        id: 1, message: 'test pr', issue: undefined,
         author: {},
       },
-      { id: 12, message: 'test pr12', author: {} },
+      { id: 12, message: 'test pr12', author: {}, issue: undefined },
     ]
     expect(getPullRequestGeneralComments(state, props)).to.eql(expected)
   })
@@ -851,10 +912,9 @@ describe('getFilesEntities', () => {
   })
 })
 
-
 describe('getPullRequestChangeset', () => {
   it('should return pull request changeset with parsed mercurial users', () => {
-   const pullRequests =
+    const pullRequests =
       {
         92: {
           id: 92,
@@ -882,7 +942,7 @@ describe('getPullRequestChangeset', () => {
         6: { id: 6, username: 'testusername6' },
       }
 
-    const changesets =  {
+    const changesets = {
       d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
         id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
         branch: 'test2',
@@ -894,7 +954,7 @@ describe('getPullRequestChangeset', () => {
         date: '2017-04-19T10:42:03',
         status: 'not_reviewed'
       },
-     asf: {
+      asf: {
         id: 'asf',
         branch: 'default',
         message: 'sadfdsf',
@@ -909,20 +969,20 @@ describe('getPullRequestChangeset', () => {
 
 
     const expected = [{
-        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
-        branch: 'test2',
-        message: 'sadfdsf',
-        author: 'Kateryna Musina <kateryna@unity3d.com>',
-        files: [
-          'C--f2907f116ca3'
-        ],
-        authorUser: {
-          fullName: 'Kateryna Musina',
-          email: 'kateryna@unity3d.com',
-        },
-        date: '2017-04-19T10:42:03',
-        status: 'not_reviewed'
-      }]
+      id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+      branch: 'test2',
+      message: 'sadfdsf',
+      author: 'Kateryna Musina <kateryna@unity3d.com>',
+      files: [
+        'C--f2907f116ca3'
+      ],
+      authorUser: {
+        fullName: 'Kateryna Musina',
+        email: 'kateryna@unity3d.com',
+      },
+      date: '2017-04-19T10:42:03',
+      status: 'not_reviewed'
+    }]
 
     const props = {
       params: {
@@ -935,7 +995,7 @@ describe('getPullRequestChangeset', () => {
   })
 
   it('should return pull request changeset with denormalized users', () => {
-   const pullRequests =
+    const pullRequests =
       {
         92: {
           id: 92,
@@ -963,7 +1023,7 @@ describe('getPullRequestChangeset', () => {
         6: { id: 6, username: 'testusername6' },
       }
 
-    const changesets =  {
+    const changesets = {
       d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
         id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
         branch: 'test2',
@@ -976,7 +1036,7 @@ describe('getPullRequestChangeset', () => {
         date: '2017-04-19T10:42:03',
         status: 'not_reviewed'
       },
-     asf: {
+      asf: {
         id: 'asf',
         branch: 'default',
         message: 'sadfdsf',
@@ -991,18 +1051,18 @@ describe('getPullRequestChangeset', () => {
 
 
     const expected = [{
-        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
-        branch: 'test2',
-        message: 'sadfdsf',
-        author: 'Kateryna Musina <kateryna@unity3d.com>',
-        authorUser: { id: 3, username: 'testusername3' },
-        files: [
-          'C--f2907f116ca3'
-        ],
+      id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+      branch: 'test2',
+      message: 'sadfdsf',
+      author: 'Kateryna Musina <kateryna@unity3d.com>',
+      authorUser: { id: 3, username: 'testusername3' },
+      files: [
+        'C--f2907f116ca3'
+      ],
 
-        date: '2017-04-19T10:42:03',
-        status: 'not_reviewed'
-      }]
+      date: '2017-04-19T10:42:03',
+      status: 'not_reviewed'
+    }]
 
     const props = {
       params: {
@@ -1015,7 +1075,7 @@ describe('getPullRequestChangeset', () => {
   })
 
   it('should return null if no pull request', () => {
-   const pullRequests =
+    const pullRequests =
       {
         92: {
           id: 92,
@@ -1043,7 +1103,7 @@ describe('getPullRequestChangeset', () => {
         6: { id: 6, username: 'testusername6' },
       }
 
-    const changesets =  {
+    const changesets = {
       d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
         id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
         branch: 'test2',
@@ -1056,7 +1116,7 @@ describe('getPullRequestChangeset', () => {
         date: '2017-04-19T10:42:03',
         status: 'not_reviewed'
       },
-     asf: {
+      asf: {
         id: 'asf',
         branch: 'default',
         message: 'sadfdsf',
@@ -1080,7 +1140,7 @@ describe('getPullRequestChangeset', () => {
   })
 
   it('should return null if pull request has no changeset', () => {
-   const pullRequests =
+    const pullRequests =
       {
         92: {
           id: 92,
@@ -1107,7 +1167,7 @@ describe('getPullRequestChangeset', () => {
         6: { id: 6, username: 'testusername6' },
       }
 
-    const changesets =  {
+    const changesets = {
       d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
         id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
         branch: 'test2',
@@ -1120,7 +1180,7 @@ describe('getPullRequestChangeset', () => {
         date: '2017-04-19T10:42:03',
         status: 'not_reviewed'
       },
-     asf: {
+      asf: {
         id: 'asf',
         branch: 'default',
         message: 'sadfdsf',
@@ -1144,7 +1204,7 @@ describe('getPullRequestChangeset', () => {
   })
 
   it('should return null if no changeseets', () => {
-   const pullRequests =
+    const pullRequests =
       {
         92: {
           id: 92,
@@ -1183,7 +1243,7 @@ describe('getPullRequestChangeset', () => {
   })
 
   it('should not return null if no users', () => {
-  const pullRequests =
+    const pullRequests =
       {
         92: {
           id: 92,
@@ -1205,7 +1265,7 @@ describe('getPullRequestChangeset', () => {
         },
       }
 
-    const changesets =  {
+    const changesets = {
       d7fdb5f9d95e446ea42865e6abbff9abf04a93c6: {
         id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
         branch: 'test2',
@@ -1218,7 +1278,7 @@ describe('getPullRequestChangeset', () => {
         date: '2017-04-19T10:42:03',
         status: 'not_reviewed'
       },
-     asf: {
+      asf: {
         id: 'asf',
         branch: 'default',
         message: 'sadfdsf',
@@ -1233,20 +1293,20 @@ describe('getPullRequestChangeset', () => {
 
 
     const expected = [{
-        id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
-        branch: 'test2',
-        message: 'sadfdsf',
-        author: 'Kateryna Musina <kateryna@unity3d.com>',
-        files: [
-          'C--f2907f116ca3'
-        ],
-        authorUser: {
-          fullName: 'Kateryna Musina',
-          email: 'kateryna@unity3d.com',
-        },
-        date: '2017-04-19T10:42:03',
-        status: 'not_reviewed'
-      }]
+      id: 'd7fdb5f9d95e446ea42865e6abbff9abf04a93c6',
+      branch: 'test2',
+      message: 'sadfdsf',
+      author: 'Kateryna Musina <kateryna@unity3d.com>',
+      files: [
+        'C--f2907f116ca3'
+      ],
+      authorUser: {
+        fullName: 'Kateryna Musina',
+        email: 'kateryna@unity3d.com',
+      },
+      date: '2017-04-19T10:42:03',
+      status: 'not_reviewed'
+    }]
 
     const props = {
       params: {

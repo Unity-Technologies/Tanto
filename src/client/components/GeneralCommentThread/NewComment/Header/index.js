@@ -7,10 +7,10 @@ import { IssueStatus, ChangesetStatus } from 'universal/constants'
 
 type Props = {
   title: string,
-  onReviewAction?: (action: string) => void,
-  onCreateIssueAction?: (issue: string) => void,
-  issueStatus: String,
-  reviewStatus: String
+  onReviewAction: (action: string) => void,
+  onCreateIssueAction: (issue: string) => void,
+  issueStatus: any,
+  reviewStatus: any
 }
 
 export const Header = (props: Props) => {

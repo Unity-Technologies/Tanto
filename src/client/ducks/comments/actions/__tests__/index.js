@@ -136,6 +136,104 @@ describe('actions', () => {
     store.dispatch(createComment(repository, pullRequestId, text))
   })
 
+  it('createComment with issue success', (done) => {
+    const repository = { name: 'reponame2' }
+    const pullRequestId = 3
+    const text = 'NEW COMMENT TEXT'
+    const data = {
+      createComment: {
+        ok: true,
+        comment: {
+          id: 156,
+          text,
+        },
+        pullRequest: {
+          id: 322,
+          title: 'test chamngeset pr',
+          comments: [
+            {
+              id: 156,
+              text,
+            },
+            {
+              id: 152,
+              text: 'test\n',
+            },
+
+          ],
+        },
+      },
+
+    }
+    const issue = { status: 'Fix now'}
+    const transformedData = transformMutationResponse(data)
+    const expectedActions = [
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.CREATE_COMMENT, variables: { text, repository, pullRequestId, issue }, query: createCommentQuery },
+      { type: fetchTypes.CLEAR_ERROR, name: types.CREATE_COMMENT },
+      { type: fetchTypes.SENDING_REQUEST, name: types.CREATE_COMMENT, sending: true },
+      { type: SET_MUTATED_ENTITIES, entities: normalize(transformedData, schema).entities },
+      { type: fetchTypes.SENDING_REQUEST, name: types.CREATE_COMMENT, sending: false },
+    ]
+
+    fetchMock.mock('*', {
+      data,
+    })
+
+
+    const store = storeMock({}, expectedActions, done)
+
+    store.dispatch(createComment(repository, pullRequestId, text, null, issue))
+  })
+
+  it('createComment with PR status success', (done) => {
+    const repository = { name: 'reponame2' }
+    const pullRequestId = 3
+    const text = 'NEW COMMENT TEXT'
+    const data = {
+      createComment: {
+        ok: true,
+        comment: {
+          id: 156,
+          text,
+        },
+        pullRequest: {
+          id: 322,
+          title: 'test chamngeset pr',
+          comments: [
+            {
+              id: 156,
+              text,
+            },
+            {
+              id: 152,
+              text: 'test\n',
+            },
+
+          ],
+        },
+      },
+
+    }
+    const status = 'APPROVED'
+    const transformedData = transformMutationResponse(data)
+    const expectedActions = [
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.CREATE_COMMENT, variables: { text, repository, pullRequestId, status }, query: createCommentQuery },
+      { type: fetchTypes.CLEAR_ERROR, name: types.CREATE_COMMENT },
+      { type: fetchTypes.SENDING_REQUEST, name: types.CREATE_COMMENT, sending: true },
+      { type: SET_MUTATED_ENTITIES, entities: normalize(transformedData, schema).entities },
+      { type: fetchTypes.SENDING_REQUEST, name: types.CREATE_COMMENT, sending: false },
+    ]
+
+    fetchMock.mock('*', {
+      data,
+    })
+
+
+    const store = storeMock({}, expectedActions, done)
+
+    store.dispatch(createComment(repository, pullRequestId, text, status))
+  })
+
   it('createComment failure', (done) => {
     const text = 'NEW COMMENT TEXT'
     const repository = { name: 'reponame2' }

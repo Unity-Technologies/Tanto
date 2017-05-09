@@ -6,7 +6,7 @@ import { IssueStatus, IssueStatusText } from 'universal/constants'
 
 import './IssueMenu.css'
 
-const getStatusClass = (status: string) => {
+const getStatusClass = (status?: string) => {
   switch (status) {
     case IssueStatus.FIX_LATER:
       return 'yellow'
@@ -24,8 +24,8 @@ const IssueIcon = ({ color }) => (
 )
 
 type Props = {
-  issueStatus: String,
-  onStatusSelect?: (issue: string) => void,
+  issueStatus?: string,
+  onStatusSelect: (issue: string) => void,
 }
 
 export const IssueMenu = (props: Props) => (
@@ -50,6 +50,5 @@ export const IssueMenu = (props: Props) => (
     </Dropdown.Menu>
   </Dropdown>
   )
-
 
 export default IssueMenu
