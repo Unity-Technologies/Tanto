@@ -63,7 +63,7 @@ class GeneralCommentThread extends Component {
     return null
   }
 
-  handleOnSave = (text: string, status?: string, issue?: string): any => {
+  handleOnSave = (text: string, status?: string, issue?: Object): any => {
     if (this.props.onSave) {
       this.props.onSave(this.props.repoName, this.props.pullRequestId, text, status, issue)
     }

@@ -3,15 +3,15 @@ import React from 'react'
 import Dropdown from 'react-bootstrap/lib/Dropdown'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 import { IssueStatus, IssueStatusText } from 'universal/constants'
-import RemoveIcon from 'components/Icon/RemoveIcon'
 
 import './IssueMenu.css'
 
 const getStatusClass = (status: string) => {
   switch (status) {
     case IssueStatus.FIX_LATER:
-    case IssueStatus.FIX_NEXT_PR:
       return 'yellow'
+    case IssueStatus.FIX_NEXT_PR:
+      return 'orange'
     case IssueStatus.FIX_NOW:
       return 'red'
     default:
@@ -20,55 +20,36 @@ const getStatusClass = (status: string) => {
 }
 
 const IssueIcon = ({ color }) => (
-  <i className={`fa fa-bug ${color}`} aria-hidden="true" />
+  <i className={`fa fa-bug action-icon ${color}`} aria-hidden="true" />
 )
 
 type Props = {
-  onCreateIssueAction?: (issue: string) => void,
+  issueStatus: String,
+  onStatusSelect?: (issue: string) => void,
 }
 
-class IssueMenu extends React.Component {
-  constructor(props: Props) {
-    super(props)
+export const IssueMenu = (props: Props) => (
+  <Dropdown id="dropdown-create-issue" pullRight>
+    <Dropdown.Toggle className="action-button" noCaret>
+      <IssueIcon color={getStatusClass(props.issueStatus)} />
+    </Dropdown.Toggle>
+    <Dropdown.Menu>
+      <MenuItem eventKey="1" onClick={(e) => props.onStatusSelect(IssueStatus.FIX_NOW)}>
+        <span><i className="fa fa-circle red" aria- hidden="true" ></i> {IssueStatusText.FIX_NOW}</span>
+      </MenuItem>
+      <MenuItem eventKey="2" onClick={(e) => props.onStatusSelect(IssueStatus.FIX_NEXT_PR)}>
+        <span><i className="fa fa-circle orange" aria- hidden="true" ></i> {IssueStatusText.FIX_NEXT_PR}</span>
+      </MenuItem>
+      <MenuItem eventKey="3" onClick={(e) => props.onStatusSelect(IssueStatus.FIX_LATER)}>
+        <span><i className="fa fa-circle yellow" aria- hidden="true" ></i> {IssueStatusText.FIX_LATER}</span>
+      </MenuItem>
+      <MenuItem divider />
+      <MenuItem eventKey="4" onClick={(e) => props.onStatusSelect(IssueStatus.NONE)}>
+        <span> Close issue</span>
+      </MenuItem>
+    </Dropdown.Menu>
+  </Dropdown>
+  )
 
-    this.state = {
-      issueStatus: IssueStatus.NONE,
-    }
-  }
-
-  state: {
-    issueStatus: string,
-  }
-
-  handleCreateIssueAction = (issue: string) => {
-    this.setState({
-      issueStatus: issue,
-    })
-    if (this.props.onCreateIssueAction) {
-      this.props.onCreateIssueAction(issue)
-    }
-  }
-
-  render() {
-    return (<Dropdown id="dropdown-create-issue" pullRight>
-      <Dropdown.Toggle className="action-button" noCaret>
-        <IssueIcon color={getStatusClass(this.state.issueStatus)} />
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        <MenuItem eventKey="1" onClick={(e) => this.handleCreateIssueAction(IssueStatus.FIX_NOW)}>{IssueStatusText.FIX_NOW}</MenuItem>
-        <MenuItem eventKey="2" onClick={(e) => this.handleCreateIssueAction(IssueStatus.FIX_NEXT_PR)}>{IssueStatusText.FIX_NEXT_PR}</MenuItem>
-        <MenuItem eventKey="3" onClick={(e) => this.handleCreateIssueAction(IssueStatus.FIX_LATER)}>{IssueStatusText.FIX_LATER}</MenuItem>
-        <MenuItem divider />
-        <MenuItem
-          eventKey="4"
-          onClick={(e) => this.handleCreateIssueAction(IssueStatus.NONE)}
-        >
-          <RemoveIcon /> {IssueStatusText.NONE}
-        </MenuItem>
-      </Dropdown.Menu>
-    </Dropdown>
-    )
-  }
-}
 
 export default IssueMenu

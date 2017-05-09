@@ -37,11 +37,14 @@ export const updateComment = (commentId: string, text:string): FetchAction =>
   fetchOnoAction({ type: types.UPDATE_COMMENT, query: updateCommentQuery, variables: { commentId, text } })
 
 export const createComment =
-  (repository: RepositorySelectorType, pullRequestId: string, text: string, status?: typeof ChangesetStatus, issue?: string):
+  (repository: RepositorySelectorType, pullRequestId: string, text: string, status?: typeof ChangesetStatus, issue?: Object):
     FetchAction => {
-    const variables = { repository, pullRequestId, text, issue }
+    const variables = { repository, pullRequestId, text }
     if (status && status !== ChangesetStatus.NONE) {
       variables.status = status
+    }
+    if (issue) {
+      variables.issue = issue
     }
     return fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables })
   }

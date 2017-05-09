@@ -31,11 +31,11 @@ export const IssueStatus = {
 }
 
 export const IssueStatusText = {
-  NONE: 'No issue',
+  NONE: '',
   FIX_NOW: 'Fix in this PR',
-  FIX_LATER: 'Can fix later',
+  FIX_LATER: 'Fix later',
   FIX_AVAILABLE: 'Fix submitted',
-  OBSOLETE: 'obsolete',
+  OBSOLETE: 'Mark obsolete',
   FIX_NEXT_PR: 'Fix in next PR',
   FIX_CONFIRMED: 'Fix confirmed',
 }
