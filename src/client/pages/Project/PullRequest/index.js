@@ -1,14 +1,10 @@
 /* @flow */
 
 import React from 'react'
-import { connect } from 'react-redux'
-import {
-  DEVELOPER_PERSONA,
-} from 'universal/constants'
 import type { PullRequestGraphType } from 'universal/types'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import Helmet from 'react-helmet'
-import { getPersona } from 'ducks/session/selectors'
+
 import ActionBar from './ActionBar'
 
 
@@ -25,12 +21,11 @@ type Props = {
     pathname: string,
     query: Object,
   },
-  persona: string,
   pullRequest: ?PullRequestGraphType,
 }
 
 const PullRequest = (props: Props) => {
-  const { persona, params, location, title } = props
+  const { params, location, title } = props
 
   let rootPath = location.pathname
   if (params.category) {
@@ -40,12 +35,12 @@ const PullRequest = (props: Props) => {
     rootPath = rootPath.replace(new RegExp(`/${params.category}$`), '')
   }
 
-  const defaultCategory = (!persona || persona === DEVELOPER_PERSONA) ? 'summary' : 'guardian'
+  const defaultCategory = 'summary'
   const currentCategory = params.category || defaultCategory
 
   return (
     <div>
-      <ActionBar pullRequestId={params.prid} />
+      <ActionBar repoName={params.splat} pullRequestId={params.prid} />
       <Helmet title={`Pull Request: ${title}`} />
       <LayoutDeveloper
         repoName={params.splat}
@@ -57,8 +52,4 @@ const PullRequest = (props: Props) => {
   )
 }
 
-export default connect(
-  (state, props) => ({
-    persona: getPersona(state),
-  })
-)(PullRequest)
+export default PullRequest

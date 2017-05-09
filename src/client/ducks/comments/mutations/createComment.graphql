@@ -11,6 +11,14 @@ mutation createComment($repository: RepositorySelector!, $text: String!, $pullRe
         created
         description
       }
+      reviews {
+        status
+        user {
+          id
+          fullName
+          username
+        }
+      }
       comments {
         id
         text

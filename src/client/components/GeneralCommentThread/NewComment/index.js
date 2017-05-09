@@ -9,7 +9,7 @@ import { ChangesetStatus, IssueStatus } from 'universal/constants'
 
 type Props = {
   loggedUser: UserType,
-  onSave: (text: string) => void,
+  onSave: (text: string, status: typeof ChangesetStatus, issue: any) => void,
   onCancel: () => void,
 }
 
