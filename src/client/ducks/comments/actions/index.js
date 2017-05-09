@@ -54,6 +54,11 @@ export const approvePullRequest = (repository: RepositorySelectorType, pullReque
   return fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables })
 }
 
+export const closePullRequest = (repository: RepositorySelectorType, pullRequestId: string) => {
+  const variables: Object = { repository, pullRequestId, text: '', close: true }
+  return fetchOnoAction({ type: types.CREATE_COMMENT, query: createCommentQuery, variables })
+}
+
 export const deleteComment = (commentId: string): FetchAction =>
   fetchOnoAction({ type: types.DELETE_COMMENT, query: deleteCommentQuery, variables: { commentId } })
 

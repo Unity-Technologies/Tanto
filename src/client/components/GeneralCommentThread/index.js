@@ -24,6 +24,7 @@ type Props = {
   onDelete: (id: string) => void,
   onSave: (repoName: string, pullrequestId: string, value: string) => void,
   onDescriptionUpdate: (pullrequestId: string, value: string) => void,
+  onPullRequestClose: (repoName: string, pullrequestId: string) => void,
 }
 
 const renderDescriptionComment =
@@ -70,13 +71,13 @@ class GeneralCommentThread extends Component {
   }
 
   handleOnPullRequestClose = (pullRequestId: string) => {
-    if (this.props.onSave) {
-      this.props.onPullRequestClose(this.props.pullRequestId)
+    if (this.props.onPullRequestClose) {
+      this.props.onPullRequestClose(this.props.repoName, this.props.pullRequestId)
     }
   }
 
   handleOnDescriptionUpdate = (value: string): any => {
-    if (this.props.onSave) {
+    if (this.props.onDescriptionUpdate) {
       this.props.onDescriptionUpdate(this.props.pullRequestId, value)
     }
   }
