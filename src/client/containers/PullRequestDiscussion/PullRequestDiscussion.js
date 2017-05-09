@@ -14,11 +14,13 @@ import { updatePullRequestDescription, types } from 'ducks/pullrequests/actions'
 import LoadingComponent from 'components/LoadingComponent'
 import GeneralCommentThread from 'components/GeneralCommentThread'
 import type { CommentType } from 'components/GeneralCommentThread'
-import { getLoggedUser } from 'ducks/session/selectors'
+import { getLoggedUser, getLoggedUserId } from 'ducks/session/selectors'
 import {
   getPullRequestGeneralComments,
   getPullRequestDescription,
+  getPullRequestNormalized,
 } from 'ducks/pullrequests/selectors'
+import { createSelector } from 'reselect'
 
 export type Props = {
   createComment: Function,
@@ -26,6 +28,7 @@ export type Props = {
   description: CommentType,
   pullRequestId: number,
   repoName: string,
+  isCurrentUserOwner: string,
   dispatch: Function,
   comments: Array<CommentType>,
   loggedUser: UserType,
@@ -33,6 +36,16 @@ export type Props = {
 }
 
 export const getFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DISCUSSION)
+
+export const isCurrentUserOwner = createSelector(
+  getLoggedUserId, getPullRequestNormalized,
+  (id, pr) => {
+    if (!id || !pr || !pr.owner) {
+      return null
+    }
+    return id === pr.owner
+  }
+)
 
 class PullRequestDiscussion extends Component {
   constructor(props) {
@@ -80,6 +93,7 @@ class PullRequestDiscussion extends Component {
             repoName={this.props.repoName}
             pullRequestId={this.props.pullRequestId}
             loggedUser={this.props.loggedUser}
+            isOwner={this.props.isCurrentUserOwner}
             onDelete={this.handleOnCommentDelete}
             onUpdate={this.handleOnCommentUpdate}
             onSave={this.handleOnCommentCreate}
@@ -111,6 +125,7 @@ const mapStateToProps = (state: Object, props: Props): Props => ({
   comments: getPullRequestGeneralComments(state, props),
   status: getFetchStatus(state, props),
   loggedUser: getLoggedUser(state, props),
+  isCurrentUserOwner: isCurrentUserOwner(state, props),
 })
 
 export default connect(mapStateToProps)(PullRequestDiscussion)

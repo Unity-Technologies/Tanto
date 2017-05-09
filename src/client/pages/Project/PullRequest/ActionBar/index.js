@@ -40,7 +40,7 @@ const approveButtonStyle = {
 export const getStatus = createSelector(
   getLoggedUserId, getPullRequestNormalized,
   (id, pr) => {
-    if (!id || !pr) {
+    if (!id || !pr || !pr.owner) {
       return null
     }
     const isCurrentUserPROwner = id === pr.owner

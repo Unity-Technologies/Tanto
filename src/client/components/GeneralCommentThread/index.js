@@ -17,6 +17,7 @@ export type UserType = {
 type Props = {
   pullRequestId: string,
   repoName: string,
+  isOwner: boolean,
   comments: Array<GeneralCommentType>,
   loggedUser: UserType,
   description: CommentType,
@@ -103,6 +104,7 @@ class GeneralCommentThread extends Component {
         </div>
         <div style={{ marginTop: '10px' }}>
           <NewComment
+            isOwner={this.props.isOwner}
             loggedUser={this.props.loggedUser}
             onSave={this.handleOnSave}
             onCancel={this.handleOnPullRequestClose}
