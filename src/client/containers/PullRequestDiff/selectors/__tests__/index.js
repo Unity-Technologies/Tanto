@@ -23,6 +23,7 @@ describe('PullRequestDiff selectors', () => {
         file3,
       ],
       loggedUsername: 'userName',
+      reviews: {},
     }
     const pullRequests = {
       12: {
@@ -35,6 +36,9 @@ describe('PullRequestDiff selectors', () => {
         me: { username: 'userName' },
         pullRequests,
         files,
+      },
+      review: {
+        pullrequests: {},
       },
     }
     const props = {
@@ -56,12 +60,16 @@ describe('PullRequestDiff selectors', () => {
     const expectedData = {
       files: [],
       loggedUsername: 'userName',
+      reviews: {},
     }
     const state = {
       fetch: { [types.FETCH_PULL_REQUEST_DIFF]: {} },
       entities: {
         me: { username: 'userName' },
         files,
+      },
+      review: {
+        pullrequests: {},
       },
     }
     const props = {
@@ -75,6 +83,7 @@ describe('PullRequestDiff selectors', () => {
     const expectedData = {
       files: [],
       loggedUsername: 'userName',
+      reviews: {},
     }
     const pullRequests = {
       12: {
@@ -86,6 +95,9 @@ describe('PullRequestDiff selectors', () => {
       entities: {
         me: { username: 'userName' },
         pullRequests,
+      },
+      review: {
+        pullrequests: {},
       },
     }
     const props = {
@@ -99,10 +111,16 @@ describe('PullRequestDiff selectors', () => {
     const expectedData = {
       files: [],
       loggedUsername: null,
+      reviews: {},
     }
     const state = {
       fetch: { [types.FETCH_PULL_REQUEST_DIFF]: {} },
-      entities: {},
+      entities: {
+
+      },
+      review: {
+        pullrequests: {},
+      },
     }
     const props = {
       params: {
@@ -127,6 +145,7 @@ describe('PullRequestDiff selectors', () => {
         file3,
       ],
       loggedUsername: 'userName',
+      reviews: {},
     }
     const pullRequests = {
       12: {
@@ -140,7 +159,60 @@ describe('PullRequestDiff selectors', () => {
         pullRequests,
         files,
       },
+      review: {
+        pullrequests: {},
+      },
     }
+    const props = {
+      params: {
+        prid: 12,
+      },
+    }
+    expect(getData(state, props)).to.deep.eql(expectedData)
+  })
+  it('getData should return reviews', () => {
+    const file1 = { id: 1, name: 'file name1', comments: [1, 2] }
+    const file2 = { id: 2, name: 'file name2', comments: [4] }
+    const file3 = { id: 2, name: 'file name2', comments: [] }
+    const files = {
+      1: file1,
+      2: file2,
+      3: file3,
+    }
+    const expectedData = {
+      files: [
+        file1,
+        file2,
+        file3,
+      ],
+      loggedUsername: 'userName',
+      reviews: {
+        2: { reviewed: false, boolmarked: true },
+      },
+    }
+    const pullRequests = {
+      12: {
+        files: [2, 1, 3],
+      },
+    }
+    const state = {
+      fetch: { [types.FETCH_PULL_REQUEST_DIFF]: {} },
+      entities: {
+        me: { username: 'userName' },
+        pullRequests,
+        files,
+      },
+      review: {
+        pullrequests: {
+          12: {
+            files: {
+              2: { reviewed: false, boolmarked: true },
+            },
+          },
+        },
+      },
+    }
+
     const props = {
       params: {
         prid: 12,

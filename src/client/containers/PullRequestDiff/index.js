@@ -9,7 +9,7 @@ import _ from 'lodash'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import { StickyContainer, Sticky } from 'react-sticky'
-import { DiffTypes } from 'universal/constants'
+import { DiffTypes, PullRequestSettings } from 'universal/constants'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import IconButton from 'material-ui/IconButton'
@@ -25,6 +25,7 @@ type Props = {
   loggedUsername: string,
   repoName: string,
   dispatch: Function,
+  reviews: Object,
 }
 
 class PullRequestDiff extends PureComponent {
@@ -71,7 +72,7 @@ class PullRequestDiff extends PureComponent {
     if (!this.props.files || !this.props.files.length) {
       return null
     }
-    const pages = _.chunk(this.props.files, 3)
+    const pages = _.chunk(this.props.files, PullRequestSettings.DIFF_PAGE_SIZE || 5)
     const containerId = 'diffContainer'
     return (
       <StickyContainer>
@@ -80,6 +81,7 @@ class PullRequestDiff extends PureComponent {
             <Sticky>
               <ChangesetFileList
                 files={this.props.files}
+                reviews={this.props.reviews}
                 compact
                 containerElementName={containerId}
               />
@@ -104,6 +106,7 @@ class PullRequestDiff extends PureComponent {
               visible
               files={pages[0]}
               index={1}
+              fileReviews={this.props.reviews}
               viewType={this.state.viewType}
               pullRequestId={this.props.pullRequestId}
               onCreateInlineComment={this.handleCreateInlineComment}
@@ -113,6 +116,7 @@ class PullRequestDiff extends PureComponent {
             {_.tail(pages).map((page, index) =>
               <Page
                 files={page}
+                fileReviews={this.props.reviews}
                 index={index + 1}
                 viewType={this.state.viewType}
                 pullRequestId={this.props.pullRequestId}

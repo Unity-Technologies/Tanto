@@ -6,3 +6,12 @@
 .search-input:focus {
     border: none;
 }
+
+.reviewed {
+    color: green;
+}
+
+.bookmarked {
+    color: #126cd4;
+}
+
