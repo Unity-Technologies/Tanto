@@ -1,0 +1,24 @@
+.show-more {
+    padding: 10px;
+    border: 1px solid #e7e4e4;
+    cursor: pointer;
+    color: #949494;
+    border-bottom: none;
+}
+.show-more-body {
+    margin-top: 10px;
+}
+
+.show-more-title {
+  color: #316bb8;
+  font-size: 14px;
+}
+
+.file-not-reviewed {
+  color: lightgrey;
+}
+
+.file-reviewed {
+    color: green;
+}
+

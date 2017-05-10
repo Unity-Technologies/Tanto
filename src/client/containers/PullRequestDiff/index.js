@@ -5,9 +5,9 @@ import type { FileType } from 'universal/types'
 import { connect } from 'react-redux'
 import ChangesetFileList from 'components/ChangesetFileList'
 import { getData } from './selectors'
+import _ from 'lodash'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
-import CodeDiffContainer from 'containers/CodeDiffContainer'
 import { StickyContainer, Sticky } from 'react-sticky'
 import { DiffTypes } from 'universal/constants'
 import IconMenu from 'material-ui/IconMenu'
@@ -17,6 +17,7 @@ import { createInlineComment, updateComment, deleteInlineComment } from 'ducks/c
 import Nav from 'react-bootstrap/lib/Nav'
 import View from 'material-ui/svg-icons/action/view-module'
 import Navbar from 'react-bootstrap/lib/Navbar'
+import Page from './Page'
 
 type Props = {
   files: Array<FileType>,
@@ -70,7 +71,7 @@ class PullRequestDiff extends PureComponent {
     if (!this.props.files || !this.props.files.length) {
       return null
     }
-
+    const pages = _.chunk(this.props.files, 3)
     const containerId = 'diffContainer'
     return (
       <StickyContainer>
@@ -99,14 +100,25 @@ class PullRequestDiff extends PureComponent {
                 </IconMenu>
               </Nav>
             </Navbar>
-            {this.props.files.map(file =>
-              <CodeDiffContainer
+            <Page
+              visible
+              files={pages[0]}
+              index={1}
+              viewType={this.state.viewType}
+              pullRequestId={this.props.pullRequestId}
+              onCreateInlineComment={this.handleCreateInlineComment}
+              onDeleteInlineComment={this.handleDeleteInlineComment}
+              onUpdateInlineComment={this.handleUpdateInlineComment}
+            />
+            {_.tail(pages).map((page, index) =>
+              <Page
+                files={page}
+                index={index + 1}
                 viewType={this.state.viewType}
-                id={file.id}
                 pullRequestId={this.props.pullRequestId}
-                onUpdateInlineComment={this.handleUpdateInlineComment}
-                onDeleteInlineComment={this.handleDeleteInlineComment}
                 onCreateInlineComment={this.handleCreateInlineComment}
+                onDeleteInlineComment={this.handleDeleteInlineComment}
+                onUpdateInlineComment={this.handleUpdateInlineComment}
               />
             )}
           </Col>

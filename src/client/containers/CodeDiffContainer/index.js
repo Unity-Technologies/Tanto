@@ -74,8 +74,11 @@ class CodeDiffContainer extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps, nextState) {
+    if (!nextProps.file.diff) {
+      return
+    }
     const { file: { diff, id, type } } = this.props
-    if ((diff !== nextProps.file.diff && nextProps.file.diff) ||
+    if ((diff !== nextProps.file.diff) ||
       ((nextProps.viewType === DiffTypes.UNIFIED && !nextProps.unifiedDiff) ||
       (nextProps.viewType === DiffTypes.SIDE_BY_SIDE && !nextProps.sideBySideDiff))) {
       this.props.dispatch(processDiff(id, type, nextProps.file.diff, nextProps.viewType))
