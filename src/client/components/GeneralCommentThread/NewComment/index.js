@@ -9,6 +9,7 @@ import { ChangesetStatus, IssueStatus } from 'universal/constants'
 
 type Props = {
   loggedUser: UserType,
+  isOwner: boolean,
   onSave: (text: string, status: typeof ChangesetStatus, issue: any) => void,
   onCancel: () => void,
 }
@@ -68,6 +69,7 @@ class NewComment extends React.Component {
             onCreateIssueAction={this.handleCreateIssueAction}
           />
           <RichTextEditor
+            showCancel={this.props.isOwner}
             onCancel={this.props.onCancel}
             onSave={this.handleAddComment}
             cancelButtonTitle={'Close Pull Request'}

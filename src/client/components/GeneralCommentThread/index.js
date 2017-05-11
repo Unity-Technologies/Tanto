@@ -17,6 +17,7 @@ export type UserType = {
 type Props = {
   pullRequestId: string,
   repoName: string,
+  isOwner: boolean,
   comments: Array<GeneralCommentType>,
   loggedUser: UserType,
   description: CommentType,
@@ -24,6 +25,7 @@ type Props = {
   onDelete: (id: string) => void,
   onSave: (repoName: string, pullrequestId: string, value: string) => void,
   onDescriptionUpdate: (pullrequestId: string, value: string) => void,
+  onPullRequestClose: (repoName: string, pullrequestId: string) => void,
 }
 
 const renderDescriptionComment =
@@ -70,13 +72,13 @@ class GeneralCommentThread extends Component {
   }
 
   handleOnPullRequestClose = (pullRequestId: string) => {
-    if (this.props.onSave) {
-      this.props.onPullRequestClose(this.props.pullRequestId)
+    if (this.props.onPullRequestClose) {
+      this.props.onPullRequestClose(this.props.repoName, this.props.pullRequestId)
     }
   }
 
   handleOnDescriptionUpdate = (value: string): any => {
-    if (this.props.onSave) {
+    if (this.props.onDescriptionUpdate) {
       this.props.onDescriptionUpdate(this.props.pullRequestId, value)
     }
   }
@@ -102,6 +104,7 @@ class GeneralCommentThread extends Component {
         </div>
         <div style={{ marginTop: '10px' }}>
           <NewComment
+            isOwner={this.props.isOwner}
             loggedUser={this.props.loggedUser}
             onSave={this.handleOnSave}
             onCancel={this.handleOnPullRequestClose}
