@@ -21,11 +21,30 @@ const whiteSpaceRegExp = /\s+/g
 
 type Props = {
   files: Array<File>,
+  reviews?: Object,
   compact?: boolean,
   containerElementName?: string,
 }
 
-const FilesList = ({ compact, files, containerElementName }: Props) =>
+export const renderFileReview = (fileReview: Object) => {
+  if (fileReview && fileReview.reviewed) {
+    return (
+      <i className="fa fa-check-square-o reviewed" aria-hidden="true" />
+    )
+  }
+  return <i className="fa fa-check-square-o" aria-hidden="true" />
+}
+
+export const renderFileBookmark = (fileReview: Object) => {
+  if (fileReview && fileReview.bookmarked) {
+    return (
+      <i className="fa fa-tag bookmarked" aria-hidden="true" />
+    )
+  }
+  return <i className="fa fa-tag" aria-hidden="true" />
+}
+
+const FilesList = ({ compact, files, containerElementName, reviews }: Props) =>
   <div>
     <Row>
       <Col md={12}>
@@ -59,14 +78,17 @@ const FilesList = ({ compact, files, containerElementName }: Props) =>
                   sm={compact ? 4 : 2}
                   xs={compact ? 4 : 2}
                 >
-                  {file.comments && file.comments.length > 0 &&
-                    <div style={{ color: 'lightblue', cursor: 'pointer', float: 'right' }}>
-                      <span style={{ marginRight: '5px' }}>
-                        <i className="fa fa-comment" aria-hidden="true" />
-                      </span>
-                      {file.comments.length}
-                    </div>
-                  }
+                  <div style={{ color: 'lightgrey', cursor: 'pointer', float: 'right' }}>
+                    {file.comments && file.comments.length > 0 &&
+                      <span style={{ color: 'lightblue' }}>
+                        <span style={{ marginRight: '5px' }}>
+                          <i className="fa fa-comment" aria-hidden="true" />
+                        </span>
+                        {file.comments.length}</span>
+                    }
+                    <span className="file-review-icon">{renderFileReview((reviews || {})[file.id])}</span>
+                    <span className="file-review-icon">{renderFileBookmark((reviews || {})[file.id])}</span>
+                  </div>
                 </Col>
               </Row>
             </ListGroupItem>
@@ -151,7 +173,7 @@ class ChangesetFileList extends PureComponent {
 
   render() {
     const { filesAfterSearch, query } = this.state
-    const { compact, containerElementName } = this.props
+    const { compact, containerElementName, reviews } = this.props
     return (
       <div>
         <Row>
@@ -187,6 +209,7 @@ class ChangesetFileList extends PureComponent {
         </Row>
         <FilesList
           compact={compact}
+          reviews={reviews}
           files={filesAfterSearch}
           containerElementName={containerElementName}
         />

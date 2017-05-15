@@ -82,3 +82,8 @@ export const DiffTypes = {
   SIDE_BY_SIDE: 1,
   RAW: 2,
 }
+
+
+export const PullRequestSettings = {
+  DIFF_PAGE_SIZE: 5,
+}

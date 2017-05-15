@@ -9,11 +9,12 @@ import { createSelector } from 'reselect'
 import { getLoggedUser } from 'ducks/session/selectors'
 import { getFile, getFileComments } from 'ducks/pullrequests/selectors'
 import { processDiff } from 'ducks/diff'
-import DiffHeader from 'components/DiffHeader'
+import DiffHeader from './DiffHeader'
 import Scroll from 'react-scroll'
 import Collapse from 'components/Collapse'
 import LinearProgress from 'material-ui/LinearProgress'
 import { DiffTypes } from 'universal/constants'
+
 const Element = Scroll.Element
 
 type Props = {
@@ -24,6 +25,7 @@ type Props = {
   viewType: number,
   unifiedDiff: any,
   sideBySideDiff: any,
+  pullRequestId: any,
   comments: Object, // NOTE: not an array but object with comments reduced by line numbers
   onCreateInlineComment: (filePath: string, lineNumber: string, text: string) => void,
   onUpdateInlineComment: (commentId: string, text: string) => void,
@@ -74,10 +76,13 @@ class CodeDiffContainer extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps, nextState) {
+    if (!nextProps.file.diff) {
+      return
+    }
     const { file: { diff, id, type } } = this.props
-    if ((diff !== nextProps.file.diff && nextProps.file.diff) ||
+    if ((diff !== nextProps.file.diff) ||
       ((nextProps.viewType === DiffTypes.UNIFIED && !nextProps.unifiedDiff) ||
-      (nextProps.viewType === DiffTypes.SIDE_BY_SIDE && !nextProps.sideBySideDiff))) {
+        (nextProps.viewType === DiffTypes.SIDE_BY_SIDE && !nextProps.sideBySideDiff))) {
       this.props.dispatch(processDiff(id, type, nextProps.file.diff, nextProps.viewType))
     }
   }
@@ -107,8 +112,11 @@ class CodeDiffContainer extends PureComponent {
     return null
   }
 
+
   render() {
     const {
+      id,
+      pullRequestId,
       loggedUser,
       file: { type, stats, diff, name },
       unifiedDiff,
@@ -131,6 +139,8 @@ class CodeDiffContainer extends PureComponent {
           <DiffHeader
             comments={comments ? comments.length > 0 : false}
             collapsed={collapsed}
+            id={id}
+            pullRequestId={pullRequestId}
             title={name}
             stats={stats}
             onCollapse={this.onCollapse}
