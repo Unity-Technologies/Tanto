@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import type { GeneralCommentType } from 'universal/types'
 import NewComment from './NewComment'
 import Comment from 'components/Comment'
-import type { CommentType } from './Comment'
-export type { CommentType } from './Comment'
+import type { CommentType } from 'components/Comment'
+export type { CommentType } from 'components/Comment'
 import './GeneralCommentThread.css'
 
 export type UserType = {

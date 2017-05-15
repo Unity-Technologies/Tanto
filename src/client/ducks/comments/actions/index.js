@@ -67,7 +67,7 @@ export const deleteComment = (commentId: string): FetchAction =>
 */
 export const createInlineComment =
   (repoName: string, pullRequestId: string, filePath: string, lineNumber: string, text: string, issue: any): FetchAction => {
-    const variables = { repoName, pullRequestId, text, lineNumber, filePath }
+    const variables: Object = { repoName, pullRequestId, text, lineNumber, filePath }
 
     if (issue) {
       variables.issue = issue

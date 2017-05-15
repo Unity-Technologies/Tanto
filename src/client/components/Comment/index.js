@@ -1,4 +1,6 @@
 /* @flow */
+/* eslint-disable react/jsx-indent */
+
 import moment from 'moment'
 import React, { Component } from 'react'
 import RichTextEditor from 'components/RichTextEditor'
@@ -25,8 +27,8 @@ export type CommentType = {
   issue?: {
     status: string,
   },
-  showArrow: boolean,
-  headerStyle: Object,
+  showArrow?: boolean,
+  headerStyle?: Object,
 }
 
 export type CommentProps = {
@@ -146,8 +148,8 @@ const renderReadMode =
     disableDelete: boolean,
     handleOnEdit: Function,
     handleOnDelete: Function,
-    showArrow: boolean,
-    headerStyle: Object) => (
+    showArrow: any,
+    headerStyle: any) => (
       <div className="comment-box">
         <div className="comment-box-avatar">
           <Avatar avatar={comment.author && comment.author.slack ? comment.author.slack.avatar : ''} />

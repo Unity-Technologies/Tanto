@@ -21,6 +21,11 @@ class NewComment extends Component {
     }
   }
 
+  state: {
+    issueStatus: string
+  }
+  props: Props
+
   handleCreateIssueAction = (issue: string) => {
     this.setState({
       issueStatus: issue,

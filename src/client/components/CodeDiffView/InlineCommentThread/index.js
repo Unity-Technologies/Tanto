@@ -5,7 +5,7 @@ import FormControl from 'react-bootstrap/lib/FormControl'
 import Comment from 'components/Comment'
 import NewComment from './NewComment'
 import Avatar from 'components/Avatar'
-export type { CommentType } from './Comment'
+export type { CommentType } from 'components/Comment'
 import './InlineCommentThread.css'
 
 export type UserType = {
