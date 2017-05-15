@@ -5,11 +5,9 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import { connect } from 'react-redux'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import { getPullRequest } from 'ducks/pullrequests/selectors'
-import _ from 'lodash'
-import { createSelector } from 'reselect'
 import { buildProjectLink } from 'routes/helpers'
 import { Link } from 'react-router'
+import { getRepositoriesData } from './selectors'
 
 const info = {
   borderLeft: '5px solid rgba(226, 231, 245, 0.62)',
@@ -42,12 +40,6 @@ export type RepositoriesPropsType = {
   origin: OriginType,
   target: TargetType
 }
-
-export const getRepositoriesData = (state: Object, props: Object): RepositoriesPropsType =>
-  createSelector(
-    getPullRequest,
-    (pr) => _.pick(pr, ['origin', 'target'])
-  )
 
 export const OriginLink = (props: OriginType) =>
   <div>Origin:

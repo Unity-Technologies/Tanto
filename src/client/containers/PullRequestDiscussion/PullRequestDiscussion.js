@@ -14,13 +14,12 @@ import { updatePullRequestDescription, types } from 'ducks/pullrequests/actions'
 import LoadingComponent from 'components/LoadingComponent'
 import GeneralCommentThread from 'components/GeneralCommentThread'
 import type { CommentType } from 'components/GeneralCommentThread'
-import { getLoggedUser, getLoggedUserId } from 'ducks/session/selectors'
+import { getLoggedUser } from 'ducks/session/selectors'
 import {
   getPullRequestGeneralComments,
   getPullRequestDescription,
-  getPullRequestNormalized,
 } from 'ducks/pullrequests/selectors'
-import { createSelector } from 'reselect'
+import { isCurrentUserOwner } from './selectors'
 
 export type Props = {
   createComment: Function,
@@ -36,16 +35,6 @@ export type Props = {
 }
 
 export const getFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DISCUSSION)
-
-export const isCurrentUserOwner = createSelector(
-  getLoggedUserId, getPullRequestNormalized,
-  (id, pr) => {
-    if (!id || !pr || !pr.owner) {
-      return null
-    }
-    return id === pr.owner
-  }
-)
 
 class PullRequestDiscussion extends Component {
   constructor(props) {

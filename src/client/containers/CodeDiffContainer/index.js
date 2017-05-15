@@ -5,15 +5,13 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import CodeDiffView from 'components/CodeDiffView'
 import _ from 'lodash'
-import { createSelector } from 'reselect'
-import { getLoggedUser } from 'ducks/session/selectors'
-import { getFile, getFileComments } from 'ducks/pullrequests/selectors'
 import { processDiff } from 'ducks/diff'
 import DiffHeader from 'components/DiffHeader'
 import Scroll from 'react-scroll'
 import Collapse from 'components/Collapse'
 import LinearProgress from 'material-ui/LinearProgress'
 import { DiffTypes } from 'universal/constants'
+import { getData } from './selectors'
 const Element = Scroll.Element
 
 type Props = {
@@ -29,32 +27,6 @@ type Props = {
   onUpdateInlineComment: (commentId: string, text: string) => void,
   onDeleteInlineComment: (commentId: string, text: string) => void,
 }
-
-export const getSideBySideFileDiff = (state: Object, props: Object) => {
-  const file = state.ui.diff[props.id] || null
-  return file ? file[DiffTypes.SIDE_BY_SIDE] : null
-}
-
-export const getUnifiedFileDiff = (state: Object, props: Object) => {
-  const file = state.ui.diff[props.id] || null
-  return file ? file[DiffTypes.UNIFIED] : null
-}
-
-export const getData =
-  createSelector(
-    getFile,
-    getLoggedUser,
-    getUnifiedFileDiff,
-    getSideBySideFileDiff,
-    getFileComments,
-    (file, user, unifiedDiff, sideBySideDiff, comments) => ({
-      file,
-      unifiedDiff,
-      sideBySideDiff,
-      loggedUser: user,
-      comments,
-    })
-  )
 
 class CodeDiffContainer extends PureComponent {
   constructor(props: Props) {
