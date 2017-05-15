@@ -42,9 +42,9 @@ class SplitRow extends Component {
   handleCloseLeftComment = () => this.setState({ newCommentStarted: false })
   handleCloseRightComment = () => this.setState({ leftCommentStarted: false })
   mouseOverLeftSide = () => this.setState({ hoverLeftSide: true })
-  mouseOverRightSide= () => this.setState({ hoverRightSide: true })
-  mouseOutLeftSide= () => this.setState({ hoverLeftSide: false })
-  mouseOutRightSide= () => this.setState({ hoverRightSide: false })
+  mouseOverRightSide = () => this.setState({ hoverRightSide: true })
+  mouseOutLeftSide = () => this.setState({ hoverLeftSide: false })
+  mouseOutRightSide = () => this.setState({ hoverRightSide: false })
 
   handleOnUpdateInlineComment = (id: string, text: string): any => {
     if (this.props.onUpdateInlineCommment) {
@@ -68,7 +68,7 @@ class SplitRow extends Component {
     }
   }
 
-  handleRightOnSave = (lineNumber:string, text: string): any => {
+  handleRightOnSave = (lineNumber: string, text: string): any => {
     this.setState({
       rightCommentStarted: false,
     })
@@ -147,7 +147,7 @@ class SplitRow extends Component {
           }
           {this.state.leftCommentStarted &&
             <div>
-              <NewComment loggedUser={loggedUser} handleOnSave={this.handleLeftOnSave} handleOnClose={this.handleCloseLeftComment} />
+              <NewComment loggedUser={loggedUser} onSave={this.handleLeftOnSave} onClose={this.handleCloseLeftComment} />
             </div>
           }
         </td>
@@ -195,7 +195,7 @@ class SplitRow extends Component {
           }
           {this.state.rightCommentStarted &&
             <div>
-              <NewComment loggedUser={loggedUser} handleOnSave={this.handleRightOnSave} handleOnClose={this.handleCloseRightComment} />
+              <NewComment loggedUser={loggedUser} onSave={this.handleRightOnSave} onClose={this.handleCloseRightComment} />
             </div>
           }
         </td>

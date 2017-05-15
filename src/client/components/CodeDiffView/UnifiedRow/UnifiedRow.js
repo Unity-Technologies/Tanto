@@ -14,7 +14,7 @@ export type Props = {
   comments?: Array<any>,
   loggedUser: Object,
 
-  onCreateInlineComment: (lineNumber: string, text: string) => void,
+  onCreateInlineComment: (lineNumber: string, text: string, issue: any) => void,
   onUpdateInlineComment: (commentId: string, text: string) => void,
   onDeleteInlineComment: (commentId: string) => void,
 }
@@ -53,7 +53,7 @@ class UnifiedRow extends PureComponent {
 
   handleOnCreateInlineComment = () => {
     if (this.props.onCreateInlineComment) {
-      return (text: string) => this.props.onCreateInlineComment(this.getLineNumber(), text)
+      return (text: string, issue: any) => this.props.onCreateInlineComment(this.getLineNumber(), text, issue)
     }
     return null
   }
@@ -106,7 +106,7 @@ class UnifiedRow extends PureComponent {
             />}
           {this.state.newCommentStarted &&
             <div>
-              <NewComment loggedUser={loggedUser} handleOnSave={this.handleOnSave} handleOnClose={this.handleOnClose} />
+              <NewComment loggedUser={loggedUser} onSave={this.handleOnSave} onClose={this.handleOnClose} />
             </div>
           }
         </td>

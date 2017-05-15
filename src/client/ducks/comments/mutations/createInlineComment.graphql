@@ -1,5 +1,5 @@
-mutation createInlineComment($repoName: String!, $text: String!, $pullRequestId: Int, $revision: String, $lineNumber: String!, $filePath: String!) {
-  createComment(repository: { name: $repoName }, pullRequestId: $pullRequestId, revision: $revision, text: $text, location: {lineNumber: $lineNumber, filePath: $filePath} ) {
+mutation createInlineComment($repoName: String!, $text: String!, $pullRequestId: Int, $revision: String, $lineNumber: String!, $filePath: String!, $issue: IssueInput) {
+  createComment(repository: { name: $repoName }, pullRequestId: $pullRequestId, revision: $revision, text: $text, location: {lineNumber: $lineNumber, filePath: $filePath}, issue: $issue) {
     pullRequest {
       id
       file(name: $filePath) {
@@ -12,6 +12,13 @@ mutation createInlineComment($repoName: String!, $text: String!, $pullRequestId:
             username
             fullName
             email
+          }
+          issue {
+            id
+            title
+            status
+            created
+            description
           }
           location {
             lineNumber

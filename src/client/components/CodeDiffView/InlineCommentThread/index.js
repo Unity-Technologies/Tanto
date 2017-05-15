@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import type { InlineCommentType } from 'universal/types'
 import FormControl from 'react-bootstrap/lib/FormControl'
-import Comment from './Comment'
+import Comment from 'components/Comment'
 import NewComment from './NewComment'
 import Avatar from 'components/Avatar'
 export type { CommentType } from './Comment'
@@ -15,20 +15,25 @@ export type UserType = {
   }
 }
 
+const headerStyle = {
+  backgroundColor: '#fbfbfb',
+  border: '1px solid #d6d6d6',
+}
+
 type Props = {
   comments: Array<InlineCommentType>,
   loggedUser: UserType,
   onUpdate: (id: string, text: string) => void,
   onDelete: (id: string) => void,
-  onCreate: (text: string) => void,
+  onCreate: (text: string, issue: any) => void,
 }
 
 const renderAddNewCommentBox = (loggedUser: UserType, handleOnFocus: Function) => (
-  <div className="inline-comment-box">
-    <div className="inline-comment-box-avatar">
+  <div className="comment-box">
+    <div className="comment-box-avatar">
       <Avatar avatar={loggedUser.slack ? loggedUser.slack.avatar : ''} />
     </div>
-    <div className="inline-comment-box-content" >
+    <div className="comment-box-content" >
       <FormControl
         className="reply-box"
         type="text"
@@ -66,12 +71,12 @@ class InlineCommentThread extends Component {
     return null
   }
 
-  handleOnSave = (text: string): any => {
+  handleOnSave = (text: string, issue: any): any => {
     this.setState({
       editMode: false,
     })
     if (this.props.onCreate) {
-      this.props.onCreate(text)
+      this.props.onCreate(text, issue)
     }
   }
 
@@ -94,8 +99,9 @@ class InlineCommentThread extends Component {
         <div style={{ position: 'relative' }}>
           <div className="inline-comments-thread-timeline">
             {this.props.comments.map(c =>
-              <div key={c.id}>
+              <div key={c.id} style={{ marginBottom: '5px' }}>
                 <Comment
+                  headerStyle={headerStyle}
                   comment={c}
                   canEdit={c.author && loggedUser && c.author.username === loggedUser.username}
                   onDelete={this.handleOnDelete(c.id)}
@@ -106,7 +112,7 @@ class InlineCommentThread extends Component {
           </div>
         </div>
         {this.state.editMode &&
-          <NewComment loggedUser={loggedUser} handleOnSave={this.handleOnSave} handleOnClose={this.handleOnClose} />}
+          <NewComment loggedUser={loggedUser} onSave={this.handleOnSave} onClose={this.handleOnClose} />}
         {!this.state.editMode && renderAddNewCommentBox(loggedUser, this.handleOnFocus)}
       </div>
     )

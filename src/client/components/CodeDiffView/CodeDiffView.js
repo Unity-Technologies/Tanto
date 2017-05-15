@@ -16,7 +16,7 @@ export type Props = {
   viewType?: string,
   loggedUser: Object,
   comments: Object,
-  onCreateInlineComment: (lineNumber: string, text: string) => void,
+  onCreateInlineComment: (lineNumber: string, text: string, issue: any) => void,
   onUpdateInlineComment: (commentId: string, text: string) => void,
   onDeleteInlineComment: (commentId: string, text: string) => void,
 }

@@ -38,12 +38,12 @@ class PullRequestDiff extends PureComponent {
     viewType: number,
   }
 
-  handleCreateInlineComment = (filePath: string, lineNumber: string, text: string) => {
+  handleCreateInlineComment = (filePath: string, lineNumber: string, text: string, issue: any) => {
     if (!lineNumber || !text) {
       return
     }
     const { repoName, pullRequestId } = this.props
-    this.props.dispatch(createInlineComment(repoName, pullRequestId, filePath, lineNumber, text))
+    this.props.dispatch(createInlineComment(repoName, pullRequestId, filePath, lineNumber, text, issue))
   }
 
   handleUpdateInlineComment = (commentId: string, text: string) => {
