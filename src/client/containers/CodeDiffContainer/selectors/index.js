@@ -22,16 +22,15 @@ export const getData =
     getUnifiedFileDiff,
     getSideBySideFileDiff,
     getFileComments,
-    (file, user, unifiedDiff, sideBySideDiff, comments) => {
+    (file, user, unifiedDiff, sideBySideDiff, comments) =>
     // throw JSON.stringify(file)
-    return ({
-      file,
-      unifiedDiff,
-      sideBySideDiff,
-      loggedUser: user,
-      comments,
-    })
-    }
+     ({
+       file,
+       unifiedDiff,
+       sideBySideDiff,
+       loggedUser: user,
+       comments,
+     })
   )
 
 export default getData

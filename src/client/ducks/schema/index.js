@@ -34,7 +34,7 @@ const repository = new schema.Entity('repositories', {
   pullRequests: {
     nodes: [pullRequest],
   },
-})
+}, { idAttribute: 'fullName' })
 
 const group = new schema.Entity('groups')
 

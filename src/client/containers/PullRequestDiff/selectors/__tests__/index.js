@@ -30,7 +30,6 @@ describe('PullRequestDiff selectors', () => {
       },
     }
     const state = {
-      fetch: { [types.FETCH_PULL_REQUEST_DIFF]: {} },
       entities: {
         me: { username: 'userName' },
         pullRequests,

@@ -48,8 +48,8 @@ describe('PullRequestSummary selectors', () => {
   })
   it('no state.entities: getPRSourceStamp should return nulls', () => {
     const expectedData = {
-      repository: 'repoName',
-      revision: 'rev',
+      repository: null,
+      revision: null,
     }
     const state = {
       entities: {},
