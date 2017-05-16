@@ -23,7 +23,6 @@ export const getData =
     getSideBySideFileDiff,
     getFileComments,
     (file, user, unifiedDiff, sideBySideDiff, comments) =>
-    // throw JSON.stringify(file)
      ({
        file,
        unifiedDiff,
