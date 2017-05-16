@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Header from 'containers/Header'
+import ReactPerfTool from 'react-perf-tool'
+import Perf from 'react-addons-perf'
 import SideBar from 'containers/SideBar'
 
 // TODO: these should be configurable:
@@ -64,6 +66,7 @@ class App extends Component {
               </div>
             </div>
           </div>
+          <ReactPerfTool perf={Perf} />
         </div>
       </MuiThemeProvider>
     )

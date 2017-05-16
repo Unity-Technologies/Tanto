@@ -8,6 +8,7 @@ import { userEntitiesSelector } from 'ducks/users/selectors'
 import { parseMercurialAuthor } from 'ducks/repositories/selectors'
 
 import _ from 'lodash'
+const defaultEmptyList = []
 
 export const denormalizePullRequestUsers = (pullRequest: Object, userEntities: Object): Object => {
   if (!pullRequest || !userEntities) {
@@ -119,7 +120,7 @@ export const getCommentsEntities = (state: Object) =>
 export const getPullRequestGeneralComments = createSelector(
   getCommentsEntities, userEntitiesSelector, getIssuesEntities, getPullRequestNormalized,
   (commentsEntities, userEntities, issues, pr) => {
-    const prComments = _.values(_.pick(commentsEntities, _.get(pr, ['comments'], [])))
+    const prComments = _.values(_.pick(commentsEntities, _.get(pr, ['comments'], defaultEmptyList)))
     //  Denormalization of comment author
     return prComments.map(comment => ({
       ...denormalizeCommentAuthor(comment, userEntities),

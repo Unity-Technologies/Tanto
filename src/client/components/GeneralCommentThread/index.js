@@ -1,10 +1,12 @@
 /* @flow */
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import type { GeneralCommentType } from 'universal/types'
 import NewComment from './NewComment'
 import Comment from 'components/Comment'
 import type { CommentType } from 'components/Comment'
 export type { CommentType } from 'components/Comment'
+
 import './GeneralCommentThread.css'
 
 export type UserType = {
@@ -38,13 +40,18 @@ const renderDescriptionComment =
     />
   )
 
-class GeneralCommentThread extends Component {
+class GeneralCommentThread extends PureComponent {
   constructor(props: Props) {
     super(props)
 
     this.state = {
       editMode: false,
     }
+  }
+
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return nextProps.comments && nextProps.comments.length &&
+      super.shouldComponentUpdate(nextProps, nextState)
   }
 
   state: {

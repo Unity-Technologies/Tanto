@@ -6,6 +6,7 @@ import { createSelector } from 'reselect'
 import _ from 'lodash'
 import { getPullRequest } from 'ducks/pullrequests/selectors'
 import { connect } from 'react-redux'
+import { pureComponent } from 'components/PureComponent'
 
 export type HeaderPropsType = {
   id: string,
@@ -54,4 +55,4 @@ const Header = (props: HeaderPropsType) => (
   </div >
 )
 
-export default connect(getHeaderData)(Header)
+export default connect(getHeaderData)(pureComponent(Header))

@@ -10,6 +10,7 @@ import _ from 'lodash'
 import { createSelector } from 'reselect'
 import { buildProjectLink } from 'routes/helpers'
 import { Link } from 'react-router'
+import { pureComponent } from 'components/PureComponent'
 
 const info = {
   borderLeft: '5px solid rgba(226, 231, 245, 0.62)',
@@ -69,14 +70,14 @@ export const OriginLink = (props: OriginType) =>
 export const TargetLink = (props: TargetType) =>
   <div> Target:
   {!props.target && <span> {noTargetMessage}</span>}
-  {props.target &&
-    <Link
-      style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
-      to={buildProjectLink(props.target.repository.name)}
-    >
-      <span> {props.target.repository.name}</span>
-    </Link>
-  }
+    {props.target &&
+      <Link
+        style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
+        to={buildProjectLink(props.target.repository.name)}
+      >
+        <span> {props.target.repository.name}</span>
+      </Link>
+    }
   </div>
 
 
@@ -95,5 +96,5 @@ export const RepositoriesSection = (props: RepositoriesPropsType) =>
     </Row>
   </ListGroupItem>
 
-export default connect(getRepositoriesData)(RepositoriesSection)
+export default connect(getRepositoriesData)(pureComponent(RepositoriesSection))
 

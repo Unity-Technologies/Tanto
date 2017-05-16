@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
 import { default as BootstrapBreadcrumb } from 'react-bootstrap/lib/Breadcrumb'
 import _ from 'lodash'
@@ -37,7 +37,7 @@ export type Props = {
   skip?: number,
 }
 
-export class Breadcrumb extends Component {
+export class Breadcrumb extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = { items: breadcrumbItems(props.path, props.skip) }
@@ -69,9 +69,9 @@ export class Breadcrumb extends Component {
                 className={item.active ? 'active' : ''}
                 key={_.uniqueId('breadcrumb_item')}
               >
-              {!item.active ?
-                <Link to={item.link}>{item.label}</Link> :
-                <span>{item.label}</span>}
+                {!item.active ?
+                  <Link to={item.link}>{item.label}</Link> :
+                  <span>{item.label}</span>}
               </BootstrapBreadcrumb.Item>
             ))}
           </BootstrapBreadcrumb>

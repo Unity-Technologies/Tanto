@@ -1,6 +1,7 @@
 /* flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import _ from 'lodash'
 import 'prismjs/themes/prism.css'
 import UnifiedRow from './UnifiedRow/UnifiedRow'

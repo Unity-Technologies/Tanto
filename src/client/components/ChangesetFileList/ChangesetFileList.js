@@ -1,5 +1,6 @@
 /* @flow */
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import ListGroup from 'react-bootstrap/lib/ListGroup'

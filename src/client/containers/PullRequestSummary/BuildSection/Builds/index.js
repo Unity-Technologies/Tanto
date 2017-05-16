@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import { getBuilds, getABVBuild } from 'ducks/bfstats/selectors'
@@ -9,7 +10,9 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import moment from 'moment'
 import { BuildsResult } from 'universal/constants'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 import './Builds.css'
+
 
 export type BuildType = {
   builder: {
@@ -125,7 +128,9 @@ class Builds extends PureComponent {
   }
 }
 
-export default connect((state: Object, props: Object) => ({
-  builds: getBuilds(state, props),
-  abvBuild: getABVBuild(state, props),
-}))(Builds)
+export const structuredSelector = createStructuredSelector({
+  builds: getBuilds,
+  abvBuild: getABVBuild,
+})
+
+export default connect(structuredSelector)(Builds)

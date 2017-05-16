@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
+import { pureComponent } from 'components/PureComponent'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
 import { types } from 'ducks/pullrequests/actions'
 import BuildSection from './BuildSection'
@@ -50,5 +51,5 @@ const PullRequestSummary = (props: PullRequestSummaryPropsType) =>
     <PullRequestDiscussion pullRequestId={props.pullRequestId} repoName={props.repoName} />
   </div>
 
-export default connect(getMetadata)(PullRequestSummary)
+export default connect(getMetadata)(pureComponent(PullRequestSummary))
 

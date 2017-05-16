@@ -7,6 +7,7 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { getPullRequestIssues } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 import type { IssueType } from 'universal/types'
+import { pureComponent } from 'components/PureComponent'
 import { IssueStatus } from 'universal/constants'
 
 const subHeader = text => (
@@ -79,4 +80,4 @@ export const IssuesSection = (props: IssuesSectionProps) => {
 }
 
 
-export default connect(getIssues)(IssuesSection)
+export default connect(getIssues)(pureComponent(IssuesSection))

@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 
 import { pluralizedText } from 'utils/text'
-import pureComponent from 'universal/react-pure-render'
+import { pureComponent } from 'components/PureComponent'
 
 
 /*

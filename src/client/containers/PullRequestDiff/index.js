@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import type { FileType } from 'universal/types'
 import { connect } from 'react-redux'
 import ChangesetFileList from 'components/ChangesetFileList'

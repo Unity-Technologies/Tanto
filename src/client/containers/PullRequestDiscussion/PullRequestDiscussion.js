@@ -20,7 +20,7 @@ import {
   getPullRequestDescription,
   getPullRequestNormalized,
 } from 'ducks/pullrequests/selectors'
-import { createSelector } from 'reselect'
+import { createSelector, createStructuredSelector } from 'reselect'
 
 export type Props = {
   createComment: Function,
@@ -119,13 +119,12 @@ class PullRequestDiscussion extends Component {
 }
 
 
-const mapStateToProps = (state: Object, props: Props): Props => ({
-  ...props,
-  description: getPullRequestDescription(state, props),
-  comments: getPullRequestGeneralComments(state, props),
-  status: getFetchStatus(state, props),
-  loggedUser: getLoggedUser(state, props),
-  isCurrentUserOwner: isCurrentUserOwner(state, props),
+const structuredSelector = createStructuredSelector({
+  description: getPullRequestDescription,
+  comments: getPullRequestGeneralComments,
+  status: getFetchStatus,
+  loggedUser: getLoggedUser,
+  isCurrentUserOwner,
 })
 
-export default connect(mapStateToProps)(PullRequestDiscussion)
+export default connect(structuredSelector)(PullRequestDiscussion)

@@ -8,6 +8,8 @@ import { connect } from 'react-redux'
 import { getPullRequestIterations } from 'ducks/pullrequests/selectors'
 import { buildPullRequestLink } from 'routes/helpers'
 import { Link } from 'react-router'
+import { createStructuredSelector } from 'reselect'
+import { pureComponent } from 'components/PureComponent'
 
 type IterationType = {
   id: string,
@@ -19,7 +21,7 @@ type Props = {
   iterations: Array<IterationType>
 }
 
-const Iterations = (props: Props) => {
+export const Iterations = (props: Props) => {
   if (!props.iterations || !props.iterations.length) {
     return null
   }
@@ -48,7 +50,9 @@ const Iterations = (props: Props) => {
   )
 }
 
-export default connect((state, props) => ({
-  iterations: getPullRequestIterations(state, props),
-}))(Iterations)
+export const structuredSelector = createStructuredSelector({
+  iterations: getPullRequestIterations,
+})
+
+export default connect(structuredSelector)(pureComponent(Iterations))
 

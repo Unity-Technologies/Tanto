@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import { connect } from 'react-redux'
 import { fetchLatestBuildsForRevision } from 'ducks/bfstats/actions'
 import { getPullRequest } from 'ducks/pullrequests/selectors'
