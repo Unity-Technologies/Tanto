@@ -7,6 +7,13 @@ query pullRequestFiles($id: Int!, $pattern: String) {
       comments {
         id
         text
+        issue {
+          id
+          title
+          status
+          created
+          description
+        }
         author {
           id
           username

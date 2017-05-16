@@ -4,18 +4,6 @@
 }
 
 .action-icon {
-    font-size: 18px;
+    font-size: 17px;
     color: rgba(87, 89, 90, 0.69);
-}
-
-.yellow {
-    color: #cccc74;
-}
-
-.red {
-    color: #F44336;
-}
-
-.orange {
-    color: #f49936;
 }

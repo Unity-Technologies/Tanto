@@ -1,5 +1,6 @@
 .comment-box {
     position: relative;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .comment-box-avatar {
@@ -17,10 +18,11 @@
     position: relative;
     display: inline-flex;
     width: 100%;
+    font-size: 13px;
     min-height: 40px
 }
 
-.comment-box-header:before {
+.comment-box-header-arrow:before {
     content: "\A";
     border-style: solid;
     border-width: 10px 10px 10px 0;

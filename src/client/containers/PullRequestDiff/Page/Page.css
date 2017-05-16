@@ -1,0 +1,30 @@
+.show-more {
+    padding: 10px;
+    border: 1px solid #e7e4e4;
+    cursor: pointer;
+    color: #949494;
+}
+
+.show-more:hover {
+    background-color: #f6f7f7;
+    zoom: 105%;
+}
+
+.show-more-body {
+    border-bottom: none;
+    margin-top: 10px;
+}
+
+.show-more-title {
+    color: #316bb8;
+    font-size: 14px;
+}
+
+.file-review-icon {
+    margin: 5px;
+}
+
+.file-review-comments {
+    margin: 0 10px;
+    color: lightblue;
+}

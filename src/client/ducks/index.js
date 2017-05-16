@@ -6,6 +6,7 @@ import { pullRequests } from './pullrequests'
 import { pullRequestsOwned, pullRequestsAssigned, profile } from './session'
 import fetchStatus from './fetch'
 import sidebar from './sidebar'
+import { pullrequests } from './review'
 import diff from './diff'
 
 import { entities } from './entities'
@@ -23,5 +24,8 @@ export default combineReducers({
     pullRequests,
     pullRequestsOwned,
     pullRequestsAssigned,
+  }),
+  review: combineReducers({
+    pullrequests,
   }),
 })

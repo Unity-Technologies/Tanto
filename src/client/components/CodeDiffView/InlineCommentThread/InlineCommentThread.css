@@ -6,7 +6,7 @@
     position: absolute;
     top: 0;
     bottom: -10px;
-    left: 28px;
+    left: 24px;
     z-index: 0;
     display: block;
     width: 2px;
@@ -27,4 +27,9 @@
     padding: 10px;
     border: 1px solid #ededed;
     border-radius: 4px;
+}
+
+.inline-header {
+    background-color: #fbfbfb;
+    border: 1px solid #d6d6d6;
 }
