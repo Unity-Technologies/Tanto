@@ -1,13 +1,15 @@
 /* @flow */
+/* eslint-disable react/jsx-indent */
+
 import moment from 'moment'
 import React, { Component } from 'react'
 import RichTextEditor from 'components/RichTextEditor'
 import Avatar from 'components/Avatar'
 import Button from 'react-bootstrap/lib/Button'
-import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import type { GeneralCommentType } from 'universal/types'
-import './Comment.css'
+import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import { IssueStatus } from 'universal/constants'
+import './Comment.css'
 
 
 export type CommentType = {
@@ -24,7 +26,9 @@ export type CommentType = {
   },
   issue?: {
     status: string,
-  }
+  },
+  showArrow?: boolean,
+  headerStyle?: Object,
 }
 
 export type CommentProps = {
@@ -35,6 +39,7 @@ export type CommentProps = {
   onDelete?: () => void,
 }
 
+// NOTE: this should be fixed on ONO sideð
 export const getStatusText = (status: string): string => {
   switch (status) {
     case 'approved':
@@ -50,7 +55,7 @@ export const getStatusText = (status: string): string => {
 }
 
 // NOTE: this should be fixed on ONO sideð
-const convertResponseIssueStatus = (value: string) => {
+export const convertResponseIssueStatus = (value: string) => {
   switch (value) {
     case 'later':
       return IssueStatus.FIX_LATER
@@ -63,7 +68,7 @@ const convertResponseIssueStatus = (value: string) => {
   }
 }
 
-const getIssueText = (status: string): string => {
+export const getIssueText = (status: string): string => {
   const converted = convertResponseIssueStatus(status)
   switch (converted) {
     case IssueStatus.FIX_LATER:
@@ -97,7 +102,7 @@ export const getStatusIcon = (status: string) => {
   }
 }
 
-const getIssueIcon = (issueStatus: string, commentStatus?: string) => {
+export const getIssueIcon = (issueStatus: string, commentStatus?: string) => {
   const converted = convertResponseIssueStatus(issueStatus)
   switch (converted) {
     case IssueStatus.FIX_AVAILABLE:
@@ -118,6 +123,7 @@ const getIssueIcon = (issueStatus: string, commentStatus?: string) => {
   }
 }
 
+
 const renderEditMode = (comment: GeneralCommentType, handleOnCancel: Function, handleOnUpdate: Function) => (
   <div className="comment-box">
     <div className="comment-box-avatar">
@@ -125,6 +131,7 @@ const renderEditMode = (comment: GeneralCommentType, handleOnCancel: Function, h
     </div>
     <div className="comment-box-content" >
       <RichTextEditor
+        showCancel
         text={comment.text}
         onCancel={handleOnCancel}
         onSave={handleOnUpdate}
@@ -136,40 +143,46 @@ const renderEditMode = (comment: GeneralCommentType, handleOnCancel: Function, h
 )
 
 const renderReadMode =
-  (comment: GeneralCommentType, canEdit: boolean, disableDelete: boolean, handleOnEdit: Function, handleOnDelete: Function) => (
-    <div className="comment-box">
-      <div className="comment-box-avatar">
-        <Avatar avatar={comment.author && comment.author.slack ? comment.author.slack.avatar : ''} />
-      </div>
-      <div className="comment-box-content">
-        <div className="comment-box-header">
-          <div className="comment-title">
-            <strong>{comment.author && comment.author.username}</strong>
-            <span>&nbsp;commented&nbsp;{moment(comment.created).fromNow()}</span>
-          </div>
-          {canEdit &&
-            <div className="comment-box-actions">
-              <Button
-                className="comment-action-button"
-                onClick={handleOnEdit}
-              >
-                <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
-              </Button>
-              {!disableDelete &&
-                <Button
-                  onClick={handleOnDelete}
-                  className="comment-action-button"
-                >
-                  <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
-                </Button>
-              }
-            </div>
-          }
+  (comment: GeneralCommentType,
+    canEdit: boolean,
+    disableDelete: boolean,
+    handleOnEdit: Function,
+    handleOnDelete: Function,
+    showArrow: any,
+    headerStyle: any) => (
+      <div className="comment-box">
+        <div className="comment-box-avatar">
+          <Avatar avatar={comment.author && comment.author.slack ? comment.author.slack.avatar : ''} />
         </div>
-        <RichTextEditor text={comment.text} readMode />
+        <div className="comment-box-content">
+          <div className={`comment-box-header ${showArrow ? 'comment-box-header-arrow' : ''}`} style={headerStyle}>
+            <div className="comment-title">
+              <strong>{comment.author && comment.author.username}</strong>
+              <span>&nbsp;commented&nbsp;{moment(comment.created).fromNow()}</span>
+            </div>
+            {canEdit &&
+              <div className="comment-box-actions">
+                <Button
+                  className="comment-action-button"
+                  onClick={handleOnEdit}
+                >
+                  <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+                </Button>
+                {!disableDelete &&
+                  <Button
+                    onClick={handleOnDelete}
+                    className="comment-action-button"
+                  >
+                    <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+                  </Button>
+                }
+              </div>
+            }
+          </div>
+          <RichTextEditor text={comment.text} readMode />
+        </div>
       </div>
-    </div>
-  )
+    )
 
 const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleOnEdit: Function) => (
   <div className="comment-box">
@@ -254,7 +267,12 @@ class Comment extends Component {
     }
 
     return renderReadMode(
-      this.props.comment, this.props.canEdit || false, this.props.disableDelete || false, this.handleOnEdit, this.handleOnDelete)
+      this.props.comment,
+      this.props.canEdit || false,
+      this.props.disableDelete || false,
+      this.handleOnEdit, this.handleOnDelete,
+      this.props.showArrow || false,
+      this.props.headerStyle || null)
   }
 }
 

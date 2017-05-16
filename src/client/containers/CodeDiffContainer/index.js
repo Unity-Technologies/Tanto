@@ -27,7 +27,7 @@ type Props = {
   sideBySideDiff: any,
   pullRequestId: any,
   comments: Object, // NOTE: not an array but object with comments reduced by line numbers
-  onCreateInlineComment: (filePath: string, lineNumber: string, text: string) => void,
+  onCreateInlineComment: (filePath: string, lineNumber: string, text: string, issue: any) => void,
   onUpdateInlineComment: (commentId: string, text: string) => void,
   onDeleteInlineComment: (commentId: string, text: string) => void,
 }
@@ -100,7 +100,8 @@ class CodeDiffContainer extends PureComponent {
 
   handleCreateInlineComment = () => {
     if (this.props.onCreateInlineComment) {
-      return (lineNumber: string, text: string) => this.props.onCreateInlineComment(this.props.file.name, lineNumber, text)
+      return (lineNumber: string, text: string, issue: any) =>
+        this.props.onCreateInlineComment(this.props.file.name, lineNumber, text, issue)
     }
     return null
   }

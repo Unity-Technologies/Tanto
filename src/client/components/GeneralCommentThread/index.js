@@ -2,9 +2,9 @@
 import React, { Component } from 'react'
 import type { GeneralCommentType } from 'universal/types'
 import NewComment from './NewComment'
-import Comment from './Comment'
-import type { CommentType } from './Comment'
-export type { CommentType } from './Comment'
+import Comment from 'components/Comment'
+import type { CommentType } from 'components/Comment'
+export type { CommentType } from 'components/Comment'
 import './GeneralCommentThread.css'
 
 export type UserType = {
@@ -93,6 +93,7 @@ class GeneralCommentThread extends Component {
             {this.props.comments.map(c =>
               <div key={c.id} className="comments-thread-timeline-item">
                 <Comment
+                  showArrow
                   comment={c}
                   canEdit={c.author.username === this.props.loggedUser.username}
                   onDelete={this.handleOnDelete(c.id)}

@@ -33,7 +33,7 @@ type RepositorySelectorType = {
   name?: string,
 }
 
-export const updateComment = (commentId: string, text:string): FetchAction =>
+export const updateComment = (commentId: string, text: string): FetchAction =>
   fetchOnoAction({ type: types.UPDATE_COMMENT, query: updateCommentQuery, variables: { commentId, text } })
 
 export const createComment =
@@ -66,15 +66,24 @@ export const deleteComment = (commentId: string): FetchAction =>
    Pull requests inline comments actions
 */
 export const createInlineComment =
-(repoName: string, pullRequestId: string, filePath: string, lineNumber: string, text: string): FetchAction =>
-  fetchOnoAction({
-    type: types.CREATE_INLINE_COMMENT,
-    query: createInlineCommentQuery,
-    variables: { repoName, pullRequestId, text, lineNumber, filePath } })
+  (repoName: string, pullRequestId: string, filePath: string, lineNumber: string, text: string, issue: any): FetchAction => {
+    const variables: Object = { repoName, pullRequestId, text, lineNumber, filePath }
+
+    if (issue) {
+      variables.issue = issue
+    }
+
+    return fetchOnoAction({
+      type: types.CREATE_INLINE_COMMENT,
+      query: createInlineCommentQuery,
+      variables,
+    })
+  }
 
 export const deleteInlineComment =
-(commentId: string, filePath: string): FetchAction =>
-  fetchOnoAction({
-    type: types.DELETE_INLINE_COMMENT,
-    query: deleteInlineCommentQuery,
-    variables: { commentId, filePath } })
+  (commentId: string, filePath: string): FetchAction =>
+    fetchOnoAction({
+      type: types.DELETE_INLINE_COMMENT,
+      query: deleteInlineCommentQuery,
+      variables: { commentId, filePath },
+    })

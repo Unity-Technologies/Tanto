@@ -2,7 +2,7 @@
 import React from 'react'
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
 import PullRequestVoteMenu from './PullRequestVoteMenu'
-import IssueMenu from './IssueMenu'
+import IssueMenu from 'components/IssueMenu'
 import { IssueStatus, ChangesetStatus } from 'universal/constants'
 
 type Props = {
