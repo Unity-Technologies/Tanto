@@ -9,18 +9,18 @@ import './IssueMenu.css'
 const getStatusClass = (status?: string) => {
   switch (status) {
     case IssueStatus.FIX_LATER:
-      return 'yellow'
+      return '#cccc74'
     case IssueStatus.FIX_NEXT_PR:
-      return 'orange'
+      return '#f49936'
     case IssueStatus.FIX_NOW:
-      return 'red'
+      return '#F44336'
     default:
       return 'action-icon'
   }
 }
 
 const IssueIcon = ({ color }) => (
-  <i className={`fa fa-bug action-icon ${color}`} aria-hidden="true" />
+  <i className={'fa fa-bug action-icon'} style={{ color }} aria-hidden="true" />
 )
 
 type Props = {
@@ -35,20 +35,20 @@ export const IssueMenu = (props: Props) => (
     </Dropdown.Toggle>
     <Dropdown.Menu>
       <MenuItem eventKey="1" onClick={(e) => props.onStatusSelect(IssueStatus.FIX_NOW)}>
-        <span><i className="fa fa-circle red" aria- hidden="true" ></i> {IssueStatusText.FIX_NOW}</span>
+        <span><IssueIcon color={getStatusClass(IssueStatus.FIX_NOW)} /> {IssueStatusText.FIX_NOW}</span>
       </MenuItem>
       <MenuItem eventKey="2" onClick={(e) => props.onStatusSelect(IssueStatus.FIX_NEXT_PR)}>
-        <span><i className="fa fa-circle orange" aria- hidden="true" ></i> {IssueStatusText.FIX_NEXT_PR}</span>
+        <span><IssueIcon color={getStatusClass(IssueStatus.FIX_NEXT_PR)} /> {IssueStatusText.FIX_NEXT_PR}</span>
       </MenuItem>
       <MenuItem eventKey="3" onClick={(e) => props.onStatusSelect(IssueStatus.FIX_LATER)}>
-        <span><i className="fa fa-circle yellow" aria- hidden="true" ></i> {IssueStatusText.FIX_LATER}</span>
+        <span><IssueIcon color={getStatusClass(IssueStatus.FIX_LATER)} /> {IssueStatusText.FIX_LATER}</span>
       </MenuItem>
       <MenuItem divider />
       <MenuItem eventKey="4" onClick={(e) => props.onStatusSelect(IssueStatus.NONE)}>
-        <span> Close issue</span>
+        <span>Revert</span>
       </MenuItem>
     </Dropdown.Menu>
   </Dropdown>
-  )
+)
 
 export default IssueMenu

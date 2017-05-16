@@ -37,14 +37,15 @@ class SplitRow extends Component {
 
   props: Props
 
-  handleAddLeftComment = () => this.setState({ newCommentStarted: true })
-  handleAddRightComment = () => this.setState({ leftCommentStarted: true })
-  handleCloseLeftComment = () => this.setState({ newCommentStarted: false })
-  handleCloseRightComment = () => this.setState({ leftCommentStarted: false })
+  handleAddLeftComment = () => this.setState({ leftCommentStarted: true })
+  handleAddRightComment = () => this.setState({ rightCommentStarted: true })
+  handleCloseLeftComment = () => this.setState({ leftCommentStarted: false })
+  handleCloseRightComment = () => this.setState({ rightCommentStarted: false })
+
   mouseOverLeftSide = () => this.setState({ hoverLeftSide: true })
-  mouseOverRightSide= () => this.setState({ hoverRightSide: true })
-  mouseOutLeftSide= () => this.setState({ hoverLeftSide: false })
-  mouseOutRightSide= () => this.setState({ hoverRightSide: false })
+  mouseOverRightSide = () => this.setState({ hoverRightSide: true })
+  mouseOutLeftSide = () => this.setState({ hoverLeftSide: false })
+  mouseOutRightSide = () => this.setState({ hoverRightSide: false })
 
   handleOnUpdateInlineComment = (id: string, text: string): any => {
     if (this.props.onUpdateInlineCommment) {
@@ -68,7 +69,7 @@ class SplitRow extends Component {
     }
   }
 
-  handleRightOnSave = (lineNumber:string, text: string): any => {
+  handleRightOnSave = (text: string): any => {
     this.setState({
       rightCommentStarted: false,
     })
@@ -147,7 +148,7 @@ class SplitRow extends Component {
           }
           {this.state.leftCommentStarted &&
             <div>
-              <NewComment loggedUser={loggedUser} handleOnSave={this.handleLeftOnSave} handleOnClose={this.handleCloseLeftComment} />
+              <NewComment loggedUser={loggedUser} onSave={this.handleLeftOnSave} onClose={this.handleCloseLeftComment} />
             </div>
           }
         </td>
@@ -159,9 +160,9 @@ class SplitRow extends Component {
           onMouseOut={this.mouseOutRightSide}
           className={`right-side ${rightCssClass} line-icon`}
         >&nbsp;
-          {!isBreak && !isRightCommented && !this.state.rightCommentState &&
+          {!isBreak && !isRightCommented &&
             <i
-              onClick={this.handleRightLeftComment}
+              onClick={this.handleAddRightComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-right"
               aria-hidden="true"
               style={rightIconStyle}
@@ -195,7 +196,7 @@ class SplitRow extends Component {
           }
           {this.state.rightCommentStarted &&
             <div>
-              <NewComment loggedUser={loggedUser} handleOnSave={this.handleRightOnSave} handleOnClose={this.handleCloseRightComment} />
+              <NewComment loggedUser={loggedUser} onSave={this.handleRightOnSave} onClose={this.handleCloseRightComment} />
             </div>
           }
         </td>

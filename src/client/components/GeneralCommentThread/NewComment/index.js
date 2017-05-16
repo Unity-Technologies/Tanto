@@ -1,5 +1,5 @@
 /* @flow */
-import React from 'react'
+import React, { Component } from 'react'
 import Avatar from 'components/Avatar'
 import RichTextEditor from 'components/RichTextEditor'
 import Header from './Header'
@@ -14,7 +14,7 @@ type Props = {
   onCancel: () => void,
 }
 
-class NewComment extends React.Component {
+class NewComment extends Component {
   constructor(props: Props) {
     super(props)
 
@@ -43,9 +43,6 @@ class NewComment extends React.Component {
   }
 
   handleAddComment = (text: string) => {
-    this.setState({
-      text,
-    })
     const issue = this.state.issueStatus !== IssueStatus.NONE ? { status: this.state.issueStatus } : null
     this.props.onSave(text, this.state.reviewStatus, issue)
     this.setState({
