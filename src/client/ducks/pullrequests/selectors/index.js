@@ -143,14 +143,14 @@ export const getPullRequestFiles = createSelector(
   })
 
 
-export const getFile = (state: Object, props: Object) => (props.id ? state.entities.files[props.id] : null)
+export const getFile = (state: Object, props: Object) => (props.id && state.entities.files ? state.entities.files[props.id] : null)
 
 export const getFileComments = createSelector(
   getFile, getCommentsEntities, userEntitiesSelector,
   (file, commentEntities, userEntities) => {
     // Denormalization of inline comments
-    const comments = _.values(_.pick(commentEntities, file.comments))
-      .map(comment => denormalizeCommentAuthor(comment, userEntities))
+    const comments = file ? _.values(_.pick(commentEntities, file.comments))
+      .map(comment => denormalizeCommentAuthor(comment, userEntities)) : []
     const reduced = _.reduce(comments, (result, value, key) => {
       if (value.location) {
         (result[value.location.lineNumber] || (result[value.location.lineNumber] = [])).push(value) //eslint-disable-line
