@@ -7,6 +7,7 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { Link } from 'react-router'
 import { fromNow } from 'utils/datetime'
 import { buildProjectLink } from 'routes/helpers'
+import { pureComponent } from 'components/PureComponent'
 
 const subHeader = text => (
   <div className="sub-header">
@@ -64,5 +65,4 @@ function RepositoryItem(props: Props) {
   )
 }
 
-
-export default RepositoryItem
+export default pureComponent(RepositoryItem)

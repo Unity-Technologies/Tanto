@@ -1,7 +1,8 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { push } from 'react-router-redux'
+import PureComponent from 'components/PureComponent'
 import Modal from 'react-bootstrap/lib/Modal'
 import Button from 'react-bootstrap/lib/Button'
 import { connect } from 'react-redux'
@@ -47,7 +48,7 @@ export const isCurrentUserOwner = createSelector(
   }
 )
 
-class PullRequestDiscussion extends Component {
+class PullRequestDiscussion extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {

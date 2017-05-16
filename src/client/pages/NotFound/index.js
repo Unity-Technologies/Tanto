@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react'
+import { pureComponent } from 'components/PureComponent'
 import Helmet from 'react-helmet'
 
 function NotFound() {
@@ -12,4 +13,4 @@ function NotFound() {
   )
 }
 
-export default NotFound
+export default pureComponent(NotFound)

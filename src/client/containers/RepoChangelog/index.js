@@ -1,9 +1,10 @@
 /* flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { getChangelog } from 'ducks/repositories/selectors'
 import ChangesetList from 'components/ChangesetList'
+import PureComponent from 'components/PureComponent'
 
 export type Props = {
   params: Object,
@@ -12,7 +13,7 @@ export type Props = {
   commits: Array<any>
 };
 
-class RepoChangelog extends Component {
+class RepoChangelog extends PureComponent {
   // shouldComponentUpdate(nextProps, nextState) {
   //   return nextProps.commits
   // }
@@ -21,7 +22,7 @@ class RepoChangelog extends Component {
     this.setState({ enabled: selectedChangesNumber in [2, 1] })
   }
 
-  props : Props
+  props: Props
 
   render() {
     const { commits, repoName } = this.props

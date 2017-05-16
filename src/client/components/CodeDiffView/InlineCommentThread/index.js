@@ -1,5 +1,6 @@
 /* @flow */
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import type { InlineCommentType } from 'universal/types'
 import FormControl from 'react-bootstrap/lib/FormControl'
 import Comment from 'components/Comment'
@@ -44,7 +45,7 @@ const renderAddNewCommentBox = (loggedUser: UserType, handleOnFocus: Function) =
   </div>
 )
 
-class InlineCommentThread extends Component {
+class InlineCommentThread extends PureComponent {
   constructor(props: Props) {
     super(props)
 
@@ -55,6 +56,11 @@ class InlineCommentThread extends Component {
 
   state: {
     editMode: boolean,
+  }
+
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return nextProps.comments && nextProps.comments.length &&
+      super.shouldComponentUpdate(nextProps, nextState)
   }
 
   handleOnUpdate = (commentId: string): any => {

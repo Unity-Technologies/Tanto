@@ -2,6 +2,7 @@
 
 import React from 'react'
 import List from 'components/List'
+import PureComponent from 'components/PureComponent'
 import PullRequestListItem from './PullRequestListItem'
 
 import './styles.css'
@@ -18,24 +19,33 @@ export type Props = {
   onPageSelect: Function,
 }
 
-function PullRequestList(props: Props) {
-  return (
-    <List
-      total={props.total}
-      activePage={props.activePage}
-      pageSize={props.pageSize}
-      onPageSelect={props.onPageSelect}
-    >
-      {props.items.map(item => (
-        <PullRequestListItem
-          key={item.id}
-          pullRequest={item}
-          showRemoveButton={props.showRemoveButton}
-          onRemoveClick={props.onRemoveClick}
-        />
-      ))}
-    </List>
-  )
+class PullRequestList extends PureComponent {
+  props: Props
+
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return nextProps.items && nextProps.items.length &&
+      super.shouldComponentUpdate(nextProps, nextState)
+  }
+
+  render() {
+    return (
+      <List
+        total={this.props.total}
+        activePage={this.props.activePage}
+        pageSize={this.props.pageSize}
+        onPageSelect={this.props.onPageSelect}
+      >
+        {this.props.items.map(item => (
+          <PullRequestListItem
+            key={item.id}
+            pullRequest={item}
+            showRemoveButton={this.props.showRemoveButton}
+            onRemoveClick={this.props.onRemoveClick}
+          />
+        ))}
+      </List>
+    )
+  }
 }
 
 export default PullRequestList

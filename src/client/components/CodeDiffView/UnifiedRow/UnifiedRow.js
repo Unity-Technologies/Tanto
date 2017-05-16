@@ -1,6 +1,7 @@
 /* flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import InlineCommentThread from 'components/CodeDiffView/InlineCommentThread'
 import NewComment from 'components/CodeDiffView/InlineCommentThread/NewComment'
 

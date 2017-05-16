@@ -1,7 +1,8 @@
-// todo: remove this after refactoring component
-/* eslint-disable */
+/* @flow */
+/* eslint-disable no-restricted-syntax, no-param-reassign */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Col from 'react-bootstrap/lib/Col'
 import moment from 'moment'
 import Row from 'react-bootstrap/lib/Row'
@@ -20,7 +21,7 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 const subHeader = text => (
   <div
     style={{ color: '#8c8c8c', fontSize: '13px' }}
-    >
+  >
     {text}
   </div>
 )
@@ -37,7 +38,6 @@ const greenStatus = { borderLeft: '4px solid #d1fad1' }
 const redStatus = { borderLeft: '4px solid #F44336' }
 const yellowStatus = { borderLeft: '4px solid #ffcbad' }
 const greyStatus = { borderLeft: '4px solid lightgrey' }
-const blueStatus = { borderLeft: '4px solid #337ab7' }
 
 const getStatusColor = (status) => {
   switch (status.toUpperCase()) {
@@ -53,22 +53,20 @@ const getStatusColor = (status) => {
 }
 
 const reduceCommitDelta = (files) => {
-  const stats= _.reduceRight(files, (flattened, other) => {
-    return flattened.concat(other.stats);
-  }, []);
+  const stats = _.reduceRight(files, (flattened, other) => flattened.concat(other.stats), [])
 
   return _.reduce(stats, (statsRes, stat) => {
-      for (let prop in stat) {
-        if (!(prop in statsRes)) {
-          statsRes[prop] = 0
-        }
-        statsRes[prop] += stat[prop]
+    for (const prop in stat) {
+      if (!(prop in statsRes)) {
+        statsRes[prop] = 0
       }
-      return statsRes
+      statsRes[prop] += stat[prop]
+    }
+    return statsRes
   }, {})
 }
 
-class ChangesetList extends Component {
+class ChangesetList extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -87,6 +85,11 @@ class ChangesetList extends Component {
     this.setState({ activeKey })
   }
 
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return nextProps.commits && nextProps.commits.length &&
+      super.shouldComponentUpdate(nextProps, nextState)
+  }
+
   handleChange = (event) => {
     const isSelected = event.target.checked
 
@@ -98,21 +101,16 @@ class ChangesetList extends Component {
       if (index !== -1) {
         this.state.changesets.splice(index, 1)
       }
-      this.props.commits.map((item) => {
+      this.props.commits.map((item) =>
         this.setState({ disabled: false })
-      })
+      )
     }
     if (this.state.changesets.length >= 2) {
-      this.props.commits.map((item) => {
+      this.props.commits.map((item) =>
         this.setState({ disabled: !this.state.changesets.includes(item.id) })
-      })
+      )
     }
     this.props.onSelectedChangesetsChange(event, this.state.changesets.length)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.commits && !_.isEqual(this.props.commits, nextProps.commits) ||
-    this.state.disabled !== nextState.disabled
   }
 
   render() {
@@ -120,7 +118,7 @@ class ChangesetList extends Component {
       return null
     }
 
-    const { commits, showCheckboxes, id, projectName } = this.props
+    const { commits, showCheckboxes, projectName } = this.props
 
     return (
       <ListGroup
@@ -128,31 +126,31 @@ class ChangesetList extends Component {
         style={{
           fontSize: '13px',
           overflowY: 'auto',
-          overflowX: 'hidden'
+          overflowX: 'hidden',
         }}
-        >
+      >
         {commits.map(item => (
           <ListGroupItem
             key={_.uniqueId('listItem')}
             style={getStatusColor(item.status)}
-            >
+          >
             <div>
               <Row>
                 <Col md={4}>
                   <Avatar {...item.author.slack} />
-                  <div style={{ display: 'table' , paddingLeft: '10px' }}>
+                  <div style={{ display: 'table', paddingLeft: '10px' }}>
                     <Link
                       style={{
                         cursor: 'pointer',
-                        fontWeight: '400'
+                        fontWeight: '400',
                       }}
                       to={buildChangesetLink(projectName, item.id)}
-                      >
+                    >
                       {item.message}
                     </Link>
 
                     <div style={{ fontSize: '12px', color: 'grey', fontStyle: 'italic' }}>
-                      <strong>{item.authorUser ? item.authorUser.fullName: item.author}</strong>, added {moment(item.date).fromNow()}
+                      <strong>{item.authorUser ? item.authorUser.fullName : item.author}</strong>, added {moment(item.date).fromNow()}
                     </div>
                   </div>
                 </Col>
@@ -161,17 +159,19 @@ class ChangesetList extends Component {
                     style={{
                       color: '#5a6082',
                       display: 'inline-block', borderRadius: '3px',
-                      border: '1px solid lightgrey'
+                      border: '1px solid lightgrey',
                     }}
-                    >
+                  >
                     <CopyToClipboard text={item.id} onCopy={() => this.setState({ copied: true })}>
-                      <i style={{ fontSize: '14px', padding: '2px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }}
-                      className="fa fa-clipboard" aria-hidden="true" />
+                      <i
+                        style={{ fontSize: '14px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }}
+                        className="fa fa-clipboard" aria-hidden="true"
+                      />
                     </CopyToClipboard>
                     <Link
                       style={{ padding: '10px', textDecoration: 'none', color: '#5a6082', textTransform: 'uppercase', fontSize: '12px' }}
                       to={buildChangesetLink(projectName, item.id)}
-                      >
+                    >
                       {item.id.substring(0, 9)}
                     </Link>
                   </div>
@@ -191,13 +191,13 @@ class ChangesetList extends Component {
                   {showCheckboxes ?
                     <Checkbox
                       ref={item.id}
-                        disableTouchRipple
-                        onChange={this.handleChange}
-                        value={item.id}
-                        style={{ float: 'left', height: '15px', marginTop: '10px' }}
-                        checked={ this.state.changesets.indexOf(item.id) != -1 }
-                        disabled={ this.state.changesets.length >= 2 & this.state.changesets.indexOf(item.id) == -1 }
-                        /> : ''}
+                      disableTouchRipple
+                      onChange={this.handleChange}
+                      value={item.id}
+                      style={{ float: 'left', height: '15px', marginTop: '10px' }}
+                      checked={this.state.changesets.indexOf(item.id) !== -1}
+                      disabled={this.state.changesets.length >= 2 & this.state.changesets.indexOf(item.id) === -1}
+                    /> : ''}
                 </Col>
               </Row>
             </div>

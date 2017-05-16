@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import { Link } from 'react-router'
 import { default as BootstrapBreadcrumb } from 'react-bootstrap/lib/Breadcrumb'
 import _ from 'lodash'

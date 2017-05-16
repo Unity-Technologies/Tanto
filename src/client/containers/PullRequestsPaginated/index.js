@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import LinearProgress from 'material-ui/LinearProgress'
 import ErrorMessage from 'components/ErrorMessage'
@@ -10,6 +10,7 @@ import RepoSelect from 'containers/RepoSelect'
 import OrderSelect from 'containers/OrderSelect'
 import Alert from 'react-bootstrap/lib/Alert'
 import type { StatusType } from 'ducks/pullrequests/selectors'
+import PureComponent from 'components/PureComponent'
 import type { OrderByType, DirectionType } from 'ducks/order'
 import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
 
@@ -29,7 +30,7 @@ export type Props = {
 
 const selectBoxStyle = { minWidth: '200px', maxWidth: '250px', marginRight: '5px' }
 
-class PullRequestsPaginated extends Component {
+class PullRequestsPaginated extends PureComponent {
   componentWillMount() {
     const args = this.getArguments()
     this.props.dispatch(this.props.fetchData(args))

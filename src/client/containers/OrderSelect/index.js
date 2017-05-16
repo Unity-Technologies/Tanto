@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import type { DirectionType } from 'ducks/order'
 import { DIRECTION } from 'ducks/order'
 import Select from 'react-select'
@@ -36,14 +37,14 @@ const SwitchOrderButton = (props: SwitchButtonProps) => (
       <i className="fa fa-sort-amount-asc" aria-hidden="true" />
     </a>
   </div >
-  )
+)
 
-class OrderSelect extends Component {
+class OrderSelect extends PureComponent {
   constructor(props: OrderProps) {
     super(props)
     const defaultValue =
       { label: this.props.defaultOption || '' }
-    this.state = { field: defaultValue, order: DIRECTION.ASC }
+    this.state = { field: defaultValue, order: DIRECTION.DESC }
   }
 
   state: {

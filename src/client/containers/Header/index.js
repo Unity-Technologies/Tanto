@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react'
+import { pureComponent } from 'components/PureComponent'
 import { routes } from 'universal/constants'
 import { connect } from 'react-redux'
 import Nav from 'react-bootstrap/lib/Nav'
@@ -53,4 +54,4 @@ function Header(props: Props) {
 
 export default connect(state => ({
   showMenuIconButton: state.sidebar.open,
-}))(Header)
+}))(pureComponent(Header))

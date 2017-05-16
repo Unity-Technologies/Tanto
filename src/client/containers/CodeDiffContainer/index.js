@@ -1,7 +1,8 @@
 /* @flow */
 /* eslint-disable no-console */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import { connect } from 'react-redux'
 import CodeDiffView from 'components/CodeDiffView'
 import _ from 'lodash'

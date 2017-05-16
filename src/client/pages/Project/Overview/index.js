@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react'
+import { pureComponent } from 'components/PureComponent'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { getRepoDescription } from 'ducks/repositories/selectors'
@@ -27,4 +28,4 @@ function Overview({ repoName, description }: Props) {
 export default connect((state, props) => ({
   repoName: props.params.splat,
   description: getRepoDescription(state, props),
-}))(Overview)
+}))(pureComponent(Overview))

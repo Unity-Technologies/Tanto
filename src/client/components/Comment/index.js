@@ -2,7 +2,8 @@
 /* eslint-disable react/jsx-indent */
 
 import moment from 'moment'
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import RichTextEditor from 'components/RichTextEditor'
 import Avatar from 'components/Avatar'
 import Button from 'react-bootstrap/lib/Button'
@@ -221,7 +222,7 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
   </div>
 )
 
-class Comment extends Component {
+class Comment extends PureComponent {
   constructor(props: CommentProps) {
     super(props)
 

@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react'
 import ErrorMessage from 'components/ErrorMessage'
-import pureComponent from 'universal/react-pure-render'
+import { pureComponent } from 'components/PureComponent'
 import LinearProgress from 'material-ui/LinearProgress'
 
 type LoadingComponentProps = {

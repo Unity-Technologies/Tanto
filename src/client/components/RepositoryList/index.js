@@ -2,6 +2,7 @@
 
 import React from 'react'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
+import { pureComponent } from 'components/PureComponent'
 import _ from 'lodash'
 import RepositoryItem from './RepositoryItem'
 import GroupItem from './GroupItem'
@@ -16,7 +17,7 @@ export type Props = {
   path: string,
 }
 
-function RepositoryList(props: Props) {
+export const RepositoryList = (props: Props) => {
   const { repositories, groups, path } = props
   return (
     <ListGroup>
@@ -40,4 +41,4 @@ function RepositoryList(props: Props) {
   )
 }
 
-export default RepositoryList
+export default pureComponent(RepositoryList)

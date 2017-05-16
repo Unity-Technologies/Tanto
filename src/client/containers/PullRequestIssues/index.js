@@ -7,6 +7,7 @@ import IssuesList from 'components/IssuesList'
 import getData from './selectors'
 import type { StatusType } from 'ducks/fetch/selectors'
 import LoadingComponent from 'components/LoadingComponent'
+import { pureComponent } from 'components/PureComponent'
 
 
 type Props = {
@@ -20,4 +21,4 @@ const PullRequestIssues = (props: Props) =>
     <IssuesList issues={props.issues} />
   </LoadingComponent>
 
-export default connect(getData)(PullRequestIssues)
+export default connect(getData)(pureComponent(PullRequestIssues))

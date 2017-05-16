@@ -25,6 +25,11 @@ export type Props = {
 class CodeDiffView extends PureComponent {
   props: Props
 
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return this.props.rawDiff || this.props.unifiedDiff || this.props.sideBySideDiff &&
+      super.shouldComponentUpdate(nextProps, nextState)
+  }
+
   selectUnifiedComments = (oldLine: number, newLine: number) => {
     if (!this.props.comments) {
       return []
@@ -89,9 +94,6 @@ class CodeDiffView extends PureComponent {
   }
 
   render() {
-    if (!this.props.rawDiff && !this.props.unifiedDiff && !this.props.sideBySideDiff) {
-      return null
-    }
     return (
       <pre
         ref="contentContainer"

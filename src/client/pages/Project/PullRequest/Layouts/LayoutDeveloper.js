@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react'
 import { Link } from 'react-router'
-
+import { pureComponent } from 'components/PureComponent'
 import CategoryModule from './common'
 
 
@@ -41,10 +41,10 @@ export type Props = {
   rootPath: string,
 }
 
-const LayoutDeveloper = ({ repoName, currentCategory, pullRequestId, rootPath } : Props) =>
+const LayoutDeveloper = ({ repoName, currentCategory, pullRequestId, rootPath }: Props) =>
   <div style={{ padding: '0 20px' }}>
     <Header currentCategory={currentCategory} rootPath={rootPath} />
     <CategoryModule repoName={repoName} pullRequestId={pullRequestId} type={currentCategory} />
   </div>
 
-export default LayoutDeveloper
+export default pureComponent(LayoutDeveloper)

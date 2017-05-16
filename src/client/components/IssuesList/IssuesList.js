@@ -2,7 +2,8 @@
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import type { IssueType } from 'universal/types'
@@ -94,7 +95,7 @@ const calculateStatuses = (issues: Array<IssueType>): statusCountType => issues.
   {},
 )
 
-class IssuesList extends Component {
+class IssuesList extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = { search: null }
@@ -106,10 +107,12 @@ class IssuesList extends Component {
 
   props: Props
 
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return nextProps.issues && nextProps.issues.length &&
+      super.shouldComponentUpdate(nextProps, nextState)
+  }
+
   render() {
-    if (!this.props.issues) {
-      return null
-    }
     const statuses = calculateStatuses(this.props.issues)
     const newTotal = IssueStatus.FIX_NOW in statuses ? statuses[IssueStatus.FIX_NOW] : 0
     const nextTotal = IssueStatus.FIX_NEXT_PR in statuses ? statuses[IssueStatus.FIX_NEXT_PR] : 0
@@ -194,7 +197,7 @@ class IssuesList extends Component {
                         {subHeader('Location:')}
                         {issue.location && issue.location.filePath && issue.location.lineNumber
                           ? <a href="diff#">
-                              {issue.location.filePath}@{issue.location.lineNumber}
+                            {issue.location.filePath}@{issue.location.lineNumber}
                           </a>
                           : 'generic'}
                       </Col>

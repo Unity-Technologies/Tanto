@@ -7,7 +7,7 @@ import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
 import { ListItem } from 'material-ui/List'
 import Avatar from 'components/Avatar'
-
+import PureComponent from 'components/PureComponent'
 import { getLoggedUserAvatar, getLoggedUsername } from 'ducks/session/selectors'
 
 
@@ -57,7 +57,7 @@ export type Props = {
   username: string,
 }
 
-class SideBar extends Component {
+class SideBar extends PureComponent {
   props: Props
   redirect(to) {
     this.props.dispatch(push(to))
@@ -120,7 +120,7 @@ class SideBar extends Component {
               >
                 {listItem(item.title, item.icon, item.badge, open)}
               </ListItem>
-          )}
+            )}
           </SelectableList>
         </div>
       </Drawer>

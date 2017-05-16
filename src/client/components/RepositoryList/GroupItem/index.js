@@ -3,6 +3,7 @@
 import React from 'react'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { Link } from 'react-router'
+import { pureComponent } from 'components/PureComponent'
 
 export type GroupType = {
   name: string,
@@ -34,4 +35,4 @@ function GroupItem(props: Props) {
   )
 }
 
-export default GroupItem
+export default pureComponent(GroupItem)

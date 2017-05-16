@@ -1,6 +1,7 @@
 // TODO: add flow annotations
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import { connect } from 'react-redux'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -22,7 +23,7 @@ export type Props = {
   open: boolean,
 };
 
-class App extends Component {
+class App extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = {

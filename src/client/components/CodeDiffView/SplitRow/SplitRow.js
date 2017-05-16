@@ -1,6 +1,7 @@
 /* flow */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import InlineCommentThread from 'components/CodeDiffView/InlineCommentThread'
 import NewComment from 'components/CodeDiffView/InlineCommentThread/NewComment'
 
@@ -23,7 +24,7 @@ export type Props = {
   onDeleteInlineComment: (commentId: string, text: string) => void,
 }
 
-class SplitRow extends Component {
+class SplitRow extends PureComponent {
   /* eslint-disable react/sort-comp */
   constructor(props: Props) {
     super(props)

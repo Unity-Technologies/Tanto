@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Helmet from 'react-helmet'
+import { pureComponent } from 'components/PureComponent'
 import { connect } from 'react-redux'
 
 
@@ -33,5 +34,5 @@ export default connect(
   (state, props) => ({
     name: props.params.splat,
   })
-)(Project)
+)(pureComponent(Project))
 

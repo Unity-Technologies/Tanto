@@ -1,6 +1,7 @@
 /* @flow */
 import React from 'react'
 import PieChart from 'react-simple-pie-chart'
+import { pureComponent } from 'components/PureComponent'
 import './ChangesetDelta.css'
 
 type ChangesetDeltaProps = {
@@ -58,4 +59,4 @@ const ChangesetDelta = ({ added, deleted, showDetails, pie }: ChangesetDeltaProp
 }
 
 
-export default ChangesetDelta
+export default pureComponent(ChangesetDelta)

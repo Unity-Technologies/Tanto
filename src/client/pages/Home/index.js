@@ -4,6 +4,8 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import Tabs from 'react-bootstrap/lib/Tabs'
+import { pureComponent } from 'components/PureComponent'
+import { createStructuredSelector } from 'reselect'
 import Tab from 'react-bootstrap/lib/Tab'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/session/actions'
@@ -88,10 +90,10 @@ function Home(props: Props) {
   )
 }
 
-export default connect(
-  state => ({
-    totalOwned: getPullRequestsOwnedTotal(state),
-    totalAssigned: getPullRequestsAssignedTotal(state),
-  })
-)(Home)
+export const data = createStructuredSelector({
+  totalOwned: getPullRequestsOwnedTotal,
+  totalAssigned: getPullRequestsAssignedTotal,
+})
+
+export default connect(data)(pureComponent(Home))
 

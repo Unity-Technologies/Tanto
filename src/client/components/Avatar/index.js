@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { default as MaterialAvatar } from 'material-ui/Avatar'
+import { pureComponent } from 'components/PureComponent'
 
 export type Props = {
   style?: Object,
@@ -35,5 +36,5 @@ function Avatar(props: Props) {
   )
 }
 
-export default Avatar
+export default pureComponent(Avatar)
 

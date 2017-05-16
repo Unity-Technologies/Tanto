@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react'
+import { pureComponent } from 'components/PureComponent'
 import type { PullRequestGraphType } from 'universal/types'
 import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import Helmet from 'react-helmet'
@@ -15,7 +16,7 @@ type Props = {
     id: string,
     prid: string,
     category: ?string,
-    splat:string,
+    splat: string,
   },
   location: {
     pathname: string,
@@ -52,4 +53,4 @@ const PullRequest = (props: Props) => {
   )
 }
 
-export default PullRequest
+export default pureComponent(PullRequest)

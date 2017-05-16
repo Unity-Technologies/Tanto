@@ -3,6 +3,8 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import { pureComponent } from 'components/PureComponent'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchPullRequests } from 'ducks/pullrequests/actions'
 import { getRepositoryId } from 'ducks/repositories/selectors'
@@ -45,9 +47,9 @@ function PullRequests(props: Props) {
   )
 }
 
-export default connect(
-  (state, props) => ({
-    repo: getRepositoryId(state, props),
-  })
-)(PullRequests)
+export const data = createStructuredSelector({
+  repo: getRepositoryId,
+})
+
+export default connect(data)(pureComponent(PullRequests))
 

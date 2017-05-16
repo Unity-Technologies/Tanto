@@ -3,10 +3,11 @@
 
 import React, { Component } from 'react'
 import { List, makeSelectable } from 'material-ui/List'
+import { pureComponent } from 'components/PureComponent'
 
 function wrapState(ComposedComponent) {
   class selectableList extends Component {
-    constructor(props){
+    constructor(props) {
       super(props)
       this.handleRequestChange = this.handleRequestChange.bind(this)
     }
@@ -40,4 +41,4 @@ function wrapState(ComposedComponent) {
 
 const SelectableList = wrapState(makeSelectable(List))  // eslint-disable-line new-cap
 
-export default SelectableList
+export default pureComponent(SelectableList)

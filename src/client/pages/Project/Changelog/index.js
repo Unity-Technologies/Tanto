@@ -1,7 +1,8 @@
 /* flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
 import BranchSelect from 'containers/BranchSelect'
+import PureComponent from 'components/PureComponent'
 import { connect } from 'react-redux'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
@@ -45,7 +46,7 @@ class Changelog extends PureComponent {
     }
   }
 
-  props : Props
+  props: Props
 
   render() {
     const { repoName, status } = this.props

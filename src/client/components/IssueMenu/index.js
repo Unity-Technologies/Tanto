@@ -3,6 +3,7 @@ import React from 'react'
 import Dropdown from 'react-bootstrap/lib/Dropdown'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 import { IssueStatus, IssueStatusText } from 'universal/constants'
+import { pureComponent } from 'components/PureComponent'
 
 import './IssueMenu.css'
 
@@ -51,4 +52,4 @@ export const IssueMenu = (props: Props) => (
   </Dropdown>
 )
 
-export default IssueMenu
+export default pureComponent(IssueMenu)

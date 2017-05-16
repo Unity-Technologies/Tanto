@@ -3,6 +3,7 @@
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import React, { Component } from 'react'
+import PureComponent from 'components/PureComponent'
 import _ from 'lodash'
 import Button from 'react-bootstrap/lib/Button'
 import Modal from 'react-bootstrap/lib/Modal'
@@ -56,7 +57,7 @@ export const getStatus = createSelector(
   }
 )
 
-class ActionBar extends Component {
+class ActionBar extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {

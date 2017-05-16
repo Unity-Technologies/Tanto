@@ -1,11 +1,12 @@
 // TODO: add flow annotations
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import TextField from 'material-ui/TextField'
 import Search from 'material-ui/svg-icons/action/search'
 import IconButton from 'material-ui/IconButton'
 
-class SearchBox extends Component {
+class SearchBox extends PureComponent {
   constructor(props) {
     super(props)
     this.state = { visible: false }

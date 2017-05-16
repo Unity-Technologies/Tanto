@@ -1,5 +1,6 @@
 /* @flow */
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import CodeDiffContainer from 'containers/CodeDiffContainer'
 import _ from 'lodash'
 import Scroll from 'react-scroll'
@@ -46,7 +47,7 @@ export const renderFileComments = (comments: Array<Object>) => {
   return null
 }
 
-class Page extends Component {
+class Page extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = {

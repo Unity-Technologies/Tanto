@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react'
-
+import { pureComponent } from 'components/PureComponent'
 import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
@@ -36,4 +36,4 @@ function Logout(props: Props) {
 }
 
 
-export default Logout
+export default pureComponent(Logout)

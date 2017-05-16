@@ -8,7 +8,7 @@ import { fetchUsers } from 'ducks/users'
 import App from 'pages/App'
 import Home from 'pages/Home'
 import Projects from 'pages/Projects'
-import File from 'pages/Project/File'
+
 import Files from 'pages/Project/Files'
 import Project from 'pages/Project/Project'
 import Changelog from 'pages/Project/Changelog'

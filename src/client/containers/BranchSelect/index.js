@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import { default as Select } from 'components/VirtualizedSelect'
 import { connect } from 'react-redux'
 import { fetchRepositoryBranches } from 'ducks/repositories/actions'
@@ -19,7 +20,7 @@ type BranchProps = {
   dispatch: Function,
 }
 
-class BranchSelect extends Component {
+class BranchSelect extends PureComponent {
   constructor(props: BranchProps) {
     super(props)
     this.state = { branch: null }

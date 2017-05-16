@@ -7,6 +7,7 @@ import ChangesetList from 'components/ChangesetList'
 import type { StatusType } from 'ducks/fetch'
 import LoadingComponent from 'components/LoadingComponent'
 import getPullRequestCommitsData from './selectors'
+import { pureComponent } from 'components/PureComponent'
 
 type Props = {
   commits: Array<FileType>,
@@ -21,5 +22,5 @@ const PullRequestCommits = (props: Props) =>
   </LoadingComponent>
 
 
-export default connect(getPullRequestCommitsData)(PullRequestCommits)
+export default connect(getPullRequestCommitsData)(pureComponent(PullRequestCommits))
 

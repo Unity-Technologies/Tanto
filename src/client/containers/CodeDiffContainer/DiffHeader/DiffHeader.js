@@ -1,6 +1,7 @@
 // TODO: finish flow annotations
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Nav from 'react-bootstrap/lib/Nav'
 import NavItem from 'react-bootstrap/lib/NavItem'
 import Navbar from 'react-bootstrap/lib/Navbar'
@@ -42,7 +43,7 @@ export const getData = createSelector(
   })
 )
 
-class DiffHeader extends Component {
+class DiffHeader extends PureComponent {
   props: Props
 
   handleDiffCollapseClick = (value: boolean) => {

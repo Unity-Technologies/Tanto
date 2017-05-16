@@ -1,9 +1,10 @@
 // TODO: fix flow for build property
 
-import React, { Component } from 'react'
+import React from 'react'
 
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
+import PureComponent from 'components/PureComponent'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { buildPullRequestLink, buildProjectLink } from 'routes/helpers'
 import Avatar from 'components/Avatar'
@@ -26,7 +27,7 @@ export type Props = {
   showRemoveButton: boolean,
 }
 
-class PullRequestListItem extends Component {
+class PullRequestListItem extends PureComponent {
   props: Props
 
   handleRemoveClick = () => {
@@ -65,7 +66,8 @@ class PullRequestListItem extends Component {
                   style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
                   to={{
                     pathname: buildProjectLink(pullRequest.origin.repository.fullName),
-                    query: { branch: pullRequest.origin.name } }}
+                    query: { branch: pullRequest.origin.name },
+                  }}
                 >
                   {pullRequest.origin.repository.name}
                   <span style={{ color: '#8ea7b6' }}>#</span>{pullRequest.origin.name}

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
-
+import PureComponent from 'components/PureComponent'
 // import TextEditorBox from 'components/TextEditorBox'
 import BranchSelect from 'containers/BranchSelect'
 // import CodeDiffView from 'components/CodeDiffView'
@@ -25,7 +25,7 @@ export type Props = {
   Object,
 };
 
-class NewPullRequest extends Component {
+class NewPullRequest extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = {
