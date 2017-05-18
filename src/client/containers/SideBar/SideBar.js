@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import Drawer from 'material-ui/Drawer'
 import _ from 'lodash'
 import { push } from 'react-router-redux'

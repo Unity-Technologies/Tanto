@@ -1,6 +1,4 @@
-// TODO: add flow annotations
-
-import React, { Component } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
 import PureComponent from 'components/PureComponent'
 // import TextEditorBox from 'components/TextEditorBox'

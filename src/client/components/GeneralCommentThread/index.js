@@ -1,7 +1,6 @@
 /* @flow */
 import React from 'react'
 import PureComponent from 'components/PureComponent'
-import { pureComponent } from 'components/PureComponent'
 import type { GeneralCommentType } from 'universal/types'
 import NewComment from './NewComment'
 import Comment from 'components/Comment'

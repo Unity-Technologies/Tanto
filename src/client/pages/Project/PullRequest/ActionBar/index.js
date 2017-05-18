@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import React, { Component } from 'react'
+import React from 'react'
 import PureComponent from 'components/PureComponent'
 import _ from 'lodash'
 import Button from 'react-bootstrap/lib/Button'

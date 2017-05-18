@@ -13,11 +13,13 @@ import type {
     PullRequestReviewerType,
 } from 'universal/types'
 import { default as Select } from 'components/VirtualizedSelect'
+import { createStructuredSelector } from 'reselect'
 import MissingReviewerList from './MissingReviewerList'
 import {
   getPullRequestReviewStatus,
   getPullRequestReviews,
-  getMissingReviewers } from './selectors'
+  getMissingReviewers,
+} from './selectors'
 import { getUsers } from 'ducks/users/selectors'
 import ReviewerList from './ReviewerList'
 import { ChangesetStatus } from 'universal/constants'
@@ -272,15 +274,22 @@ class ReviewSection extends Component {
   }
 }
 
-const mapStateToProps = (state, props: ReviewsSectionProps): ReviewsSectionProps => (
-  {
-    ...props,
-    status: getPullRequestReviewStatus(state, props),
-    reviews: getPullRequestReviews(state, props),
-    users: getUsers(state, props),
-    missingReviewers: getMissingReviewers(state, props),
-  }
-)
+// const mapStateToProps = (state, props: ReviewsSectionProps): ReviewsSectionProps => (
+//   {
+//     ...props,
+//     status: getPullRequestReviewStatus(state, props),
+//     reviews: getPullRequestReviews(state, props),
+//     users: getUsers(state, props),
+//     missingReviewers: getMissingReviewers(state, props),
+//   }
+// )
 
-export default connect(mapStateToProps)(ReviewSection)
+export const data = createStructuredSelector({
+  status: getPullRequestReviewStatus,
+  reviews: getPullRequestReviews,
+  users: getUsers,
+  missingReviewers: getMissingReviewers,
+})
+
+export default connect(data)(ReviewSection)
 

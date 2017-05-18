@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import PureComponent from 'components/PureComponent'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'

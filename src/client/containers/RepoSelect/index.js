@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { createStructuredSelector } from 'reselect'
 import { default as Select } from 'components/VirtualizedSelect'
 import { connect } from 'react-redux'

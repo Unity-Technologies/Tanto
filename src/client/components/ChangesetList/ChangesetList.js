@@ -31,7 +31,7 @@ export type Props = {
   compact?: boolean,
   projectName: string,
   showCheckboxes?: boolean,
-  selectedChangesetsChange?: (e: SyntheticInputEvent, number) => any,
+  onSelectedChangesetsChange: (e: SyntheticInputEvent, number) => any,
 }
 
 const greenStatus = { borderLeft: '4px solid #d1fad1' }
@@ -81,7 +81,7 @@ class ChangesetList extends PureComponent {
 
   props: Props
 
-  handleSelect = (activeKey) => {
+  handleSelect = (activeKey: number) => {
     this.setState({ activeKey })
   }
 
@@ -90,7 +90,7 @@ class ChangesetList extends PureComponent {
       super.shouldComponentUpdate(nextProps, nextState)
   }
 
-  handleChange = (event) => {
+  handleChange = (event: Object) => {
     const isSelected = event.target.checked
 
     if (this.state.changesets.length < 2 && isSelected) {
@@ -196,7 +196,7 @@ class ChangesetList extends PureComponent {
                       value={item.id}
                       style={{ float: 'left', height: '15px', marginTop: '10px' }}
                       checked={this.state.changesets.indexOf(item.id) !== -1}
-                      disabled={this.state.changesets.length >= 2 & this.state.changesets.indexOf(item.id) === -1}
+                      disabled={this.state.changesets.length >= 2 && this.state.changesets.indexOf(item.id) === -1}
                     /> : ''}
                 </Col>
               </Row>
