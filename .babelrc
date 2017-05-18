@@ -4,23 +4,24 @@
   "plugins": [
     "lodash",
     "transform-runtime",
-    "add-module-exports"
+    "add-module-exports",
+    "transform-react-inline-elements"
   ],
 
   "env": {
     "development": {
       "plugins": [
         ["react-transform", {
-            "transforms": [{
-                "transform": "react-transform-catch-errors",
-                "imports": ["react", "redbox-react"]
-              },
-              {
-                "transform": "react-transform-hmr",
-                "imports": ["react"],
-                "locals": ["module"]
-              }
-            ]
+          "transforms": [{
+              "transform": "react-transform-catch-errors",
+              "imports": ["react", "redbox-react"]
+            },
+            {
+              "transform": "react-transform-hmr",
+              "imports": ["react"],
+              "locals": ["module"]
+            }
+          ]
         }]
       ]
     }
