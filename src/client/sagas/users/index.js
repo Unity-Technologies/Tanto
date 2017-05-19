@@ -4,6 +4,7 @@ import { call } from 'redux-saga/effects'
 import { fetchSlackAvatars } from 'universal/services/slack'
 import { fetchSaga, normalizeSaga } from 'sagas/fetch'
 
+const defaultEmptyObject = {}
 export function* fetchUsers(action: Object): Generator<any, any, any> {
   const response = yield call(fetchSaga, action.type, action.query, action.variables)
   const avatars = yield call(fetchSlackAvatars)
@@ -18,7 +19,7 @@ export function* fetchUsers(action: Object): Generator<any, any, any> {
   const users = usersResponse.users.nodes || usersResponse.users
   const data = {
     users: users.map(
-      user => ({ ...user, slack: avatarsByEmails[user.email] || {} })),
+      user => ({ ...user, slack: user.email in avatarsByEmails[user.email] || defaultEmptyObject })),
   }
   yield call(normalizeSaga, data)
 }

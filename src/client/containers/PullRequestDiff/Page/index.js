@@ -47,7 +47,7 @@ export const renderFileComments = (comments: Array<Object>) => {
   return null
 }
 
-class Page extends PureComponent {
+export class Page extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -64,6 +64,7 @@ class Page extends PureComponent {
 
   render() {
     const { fileReviews, index, files } = this.props
+
     if (!this.state.visible) {
       return (
         <div className="show-more" onClick={this.handleShowPage}>
@@ -76,8 +77,10 @@ class Page extends PureComponent {
                   key={_.uniqueId(file.name)}
                   name={file.name.replace(/[/.]/g, '')}
                 >
-                  <span className="file-review-icon">{renderFileReview((fileReviews || {})[file.id])}</span>
-                  <span className="file-review-icon">{renderFileBookmark((fileReviews || {})[file.id])}</span>
+                  <span className="file-review-icon">
+                    {fileReviews ? renderFileReview(fileReviews[file.id]) : null}</span>
+                  <span className="file-review-icon">
+                    {fileReviews ? renderFileBookmark(fileReviews[file.id]) : null}</span>
                   <span> {file.name}</span>
                   {file.comments &&
                     renderFileComments(file.comments)

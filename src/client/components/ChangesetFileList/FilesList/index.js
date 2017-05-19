@@ -81,8 +81,11 @@ export const FilesList = ({ compact, files, containerElementName, reviews }: Pro
                         </span>
                         {file.comments.length}</span>
                     }
-                    <span className="file-review-icon">{renderFileReview((reviews || {})[file.id])}</span>
-                    <span className="file-review-icon">{renderFileBookmark((reviews || {})[file.id])}</span>
+
+                    <span className="file-review-icon">
+                      {reviews ? renderFileReview(reviews[file.id]) : null}</span>
+                    <span className="file-review-icon">
+                      {reviews ? renderFileBookmark(reviews[file.id]) : null}</span>
                   </div>
                 </Col>
               </Row>

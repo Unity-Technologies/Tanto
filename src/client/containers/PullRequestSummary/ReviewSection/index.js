@@ -274,16 +274,6 @@ class ReviewSection extends Component {
   }
 }
 
-// const mapStateToProps = (state, props: ReviewsSectionProps): ReviewsSectionProps => (
-//   {
-//     ...props,
-//     status: getPullRequestReviewStatus(state, props),
-//     reviews: getPullRequestReviews(state, props),
-//     users: getUsers(state, props),
-//     missingReviewers: getMissingReviewers(state, props),
-//   }
-// )
-
 export const data = createStructuredSelector({
   status: getPullRequestReviewStatus,
   reviews: getPullRequestReviews,

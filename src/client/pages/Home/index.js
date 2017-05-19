@@ -34,7 +34,7 @@ const mapStateToPropsOwned = (state, props) => ({
   activePage: state.session.pullRequestsOwned.pagination.currentPage,
   total: state.session.pullRequestsOwned.pagination.total,
   status: getOwnedFetchStatus(state),
-  items: getPullRequestsOwned(state) || [],
+  items: getPullRequestsOwned(state),
   orderBy: state.session.pullRequestsOwned.orderBy,
 })
 
@@ -45,7 +45,7 @@ const mapStateToPropsAssigned = (state, props) => ({
   activePage: state.session.pullRequestsAssigned.pagination.currentPage,
   total: state.session.pullRequestsAssigned.pagination.total,
   status: getAssignedFetchStatus(state),
-  items: getPullRequestsAssigned(state) || [],
+  items: getPullRequestsAssigned(state),
   orderBy: state.session.pullRequestsAssigned.orderBy,
 })
 

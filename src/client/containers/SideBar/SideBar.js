@@ -131,7 +131,7 @@ class SideBar extends PureComponent {
 
 export default connect(state => ({
   open: state.sidebar.open,
-  items: state.sidebar.items || [],
+  items: state.sidebar.items,
   defaultValue: state.sidebar.selected,
   username: getLoggedUsername(state),
   avatar: getLoggedUserAvatar(state),

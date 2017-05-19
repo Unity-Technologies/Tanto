@@ -29,7 +29,7 @@ const mapStateToProps = (state, props) => ({
   activePage: state.session.pullRequests.pagination.currentPage,
   total: state.session.pullRequests.pagination.total,
   status: getPageFetchStatus(state),
-  items: getPullRequestsPage(state) || [],
+  items: getPullRequestsPage(state),
   orderBy: state.session.pullRequests.orderBy,
 })
 

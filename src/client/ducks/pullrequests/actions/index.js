@@ -84,11 +84,12 @@ export const fetchPullRequestIssues = (id: string): FetchAction =>
 export const fetchPullRequestChangeset = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_CHANGESET, pullRequestChangeset, { id })
 
+const defaultEmptyPullRequests = {}
 export const fetchPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
   fetchOnoActionCreator(
     types.FETCH_PULL_REQUESTS, pullRequestList, variables, operationName,
     (data: Object, cbArgs: Object): Array<Object> => {
-      const { nodes, total } = parsePullRequests(data) || {}
+      const { nodes, total } = parsePullRequests(data) || defaultEmptyPullRequests
       return [
         { type: RECEIVE_PAGE, namespace: operationName, nodes, total, ...cbArgs }]
     })

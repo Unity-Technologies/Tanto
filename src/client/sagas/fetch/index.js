@@ -59,16 +59,17 @@ export function* normalizeSaga(response: Object, action: Object): Generator<any,
   yield (put({ type, entities }))
 }
 
+const defaultEmptyObject = {}
 export function* fetchAnythingSaga(post: Function, action: FetchAction): Generator<any, any, any> {
   try {
     yield put(actions.clearError(action.name))
     yield put(actions.sendingRequest(action.name, true))
-    const response = yield call(post, action.query, action.variables || {}, action.operationName)
+    const response = yield call(post, action.query, action.variables || defaultEmptyObject, action.operationName)
 
     yield call(normalizeSaga, response, action)
 
     if (action.callback) {
-      const callbacks = action.callback(response, action.variables || {})
+      const callbacks = action.callback(response, action.variables || defaultEmptyObject)
       while (callbacks.length) {
         const next = callbacks.splice(0, 1)
         yield put(next[0])

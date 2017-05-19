@@ -9,6 +9,7 @@ import { parseMercurialAuthor } from 'ducks/repositories/selectors'
 
 import _ from 'lodash'
 const defaultEmptyList = []
+const defaultEmptyObject = {}
 
 export const denormalizePullRequestUsers = (pullRequest: Object, userEntities: Object): Object => {
   if (!pullRequest || !userEntities) {
@@ -33,7 +34,7 @@ export const denormalizeCommentAuthor = (comment: Object, userEntities: Object):
   }
   return ({
     ...comment,
-    author: userEntities[comment.author] || {},
+    author: userEntities[comment.author] || defaultEmptyObject,
   })
 }
 
@@ -41,7 +42,7 @@ export const denormalizeCommentAuthor = (comment: Object, userEntities: Object):
  * Pull request selectors
  */
 export const getPullRequestsEntities = (state: Object): Object =>
-  _.get(state, ['entities', 'pullRequests'], {})
+  _.get(state, ['entities', 'pullRequests'], defaultEmptyObject)
 
 export const getPullRequestId = (state: Object, props: Object): string =>
   (props.params ? props.params.prid : props.pullRequestId || props.id)
@@ -51,7 +52,7 @@ export const getPageFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUESTS)
 export const getPullRequest = createSelector(
   getPullRequestsEntities, userEntitiesSelector, getPullRequestId,
   (entities: Object, userEntities: Object, id: string): Object => {
-    const pullRequest = (id ? entities[id] : {})
+    const pullRequest = (id ? entities[id] : defaultEmptyObject)
     // Denormalization of owner and reviewers
     return denormalizePullRequestUsers(pullRequest, userEntities)
   })
@@ -59,7 +60,7 @@ export const getPullRequest = createSelector(
 // Sometimes we don't need Denormalization of users, when we need just issues or comments
 export const getPullRequestNormalized = createSelector(
   getPullRequestsEntities, getPullRequestId,
-  (entities: Object, id: string): Object => (id ? entities[id] || {} : {})
+  (entities: Object, id: string): Object => (id ? entities[id] || defaultEmptyObject : defaultEmptyObject)
 )
 
 // Sometimes we don't need Denormalization of users, when we need just issues or comments
@@ -81,9 +82,9 @@ export const getPullRequestRepoId = createSelector(
  */
 export const pullRequestsPageIdsSelector =
   (state: Object, props: Object): Array<Number> => {
-    const pullRequestsPagingSettings = _.get(state, ['session', 'pullRequests', 'pagination'], {})
+    const pullRequestsPagingSettings = _.get(state, ['session', 'pullRequests', 'pagination'], defaultEmptyObject)
     const { pages, currentPage } = pullRequestsPagingSettings
-    return pages && currentPage > -1 ? pages[currentPage] : []
+    return pages && currentPage > -1 ? pages[currentPage] : defaultEmptyList
   }
 
 export const getPullRequestsPage = createSelector(
@@ -101,12 +102,12 @@ export const getIssuesEntities = (state: Object) =>
 export const getPullRequestIssues = createSelector(
   getIssuesEntities, userEntitiesSelector, getPullRequestNormalized,
   (issueEntities, userEntities, pr) => {
-    const prIssues = pr ? _.values(_.pick(issueEntities, pr.issues || [])) : []
+    const prIssues = pr ? _.values(_.pick(issueEntities, pr.issues || defaultEmptyList)) : defaultEmptyList
     // Denormalization of owner and assignee
     return prIssues.map(issue => ({
       ...issue,
-      owner: userEntities[issue.owner] || {},
-      assignee: userEntities[issue.assignee] || {},
+      owner: userEntities[issue.owner] || defaultEmptyObject,
+      assignee: userEntities[issue.assignee] || defaultEmptyObject,
     }))
   }
 )
@@ -115,7 +116,7 @@ export const getPullRequestIssues = createSelector(
  * Pull request  comments
  */
 export const getCommentsEntities = (state: Object) =>
-  _.get(state, ['entities', 'comments'], {})
+  _.get(state, ['entities', 'comments'], defaultEmptyObject)
 
 export const getPullRequestGeneralComments = createSelector(
   getCommentsEntities, userEntitiesSelector, getIssuesEntities, getPullRequestNormalized,
@@ -133,12 +134,12 @@ export const getPullRequestGeneralComments = createSelector(
  * Pull request files
  */
 export const getFilesEntities = (state: Object): Object =>
-  _.get(state, ['entities', 'files'], {})
+  _.get(state, ['entities', 'files'], defaultEmptyObject)
 export const getPullRequestFiles = createSelector(
   getFilesEntities, getPullRequestNormalized,
   (files, pr) => {
     if (!pr || !pr.files) {
-      return []
+      return defaultEmptyList
     }
     return _.values(_.pick(files, pr.files))
   })
@@ -157,7 +158,7 @@ export const getFileComments = createSelector(
         (result[value.location.lineNumber] || (result[value.location.lineNumber] = [])).push(value) //eslint-disable-line
       }
       return result
-    }, {})
+    }, defaultEmptyObject)
 
     return reduced
   })
@@ -196,8 +197,3 @@ export const getPullRequestIterations = createSelector(
     }))
   }
 )
-
-// export const getPullRequestIterations = createSelector(
-//   getPullRequest, getPullRequestsEntities,
-//   (pr, entities) => (pr && pr.iterations ? pr.iterations : null)
-// )

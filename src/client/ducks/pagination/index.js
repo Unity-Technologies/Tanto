@@ -23,18 +23,18 @@ export const receivePage = (payload: PagePayload) => ({ ...payload, type: RECEIV
 export const currentPage = (state: number = 0, action: Object = {}): number =>
   (action.type === RECEIVE_PAGE && action.page ? action.page : state)
 
-export const pageSize = (state: number = 15, action: Object= {}): number =>
+export const pageSize = (state: number = 15, action: Object = {}): number =>
   (action.type === RECEIVE_PAGE && action.pageSize ? action.pageSize : state)
 
-export const total = (state: number = 0, action: Object= {}): number =>
+export const total = (state: number = 0, action: Object = {}): number =>
   (action.type === RECEIVE_PAGE && action.total ? action.total : state)
 
-export const pages = (state: Object= {}, action: Object = {}): Object => {
+export const pages = (state: Object = {}, action: Object = {}): Object => {
   switch (action.type) {
     case RECEIVE_PAGE:
       return {
         ...state,
-        [action.page]: (action.nodes || []).map(x => x.id),
+        [action.page]: action.nodes ? action.nodes.map(x => x.id) : [],
       }
     default:
       return state

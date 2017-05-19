@@ -22,6 +22,7 @@ export type Props = {
   onDeleteInlineComment: (commentId: string, text: string) => void,
 }
 
+const defaultEmptyList = []
 class CodeDiffView extends PureComponent {
   props: Props
 
@@ -35,14 +36,14 @@ class CodeDiffView extends PureComponent {
       return []
     }
     if (oldLine && !newLine) {
-      return this.props.comments[`o${oldLine}`] || []
+      return this.props.comments[`o${oldLine}`] || defaultEmptyList
     }
     if (newLine && !oldLine) {
-      return this.props.comments[`n${newLine}`] || []
+      return this.props.comments[`n${newLine}`] || defaultEmptyList
     }
 
     return oldLine === newLine ?
-      this.props.comments[`n${oldLine}`] || this.props.comments[`o${oldLine}`] : []
+      this.props.comments[`n${oldLine}`] || this.props.comments[`o${oldLine}`] : defaultEmptyList
   }
 
   renderDiff = () => {
