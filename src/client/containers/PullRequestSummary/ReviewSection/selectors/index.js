@@ -8,10 +8,10 @@ export const getPullRequestReviewStatus = createSelector(
 
 export const getPullRequestReviews = createSelector(
   getPullRequest,
-  (pr) => (pr && pr.reviews ? pr.reviews : [])
+  (pr) => (pr && pr.reviews ? pr.reviews : null)
 )
 
 export const getMissingReviewers = createSelector(
   getPullRequest,
-  (pr) => (pr && pr.missingReviewers ? pr.missingReviewers : [])
+  (pr) => (pr && pr.missingReviewers ? pr.missingReviewers : null)
 )

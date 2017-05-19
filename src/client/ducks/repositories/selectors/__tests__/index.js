@@ -528,8 +528,8 @@ describe('getRepositoriesNames', () => {
     }
     const expected = [
       { label: 'group1/name1', value: 'group1/name1' },
-       { label: 'group1/name2', value: 'group1/name2' },
-        { label: 'group1/name3', value: 'group1/name3' },
+      { label: 'group1/name2', value: 'group1/name2' },
+      { label: 'group1/name3', value: 'group1/name3' },
     ]
     expect(getRepositoriesNames(state)).to.eql(expected)
   })
@@ -560,8 +560,8 @@ describe('getRepositoryBranches', () => {
       parentGroupName: '/group21',
       branches: {
         nodes: [{ name: 'default', revision: '3452345' },
-      { name: 'test', revision: 'te456356st' },
-      { name: 'unity', revision: 'tes24524t' }],
+        { name: 'test', revision: 'te456356st' },
+        { name: 'unity', revision: 'tes24524t' }],
       },
     }
     const node3 = {
@@ -610,8 +610,8 @@ describe('getRepositoryBranches', () => {
       parentGroupName: '/group21',
       branches: {
         nodes: [{ name: 'default', revision: '3452345' },
-      { name: 'test', revision: 'te456356st' },
-      { name: 'unity', revision: 'tes24524t' }],
+        { name: 'test', revision: 'te456356st' },
+        { name: 'unity', revision: 'tes24524t' }],
       },
     }
     const node3 = {
@@ -654,8 +654,8 @@ describe('getRepositoryBranches', () => {
       parentGroupName: '/group21',
       branches: {
         nodes: [{ name: 'default', revision: '3452345' },
-      { name: 'test', revision: 'te456356st' },
-      { name: 'unity', revision: 'tes24524t' }],
+        { name: 'test', revision: 'te456356st' },
+        { name: 'unity', revision: 'tes24524t' }],
       },
     }
     const node3 = {
@@ -706,8 +706,8 @@ describe('getRepositoryBranches', () => {
       parentGroupName: '/group21',
       branches: {
         nodes: [{ name: 'default', revision: '3452345' },
-      { name: 'test', revision: 'te456356st' },
-      { name: 'unity', revision: 'tes24524t' }],
+        { name: 'test', revision: 'te456356st' },
+        { name: 'unity', revision: 'tes24524t' }],
       },
     }
     const node3 = {
@@ -906,7 +906,7 @@ describe('getChangelog', () => {
     }
 
     const expectedChangelogData = [{ ...changeset1, authorUser: user1 },
-      { ...changeset2, authorUser: user2 }]
+    { ...changeset2, authorUser: user2 }]
 
     const state = {
       entities: {
@@ -991,7 +991,7 @@ describe('getChangelog', () => {
     }
 
     const expectedChangelogData = [{ ...changeset1, authorUser: { fullName: 'Test User Name 1', email: 'testuser1@email.com' } },
-      { ...changeset2, authorUser: { fullName: 'Test User Name 2', email: 'testuser2@email.com' } }]
+    { ...changeset2, authorUser: { fullName: 'Test User Name 2', email: 'testuser2@email.com' } }]
 
     const state = {
       entities: {

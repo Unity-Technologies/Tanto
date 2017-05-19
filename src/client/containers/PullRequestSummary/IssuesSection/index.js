@@ -36,7 +36,7 @@ export const getIssues = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequestIssues,
     issues => ({
-      issues: issues ? issues.filter(x => x.status !== IssueStatus.OBSOLETE) : [],
+      issues: issues ? issues.filter(x => x.status !== IssueStatus.OBSOLETE) : null,
     })
   )
 
@@ -47,35 +47,33 @@ export const IssuesSection = (props: IssuesSectionProps) => {
   }
   return (
     <div>
-      {props.issues &&
-        <ListGroupItem style={danger}>
-          <Row>
-            <Col md={2}>
-              <div style={headerColumnStyle}>
-                PR Issues
-              </div>
-            </Col>
-            <Col md={3}>
-              {subHeader('Status:')}
-              <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
-                UNRESOLVED
-              </div>
-              <div style={{ fontSize: '12px' }}>({props.issues.length} issues)</div>
-            </Col>
-            <Col md={7}>
+      <ListGroupItem style={danger}>
+        <Row>
+          <Col md={2}>
+            <div style={headerColumnStyle}>
+              PR Issues
+            </div>
+          </Col>
+          <Col md={3}>
+            {subHeader('Status:')}
+            <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
+              UNRESOLVED
+            </div>
+            <div style={{ fontSize: '12px' }}>({props.issues.length} issues)</div>
+          </Col>
+          <Col md={7}>
+            <div>
               <div>
-                <div>
-                  {subHeader('Unresolved:')}
-                  {
-                    props.issues.map(issue =>
-                      (<div><a href="#">{issue.title}</a></div>))
-                  }
-                </div>
+                {subHeader('Unresolved:')}
+                {
+                  props.issues.map(issue =>
+                    (<div><a href="#">{issue.title}</a></div>))
+                }
               </div>
-            </Col>
-          </Row>
-        </ListGroupItem>
-      }
+            </div>
+          </Col>
+        </Row>
+      </ListGroupItem>
     </div>)
 }
 

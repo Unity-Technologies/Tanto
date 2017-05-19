@@ -23,7 +23,7 @@ describe('PullRequestDiff selectors', () => {
         file3,
       ],
       loggedUsername: 'userName',
-      reviews: {},
+      reviews: null,
     }
     const pullRequests = {
       12: {
@@ -58,9 +58,9 @@ describe('PullRequestDiff selectors', () => {
       3: file3,
     }
     const expectedData = {
-      files: [],
+      files: null,
       loggedUsername: 'userName',
-      reviews: {},
+      reviews: null,
     }
     const state = {
       fetch: { [types.FETCH_PULL_REQUEST_DIFF]: {} },
@@ -81,9 +81,9 @@ describe('PullRequestDiff selectors', () => {
   })
   it('no files in state: getData should return data without files', () => {
     const expectedData = {
-      files: [],
+      files: null,
       loggedUsername: 'userName',
-      reviews: {},
+      reviews: null,
     }
     const pullRequests = {
       12: {
@@ -109,9 +109,9 @@ describe('PullRequestDiff selectors', () => {
   })
   it('no entities in state: getData should return empty data', () => {
     const expectedData = {
-      files: [],
+      files: null,
       loggedUsername: null,
-      reviews: {},
+      reviews: null,
     }
     const state = {
       fetch: { [types.FETCH_PULL_REQUEST_DIFF]: {} },
@@ -145,7 +145,7 @@ describe('PullRequestDiff selectors', () => {
         file3,
       ],
       loggedUsername: 'userName',
-      reviews: {},
+      reviews: null,
     }
     const pullRequests = {
       12: {

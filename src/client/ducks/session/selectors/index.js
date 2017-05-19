@@ -20,7 +20,11 @@ export const pullRequestsWatchingIdsSelector = (state: Object) => getIds(state.s
 export const pullRequestsSelector = (state: Object) => state.entities.pullRequests
 
 export const pullRequestsComputation = (pullRequests: Object, ids: Array<any>, userEntities: Object) => {
-  const res = _.isEmpty(pullRequests) || !ids ? [] : _.values(_.pick(pullRequests, ids))
+  if (!pullRequests || !ids) {
+    return null
+  }
+
+  const res = _.values(_.pick(pullRequests, ids))
   return res.map(pr => denormalizePullRequestUsers(pr, userEntities))
 }
 

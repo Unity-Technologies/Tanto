@@ -120,7 +120,7 @@ describe('getReviewFiles', () => {
     const props = {
       id,
     }
-    expect(getReviewFiles(state, props)).to.eql({})
+    expect(getReviewFiles(state, props)).to.eql(null)
   })
 
   it('returns empty object if no pullrequests', () => {
@@ -133,7 +133,7 @@ describe('getReviewFiles', () => {
     const props = {
       id,
     }
-    expect(getReviewFiles(state, props)).to.eql({})
+    expect(getReviewFiles(state, props)).to.eql(null)
   })
 
   it('returns empty object if pullrequest doesnt have files property', () => {
@@ -152,7 +152,7 @@ describe('getReviewFiles', () => {
       id,
       params: { prid: 12 },
     }
-    expect(getReviewFiles(state, props)).to.eql({})
+    expect(getReviewFiles(state, props)).to.eql(null)
   })
 })
 
@@ -208,7 +208,7 @@ describe('getReviewFile', () => {
     const props = {
       params: { prid: 12 },
     }
-    expect(getReviewFile(state, props)).to.eql({})
+    expect(getReviewFile(state, props)).to.eql(null)
   })
 
   it('returns empty object if no files ', () => {
@@ -235,6 +235,6 @@ describe('getReviewFile', () => {
       id: 122,
       params: { prid: 12 },
     }
-    expect(getReviewFile(state, props)).to.eql({})
+    expect(getReviewFile(state, props)).to.eql(null)
   })
 })

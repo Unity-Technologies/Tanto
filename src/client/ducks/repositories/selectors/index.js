@@ -5,12 +5,13 @@ import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { userEntitiesSelector } from 'ducks/users/selectors'
 import { types } from '../actions'
 import _ from 'lodash'
+import { getEntityById } from 'ducks/selectors'
 
 export const repositoryEntities = (state: Object) => state.entities.repositories
 export const getRepositoryName = (state: Object, props: Object) =>
- (props.repoName || (props.params ? props.params.splat : ''))
+  (props.repoName || (props.params ? props.params.splat : ''))
 
-export const repoEntitiesSelector = (state : Object, props: Object): Object => {
+export const repoEntitiesSelector = (state: Object, props: Object): Object => {
   const parentGroupName = props.params.splat || null
   return _.pickBy(state.entities.repositories, repo => (repo.groupPath === parentGroupName))
 }
@@ -74,7 +75,7 @@ export const getRepositoryId = createSelector(
 )
 
 export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
-export const parseMercurialAuthor = (author:string) => {
+export const parseMercurialAuthor = (author: string) => {
   if (!author) {
     return author
   }
@@ -99,7 +100,7 @@ export const getBranchName = (state: Object, props: Object) => (props && props.b
 export const getChangelog = createSelector(
   getChangesetsEntities, userEntitiesSelector, getRepository, getBranchName,
   (changesets, users, repo, branch) => {
-    if (!changesets || ! users || !repo || !repo.changelog || !repo.changelog.nodes) {
+    if (!changesets || !users || !repo || !repo.changelog || !repo.changelog.nodes) {
       return null
     }
 
@@ -110,7 +111,7 @@ export const getChangelog = createSelector(
     }
     return changelog.map(ch => ({
       ...ch,
-      authorUser: ch.authorUser ? users[ch.authorUser] : parseMercurialAuthor(ch.author),
+      authorUser: getEntityById(users, ch.authorUser, () => parseMercurialAuthor(ch.author)),
     }))
   }
 )
@@ -118,7 +119,7 @@ export const getChangelog = createSelector(
 export const getRepoDescription = createSelector(
   repositoryEntities, getRepositoryName,
   (entities, repoName) => {
-    if (!entities || ! repoName) {
+    if (!entities || !repoName) {
       return null
     }
     const repo = _.find(entities, (v) => (v.fullName === repoName))

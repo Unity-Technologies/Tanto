@@ -70,20 +70,20 @@ describe('getPullRequest', () => {
   it('with empty state', () => {
     const state = { entities: {} }
     const props = { pullRequestId: 12 }
-    expect(getPullRequest(state, props)).to.eql(undefined)
+    expect(getPullRequest(state, props)).to.eql(null)
   })
 
 
   it('with no PR id', () => {
     const state = { entities: {} }
     const props = {}
-    expect(getPullRequest(state, props)).to.eql({})
+    expect(getPullRequest(state, props)).to.eql(null)
   })
 
   it('owner denormalization', () => {
     const state = { entities: {} }
     const props = {}
-    expect(getPullRequest(state, props)).to.eql({})
+    expect(getPullRequest(state, props)).to.eql(null)
   })
 
   it('users denormalization', () => {
@@ -145,7 +145,7 @@ describe('getPullRequestsEntities', () => {
 
   it('empty entities state', () => {
     const state = { entities: {} }
-    expect(getPullRequestsEntities(state)).to.eql({})
+    expect(getPullRequestsEntities(state)).to.eql(null)
   })
 
   it('empty pullRequests state', () => {
@@ -205,7 +205,7 @@ describe('pullRequestsPageIdsSelector', () => {
       },
     }
 
-    expect(pullRequestsPageIdsSelector(state, {})).to.eql([])
+    expect(pullRequestsPageIdsSelector(state, {})).to.eql(null)
   })
 
   it('the first current page settings', () => {
@@ -265,7 +265,7 @@ describe('pullRequestsPageIdsSelector', () => {
 
       },
     }
-    expect(pullRequestsPageIdsSelector(state, {})).to.eql([])
+    expect(pullRequestsPageIdsSelector(state, {})).to.eql(null)
   })
 
   it('available pages', () => {
@@ -399,7 +399,7 @@ describe('getIssuesEntities', () => {
 
   it('empty entities state', () => {
     const state = { entities: {} }
-    expect(getIssuesEntities(state)).to.eql({})
+    expect(getIssuesEntities(state)).to.eql(null)
   })
 
   it('empty pullRequests state', () => {
@@ -424,7 +424,7 @@ describe('getCommentsEntities', () => {
 
   it('empty entities state', () => {
     const state = { entities: {} }
-    expect(getCommentsEntities(state)).to.eql({})
+    expect(getCommentsEntities(state)).to.eql(null)
   })
 
   it('empty pullRequests state', () => {
@@ -546,12 +546,12 @@ describe('getPullRequestIssues', () => {
     const expected = [
       {
         id: 21, title: 'test pr21', description: 'test pr description21',
-        owner: {},
-        assignee: {},
+        owner: null,
+        assignee: null,
       }, {
         id: 31, title: 'test pr31', description: 'test pr description31',
-        owner: {},
-        assignee: {},
+        owner: null,
+        assignee: null,
       }]
     expect(getPullRequestIssues(state, props)).to.eql(expected)
   })
@@ -599,9 +599,9 @@ describe('getPullRequestGeneralComments', () => {
     const expected = [
       {
         id: 1, message: 'test pr',
-        author: { id: 3, username: 'testusername3', }, issue: undefined,
+        author: { id: 3, username: 'testusername3', }, issue: null,
       },
-      { id: 12, message: 'test pr12', author: { id: 1, username: 'testusername1' }, issue: undefined, },
+      { id: 12, message: 'test pr12', author: { id: 1, username: 'testusername1' }, issue: null, },
     ]
     expect(getPullRequestGeneralComments(state, props)).to.eql(expected)
   })
@@ -632,9 +632,9 @@ describe('getPullRequestGeneralComments', () => {
     const expected = [
       {
         id: 1, message: 'test pr',
-        author: {}, issue: undefined,
+        author: null, issue: null,
       },
-      { id: 12, message: 'test pr12', author: {}, issue: undefined, },
+      { id: 12, message: 'test pr12', author: null, issue: null, },
     ]
     expect(getPullRequestGeneralComments(state, props)).to.eql(expected)
   })
@@ -684,18 +684,19 @@ describe('getPullRequestGeneralComments', () => {
     const expected = [
       {
         id: 1, message: 'test pr',
-        author: {}, issue: {
+        author: null, issue: {
           id: '123',
           title: 'some issue',
           status: 'fix now'
         },
       },
       {
-        id: 12, message: 'test pr12', author: {}, issue: {
+        id: 12, message: 'test pr12', author: null, issue: {
           id: '128',
           title: 'other issue',
           status: 'fix later'
-        }, },
+        },
+      },
     ]
     expect(getPullRequestGeneralComments(state, props)).to.eql(expected)
   })
@@ -732,10 +733,10 @@ describe('getPullRequestGeneralComments', () => {
     const props = { params: { prid: 93 } }
     const expected = [
       {
-        id: 1, message: 'test pr', issue: undefined,
-        author: {},
+        id: 1, message: 'test pr', issue: null,
+        author: null,
       },
-      { id: 12, message: 'test pr12', author: {}, issue: undefined },
+      { id: 12, message: 'test pr12', author: null, issue: null },
     ]
     expect(getPullRequestGeneralComments(state, props)).to.eql(expected)
   })
@@ -816,7 +817,7 @@ describe('getPullRequestFiles', () => {
       [{ id: 1, name: 'file name1', comments: [1, 21, 12] },
       { id: 2, name: 'file name2', comments: [31] }]
 
-    expect(getPullRequestFiles(state, props)).to.eql([])
+    expect(getPullRequestFiles(state, props)).to.eql(null)
   })
 
   it('empty pullRequests state', () => {
@@ -850,7 +851,7 @@ describe('getPullRequestFiles', () => {
       [{ id: 1, name: 'file name1', comments: [1, 21, 12] },
       { id: 2, name: 'file name2', comments: [31] }]
 
-    expect(getPullRequestFiles(state, props)).to.eql([])
+    expect(getPullRequestFiles(state, props)).to.eql(null)
   })
 
   it('empty entities state', () => {
@@ -884,7 +885,7 @@ describe('getPullRequestFiles', () => {
       [{ id: 1, name: 'file name1', comments: [1, 21, 12] },
       { id: 2, name: 'file name2', comments: [31] }]
 
-    expect(getPullRequestFiles(state, props)).to.eql([])
+    expect(getPullRequestFiles(state, props)).to.eql(null)
   })
 })
 
@@ -904,12 +905,12 @@ describe('getFilesEntities', () => {
 
   it('empty entities state', () => {
     const state = { entities: {} }
-    expect(getFilesEntities(state)).to.eql({})
+    expect(getFilesEntities(state)).to.eql(null)
   })
 
   it('empty files state', () => {
     const state = { entities: { pullRequests: {} } }
-    expect(getFilesEntities(state)).to.eql({})
+    expect(getFilesEntities(state)).to.eql(null)
   })
 })
 
@@ -1325,8 +1326,8 @@ describe('getPullRequestIterations', () => {
   it('should return iterations', () => {
     const repo1Name = 'repo1Name'
     const repo2Name = 'repo2Name'
-    const iterations = [{ id: 93, title: 'test pr93', repositoryName: repo1Name},
-      { id: 94, title: 'test pr94', repositoryName: repo2Name }]
+    const iterations = [{ id: 93, title: 'test pr93', repositoryName: repo1Name },
+    { id: 94, title: 'test pr94', repositoryName: repo2Name }]
 
     const pullRequests =
       {

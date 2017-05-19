@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint-disable no-param-reassign */
 
 import { types } from '../actions'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
@@ -6,43 +7,40 @@ import { createSelector } from 'reselect'
 export type { StatusType } from 'ducks/fetch/selectors'
 import { userEntitiesSelector } from 'ducks/users/selectors'
 import { parseMercurialAuthor } from 'ducks/repositories/selectors'
-
 import _ from 'lodash'
-const defaultEmptyList = []
-const defaultEmptyObject = {}
+import { getEntityById } from 'ducks/selectors'
 
-export const denormalizePullRequestUsers = (pullRequest: Object, userEntities: Object): Object => {
-  if (!pullRequest || !userEntities) {
+
+export const denormalizePullRequestUsers = (pullRequest: any, userEntities: Object): Object => {
+  if (!pullRequest) {
     return pullRequest
   }
+
   const denormalizedPullRequest = Object.assign({}, pullRequest)
+
   if (pullRequest.owner) {
-    denormalizedPullRequest.owner = userEntities[pullRequest.owner]
+    denormalizedPullRequest.owner = getEntityById(userEntities, pullRequest.owner)
   }
+
   if (pullRequest.reviews) {
     denormalizedPullRequest.reviews = pullRequest.reviews.map(review => ({
       ...review,
-      user: userEntities[review.user],
+      user: getEntityById(userEntities, review.user),
     }))
   }
   return denormalizedPullRequest
 }
 
-export const denormalizeCommentAuthor = (comment: Object, userEntities: Object): Object => {
-  if (!comment || !userEntities) {
-    return comment
-  }
-  return ({
-    ...comment,
-    author: userEntities[comment.author] || defaultEmptyObject,
-  })
-}
+export const denormalizeCommentAuthor = (comment: Object, userEntities: Object): Object => ({
+  ...comment,
+  author: getEntityById(userEntities, comment.author),
+})
 
 /**
  * Pull request selectors
  */
 export const getPullRequestsEntities = (state: Object): Object =>
-  _.get(state, ['entities', 'pullRequests'], defaultEmptyObject)
+  _.get(state, ['entities', 'pullRequests'], null)
 
 export const getPullRequestId = (state: Object, props: Object): string =>
   (props.params ? props.params.prid : props.pullRequestId || props.id)
@@ -51,24 +49,26 @@ export const getPageFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUESTS)
 
 export const getPullRequest = createSelector(
   getPullRequestsEntities, userEntitiesSelector, getPullRequestId,
-  (entities: Object, userEntities: Object, id: string): Object => {
-    const pullRequest = (id ? entities[id] : defaultEmptyObject)
-    // Denormalization of owner and reviewers
-    return denormalizePullRequestUsers(pullRequest, userEntities)
+  (entities: Object, userEntities: Object, id: string) => {
+    if (!entities || !id) {
+      return null
+    }
+
+    return denormalizePullRequestUsers(getEntityById(entities, id), userEntities)
   })
 
 // Sometimes we don't need Denormalization of users, when we need just issues or comments
 export const getPullRequestNormalized = createSelector(
   getPullRequestsEntities, getPullRequestId,
-  (entities: Object, id: string): Object => (id ? entities[id] || defaultEmptyObject : defaultEmptyObject)
+  (entities: Object, id: string) => getEntityById(entities, id)
 )
 
 // Sometimes we don't need Denormalization of users, when we need just issues or comments
 export const getPullRequestDescription = createSelector(
   getPullRequestNormalized, userEntitiesSelector,
-  (pr: Object, users: string): Object => ({
+  (pr: Object, users: Object): Object => ({
     text: pr.description,
-    author: users[pr.owner],
+    author: getEntityById(users, pr.owner),
     created: pr.created,
   })
 )
@@ -81,10 +81,14 @@ export const getPullRequestRepoId = createSelector(
  * Pull request page selectors
  */
 export const pullRequestsPageIdsSelector =
+  // $FlowFixMe
   (state: Object, props: Object): Array<Number> => {
-    const pullRequestsPagingSettings = _.get(state, ['session', 'pullRequests', 'pagination'], defaultEmptyObject)
+    const pullRequestsPagingSettings = _.get(state, ['session', 'pullRequests', 'pagination'], null)
+    if (!pullRequestsPagingSettings) {
+      return null
+    }
     const { pages, currentPage } = pullRequestsPagingSettings
-    return pages && currentPage > -1 ? pages[currentPage] : defaultEmptyList
+    return pages && currentPage > -1 ? pages[currentPage] : null
   }
 
 export const getPullRequestsPage = createSelector(
@@ -97,17 +101,20 @@ export const getPullRequestsPage = createSelector(
  * Pull request issues selectors
  */
 export const getIssuesEntities = (state: Object) =>
-  _.get(state, ['entities', 'issues'], {})
+  _.get(state, ['entities', 'issues'], null)
 
 export const getPullRequestIssues = createSelector(
   getIssuesEntities, userEntitiesSelector, getPullRequestNormalized,
   (issueEntities, userEntities, pr) => {
-    const prIssues = pr ? _.values(_.pick(issueEntities, pr.issues || defaultEmptyList)) : defaultEmptyList
-    // Denormalization of owner and assignee
+    if (!pr || !issueEntities || !pr.issues) {
+      return null
+    }
+    const prIssues = _.values(_.pick(issueEntities, pr.issues))
+
     return prIssues.map(issue => ({
       ...issue,
-      owner: userEntities[issue.owner] || defaultEmptyObject,
-      assignee: userEntities[issue.assignee] || defaultEmptyObject,
+      owner: getEntityById(userEntities, issue.owner),
+      assignee: getEntityById(userEntities, issue.assignee),
     }))
   }
 )
@@ -116,16 +123,19 @@ export const getPullRequestIssues = createSelector(
  * Pull request  comments
  */
 export const getCommentsEntities = (state: Object) =>
-  _.get(state, ['entities', 'comments'], defaultEmptyObject)
+  _.get(state, ['entities', 'comments'], null)
 
 export const getPullRequestGeneralComments = createSelector(
   getCommentsEntities, userEntitiesSelector, getIssuesEntities, getPullRequestNormalized,
   (commentsEntities, userEntities, issues, pr) => {
-    const prComments = _.values(_.pick(commentsEntities, _.get(pr, ['comments'], defaultEmptyList)))
-    //  Denormalization of comment author
+    if (!commentsEntities || !pr || !pr.comments) {
+      return null
+    }
+    const prComments = _.values(_.pick(commentsEntities, pr.comments))
+
     return prComments.map(comment => ({
       ...denormalizeCommentAuthor(comment, userEntities),
-      issue: comment.issue ? issues[comment.issue] : comment.issue,
+      issue: getEntityById(issues, comment.issue),
     }))
   }
 )
@@ -134,33 +144,34 @@ export const getPullRequestGeneralComments = createSelector(
  * Pull request files
  */
 export const getFilesEntities = (state: Object): Object =>
-  _.get(state, ['entities', 'files'], defaultEmptyObject)
+  _.get(state, ['entities', 'files'], null)
 export const getPullRequestFiles = createSelector(
   getFilesEntities, getPullRequestNormalized,
   (files, pr) => {
-    if (!pr || !pr.files) {
-      return defaultEmptyList
+    if (!files || !pr || !pr.files) {
+      return null
     }
     return _.values(_.pick(files, pr.files))
   })
 
 
-export const getFile = (state: Object, props: Object) => (props.id ? state.entities.files[props.id] : null)
+export const getFile = (state: Object, props: Object) =>
+  (props.id && state.entities.files ? state.entities.files[props.id] : null)
 
 export const getFileComments = createSelector(
   getFile, getCommentsEntities, userEntitiesSelector,
   (file, commentEntities, userEntities) => {
-    // Denormalization of inline comments
+    if (!file || !commentEntities || !file.comments) {
+      return null
+    }
     const comments = _.values(_.pick(commentEntities, file.comments))
       .map(comment => denormalizeCommentAuthor(comment, userEntities))
-    const reduced = _.reduce(comments, (result, value, key) => {
+    return _.reduce(comments, (result, value, key) => {
       if (value.location) {
         (result[value.location.lineNumber] || (result[value.location.lineNumber] = [])).push(value) //eslint-disable-line
       }
       return result
-    }, defaultEmptyObject)
-
-    return reduced
+    }, {})
   })
 
 export const getChangesetsEntities = (state: Object, props: Object) => state.entities.changesets
@@ -173,7 +184,7 @@ export const getPullRequestChangeset = createSelector(
     const changeset = _.values(_.pick(changesets, pullRequest.changeset))
     return changeset.map(ch => ({
       ...ch,
-      authorUser: users && ch.authorUser && ch.authorUser in users ? users[ch.authorUser] : parseMercurialAuthor(ch.author),
+      authorUser: getEntityById(users, ch.authorUser, () => parseMercurialAuthor(ch.author)),
     }))
   }
 )
@@ -181,11 +192,11 @@ export const getPullRequestChangeset = createSelector(
 export const getPullRequestIterations = createSelector(
   getPullRequest, getPullRequestsEntities,
   (pr, entities) => {
-    if (!pr || !pr.iterations) {
+    if (!pr || !pr.iterations || !entities) {
       return null
     }
 
-    const prs = entities ? _.values(_.pick(entities, _.filter(pr.iterations, p => p !== pr.id))) : null
+    const prs = _.values(_.pick(entities, _.filter(pr.iterations, p => p !== pr.id)))
     if (!prs) {
       return null
     }
@@ -193,7 +204,7 @@ export const getPullRequestIterations = createSelector(
     return prs.map(p => ({
       id: p.id,
       title: p.title,
-      repositoryName: p.origin.repository.fullName,
+      repositoryName: p && p.origin ? p.origin.repository.fullName : null,
     }))
   }
 )

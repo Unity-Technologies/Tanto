@@ -72,7 +72,7 @@ describe('PullRequestIssues selectors', () => {
       error: null,
     }
     const expectedData = {
-      issues: [],
+      issues: null,
       status,
     }
     const state = {
@@ -97,8 +97,8 @@ describe('PullRequestIssues selectors', () => {
       13: issue13,
     }
     const expectedIssues = [
-      { ...issue1, assignee: {}, owner: {} },
-      { ...issue13, assignee: {}, owner: {} },
+      { ...issue1, assignee: null, owner: null },
+      { ...issue13, assignee: null, owner: null },
     ]
     const status = {
       isFetching: false,
@@ -140,7 +140,7 @@ describe('PullRequestIssues selectors', () => {
       error: null,
     }
     const expectedData = {
-      issues: [],
+      issues: null,
       status,
     }
     const pullRequests = {
@@ -210,7 +210,7 @@ describe('PullRequestIssues selectors', () => {
       error: null,
     }
     const expectedData = {
-      issues: [],
+      issues: null,
       status,
     }
     const state = {

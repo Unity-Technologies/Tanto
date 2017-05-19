@@ -53,8 +53,8 @@ describe('PullRequestSummary/ReviewSection selectors', () => {
       user: 2,
     }
     const expectedData = [
-      { ...review1, user: undefined },
-      { ...review2, user: undefined },
+      { ...review1, user: null },
+      { ...review2, user: null },
     ]
     const pullRequests = {
       12: {
@@ -81,7 +81,7 @@ describe('PullRequestSummary/ReviewSection selectors', () => {
       1: user1,
       2: user2,
     }
-    const expectedData = []
+
     const state = {
       entities: {
         users,
@@ -92,7 +92,7 @@ describe('PullRequestSummary/ReviewSection selectors', () => {
         prid: 12,
       },
     }
-    expect(getPullRequestReviews(state, props)).to.deep.eql(expectedData)
+    expect(getPullRequestReviews(state, props)).to.deep.eql(null)
   })
   it('getPullRequestReviews, no pr (no prid in props)', () => {
     const user1 = 'user1'
@@ -109,7 +109,7 @@ describe('PullRequestSummary/ReviewSection selectors', () => {
       status: 'ChangesetStatus.APPROVED',
       user: 2,
     }
-    const expectedData = []
+
     const pullRequests = {
       12: {
         reviews: [review1, review2],
@@ -124,6 +124,6 @@ describe('PullRequestSummary/ReviewSection selectors', () => {
     const props = {
       params: {},
     }
-    expect(getPullRequestReviews(state, props)).to.deep.eql(expectedData)
+    expect(getPullRequestReviews(state, props)).to.deep.eql(null)
   })
 })
