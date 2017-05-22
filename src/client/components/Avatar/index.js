@@ -22,7 +22,7 @@ function Avatar(props: Props) {
   if (!props.avatar) {
     return (
       <div style={{ ...avatarStyle, padding: '7px 7px 7px 9px', backgroundColor: 'lightgrey' }} >
-        <i className="fa fa-user-o fa-2x" aria-hidden="true"></i>
+        <i className="fa fa-user-o fa-2x" ></i>
       </div>
     )
   }

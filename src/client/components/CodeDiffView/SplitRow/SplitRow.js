@@ -117,7 +117,7 @@ class SplitRow extends PureComponent {
             <i
               onClick={this.handleAddLeftComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-left"
-              aria-hidden="true"
+
               style={leftIconStyle}
             />
           }
@@ -165,7 +165,7 @@ class SplitRow extends PureComponent {
             <i
               onClick={this.handleAddRightComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-right"
-              aria-hidden="true"
+
               style={rightIconStyle}
             />
           }

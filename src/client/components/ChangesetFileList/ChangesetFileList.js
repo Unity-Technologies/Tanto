@@ -106,37 +106,33 @@ class ChangesetFileList extends PureComponent {
     const { compact, containerElementName, reviews } = this.props
     return (
       <div>
-        <Row>
-          <Col md={12}>
-            <div
-              style={{
-                display: 'inline-flex',
-                border: '1px solid lightgrey',
-                borderRadius: '5px',
-                padding: '7px',
-                width: '100%',
-              }}
-            >
-              <span style={{ pagging: '10px', color: 'grey' }}>
-                <i className="fa fa-search" aria-hidden="true" />
-              </span>
-              <input
-                type="text"
-                style={{
-                  outline: 'none',
-                  border: 'none',
-                  marginLeft: '10px',
-                  fontSize: '14px',
-                  width: '100%',
-                }}
-                onChange={this.onQueryChange}
-              />
-            </div>
-            <div style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }} active>
-              {statusTextSearch(filesAfterSearch, query)}
-            </div>
-          </Col>
-        </Row>
+        <div
+          style={{
+            display: 'inline-flex',
+            border: '1px solid lightgrey',
+            borderRadius: '5px',
+            padding: '7px',
+            width: '100%',
+          }}
+        >
+          <span style={{ pagging: '10px', color: 'grey' }}>
+            <i className="fa fa-search" />
+          </span>
+          <input
+            type="text"
+            style={{
+              outline: 'none',
+              border: 'none',
+              marginLeft: '10px',
+              fontSize: '14px',
+              width: '100%',
+            }}
+            onChange={this.onQueryChange}
+          />
+        </div>
+        <div style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }}>
+          {statusTextSearch(filesAfterSearch, query)}
+        </div>
         <FilesList
           compact={compact}
           reviews={reviews}

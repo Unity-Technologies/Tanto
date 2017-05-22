@@ -34,7 +34,7 @@ const SwitchOrderButton = (props: SwitchButtonProps) => (
         backgroundColor: props.isSelected ? '#b9ebae' : 'lightgrey',
       }} aria-label={props.label}
     >
-      <i className="fa fa-sort-amount-asc" aria-hidden="true" />
+      <i className="fa fa-sort-amount-asc" />
     </a>
   </div >
 )

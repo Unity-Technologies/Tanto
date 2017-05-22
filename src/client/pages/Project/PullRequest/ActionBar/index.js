@@ -110,7 +110,7 @@ class ActionBar extends PureComponent {
               color: '#9E9E9E',
               width: '60px',
             }}
-            title={<i className="fa fa-cog" aria-hidden="true" />}
+            title={<i className="fa fa-cog" />}
             id="dropdown-button-pull-request-actions"
           >
             <MenuItem eventKey="1">Change owner</MenuItem>

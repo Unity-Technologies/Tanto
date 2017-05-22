@@ -71,11 +71,11 @@ class DiffHeader extends PureComponent {
             <div>
               <div onClick={this.handleDiffCollapseClick}>
                 {!this.props.collapsed && <div onMouseDown={() => this.handleDiffCollapseClick(true)}>
-                  <i className="fa fa-minus" aria-hidden="true"></i>
+                  <i className="fa fa-minus" ></i>
                 </div>}
                 {this.props.collapsed &&
                   <div onMouseDown={() => this.handleDiffCollapseClick(false)}>
-                    <i className="fa fa-plus" aria-hidden="true"></i>
+                    <i className="fa fa-plus" ></i>
                   </div>}
               </div>
 
@@ -95,11 +95,11 @@ class DiffHeader extends PureComponent {
           <Nav pullRight style={{ fontSize: '16px' }}>
 
             <NavItem onClick={() => this.handleFileReviewed(!fileReview.reviewed)}>
-              <i className={`fa fa-check-square-o ${fileReview.reviewed ? 'reviewed' : ''}`} aria-hidden="true"></i>
+              <i className={`fa fa-check-square-o ${fileReview.reviewed ? 'reviewed' : ''}`} ></i>
             </NavItem>
 
             <NavItem onClick={() => this.handleFileBookmarked(!fileReview.bookmarked)}>
-              <i className={`fa fa-tag ${fileReview.bookmarked ? 'bookmarked' : ''}`} aria-hidden="true"></i>
+              <i className={`fa fa-tag ${fileReview.bookmarked ? 'bookmarked' : ''}`} ></i>
             </NavItem>
           </Nav>}
 

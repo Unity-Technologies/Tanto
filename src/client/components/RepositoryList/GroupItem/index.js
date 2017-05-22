@@ -21,7 +21,7 @@ function GroupItem(props: Props) {
   return (
     <ListGroupItem style={{ display: 'flex' }}>
       <div style={{ fontSize: '16px', color: '#95b3ea' }}>
-        <i className="fa fa-folder" aria-hidden="true"></i>
+        <i className="fa fa-folder" ></i>
       </div>
       <div style={{ display: 'table' }}>
         <div style={{ paddingLeft: '10px', display: 'table' }}>

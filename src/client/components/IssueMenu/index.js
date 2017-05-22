@@ -21,7 +21,7 @@ const getStatusClass = (status?: string) => {
 }
 
 const IssueIcon = ({ color }) => (
-  <i className={'fa fa-bug action-icon'} style={{ color }} aria-hidden="true" />
+  <i className={'fa fa-bug action-icon'} style={{ color }} />
 )
 
 type Props = {

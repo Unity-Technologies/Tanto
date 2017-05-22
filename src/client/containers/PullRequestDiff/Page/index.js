@@ -23,25 +23,25 @@ type Props = {
 export const renderFileReview = (fileReview: Object) => {
   if (fileReview && fileReview.reviewed) {
     return (
-      <i className="fa fa-check-square-o reviewed" aria-hidden="true" />
+      <i className="fa fa-check-square-o reviewed" />
     )
   }
-  return <i className="fa fa-check-square-o" aria-hidden="true" />
+  return <i className="fa fa-check-square-o" />
 }
 
 export const renderFileBookmark = (fileReview: Object) => {
   if (fileReview && fileReview.bookmarked) {
     return (
-      <i className="fa fa-tag bookmarked" aria-hidden="true" />
+      <i className="fa fa-tag bookmarked" />
     )
   }
-  return <i className="fa fa-tag" aria-hidden="true" />
+  return <i className="fa fa-tag" />
 }
 
 export const renderFileComments = (comments: Array<Object>) => {
   if (comments && comments.length) {
     return (
-      <span className="file-review-comments"> <i className="fa fa-comment" aria-hidden="true" /> {comments.length}</span>
+      <span className="file-review-comments"> <i className="fa fa-comment" /> {comments.length}</span>
     )
   }
   return null

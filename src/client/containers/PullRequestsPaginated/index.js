@@ -140,7 +140,7 @@ class PullRequestsPaginated extends PureComponent {
         {!isFetching && !error && !this.props.items.length &&
           <Alert bsStyle="warning" style={{ fontSize: '13px' }}>
             <strong>
-              <i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong>
+              <i className="fa fa-exclamation-circle" ></i> </strong>
             There is no pull request
           </Alert>
         }

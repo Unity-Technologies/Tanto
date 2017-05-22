@@ -13,12 +13,12 @@ const VoteStatus = ({ status, showTitle, title }: Object) => {
   }
   switch (status) {
     case ChangesetStatus.APPROVED:
-      return <span><i className="fa fa-circle approved" aria- hidden="true" ></i> Approved</span>
+      return <span><i className="fa fa-circle approved"></i> Approved</span>
     case ChangesetStatus.REJECTED:
-      return <span><i className="fa fa-circle rejected" aria- hidden="true" ></i> Request changes</span>
+      return <span><i className="fa fa-circle rejected"></i> Request changes</span>
     case ChangesetStatus.NONE:
     default:
-      return <span> <i className="fa fa-times" aria- hidden="true" ></i> Clear vote</span>
+      return <span> <i className="fa fa-times"></i> Clear vote</span>
   }
 }
 

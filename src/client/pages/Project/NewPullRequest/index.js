@@ -66,7 +66,7 @@ class NewPullRequest extends PureComponent {
           <Nav>
             <NavItem>
               <span style={{ position: 'absolute', marginLeft: '-30px', paddingTop: '5px' }}>
-                <i className="fa fa-code-fork fa-2x" aria-hidden="true" />
+                <i className="fa fa-code-fork fa-2x" />
               </span>
               <BranchSelect
                 prefix="base:"

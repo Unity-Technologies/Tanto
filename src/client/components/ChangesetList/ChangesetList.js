@@ -165,7 +165,7 @@ class ChangesetList extends PureComponent {
                     <CopyToClipboard text={item.id} onCopy={() => this.setState({ copied: true })}>
                       <i
                         style={{ fontSize: '14px', borderRight: '1px solid lightgrey', padding: '7px', cursor: 'pointer' }}
-                        className="fa fa-clipboard" aria-hidden="true"
+                        className="fa fa-clipboard"
                       />
                     </CopyToClipboard>
                     <Link

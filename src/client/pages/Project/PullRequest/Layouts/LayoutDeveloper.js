@@ -20,7 +20,7 @@ const TabTitle = ({ text, badge }) =>
   </div>
 
 // FIXME: badge for changesets
-const downloadIcon = <i className="fa fa-download" aria-hidden="true" />
+const downloadIcon = <i className="fa fa-download" />
 
 // FIXME: badge for categories
 const Header = ({ currentCategory, rootPath }) =>

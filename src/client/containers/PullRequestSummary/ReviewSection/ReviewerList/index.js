@@ -48,7 +48,7 @@ class ReviewerList extends Component {
                   <a>
                     {r.user.fullName.trim() || r.user.username.trim()}
                   </a>
-                  <i className="fa fa-times-circle reviewer-remove-icon" aria-hidden="true"></i>
+                  <i className="fa fa-times-circle reviewer-remove-icon" ></i>
                 </span>
                 {i + 1 < this.props.reviews.length && ', '}
               </span>

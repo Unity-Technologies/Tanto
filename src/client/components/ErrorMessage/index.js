@@ -19,7 +19,7 @@ function ErrorMessage(props: Props) {
   }
   return (
     <Alert bsStyle="danger" style={{ fontSize: '13px' }}>
-      <strong><i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong> {message}
+      <strong><i className="fa fa-exclamation-circle" ></i> </strong> {message}
     </Alert>
   )
 }

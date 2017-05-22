@@ -86,7 +86,7 @@ class UnifiedRow extends PureComponent {
             <i
               onClick={this.addComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-hover"
-              aria-hidden="true"
+
             />
           }
         </td>

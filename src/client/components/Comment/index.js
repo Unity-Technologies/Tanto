@@ -167,14 +167,14 @@ const renderReadMode =
                   className="comment-action-button"
                   onClick={handleOnEdit}
                 >
-                  <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+                  <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} ></i>
                 </Button>
                 {!disableDelete &&
                   <Button
                     onClick={handleOnDelete}
                     className="comment-action-button"
                   >
-                    <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+                    <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} ></i>
                   </Button>
                 }
               </div>
@@ -210,7 +210,7 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
               className="comment-action-button"
               onClick={handleOnEdit}
             >
-              <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+              <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} ></i>
             </Button>
           </div>
         }

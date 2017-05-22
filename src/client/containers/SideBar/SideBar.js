@@ -19,7 +19,7 @@ const textColor = 'rgb(88, 89, 89)'
 const listItem = (title, icon, badge, open) => (
   <div style={{ color: '#4574b5', fontSize: '20px' }}>
     <div style={{ display: 'inline-table', width: '40px', color: textColor, marginLeft: '5px' }}>
-      <i className={`fa fa-${icon}`} aria-hidden="true" />
+      <i className={`fa fa-${icon}`} />
     </div>
     {open &&
       <span

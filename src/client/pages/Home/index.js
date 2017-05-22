@@ -61,7 +61,7 @@ function Home(props: Props) {
     <div>
       <Helmet title="Pull Requests" />
       <div >
-        <Tabs animation={false} defaultActiveKey={1}>
+        <Tabs id="homeTabs" animation={false} defaultActiveKey={1}>
           <Tab
             key="tab1"
             eventKey={1}

@@ -113,7 +113,7 @@ class PullRequestListItem extends PureComponent {
                 onClick={this.handleRemoveClick}
                 className="remove-icon"
               >
-                <i className="fa fa-trash" aria-hidden="true" />
+                <i className="fa fa-trash" />
               </div>
             </Col>
           }

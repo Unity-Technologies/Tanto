@@ -37,7 +37,7 @@ function RepositoryItem(props: Props) {
       <Row>
         <Col md={6} style={{ display: 'flex' }}>
           <div style={{ fontSize: '18px', color: 'rgb(81, 82, 83)' }}>
-            <i className="fa fa-code-fork" aria-hidden="true"></i>
+            <i className="fa fa-code-fork" ></i>
           </div>
           <div style={{ display: 'table' }}>
             <div style={{ paddingLeft: '10px', display: 'table' }}>

@@ -133,7 +133,7 @@ class IssuesList extends PureComponent {
               }}
             >
               <span style={{ pagging: '10px', color: 'grey' }}>
-                <i className="fa fa-search" aria-hidden="true" />
+                <i className="fa fa-search" />
               </span>
               <input
                 type="text"
@@ -148,7 +148,7 @@ class IssuesList extends PureComponent {
               <i
                 className="fa fa-sort-amount-asc"
                 style={{ color: 'lightgrey', margin: '1px 10px', fontSize: '16px' }}
-                aria-hidden="true"
+
               />
             </div>
             <div style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }}>
