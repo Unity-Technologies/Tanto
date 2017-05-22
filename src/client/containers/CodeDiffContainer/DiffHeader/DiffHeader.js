@@ -91,16 +91,17 @@ class DiffHeader extends PureComponent {
             </div>
           </NavItem>
         </Nav>
+        {fileReview &&
+          <Nav pullRight style={{ fontSize: '16px' }}>
 
-        <Nav pullRight style={{ fontSize: '16px' }}>
-          <NavItem onClick={() => this.handleFileReviewed(!fileReview.reviewed)}>
-            <i className={`fa fa-check-square-o ${fileReview.reviewed ? 'reviewed' : ''}`} aria-hidden="true"></i>
-          </NavItem>
+            <NavItem onClick={() => this.handleFileReviewed(!fileReview.reviewed)}>
+              <i className={`fa fa-check-square-o ${fileReview.reviewed ? 'reviewed' : ''}`} aria-hidden="true"></i>
+            </NavItem>
 
-          <NavItem onClick={() => this.handleFileBookmarked(!fileReview.bookmarked)}>
-            <i className={`fa fa-tag ${fileReview.bookmarked ? 'bookmarked' : ''}`} aria-hidden="true"></i>
-          </NavItem>
-        </Nav>
+            <NavItem onClick={() => this.handleFileBookmarked(!fileReview.bookmarked)}>
+              <i className={`fa fa-tag ${fileReview.bookmarked ? 'bookmarked' : ''}`} aria-hidden="true"></i>
+            </NavItem>
+          </Nav>}
 
       </Navbar>
     )

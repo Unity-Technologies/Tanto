@@ -66,11 +66,16 @@ export const getPullRequestNormalized = createSelector(
 // Sometimes we don't need Denormalization of users, when we need just issues or comments
 export const getPullRequestDescription = createSelector(
   getPullRequestNormalized, userEntitiesSelector,
-  (pr: Object, users: Object): Object => ({
-    text: pr.description,
-    author: getEntityById(users, pr.owner),
-    created: pr.created,
-  })
+  (pr: Object, users: Object): Object => {
+    if (!pr) {
+      return null
+    }
+    return {
+      text: pr.description,
+      author: getEntityById(users, pr.owner),
+      created: pr.created,
+    }
+  }
 )
 
 export const getPullRequestRepoId = createSelector(

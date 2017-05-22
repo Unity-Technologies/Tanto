@@ -224,7 +224,7 @@
     "react": "^15.1.0",
     "react-addons-perf": "^15.4.2",
     "react-addons-transition-group": "^15.4.2",
-    "react-bootstrap": "^0.30.7",
+    "react-bootstrap": "^0.31.0",
     "react-copy-to-clipboard": "^4.0.0",
     "react-dom": "^15.1.0",
     "react-helmet": "^2.2.0",

@@ -57,6 +57,9 @@ const subHeader = text => (
 )
 
 const getStatus = (status: string, reviews: Array<Object>) => {
+  if (!reviews) {
+    return null
+  }
   let color
   let statusText = ''
   let statusTitle = status
@@ -190,7 +193,7 @@ class ReviewSection extends Component {
   render() {
     const { users, status, reviews } = this.props
 
-    if (!users) {
+    if (!users || !reviews) {
       return null
     }
 
