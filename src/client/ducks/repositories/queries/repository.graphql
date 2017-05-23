@@ -1,6 +1,5 @@
 query repository($name: String!) {
 	repository(name: $name) {
-    id
     name,
     description,
     fullName

@@ -1,6 +1,6 @@
 query repositoryChangelog($name: String, $branch: String) {
   repository(name: $name){
-    id
+    fullName
     changelog (limit: 100, offset: 0, branch: $branch) {
       nodes {
         id

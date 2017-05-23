@@ -14,14 +14,14 @@ query pullRequestMetadata($id: Int!) {
       name
       revision
       repository {
-        id
+        fullName
         name
       }
     }
     target {
       name
       repository {
-        id
+        fullName
         name
       }
     }

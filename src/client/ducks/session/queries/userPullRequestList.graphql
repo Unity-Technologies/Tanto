@@ -30,14 +30,13 @@ fragment pullRequestMetadata on PullRequest {
     revision
     name
     repository {
-      id
+      fullName
       name
     }
   }
   target {
     name
     repository {
-      id
       name
       fullName
     }

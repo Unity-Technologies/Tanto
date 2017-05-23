@@ -5,7 +5,7 @@ import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchPullRequests } from 'ducks/pullrequests/actions'
-import { getRepositoryId } from 'ducks/repositories/selectors'
+import { getRepositoryName } from 'ducks/repositories/selectors'
 
 import {
   getPageFetchStatus,
@@ -47,7 +47,7 @@ function PullRequests(props: Props) {
 
 export default connect(
   (state, props) => ({
-    repo: getRepositoryId(state, props),
+    repo: getRepositoryName(state, props),
   })
 )(PullRequests)
 

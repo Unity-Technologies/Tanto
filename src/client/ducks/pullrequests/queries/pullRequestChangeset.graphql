@@ -4,7 +4,6 @@ query pullRequestCommits($id: Int!){
 		title
     origin {
       repository{
-        id
         fullName
       }
     }

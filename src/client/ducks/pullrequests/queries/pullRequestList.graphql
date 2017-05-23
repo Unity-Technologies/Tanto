@@ -1,5 +1,5 @@
-query pullRequests($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: Int, $orderBy: PullRequestOrdering) {
-  repository(id: $repo) {
+query pullRequests($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: PullRequestOrdering) {
+  repository(name: $repo) {
     pullRequests(limit: $limit, offset: $offset, target: $target, orderBy: $orderBy) {
       total
       nodes {
@@ -19,16 +19,15 @@ fragment pullRequestMetadata on PullRequest {
     revision
     name
     repository {
-      id
+      fullName
       name
     }
   }
   target {
     name
     repository {
-      id
-      name
       fullName
+      name
     }
   }
   owner {
