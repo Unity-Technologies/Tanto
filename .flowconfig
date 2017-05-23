@@ -2,6 +2,9 @@
 <PROJECT_ROOT>/node_modules/fbjs/*
 <PROJECT_ROOT>/node_modules/react-event-listener/*
 <PROJECT_ROOT>/node_modules/react-motion/*
+<PROJECT_ROOT>/node_modules/react-rte/*
+<PROJECT_ROOT>/node_modules/react-resizable/*
+<PROJECT_ROOT>/node_modules/react-grid-layout/*
 <PROJECT_ROOT>/node_modules/react-side-effect/node_modules/fbjs/*
 <PROJECT_ROOT>/node_modules/config-chain/*
 <PROJECT_ROOT>/node_modules/draft-js/*

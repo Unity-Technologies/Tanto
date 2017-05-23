@@ -18,10 +18,7 @@ import { connect } from 'react-redux'
 
 
 export type Props = {
-  params?: Object,
-  theme?: // reviewers: PropTypes.array,
-  Object,
-};
+}
 
 class NewPullRequest extends PureComponent {
   constructor(props: Props) {

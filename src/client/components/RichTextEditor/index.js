@@ -31,7 +31,7 @@ class RichTextEditor extends PureComponent {
     }
   }
 
-  getEditorInitialText = (props) => (props.text ?
+  getEditorInitialText = props => (props.text ?
     RichTextEditorArea.createValueFromString(this.props.text, 'markdown') :
     RichTextEditorArea.createEmptyValue())
 

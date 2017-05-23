@@ -24,23 +24,23 @@ const dataFixture = [
       date: '2017-01-10 13:51:17',
       status: 'not_reviewed',
     },
-      {
-        id: '8f745f03f2ea',
-        rawId: '8f745f03f2eacf942dbcc20b4e605fd5dba48a35',
-        branch: 'default',
-        message: 'commit2',
-        author: 'Kateryna Musina <kateryna@unity3d.com>',
-        files: [
-          {
-            stats: {
-              added: 7,
-              deleted: 0,
-            },
+    {
+      id: '8f745f03f2ea',
+      rawId: '8f745f03f2eacf942dbcc20b4e605fd5dba48a35',
+      branch: 'default',
+      message: 'commit2',
+      author: 'Kateryna Musina <kateryna@unity3d.com>',
+      files: [
+        {
+          stats: {
+            added: 7,
+            deleted: 0,
           },
-        ],
-        date: '2017-01-10 13:51:45',
-        status: 'not_reviewed',
-      }],
+        },
+      ],
+      date: '2017-01-10 13:51:45',
+      status: 'not_reviewed',
+    }],
   },
   {
     version: '2',

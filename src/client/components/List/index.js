@@ -12,10 +12,14 @@ export type Props = {
   total: number,
   activePage: number,
   children?: number | string | React.Element<*> | Array < any >,
-    onPageSelect ?: Function,
+  onPageSelect ?: Function,
 }
 
 class List extends PureComponent {
+  static defaultProps = {
+    children: null,
+    onPageSelect: null,
+  }
   props: Props
 
   handleSelect = (eventKey: number) => {

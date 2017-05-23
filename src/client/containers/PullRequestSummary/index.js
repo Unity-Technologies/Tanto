@@ -5,26 +5,25 @@ import { connect } from 'react-redux'
 import { pureComponent } from 'components/PureComponent'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
 import { types } from 'ducks/pullrequests/actions'
-import BuildSection from './BuildSection'
-import ChangesetSection from './ChangesetSection'
-import Header from './Header'
+import { statusFetchFactory } from 'ducks/fetch/selectors'
+import PullRequestDiscussion from 'containers/PullRequestDiscussion'
 import type { StatusType } from 'ducks/pullrequests/selectors'
 import { createStructuredSelector } from 'reselect'
+import LoadingComponent from 'components/LoadingComponent'
+import BuildSection from './BuildSection'
+import ChangesetSection from './ChangesetSection'
 import IssuesSection from './IssuesSection'
 import RepositoriesSection from './RepositoriesSection'
 import ReviewSection from './ReviewSection'
-import { statusFetchFactory } from 'ducks/fetch/selectors'
-import PullRequestDiscussion from 'containers/PullRequestDiscussion'
 import Iterations from './Iterations'
-import LoadingComponent from 'components/LoadingComponent'
+import Header from './Header'
 import './PullRequestSummary.css'
+
 export const fetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_METADATA)
 
 export type PullRequestSummaryPropsType = {
   status: StatusType,
-  dispatch: Function,
   pullRequestId: string,
-  pullRequestExists: boolean,
 }
 
 export const getMetadata = createStructuredSelector({
@@ -34,7 +33,7 @@ export const getMetadata = createStructuredSelector({
 const style = { margin: '0 15px' }
 const metadataStyle = { marginTop: '20px', marginLeft: '60px' }
 const PullRequestSummary = (props: PullRequestSummaryPropsType) =>
-  <div style={style}>
+  (<div style={style}>
     <LoadingComponent status={props.status}>
       <div className="PullRequestSummary">
         <Header id={props.pullRequestId} />
@@ -49,7 +48,7 @@ const PullRequestSummary = (props: PullRequestSummaryPropsType) =>
       </div>
     </LoadingComponent>
     <PullRequestDiscussion pullRequestId={props.pullRequestId} repoName={props.repoName} />
-  </div>
+  </div>)
 
 export default connect(getMetadata)(pureComponent(PullRequestSummary))
 

@@ -20,6 +20,11 @@ export type Props = {
 }
 
 class PullRequestList extends PureComponent {
+  static defaultProps = {
+    total: 0,
+    showRemoveButton: false,
+    onRemoveClick: null,
+  }
   props: Props
 
   shouldComponentUpdate(nextProps: Object, nextState: Object) {

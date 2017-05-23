@@ -1,5 +1,6 @@
 import chai from 'chai'
 import { helpers } from 'routes/helpers'
+
 const expect = chai.expect
 
 describe('routes helpers', () => {
@@ -67,7 +68,7 @@ describe('routes helpers', () => {
     const projectName = 'projectName'
     const number = 12222
     expect(helpers.buildKatanaBuildLink(projectName, builderName, number)).equals(
-      `${process.env.KATANA_HOST}/projects/${projectName}/builders/${builderName}/builds/${number}`
+      `${process.env.KATANA_HOST}/projects/${projectName}/builders/${builderName}/builds/${number}`,
     )
   })
 })

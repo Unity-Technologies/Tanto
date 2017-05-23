@@ -46,13 +46,9 @@ export type Props = {
   width: number,
   hiddenWidth: number,
   items: Array<any>,
-  subitems: Array<any>,
   open: boolean,
-  sideBarMenuItemStyle?: Object,
-  sideBarMenuItemSelectedStyle?: Object,
   dispatch: Function,
   defaultValue: number,
-  title: string,
   avatar: string,
   username: string,
 }
@@ -111,7 +107,7 @@ class SideBar extends PureComponent {
 
           <SelectableList defaultValue={defaultValue}>
             {items.map((item, index) =>
-              <ListItem
+              (<ListItem
                 key={_.uniqueId('_sidebar_item')}
                 value={index + 1}
                 style={{ color: 'white' }}
@@ -119,7 +115,7 @@ class SideBar extends PureComponent {
                 onClick={() => this.redirect(item.route)}
               >
                 {listItem(item.title, item.icon, item.badge, open)}
-              </ListItem>
+              </ListItem>),
             )}
           </SelectableList>
         </div>

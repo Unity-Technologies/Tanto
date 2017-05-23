@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 
 import { DEVELOPER_PERSONA } from 'universal/constants'
+import { types } from 'ducks/session/actions'
 import {
   getPullRequestsOwned,
   getPullRequestsAssigned,
@@ -13,8 +14,6 @@ import {
   getLoggedUserAvatar,
   getPullRequestsAssignedTotal,
 } from '../index'
-
-import { types } from 'ducks/session/actions'
 
 const expect = require('chai').expect
 
@@ -264,7 +263,8 @@ describe('session selectors', () => {
         },
       },
       {
-        ...pr3, owner: {
+        ...pr3,
+        owner: {
           id: 14,
           username: 'test3',
           email: 'test3@test.tt',
@@ -277,14 +277,16 @@ describe('session selectors', () => {
 
   it('get user pull watching requests', () => {
     const denormalized = [{
-      ...pr2, owner: {
+      ...pr2,
+      owner: {
         id: 15,
         username: 'test2',
         email: 'test2@test.tt',
         fullName: 'test test2',
       },
     }, {
-      ...pr1, owner: {
+      ...pr1,
+      owner: {
         id: 16,
         username: 'test2',
         email: 'test1@test.tt',

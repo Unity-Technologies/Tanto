@@ -2,10 +2,9 @@
 import React, { Component } from 'react'
 import Avatar from 'components/Avatar'
 import RichTextEditor from 'components/RichTextEditor'
-import Header from './Header'
 import type { UserType } from 'components/GeneralCommentThread'
 import { ChangesetStatus, IssueStatus } from 'universal/constants'
-
+import Header from './Header'
 
 type Props = {
   loggedUser: UserType,

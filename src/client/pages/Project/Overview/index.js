@@ -5,10 +5,8 @@ import { pureComponent } from 'components/PureComponent'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { getRepoDescription } from 'ducks/repositories/selectors'
+
 export type Props = {
-  params: {
-    id: string,
-  },
   repoName: string,
   description: string,
 }

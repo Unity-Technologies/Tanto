@@ -28,7 +28,7 @@ export default () => {
   const consumer = new HighLevelConsumer(
     client, [
       { topic: 'test' },
-    ]
+    ],
   )
 
   consumer.on('error', () => {

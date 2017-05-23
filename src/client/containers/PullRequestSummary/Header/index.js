@@ -24,7 +24,7 @@ export type HeaderPropsType = {
 export const getHeaderData = (state: Object, props: Object): HeaderPropsType =>
   createSelector(
     getPullRequest,
-    (pr) => _.pick(pr, ['title', 'created', 'owner']),
+    pr => _.pick(pr, ['title', 'created', 'owner']),
   )
 
 const renderTitle = ({ title, owner, created }) => {

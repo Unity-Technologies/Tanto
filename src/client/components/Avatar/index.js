@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react'
-import { default as MaterialAvatar } from 'material-ui/Avatar'
+import { default as MaterialAvatar } from 'material-ui/Avatar' // eslint-disable-line
 import { pureComponent } from 'components/PureComponent'
 
 export type Props = {
@@ -22,7 +22,7 @@ function Avatar(props: Props) {
   if (!props.avatar) {
     return (
       <div style={{ ...avatarStyle, padding: '7px 7px 7px 9px', backgroundColor: 'lightgrey' }} >
-        <i className="fa fa-user-o fa-2x" ></i>
+        <i className="fa fa-user-o fa-2x" />
       </div>
     )
   }
@@ -34,6 +34,10 @@ function Avatar(props: Props) {
       style={{ ...avatarStyle, ...props.style }}
     />
   )
+}
+
+Avatar.defaultProps = {
+  style: null,
 }
 
 export default pureComponent(Avatar)

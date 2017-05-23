@@ -1,9 +1,9 @@
 /* @flow */
 import React from 'react'
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
-import PullRequestVoteMenu from './PullRequestVoteMenu'
 import IssueMenu from 'components/IssueMenu'
 import { IssueStatus, ChangesetStatus } from 'universal/constants'
+import PullRequestVoteMenu from './PullRequestVoteMenu'
 
 type Props = {
   title: string,

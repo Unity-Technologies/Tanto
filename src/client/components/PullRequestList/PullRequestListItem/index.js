@@ -110,6 +110,8 @@ class PullRequestListItem extends PureComponent {
           {showRemoveButton &&
             <Col md={1} style={{ float: 'right' }}>
               <div
+                role="link"
+                tabIndex={0}
                 onClick={this.handleRemoveClick}
                 className="remove-icon"
               >

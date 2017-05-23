@@ -5,14 +5,11 @@ import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-
+import type { File } from 'universal/types'
+import ChangesetDelta from 'components/ChangesetDelta'
 import Scroll from 'react-scroll'
 
 const Link = Scroll.Link
-
-import type { File } from 'universal/types'
-import ChangesetDelta from 'components/ChangesetDelta'
-
 
 type Props = {
   files: Array<File>,
@@ -40,7 +37,7 @@ export const renderFileBookmark = (fileReview: Object) => {
 }
 
 export const FilesList = ({ compact, files, containerElementName, reviews }: Props) =>
-  <div>
+  (<div>
     <Row>
       <Col md={12}>
         <ListGroup
@@ -94,6 +91,6 @@ export const FilesList = ({ compact, files, containerElementName, reviews }: Pro
         </ListGroup>
       </Col>
     </Row>
-  </div>
+  </div>)
 
 export default pureComponent(FilesList)

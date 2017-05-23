@@ -5,20 +5,14 @@ import PureComponent from 'components/PureComponent'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 
-
 export type Props = {
-  pathname: string,
   data: Array<any>,
-  dispatch: Function,
-  location: Object,
-  params: Object,
-  breadcrumbItems: Array<Object>,
-};
+}
 
 class Files extends PureComponent {
   constructor(props: Props) {
     super(props)
-    this.state = { currentNode: this.props.data || {} }
+    this.state = { currentNode: this.props.data || null }
   }
 
 

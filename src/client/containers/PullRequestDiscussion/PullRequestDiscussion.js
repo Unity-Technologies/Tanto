@@ -24,8 +24,6 @@ import {
 import { createSelector, createStructuredSelector } from 'reselect'
 
 export type Props = {
-  createComment: Function,
-  editComment: Function,
   description: CommentType,
   pullRequestId: number,
   repoName: string,
@@ -45,7 +43,7 @@ export const isCurrentUserOwner = createSelector(
       return null
     }
     return id === pr.owner
-  }
+  },
 )
 
 class PullRequestDiscussion extends PureComponent {

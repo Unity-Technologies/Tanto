@@ -137,7 +137,7 @@ app.listen(app.get('port'), () => {
     '%s Express server listening on port %d in %s mode.',
     chalk.green('✓'),
     app.get('port'),
-    app.get('env')
+    app.get('env'),
   )
 })
 

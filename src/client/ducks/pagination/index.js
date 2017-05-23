@@ -1,8 +1,7 @@
 /* @flow */
+import { combineReducers } from 'redux'
 
 export const RECEIVE_PAGE = 'RECEIVE_PAGE'
-
-import { combineReducers } from 'redux'
 
 type PagePayload = {
   page: number,

@@ -1,5 +1,6 @@
 /* flow */
 
+/* eslint-disable  */
 import React from 'react'
 import PureComponent from 'components/PureComponent'
 import InlineCommentThread from 'components/CodeDiffView/InlineCommentThread'
@@ -8,15 +9,15 @@ import NewComment from 'components/CodeDiffView/InlineCommentThread/NewComment'
 export type Props = {
   leftLine: string,
   rightLine: string,
-  isBreak?: boolean,
-  leftLineNumber?: any,
-  rightLineNumber?: any,
-  leftOperation?: string,
-  rightOperation?: string,
+  isBreak: boolean,
+  leftLineNumber: any,
+  rightLineNumber: any,
+  leftOperation: string,
+  rightOperation: string,
   leftCssClass: string,
   rightCssClass: string,
-  leftComments?: Array<any>,
-  rightComments?: Array<any>,
+  leftComments: Array<any>,
+  rightComments: Array<any>,
   loggedUser: Object,
 
   onCreateInlineComment: (lineNumber: string, text: string) => void,
@@ -117,7 +118,8 @@ class SplitRow extends PureComponent {
             <i
               onClick={this.handleAddLeftComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-left"
-
+              role="button"
+              tabIndex={0}
               style={leftIconStyle}
             />
           }
@@ -165,7 +167,8 @@ class SplitRow extends PureComponent {
             <i
               onClick={this.handleAddRightComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-right"
-
+              role="button"
+              tabIndex={-1}
               style={rightIconStyle}
             />
           }

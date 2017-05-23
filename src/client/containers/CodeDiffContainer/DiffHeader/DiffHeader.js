@@ -22,25 +22,22 @@ const navbarStyle = {
 
 export type Props = {
   title: string,
-  stats: {
+  stats: $Subtype<{
     added: number,
     deleted: number
-  },
-  fileReview: {
+  }>,
+  fileReview: $Subtype<{
     reviewed: boolean,
     bookmarked: boolean
-  },
+  }>,
   collapsed: boolean,
-  collapsedComments: boolean,
-  onCollapse?: Function,
-  onCollapseComments?: Function,
 }
 
 export const getData = createSelector(
   getReviewFile,
-  (fileReview) => ({
+  fileReview => ({
     fileReview,
-  })
+  }),
 )
 
 class DiffHeader extends PureComponent {
@@ -69,13 +66,14 @@ class DiffHeader extends PureComponent {
         <Nav>
           <NavItem>
             <div>
-              <div onClick={this.handleDiffCollapseClick}>
-                {!this.props.collapsed && <div onMouseDown={() => this.handleDiffCollapseClick(true)}>
-                  <i className="fa fa-minus" ></i>
+              <div role="link" tabIndex={0} onClick={this.handleDiffCollapseClick}>
+                {!this.props.collapsed &&
+                <div role="link" tabIndex={0} onMouseDown={() => this.handleDiffCollapseClick(true)}>
+                  <i className="fa fa-minus" />
                 </div>}
                 {this.props.collapsed &&
-                  <div onMouseDown={() => this.handleDiffCollapseClick(false)}>
-                    <i className="fa fa-plus" ></i>
+                  <div role="link" tabIndex={0} onMouseDown={() => this.handleDiffCollapseClick(false)}>
+                    <i className="fa fa-plus" />
                   </div>}
               </div>
 
@@ -95,11 +93,11 @@ class DiffHeader extends PureComponent {
           <Nav pullRight style={{ fontSize: '16px' }}>
 
             <NavItem onClick={() => this.handleFileReviewed(!fileReview.reviewed)}>
-              <i className={`fa fa-check-square-o ${fileReview.reviewed ? 'reviewed' : ''}`} ></i>
+              <i className={`fa fa-check-square-o ${fileReview.reviewed ? 'reviewed' : ''}`} />
             </NavItem>
 
             <NavItem onClick={() => this.handleFileBookmarked(!fileReview.bookmarked)}>
-              <i className={`fa fa-tag ${fileReview.bookmarked ? 'bookmarked' : ''}`} ></i>
+              <i className={`fa fa-tag ${fileReview.bookmarked ? 'bookmarked' : ''}`} />
             </NavItem>
           </Nav>}
 

@@ -10,7 +10,7 @@ export const getData = createSelector(
     files,
     loggedUsername: user,
     reviews,
-  })
+  }),
 )
 
 

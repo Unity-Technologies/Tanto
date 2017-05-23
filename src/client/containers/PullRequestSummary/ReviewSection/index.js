@@ -14,16 +14,17 @@ import type {
 } from 'universal/types'
 import { default as Select } from 'components/VirtualizedSelect'
 import { createStructuredSelector } from 'reselect'
+import { ChangesetStatus } from 'universal/constants'
+import { addPullRequestReviewers, removePullRequestReviewers } from 'ducks/pullrequests/actions'
+import { getUsers } from 'ducks/users/selectors'
+import ReviewerList from './ReviewerList'
 import MissingReviewerList from './MissingReviewerList'
 import {
   getPullRequestReviewStatus,
   getPullRequestReviews,
   getMissingReviewers,
 } from './selectors'
-import { getUsers } from 'ducks/users/selectors'
-import ReviewerList from './ReviewerList'
-import { ChangesetStatus } from 'universal/constants'
-import { addPullRequestReviewers, removePullRequestReviewers } from 'ducks/pullrequests/actions'
+
 
 type MissingReviewerType = {
   area: string,

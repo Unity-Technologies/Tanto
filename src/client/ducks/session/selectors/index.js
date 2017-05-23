@@ -3,9 +3,9 @@
 import { createSelector } from 'reselect'
 import _ from 'lodash'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
-import { types } from '../actions'
 import { userEntitiesSelector } from 'ducks/users/selectors'
 import { denormalizePullRequestUsers } from 'ducks/pullrequests/selectors'
+import { types } from '../actions'
 
 export const getIds = (state: Object) => {
   const { pagination: { pages, currentPage } } = state
@@ -30,17 +30,17 @@ export const pullRequestsComputation = (pullRequests: Object, ids: Array<any>, u
 
 export const getPullRequestsOwned = createSelector(
   pullRequestsSelector, pullRequestsOwnedIdsSelector, userEntitiesSelector,
-  pullRequestsComputation
+  pullRequestsComputation,
 )
 
 export const getPullRequestsAssigned = createSelector(
   pullRequestsSelector, pullRequestsAssignedIdsSelector, userEntitiesSelector,
-  pullRequestsComputation
+  pullRequestsComputation,
 )
 
 export const getPullRequestsWatching = createSelector(
   pullRequestsSelector, pullRequestsWatchingIdsSelector, userEntitiesSelector,
-  pullRequestsComputation
+  pullRequestsComputation,
 )
 
 export const getPersona = (state: Object) => _.get(state, ['session', 'profile', 'persona'], null)
@@ -59,7 +59,7 @@ export const getLoggedUserAvatar = createSelector(
 
 export const getLoggedUser = createSelector(
   userEntitiesSelector, getLoggedUserId,
-  (entities: Object, id: string) => entities && id ? entities[id] : null)
+  (entities: Object, id: string) => (entities && id ? entities[id] : null))
 
 export const getPullRequestsOwnedTotal = (state: Object) =>
   _.get(state, ['entities', 'me', 'pullRequestsOwned', 'total'], 0)

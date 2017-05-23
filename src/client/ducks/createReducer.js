@@ -9,3 +9,4 @@ export const createReducer = (namespace: string, reducer: Function, initState: a
     return state
   }
 
+export default createReducer

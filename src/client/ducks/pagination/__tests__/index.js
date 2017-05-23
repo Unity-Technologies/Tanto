@@ -8,6 +8,7 @@ import {
   currentPage,
   pagination,
 } from '../index'
+
 const expect = chai.expect
 
 describe('pagination actions', () => {

@@ -1,4 +1,5 @@
 import chai from 'chai'
+import { types } from 'ducks/repositories/actions'
 import {
   repoEntitiesSelector,
   getRepositories,
@@ -16,8 +17,6 @@ import {
   getChangelog,
   parseMercurialAuthor,
 } from '../index'
-
-import { types } from 'ducks/repositories/actions'
 
 const expect = chai.expect
 

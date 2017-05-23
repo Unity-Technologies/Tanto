@@ -161,7 +161,7 @@ const store = storeMock({
 })
 
 storiesOf('Builds', module)
-  .addDecorator((getStory) => (<Provider store={store}>
+  .addDecorator(getStory => (<Provider store={store}>
     {getStory()}
   </Provider>
   ))

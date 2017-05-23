@@ -15,7 +15,7 @@ export const getData = (state: Object, props: Object): Object =>
     (issues, status, user) => ({
       issues,
       status,
-    })
+    }),
   )
 
 

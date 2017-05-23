@@ -1,15 +1,16 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { types } from '../actions'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { createSelector } from 'reselect'
-export type { StatusType } from 'ducks/fetch/selectors'
+
 import { userEntitiesSelector } from 'ducks/users/selectors'
 import { parseMercurialAuthor } from 'ducks/repositories/selectors'
 import _ from 'lodash'
 import { getEntityById } from 'ducks/selectors'
+import { types } from '../actions'
 
+export type { StatusType } from 'ducks/fetch/selectors'
 
 export const denormalizePullRequestUsers = (pullRequest: any, userEntities: Object): Object => {
   if (!pullRequest) {
@@ -60,13 +61,13 @@ export const getPullRequest = createSelector(
 // Sometimes we don't need Denormalization of users, when we need just issues or comments
 export const getPullRequestNormalized = createSelector(
   getPullRequestsEntities, getPullRequestId,
-  (entities: Object, id: string) => getEntityById(entities, id)
+  (entities: Object, id: string) => getEntityById(entities, id),
 )
 
 // Sometimes we don't need Denormalization of users, when we need just issues or comments
 export const getPullRequestDescription = createSelector(
   getPullRequestNormalized, userEntitiesSelector,
-  (pr: Object, users: Object): Object => {
+  (pr: Object, users: Object) => {
     if (!pr) {
       return null
     }
@@ -75,12 +76,12 @@ export const getPullRequestDescription = createSelector(
       author: getEntityById(users, pr.owner),
       created: pr.created,
     }
-  }
+  },
 )
 
 export const getPullRequestRepoId = createSelector(
   getPullRequestNormalized,
-  (pr: Object) => (pr && pr.origin && pr.origin.repository ? pr.origin.repository.id : null)
+  (pr: Object) => (pr && pr.origin && pr.origin.repository ? pr.origin.repository.id : null),
 )
 /**
  * Pull request page selectors
@@ -99,7 +100,7 @@ export const pullRequestsPageIdsSelector =
 export const getPullRequestsPage = createSelector(
   getPullRequestsEntities, userEntitiesSelector, pullRequestsPageIdsSelector,
   (entities, userEntities, ids) =>
-    _.values(_.pick(entities, ids)).map(pr => denormalizePullRequestUsers(pr, userEntities))
+    _.values(_.pick(entities, ids)).map(pr => denormalizePullRequestUsers(pr, userEntities)),
 )
 
 /**
@@ -121,7 +122,7 @@ export const getPullRequestIssues = createSelector(
       owner: getEntityById(userEntities, issue.owner),
       assignee: getEntityById(userEntities, issue.assignee),
     }))
-  }
+  },
 )
 
 /**
@@ -142,7 +143,7 @@ export const getPullRequestGeneralComments = createSelector(
       ...denormalizeCommentAuthor(comment, userEntities),
       issue: getEntityById(issues, comment.issue),
     }))
-  }
+  },
 )
 
 /**
@@ -191,7 +192,7 @@ export const getPullRequestChangeset = createSelector(
       ...ch,
       authorUser: getEntityById(users, ch.authorUser, () => parseMercurialAuthor(ch.author)),
     }))
-  }
+  },
 )
 
 export const getPullRequestIterations = createSelector(
@@ -211,5 +212,5 @@ export const getPullRequestIterations = createSelector(
       title: p.title,
       repositoryName: p && p.origin ? p.origin.repository.fullName : null,
     }))
-  }
+  },
 )

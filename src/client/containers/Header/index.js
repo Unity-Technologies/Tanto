@@ -9,12 +9,11 @@ import Nav from 'react-bootstrap/lib/Nav'
 import Navbar from 'react-bootstrap/lib/Navbar'
 import { NavItem } from 'react-bootstrap'
 import Open from 'material-ui/svg-icons/navigation/menu'
-import Logout from '../Logout'
 import { TOGGLE_SIDE_BAR } from 'ducks/sidebar'
+import Logout from '../Logout'
 import './styles.css'
 
 export type Props = {
-  showMenuIconButton?: boolean,
   dispatch: Function
 }
 
@@ -22,7 +21,8 @@ function Header(props: Props) {
   return (
     <div>
       <Navbar
-        fluid style={{
+        fluid
+        style={{
           height: '59px',
           borderRadius: '0px',
           fontWeight: 700,

@@ -27,7 +27,7 @@ export const transformMutationResponse = (response: Object) => {
   let entities = response.data || response
   const mutationName = Object.keys(entities)[0]
   entities = entities[mutationName]
-  if (entities.hasOwnProperty('ok')) {
+  if ('ok' in entities) {
     delete entities.ok
   }
 

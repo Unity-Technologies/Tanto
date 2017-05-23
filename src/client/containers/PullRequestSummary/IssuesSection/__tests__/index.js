@@ -1,8 +1,9 @@
 import chai from 'chai'
+import { IssueStatus } from 'universal/constants'
 import {
   getIssues,
 } from '../index'
-import { IssueStatus } from 'universal/constants'
+
 
 const expect = chai.expect
 

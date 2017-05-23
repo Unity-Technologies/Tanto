@@ -23,3 +23,6 @@ export function* fetchUsers(action: Object): Generator<any, any, any> {
   }
   yield call(normalizeSaga, data)
 }
+
+
+export default fetchUsers

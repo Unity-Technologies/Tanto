@@ -1,15 +1,10 @@
 /* @flow */
 import React from 'react'
 import PureComponent from 'components/PureComponent'
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
 import fuzzy from 'fuzzy'
-import FilesList from './FilesList'
-
 import type { File } from 'universal/types'
-
 import { pluralizedText } from 'utils/text'
-
+import FileList from './FilesList'
 
 import './ChangesetFileList.css'
 
@@ -23,7 +18,7 @@ type Props = {
 }
 
 
-const statusTextNoSearch = files => {
+const statusTextNoSearch = (files) => {
   const additions = files.reduce((sum, f) => sum + f.stats.added, 0)
   const deletions = files.reduce((sum, f) => sum + f.stats.deleted, 0)
   return `
@@ -48,13 +43,18 @@ export const searchFiles = (files: Array<File>, query: string): Array<File> => {
 
   const queryWithoutWhitespace = query.replace(whiteSpaceRegExp, '')
   const matches = fuzzy.filter(queryWithoutWhitespace, files, {
-    extract: (el) => el.name,
+    extract: el => el.name,
   })
   return matches.map(match => match.original)
 }
 
 class ChangesetFileList extends PureComponent {
-  /* eslint-disable react/sort-comp */
+  static defaultProps = {
+    reviews: null,
+    compact: false,
+    containerElementName: 'ChangesetFileList',
+  }
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -133,7 +133,7 @@ class ChangesetFileList extends PureComponent {
         <div style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }}>
           {statusTextSearch(filesAfterSearch, query)}
         </div>
-        <FilesList
+        <FileList
           compact={compact}
           reviews={reviews}
           files={filesAfterSearch}

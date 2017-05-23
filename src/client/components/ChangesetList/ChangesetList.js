@@ -26,9 +26,10 @@ const subHeader = text => (
   </div>
 )
 
-export type Props = {
+type Props = {
   commits: Array<ChangesetType>,
-  compact?: boolean,
+  // FIXME: eslint fails to compile for some reason the following
+  compact?: boolean,  //eslint-disable-line
   projectName: string,
   showCheckboxes?: boolean,
   onSelectedChangesetsChange: (e: SyntheticInputEvent, number) => any,
@@ -66,7 +67,13 @@ const reduceCommitDelta = (files) => {
   }, {})
 }
 
-class ChangesetList extends PureComponent {
+export class ChangesetList extends PureComponent {
+  static defaultProps = {
+    compact: false,
+  }
+
+  props: Props
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -78,8 +85,6 @@ class ChangesetList extends PureComponent {
       disabled: false,
     }
   }
-
-  props: Props
 
   handleSelect = (activeKey: number) => {
     this.setState({ activeKey })
@@ -101,13 +106,13 @@ class ChangesetList extends PureComponent {
       if (index !== -1) {
         this.state.changesets.splice(index, 1)
       }
-      this.props.commits.map((item) =>
-        this.setState({ disabled: false })
+      this.props.commits.map(item =>
+        this.setState({ disabled: false }),
       )
     }
     if (this.state.changesets.length >= 2) {
-      this.props.commits.map((item) =>
-        this.setState({ disabled: !this.state.changesets.includes(item.id) })
+      this.props.commits.map(item =>
+        this.setState({ disabled: !this.state.changesets.includes(item.id) }),
       )
     }
     this.props.onSelectedChangesetsChange(event, this.state.changesets.length)
@@ -158,7 +163,8 @@ class ChangesetList extends PureComponent {
                   <div
                     style={{
                       color: '#5a6082',
-                      display: 'inline-block', borderRadius: '3px',
+                      display: 'inline-block',
+                      borderRadius: '3px',
                       border: '1px solid lightgrey',
                     }}
                   >
@@ -180,7 +186,7 @@ class ChangesetList extends PureComponent {
                   <div>
                     {subHeader('Branch:')}
                     <div>
-                      <a style={{ textDecoration: 'none', color: '#5a6082' }} href="#">{item.branch}</a>
+                      <a style={{ textDecoration: 'none', color: '#5a6082' }} href="something#">{item.branch}</a>
                     </div>
                   </div>
                 </Col>

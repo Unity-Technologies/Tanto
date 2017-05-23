@@ -14,8 +14,9 @@ import SideBar from 'containers/SideBar'
 const APP_NAME = 'Tanto'
 const APP_THEME = 'cyan'
 
+// FIXME
+const theme = require(`../../theme/ui/${APP_THEME}`) //eslint-disable-line
 
-const theme = require(`../../theme/ui/${APP_THEME}`)
 const muiTheme = getMuiTheme(theme)
 
 export type Props = {
@@ -38,7 +39,7 @@ class App extends PureComponent {
     const childrenWithProps = React.Children.map(this.props.children,
       child => React.cloneElement(child, {
         theme,
-      })
+      }),
     )
     const { open } = this.props
 

@@ -18,7 +18,7 @@ export const getReviewFiles = createSelector(
 
     const pr = getEntityById(pullrequests, prId)
     return pr && pr.files ? pr.files : null
-  }
+  },
 )
 
 
@@ -30,5 +30,5 @@ export const getReviewFile = createSelector(
     }
 
     return fileId in files ? files[fileId] : null
-  }
+  },
 )

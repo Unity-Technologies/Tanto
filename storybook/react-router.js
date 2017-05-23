@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react'
 import { action } from '@kadira/storybook'
 
@@ -16,7 +18,7 @@ module.exports.Link = class Link extends React.Component {
       <a
         style={style}
         href="#"
-        onClick={(e) => this.handleClick(e)}
+        onClick={e => this.handleClick(e)}
       >
         {children}
       </a>

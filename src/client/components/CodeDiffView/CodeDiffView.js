@@ -23,11 +23,16 @@ export type Props = {
 }
 
 const defaultEmptyList = []
+
 class CodeDiffView extends PureComponent {
+  static defaultProps = {
+    viewType: '0',
+  }
+
   props: Props
 
   shouldComponentUpdate(nextProps: Object, nextState: Object) {
-    return this.props.rawDiff || this.props.unifiedDiff || this.props.sideBySideDiff &&
+    return (this.props.rawDiff || this.props.unifiedDiff || this.props.sideBySideDiff) &&
       super.shouldComponentUpdate(nextProps, nextState)
   }
 
@@ -86,10 +91,10 @@ class CodeDiffView extends PureComponent {
         </table>
       )
     }
-    const content = this.props.rawDiff
+
     return (
       <div className="diff-raw">
-        <span dangerouslySetInnerHTML={{ __html: content }} />
+        <span>{this.props.rawDiff} </span>
       </div>
     )
   }
@@ -97,7 +102,6 @@ class CodeDiffView extends PureComponent {
   render() {
     return (
       <pre
-        ref="contentContainer"
         key={_.uniqueId('_code_')}
         className="diff-view"
       >

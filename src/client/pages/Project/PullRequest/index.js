@@ -2,27 +2,19 @@
 
 import React from 'react'
 import { pureComponent } from 'components/PureComponent'
-import type { PullRequestGraphType } from 'universal/types'
-import LayoutDeveloper from './Layouts/LayoutDeveloper'
 import Helmet from 'react-helmet'
+import LayoutDeveloper from './Layouts/LayoutDeveloper'
 
 import ActionBar from './ActionBar'
 
-
 type Props = {
-  dispatch: Function,
   title: string,
-  params: {
-    id: string,
-    prid: string,
-    category: ?string,
+  params: $Subtype<{
     splat: string,
-  },
-  location: {
-    pathname: string,
-    query: Object,
-  },
-  pullRequest: ?PullRequestGraphType,
+    category: string,
+    prid: string
+  }>,
+  location: Object,
 }
 
 const PullRequest = (props: Props) => {

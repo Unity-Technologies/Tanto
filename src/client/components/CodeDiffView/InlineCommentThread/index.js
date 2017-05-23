@@ -4,17 +4,20 @@ import PureComponent from 'components/PureComponent'
 import type { InlineCommentType } from 'universal/types'
 import FormControl from 'react-bootstrap/lib/FormControl'
 import Comment from 'components/Comment'
-import NewComment from './NewComment'
 import Avatar from 'components/Avatar'
-export type { CommentType } from 'components/Comment'
+import NewComment from './NewComment'
 import './InlineCommentThread.css'
 
+export type { CommentType } from 'components/Comment'
+
+/* eslint-disable */
 export type UserType = {
   username: string,
-  slack: {
+  slack: $Subtype<{
     avatar: string
-  }
+  }>
 }
+/* eslint-enable */
 
 const headerStyle = {
   backgroundColor: '#fbfbfb',
@@ -45,7 +48,7 @@ const renderAddNewCommentBox = (loggedUser: UserType, handleOnFocus: Function) =
   </div>
 )
 
-class InlineCommentThread extends PureComponent {
+export class InlineCommentThread extends PureComponent {
   constructor(props: Props) {
     super(props)
 
@@ -105,7 +108,7 @@ class InlineCommentThread extends PureComponent {
         <div style={{ position: 'relative' }}>
           <div className="inline-comments-thread-timeline">
             {this.props.comments.map(c =>
-              <div key={c.id} style={{ marginBottom: '5px' }}>
+              (<div key={c.id} style={{ marginBottom: '5px' }}>
                 <Comment
                   headerStyle={headerStyle}
                   comment={c}
@@ -113,7 +116,7 @@ class InlineCommentThread extends PureComponent {
                   onDelete={this.handleOnDelete(c.id)}
                   onUpdate={this.handleOnUpdate(c.id)}
                 />
-              </div>
+              </div>),
             )}
           </div>
         </div>

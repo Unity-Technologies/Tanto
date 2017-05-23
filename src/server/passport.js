@@ -53,7 +53,7 @@ passport.use('ono', new OAuth2Strategy({
     .catch((err) => {
       done(err, null)
     })
-  }
+  },
 ))
 
 type PassportRequest = {

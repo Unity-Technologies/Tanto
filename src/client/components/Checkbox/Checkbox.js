@@ -13,7 +13,12 @@ export type Props = {
   style?: any,
 }
 
-class Checkbox extends PureComponent {
+export class Checkbox extends PureComponent {
+  static defaultProps = {
+    onChange: null,
+    disabled: false,
+    style: null,
+  }
   constructor(props: Props) {
     super(props)
     this.state = {

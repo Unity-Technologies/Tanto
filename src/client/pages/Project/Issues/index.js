@@ -5,10 +5,10 @@ import { pureComponent } from 'components/PureComponent'
 import Helmet from 'react-helmet'
 
 export type Props = {
-  params: {
+  params: $Subtype<{
     prid: string
-  }
-};
+  }>
+}
 
 function Issues({ params: { prid } }: Props) {
   return (

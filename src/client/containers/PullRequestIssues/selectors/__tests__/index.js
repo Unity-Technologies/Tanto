@@ -1,8 +1,8 @@
 import chai from 'chai'
+import { types } from 'ducks/pullrequests/actions'
 import {
   getData,
 } from '../index'
-import { types } from 'ducks/pullrequests/actions'
 
 const expect = chai.expect
 

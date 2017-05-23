@@ -1,16 +1,5 @@
 /* eslint-disable max-len */
 import chai from 'chai'
-import {
-  types,
-  fetchPullRequestData,
-  fetchPullRequests,
-  parsePullRequest,
-  operationName,
-  updatePullRequestDescription,
-  addPullRequestReviewers,
-  removePullRequestReviewers,
-  fetchPullRequestReviews,
-} from '../index'
 
 import { types as fetchTypes } from 'ducks/fetch'
 import { transformMutationResponse } from 'sagas/fetch'
@@ -27,6 +16,18 @@ import updateDescription from 'ducks/pullrequests/mutations/updateDescription.gr
 import addReviewers from 'ducks/pullrequests/mutations/addReviewers.graphql'
 import removeReviewers from 'ducks/pullrequests/mutations/removeReviewers.graphql'
 import pullRequestReviews from 'ducks/pullrequests/queries/pullRequestReviews.graphql'
+
+import {
+  types,
+  fetchPullRequestData,
+  fetchPullRequests,
+  parsePullRequest,
+  operationName,
+  updatePullRequestDescription,
+  addPullRequestReviewers,
+  removePullRequestReviewers,
+  fetchPullRequestReviews,
+} from '../index'
 
 const expect = chai.expect
 
@@ -99,12 +100,12 @@ describe('pullrequests actions', () => {
             title: 'test pr title1',
             description: 'test pr description1',
           },
-            {
-              id: 2,
-              name: 'testpr2',
-              title: 'test pr title2',
-              description: 'test pr description2',
-            }],
+          {
+            id: 2,
+            name: 'testpr2',
+            title: 'test pr title2',
+            description: 'test pr description2',
+          }],
         },
       },
 
@@ -147,12 +148,12 @@ describe('pullrequests actions', () => {
             title: 'test pr title1',
             description: 'test pr description1',
           },
-            {
-              id: 2,
-              name: 'testpr2',
-              title: 'test pr title2',
-              description: 'test pr description2',
-            }],
+          {
+            id: 2,
+            name: 'testpr2',
+            title: 'test pr title2',
+            description: 'test pr description2',
+          }],
         },
       },
 

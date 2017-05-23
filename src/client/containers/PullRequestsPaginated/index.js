@@ -19,7 +19,6 @@ export type Props = {
   activePage: number,
   pageSize: number,
   status: StatusType,
-  total: number,
   items: Array<any>,
   branch: string,
   repo: string,
@@ -140,13 +139,14 @@ class PullRequestsPaginated extends PureComponent {
         {!isFetching && !error && !this.props.items.length &&
           <Alert bsStyle="warning" style={{ fontSize: '13px' }}>
             <strong>
-              <i className="fa fa-exclamation-circle" ></i> </strong>
+              <i className="fa fa-exclamation-circle" /> </strong>
             There is no pull request
           </Alert>
         }
         <PullRequestList
           onPageSelect={this.handlePageSelect}
-          onRemoveClick={this.handleRemove} {...this.props}
+          onRemoveClick={this.handleRemove}
+          {...this.props}
         />
 
       </div>

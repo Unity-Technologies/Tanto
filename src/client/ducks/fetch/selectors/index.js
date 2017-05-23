@@ -26,8 +26,8 @@ export const statusFetchFactory = (actionType: string): Function =>
         return defaultValue
       }
       return {
-        isFetching: st && st.hasOwnProperty('isFetching') ? st.isFetching : false,
-        error: st && st.hasOwnProperty('error') ? st.error : null,
+        isFetching: st && 'isFetching' in st ? st.isFetching : false,
+        error: st && 'error' in st ? st.error : null,
       }
-    }
+    },
   )

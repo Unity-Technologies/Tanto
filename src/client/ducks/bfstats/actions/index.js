@@ -18,7 +18,8 @@ export const fetchLatestBuildsForRevision = (repository: string, revision: strin
   fetchBfStatsAction(
     {
       type: types.FETCH_LATEST_BUILDS,
-      query: latestRepositoryBuilds, variables: {
+      query: latestRepositoryBuilds,
+      variables: {
         repository, revision,
       },
     })

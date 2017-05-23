@@ -15,12 +15,7 @@ import {
 } from 'ducks/pullrequests/selectors'
 
 export type Props = {
-  project_pullrequests: Array<any>,
-  params: {
-    id: string,
-  },
   repo: string,
-  items: Array<any>,
 }
 
 const mapStateToProps = (state, props) => ({

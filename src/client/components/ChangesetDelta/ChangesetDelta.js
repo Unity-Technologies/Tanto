@@ -15,7 +15,7 @@ function getPercent(sum: number, value: number) {
   return sum > 0 ? Math.round((100 * value) / sum) : 0
 }
 
-const ChangesetDelta = ({ added, deleted, showDetails, pie }: ChangesetDeltaProps) => {
+export const ChangesetDelta = ({ added, deleted, showDetails, pie }: ChangesetDeltaProps) => {
   const sum = deleted + added
   const deletedPercent = getPercent(sum, deleted)
   const addedPercent = getPercent(sum, added)
@@ -56,6 +56,11 @@ const ChangesetDelta = ({ added, deleted, showDetails, pie }: ChangesetDeltaProp
         </div>}
     </div>
   )
+}
+
+ChangesetDelta.defaultProps = {
+  showDetails: false,
+  pie: false,
 }
 
 

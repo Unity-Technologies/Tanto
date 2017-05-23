@@ -18,10 +18,7 @@ export type Props = {
   repositories: Array<RepositoryType>,
   groups: Array<GroupType>,
   dispatch: Function,
-  theme: Object,
-  style: Object,
   pathname: string,
-  breadcrumbItems: Array<Object>
 }
 
 export class Projects extends PureComponent {

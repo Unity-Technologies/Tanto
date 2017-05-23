@@ -16,10 +16,8 @@ import { pureComponent } from 'components/PureComponent'
 // const Element = Scroll.Element
 
 export type Props = {
-  params: {
-    hash: string,
-  }
-};
+
+}
 
 function Changeset({ params: { hash } }: Props) {
   // const openPrButtonStyle = {

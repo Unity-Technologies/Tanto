@@ -62,7 +62,9 @@ export const fetchUserPullRequests = (variables: FetchPullRequestVariables): Fet
       return [
         {
           type: RECEIVE_PAGE,
-          namespace: operationNames.pullRequestsOwned, nodes, total,
+          namespace: operationNames.pullRequestsOwned,
+          nodes,
+          total,
           ...cbArgs,
         },
       ]
@@ -78,7 +80,10 @@ export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariabl
       return [
         {
           type: RECEIVE_PAGE,
-          namespace: operationNames.pullRequestsAssigned, nodes, total, ...cbArgs,
+          namespace: operationNames.pullRequestsAssigned,
+          nodes,
+          total,
+          ...cbArgs,
         },
       ]
     })

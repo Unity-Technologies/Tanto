@@ -11,20 +11,18 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 import DropdownButton from 'react-bootstrap/lib/DropdownButton'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 import { approvePullRequest, closePullRequest } from 'ducks/comments/actions'
-import type { UserType } from 'universal/types'
 import { getLoggedUserId } from 'ducks/session/selectors'
 import { getPullRequestNormalized } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 
 export type Props = {
   dispatch: Function,
-  users: Array<UserType>,
   repoName: string,
   pullRequestId: string,
-  status: {
+  status: $Subtype<{
     isCurrentUserPROwner: boolean,
     isCurrentUserApproved: boolean
-  }
+  }>
 }
 
 const btnStyle = {
@@ -54,7 +52,7 @@ export const getStatus = createSelector(
       isCurrentUserPROwner,
       isCurrentUserApproved: approved,
     }
-  }
+  },
 )
 
 class ActionBar extends PureComponent {

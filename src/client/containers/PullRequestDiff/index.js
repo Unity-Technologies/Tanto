@@ -5,7 +5,6 @@ import PureComponent from 'components/PureComponent'
 import type { FileType } from 'universal/types'
 import { connect } from 'react-redux'
 import ChangesetFileList from 'components/ChangesetFileList'
-import { getData } from './selectors'
 import _ from 'lodash'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
@@ -19,18 +18,18 @@ import Nav from 'react-bootstrap/lib/Nav'
 import View from 'material-ui/svg-icons/action/view-module'
 import Navbar from 'react-bootstrap/lib/Navbar'
 import Page from './Page'
+import { getData } from './selectors'
 
 type Props = {
   files: Array<FileType>,
   pullRequestId: string,
-  loggedUsername: string,
   repoName: string,
   dispatch: Function,
   reviews: Object,
 }
 
-class PullRequestDiff extends PureComponent {
-  constructor(props) {
+export class PullRequestDiff extends PureComponent {
+  constructor(props: Props) {
     super(props)
     this.state = {
       viewType: DiffTypes.UNIFIED,
@@ -63,7 +62,7 @@ class PullRequestDiff extends PureComponent {
     this.props.dispatch(deleteInlineComment(commentId, filePath))
   }
 
-  handleChangeSingle = (event, value) => {
+  handleChangeSingle = (event: any, value: Object) => {
     this.setState({
       viewType: value,
     })
@@ -115,7 +114,7 @@ class PullRequestDiff extends PureComponent {
               onUpdateInlineComment={this.handleUpdateInlineComment}
             />
             {_.tail(pages).map((page, index) =>
-              <Page
+              (<Page
                 files={page}
                 fileReviews={this.props.reviews}
                 index={index + 1}
@@ -124,7 +123,7 @@ class PullRequestDiff extends PureComponent {
                 onCreateInlineComment={this.handleCreateInlineComment}
                 onDeleteInlineComment={this.handleDeleteInlineComment}
                 onUpdateInlineComment={this.handleUpdateInlineComment}
-              />
+              />),
             )}
           </Col>
         </Row>

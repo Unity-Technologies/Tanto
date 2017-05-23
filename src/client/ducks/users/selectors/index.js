@@ -8,6 +8,6 @@ export const userEntitiesSelector = (state: Object): Array<Object> =>
 
 export const getUsers = createSelector(
   userEntitiesSelector,
-  users => _.values(users)
+  users => _.values(users),
 )
 

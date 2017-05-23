@@ -86,7 +86,7 @@ const getStatus = (status: string): IssueStatusType => {
 const calculateStatuses = (issues: Array<IssueType>): statusCountType => issues.reduce(
   (statuses, issue) => {
     if (issue.status in statuses) {
-      statuses[issue.status]++
+      statuses[issue.status] += 1
     } else {
       statuses[issue.status] = 1
     }

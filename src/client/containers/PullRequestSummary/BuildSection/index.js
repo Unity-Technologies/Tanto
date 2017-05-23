@@ -8,28 +8,19 @@ import { getPullRequest } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 import Builds from './Builds'
 
-type BuildType = {
-  builder: {
-    name: string
-  },
-  result: number
-}
-
 type PropsType = {
-  id: string,
   repository: string,
   dispatch: Function,
   revision: string,
-  builds: Array<BuildType>,
 }
 
 export const getPRSourceStamp = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequest,
-    (pr) => ({
+    pr => ({
       revision: pr && pr.origin ? pr.origin.revision : null,
       repository: pr && pr.origin ? pr.origin.repository.fullName : null,
-    })
+    }),
   )
 
 class BuildSection extends PureComponent {

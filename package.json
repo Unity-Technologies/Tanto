@@ -115,7 +115,7 @@
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
     "extract-text-webpack-plugin": "^2.1.0",
-    "flow-bin": "^0.46.0",
+    "flow-bin": "0.38.0",
     "font-awesome-webpack": "^0.0.5-beta.2",
     "json-loader": "^0.5.4",
     "mocha": "^3.2.0",

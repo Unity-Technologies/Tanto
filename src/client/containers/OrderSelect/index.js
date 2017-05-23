@@ -19,7 +19,6 @@ type OrderProps = {
 }
 
 type SwitchButtonProps = {
-  label: string,
   isSelected: boolean,
   onSelect: Function,
 }
@@ -27,12 +26,14 @@ type SwitchButtonProps = {
 const SwitchOrderButton = (props: SwitchButtonProps) => (
   <div style={{ float: 'left', margin: '2px' }}>
     <a
+      role="link"
+      tabIndex={0}
       onClick={props.onSelect}
       className="btn"
       style={{
         color: 'white',
         backgroundColor: props.isSelected ? '#b9ebae' : 'lightgrey',
-      }} aria-label={props.label}
+      }}
     >
       <i className="fa fa-sort-amount-asc" />
     </a>

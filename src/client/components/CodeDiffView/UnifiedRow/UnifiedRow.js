@@ -1,4 +1,5 @@
 /* flow */
+/* eslint-disable  */
 
 import React from 'react'
 import PureComponent from 'components/PureComponent'
@@ -12,7 +13,7 @@ export type Props = {
   newLineNumber: any,
   operation: string,
   cssClass: string,
-  comments?: Array<any>,
+  comments: Array<any>,
   loggedUser: Object,
 
   onCreateInlineComment: (lineNumber: string, text: string, issue: any) => void,

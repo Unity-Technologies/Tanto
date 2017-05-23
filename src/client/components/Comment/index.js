@@ -12,25 +12,26 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import { IssueStatus } from 'universal/constants'
 import './Comment.css'
 
-
+/* eslint-disable */
 export type CommentType = {
   id?: any,
   created: string,
   modified?: string,
   text?: string,
   status?: string,
-  author: {
+  author: $Subtype<{
     username: string,
     slack?: {
       avatar: string,
     },
-  },
-  issue?: {
+  }>,
+  issue?: $Subtype<{
     status: string,
-  },
+  }>,
   showArrow?: boolean,
   headerStyle?: Object,
 }
+/* eslint-enable */
 
 export type CommentProps = {
   comment: CommentType,
@@ -167,14 +168,14 @@ const renderReadMode =
                   className="comment-action-button"
                   onClick={handleOnEdit}
                 >
-                  <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} ></i>
+                  <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} />
                 </Button>
                 {!disableDelete &&
                   <Button
                     onClick={handleOnDelete}
                     className="comment-action-button"
                   >
-                    <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} ></i>
+                    <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} />
                   </Button>
                 }
               </div>
@@ -210,7 +211,7 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
               className="comment-action-button"
               onClick={handleOnEdit}
             >
-              <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} ></i>
+              <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} />
             </Button>
           </div>
         }

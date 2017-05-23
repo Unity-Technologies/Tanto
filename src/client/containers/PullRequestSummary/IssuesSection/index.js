@@ -29,7 +29,6 @@ const headerColumnStyle = {
 
 type IssuesSectionProps = {
   issues: Array<IssueType>,
-  id: string,
 }
 
 export const getIssues = (state: Object, props: Object): Object =>
@@ -37,12 +36,12 @@ export const getIssues = (state: Object, props: Object): Object =>
     getPullRequestIssues,
     issues => ({
       issues: issues ? issues.filter(x => x.status !== IssueStatus.OBSOLETE) : null,
-    })
+    }),
   )
 
 //  TODO: complete this component, now it's mockeed since no ono API available for it
-export const IssuesSection = (props: IssuesSectionProps) => {
-  if (!props.issues || !props.issues.length) {
+export const IssuesSection = ({ issues }: IssuesSectionProps) => {
+  if (!issues || !issues.length) {
     return null
   }
   return (
@@ -59,15 +58,17 @@ export const IssuesSection = (props: IssuesSectionProps) => {
             <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
               UNRESOLVED
             </div>
-            <div style={{ fontSize: '12px' }}>({props.issues.length} issues)</div>
+            <div style={{ fontSize: '12px' }}>({issues.length} issues)</div>
           </Col>
           <Col md={7}>
             <div>
               <div>
                 {subHeader('Unresolved:')}
                 {
-                  props.issues.map(issue =>
-                    (<div><a href="#">{issue.title}</a></div>))
+                  issues.map(issue =>
+                    (<div>
+                      <a href="someissuelink#">{issue.title}</a>
+                    </div>))
                 }
               </div>
             </div>

@@ -6,8 +6,8 @@ import { connect } from 'react-redux'
 import ChangesetList from 'components/ChangesetList'
 import type { StatusType } from 'ducks/fetch'
 import LoadingComponent from 'components/LoadingComponent'
-import getPullRequestCommitsData from './selectors'
 import { pureComponent } from 'components/PureComponent'
+import getPullRequestCommitsData from './selectors'
 
 type Props = {
   commits: Array<FileType>,
@@ -16,10 +16,10 @@ type Props = {
   repoName: string
 }
 
-const PullRequestCommits = (props: Props) =>
-  <LoadingComponent status={props.status}>
-    <ChangesetList commits={props.commits} projectName={props.repoName} />
-  </LoadingComponent>
+const PullRequestCommits = ({ commits, repoName, status, pullRequestId }: Props) =>
+  (<LoadingComponent status={status}>
+    <ChangesetList commits={commits} projectName={repoName} pullRequestId={pullRequestId} />
+  </LoadingComponent>)
 
 
 export default connect(getPullRequestCommitsData)(pureComponent(PullRequestCommits))

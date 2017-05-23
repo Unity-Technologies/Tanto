@@ -17,12 +17,11 @@ type IterationType = {
   title: string,
 }
 type Props = {
-  id: string,
   iterations: Array<IterationType>
 }
 
-export const Iterations = (props: Props) => {
-  if (!props.iterations || !props.iterations.length) {
+export const Iterations = ({ iterations }: Props) => {
+  if (!iterations || !iterations.length) {
     return null
   }
   return (
@@ -35,14 +34,14 @@ export const Iterations = (props: Props) => {
         </Col>
         <Col md={7}>
           <div>
-            {props.iterations.map(iteration =>
-              <div>
+            {iterations.map(iteration =>
+              (<div>
                 <Link
                   to={buildPullRequestLink(iteration.repositoryName, iteration.id)}
                 >
                   {iteration.title}
                 </Link>
-              </div>)}
+              </div>))}
           </div>
         </Col>
       </Row>

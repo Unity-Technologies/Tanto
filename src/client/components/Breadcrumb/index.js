@@ -18,7 +18,7 @@ export const breadcrumbItems = (pathname: string, skip: number = 0): Array<LinkT
   const items = pathname.split('/').filter(entry => entry.trim() !== '')
   let path = ''
 
-  const routes = items.map(x => {
+  const routes = items.map((x) => {
     path = path.concat('/', x)
     return { link: path, label: x, active: false }
   })
@@ -39,13 +39,19 @@ export type Props = {
 }
 
 export class Breadcrumb extends PureComponent {
-  constructor(props: Props) {
-    super(props)
-    this.state = { items: breadcrumbItems(props.path, props.skip) }
+  static defaultProps = {
+    skip: 0,
   }
+
+  props: Props
 
   state: {
     items: Array<LinkType>,
+  }
+
+  constructor(props: Props) {
+    super(props)
+    this.state = { items: breadcrumbItems(props.path, props.skip) }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -55,8 +61,6 @@ export class Breadcrumb extends PureComponent {
   shouldComponentUpdate(nextProps: Props) {
     return this.props.path !== nextProps.path
   }
-
-  props: Props
 
   render() {
     const { items } = this.state

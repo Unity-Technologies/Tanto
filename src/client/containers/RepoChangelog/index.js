@@ -7,11 +7,9 @@ import ChangesetList from 'components/ChangesetList'
 import PureComponent from 'components/PureComponent'
 
 export type Props = {
-  params: Object,
-  branch: string,
   repoName: string,
   commits: Array<any>
-};
+}
 
 class RepoChangelog extends PureComponent {
   // shouldComponentUpdate(nextProps, nextState) {

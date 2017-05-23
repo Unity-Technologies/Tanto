@@ -187,7 +187,9 @@ describe('repository actions', () => {
     }
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORIES, variables: { name },
+        type: fetchTypes.FETCH_ONO_DATA,
+        name: types.FETCH_REPOSITORIES,
+        variables: { name },
         query: repositoriesQuery,
         operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
       },
@@ -231,7 +233,9 @@ describe('repository actions', () => {
     }
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORIES, variables: { name },
+        type: fetchTypes.FETCH_ONO_DATA,
+        name: types.FETCH_REPOSITORIES,
+        variables: { name },
         query: repositoriesQuery,
         operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
       },
@@ -256,7 +260,9 @@ describe('repository actions', () => {
 
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_REPOSITORIES, variables: { name },
+        type: fetchTypes.FETCH_ONO_DATA,
+        name: types.FETCH_REPOSITORIES,
+        variables: { name },
         query: repositoriesQuery,
         operationName: name ? operationNames.repositoriesNested : operationNames.repositoriesTopLevel,
       },
@@ -306,7 +312,9 @@ describe('repository actions', () => {
 
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_CHANGELOG, variables: { name },
+        type: fetchTypes.FETCH_ONO_DATA,
+        name: types.FETCH_CHANGELOG,
+        variables: { name },
         query: changelogQuery,
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_CHANGELOG },

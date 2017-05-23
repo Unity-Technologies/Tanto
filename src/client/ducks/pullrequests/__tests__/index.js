@@ -1,19 +1,15 @@
 /* eslint-disable max-len */
 
 import chai from 'chai'
-
 import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
-
-import {
-  pullRequests,
-} from '../index'
-
 import 'isomorphic-fetch'
-
 import { DIRECTION } from 'ducks/order'
+import { pullRequests } from '../index'
 
 const expect = chai.expect
+
 const chaiSubset = require('chai-subset')
+
 chai.use(chaiSubset)
 
 const pr1 = {

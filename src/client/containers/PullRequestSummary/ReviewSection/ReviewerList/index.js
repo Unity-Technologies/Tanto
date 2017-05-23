@@ -3,9 +3,11 @@
 import React, { Component } from 'react'
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
 import Tooltip from 'react-bootstrap/lib/Tooltip'
-import './ReviewerList.css'
+
 import type { PullRequestReviewerType } from 'universal/types'
 import _ from 'lodash'
+
+import './ReviewerList.css'
 
 const getClass = (icon: string, color: string) => `fa ${icon} ${color}`
 
@@ -44,11 +46,11 @@ class ReviewerList extends Component {
             </OverlayTrigger>
             {this.props.reviews.map((r, i) => (
               <span key={_.uniqueId(r.user.username)}>
-                <span className="reviewer-item" onClick={() => this.handleRemoveReviewer(r.user.id)}>
+                <span role="button" tabIndex={0} className="reviewer-item" onClick={() => this.handleRemoveReviewer(r.user.id)}>
                   <a>
                     {r.user.fullName.trim() || r.user.username.trim()}
                   </a>
-                  <i className="fa fa-times-circle reviewer-remove-icon" ></i>
+                  <i className="fa fa-times-circle reviewer-remove-icon" />
                 </span>
                 {i + 1 < this.props.reviews.length && ', '}
               </span>

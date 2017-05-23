@@ -4,9 +4,10 @@ import PureComponent from 'components/PureComponent'
 import CodeDiffContainer from 'containers/CodeDiffContainer'
 import _ from 'lodash'
 import Scroll from 'react-scroll'
+import './Page.css'
 
 const Element = Scroll.Element
-import './Page.css'
+
 
 type Props = {
   files: Array<any>,
@@ -67,12 +68,12 @@ export class Page extends PureComponent {
 
     if (!this.state.visible) {
       return (
-        <div className="show-more" onClick={this.handleShowPage}>
+        <div className="show-more" role="link" tabIndex={0} onClick={this.handleShowPage}>
           <div className="show-more-title">Page {index}</div>
 
           <div className="show-more-body">
             {files.map(file =>
-              <div>
+              (<div>
                 <Element
                   key={_.uniqueId(file.name)}
                   name={file.name.replace(/[/.]/g, '')}
@@ -86,7 +87,7 @@ export class Page extends PureComponent {
                     renderFileComments(file.comments)
                   }
                 </Element>
-              </div>
+              </div>),
             )}
           </div>
         </div>
@@ -94,18 +95,18 @@ export class Page extends PureComponent {
     }
     return (
       <div style={{ marginBottom: '10px' }}>
-        <div className="show-more" onClick={this.handleHidePage}>
+        <div role="link" tabIndex={0} className="show-more" onClick={this.handleHidePage}>
           <div className="show-more-title">Page {index}</div>
         </div>
         {files.map(file =>
-          <CodeDiffContainer
+          (<CodeDiffContainer
             viewType={this.props.viewType}
             id={file.id}
             pullRequestId={this.props.pullRequestId}
             onUpdateInlineComment={this.props.onUpdateInlineComment}
             onDeleteInlineComment={this.props.onDeleteInlineComment}
             onCreateInlineComment={this.props.onCreateInlineComment}
-          />
+          />),
         )}
       </div>
     )
