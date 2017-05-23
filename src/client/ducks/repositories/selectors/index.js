@@ -67,12 +67,6 @@ export const getRepositoryBranches = createSelector(
 export const repoIdSelector = (state: Object, props: Object): any =>
   _.findKey(state.entities.repositories, (v) => (v.fullName === props.params.splat))
 
-export const getRepositoryId = createSelector(
-  repositoryEntities, getRepositoryName,
-  (entities, repoName) =>
-    _.findKey(entities, (v) => (v.fullName === repoName))
-)
-
 export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
 export const parseMercurialAuthor = (author:string) => {
   if (!author) {
