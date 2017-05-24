@@ -4,7 +4,6 @@ import { createSelector, createStructuredSelector } from 'reselect'
 import { statusFetchFactory } from 'ducks/fetch/selectors'
 import { userEntitiesSelector } from 'ducks/users/selectors'
 import _ from 'lodash'
-import { getEntityById } from 'ducks/selectors'
 import { types } from '../actions'
 
 export const repositoryEntities = (state: Object) => state.entities.repositories
@@ -68,12 +67,6 @@ export const getRepositoryBranches = createSelector(
 export const repoIdSelector = (state: Object, props: Object): any =>
   _.findKey(state.entities.repositories, v => (v.fullName === props.params.splat))
 
-export const getRepositoryId = createSelector(
-  repositoryEntities, getRepositoryName,
-  (entities, repoName) =>
-    _.findKey(entities, v => (v.fullName === repoName)),
-)
-
 export const getChangelogFetchStatus = statusFetchFactory(types.FETCH_CHANGELOG)
 export const parseMercurialAuthor = (author: string) => {
   if (!author) {
@@ -111,7 +104,7 @@ export const getChangelog = createSelector(
     }
     return changelog.map(ch => ({
       ...ch,
-      authorUser: getEntityById(users, ch.authorUser, () => parseMercurialAuthor(ch.author)),
+      authorUser: ch.authorUser ? users[ch.authorUser] : parseMercurialAuthor(ch.author),
     }))
   },
 )

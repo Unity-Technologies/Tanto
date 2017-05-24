@@ -2,13 +2,11 @@
 import React from 'react'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
+import { pureComponent } from 'components/PureComponent'
 import { connect } from 'react-redux'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
-import { getPullRequestIssues } from 'ducks/pullrequests/selectors'
-import { createSelector } from 'reselect'
 import type { IssueType } from 'universal/types'
-import { pureComponent } from 'components/PureComponent'
-import { IssueStatus } from 'universal/constants'
+import { getIssues } from './selectors'
 
 const subHeader = text => (
   <div style={{ color: '#8c8c8c', fontSize: '13px' }}>
@@ -30,14 +28,6 @@ const headerColumnStyle = {
 type IssuesSectionProps = {
   issues: Array<IssueType>,
 }
-
-export const getIssues = (state: Object, props: Object): Object =>
-  createSelector(
-    getPullRequestIssues,
-    issues => ({
-      issues: issues ? issues.filter(x => x.status !== IssueStatus.OBSOLETE) : null,
-    }),
-  )
 
 //  TODO: complete this component, now it's mockeed since no ono API available for it
 export const IssuesSection = ({ issues }: IssuesSectionProps) => {

@@ -15,13 +15,13 @@ import { updatePullRequestDescription, types } from 'ducks/pullrequests/actions'
 import LoadingComponent from 'components/LoadingComponent'
 import GeneralCommentThread from 'components/GeneralCommentThread'
 import type { CommentType } from 'components/GeneralCommentThread'
-import { getLoggedUser, getLoggedUserId } from 'ducks/session/selectors'
+import { getLoggedUser } from 'ducks/session/selectors'
 import {
   getPullRequestGeneralComments,
   getPullRequestDescription,
-  getPullRequestNormalized,
 } from 'ducks/pullrequests/selectors'
-import { createSelector, createStructuredSelector } from 'reselect'
+import { createStructuredSelector } from 'reselect'
+import { isCurrentUserOwner } from './selectors'
 
 export type Props = {
   description: CommentType,
@@ -35,16 +35,6 @@ export type Props = {
 }
 
 export const getFetchStatus = statusFetchFactory(types.FETCH_PULL_REQUEST_DISCUSSION)
-
-export const isCurrentUserOwner = createSelector(
-  getLoggedUserId, getPullRequestNormalized,
-  (id, pr) => {
-    if (!id || !pr || !pr.owner) {
-      return null
-    }
-    return id === pr.owner
-  },
-)
 
 class PullRequestDiscussion extends PureComponent {
   constructor(props) {
@@ -117,7 +107,6 @@ class PullRequestDiscussion extends PureComponent {
   }
 }
 
-
 const structuredSelector = createStructuredSelector({
   description: getPullRequestDescription,
   comments: getPullRequestGeneralComments,
@@ -127,3 +116,4 @@ const structuredSelector = createStructuredSelector({
 })
 
 export default connect(structuredSelector)(PullRequestDiscussion)
+

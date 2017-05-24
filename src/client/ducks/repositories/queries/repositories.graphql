@@ -28,7 +28,7 @@ query repositoriesTopLevel {
 }
 
 fragment repo on Repository {
-  id
+  fullName
   name
   owner {
     fullName

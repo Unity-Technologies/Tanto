@@ -2,11 +2,10 @@
 import moment from 'moment'
 import React from 'react'
 import Avatar from 'components/Avatar'
-import { createSelector } from 'reselect'
-import _ from 'lodash'
-import { getPullRequest } from 'ducks/pullrequests/selectors'
 import { connect } from 'react-redux'
 import { pureComponent } from 'components/PureComponent'
+
+import getHeaderData from './selectors'
 
 export type HeaderPropsType = {
   id: string,
@@ -20,12 +19,6 @@ export type HeaderPropsType = {
     }
   }
 }
-
-export const getHeaderData = (state: Object, props: Object): HeaderPropsType =>
-  createSelector(
-    getPullRequest,
-    pr => _.pick(pr, ['title', 'created', 'owner']),
-  )
 
 const renderTitle = ({ title, owner, created }) => {
   if (!title || !owner || !created) {

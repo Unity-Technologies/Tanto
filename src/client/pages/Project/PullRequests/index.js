@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect'
 import { pureComponent } from 'components/PureComponent'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchPullRequests } from 'ducks/pullrequests/actions'
-import { getRepositoryId } from 'ducks/repositories/selectors'
+import { getRepositoryName } from 'ducks/repositories/selectors'
 
 import {
   getPageFetchStatus,
@@ -43,7 +43,7 @@ function PullRequests(props: Props) {
 }
 
 export const data = createStructuredSelector({
-  repo: getRepositoryId,
+  repo: getRepositoryName,
 })
 
 export default connect(data)(pureComponent(PullRequests))
