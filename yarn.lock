@@ -4150,6 +4150,13 @@ inline-style-prefixer@^3.0.2:
     bowser "^1.6.0"
     css-in-js-utils "^1.0.3"
 
+inline-style-prefixer@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/inline-style-prefixer/-/inline-style-prefixer-3.0.5.tgz#0092881b3a2eadf1bd619dc43726557316f76042"
+  dependencies:
+    bowser "^1.6.0"
+    css-in-js-utils "^1.0.3"
+
 inquirer@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-0.12.0.tgz#1ef2bfd63504df0bc75785fff8c2c41df12f077e"
@@ -6634,6 +6641,14 @@ react-simple-di@^1.2.0:
 react-simple-pie-chart@^0.4.0:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/react-simple-pie-chart/-/react-simple-pie-chart-0.4.1.tgz#d1f4e09238b4c9ea9faa55aaf3df5721c56d26c6"
+
+react-split-pane-style-fix@^0.1.64:
+  version "0.1.64"
+  resolved "https://registry.yarnpkg.com/react-split-pane-style-fix/-/react-split-pane-style-fix-0.1.64.tgz#385cd3a3398fd55239e84f05d9d220e3497e1dd1"
+  dependencies:
+    inline-style-prefixer "^3.0.5"
+    prop-types "^15.5.8"
+    react-style-proptype "^3.0.0"
 
 react-split-pane@^0.1.50:
   version "0.1.63"

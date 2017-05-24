@@ -37,60 +37,56 @@ export const renderFileBookmark = (fileReview: Object) => {
 }
 
 export const FilesList = ({ compact, files, containerElementName, reviews }: Props) =>
-  (<div>
-    <Row>
-      <Col md={12}>
-        <ListGroup
-          style={{ fontSize: '13px', overflowY: 'auto', overflowX: 'hidden', height: '79vh' }}
-        >
-          {files.map(file => (
-            <ListGroupItem key={file.id} style={{ padding: '10px 10px' }} >
-              <Row>
-                <Col lg={8} md={8} sm={8} xs={8}>
-                  <div style={{ float: 'left', marginRight: '5px' }}>
-                    <ChangesetDelta
-                      pie={compact}
-                      deleted={file.stats.deleted}
-                      added={file.stats.added}
-                      changed={0}
-                    />
-                  </div>
-                  <Link
-                    smooth
-                    style={{ cursor: 'pointer' }}
-                    containerId={containerElementName}
-                    to={file.name.replace(/[/.]/g, '')}
-                  >
-                    {file.name}
-                  </Link>
-                </Col>
-                <Col
-                  lg={compact ? 4 : 2}
-                  md={compact ? 4 : 2}
-                  sm={compact ? 4 : 2}
-                  xs={compact ? 4 : 2}
-                >
-                  <div style={{ color: 'lightgrey', cursor: 'pointer', float: 'right' }}>
-                    {file.comments && file.comments.length > 0 &&
-                      <span style={{ color: 'lightblue' }}>
-                        <span style={{ marginRight: '5px' }}>
-                          <i className="fa fa-comment" />
-                        </span>
-                        {file.comments.length}</span>
-                    }
+  (
+    <ListGroup
+      style={{ fontSize: '13px', overflowY: 'auto', overflowX: 'hidden', height: '79vh' }}
+    >
+      {files.map(file => (
+        <ListGroupItem key={file.id} style={{ padding: '10px 10px' }} >
+          <Row>
+            <Col lg={8} md={8} sm={8} xs={8}>
+              <div style={{ float: 'left', marginRight: '5px' }}>
+                <ChangesetDelta
+                  pie={compact}
+                  deleted={file.stats.deleted}
+                  added={file.stats.added}
+                  changed={0}
+                />
+              </div>
+              <Link
+                smooth
+                style={{ cursor: 'pointer' }}
+                containerId={containerElementName}
+                to={file.name.replace(/[/.]/g, '')}
+              >
+                {file.name}
+              </Link>
+            </Col>
+            <Col
+              lg={compact ? 4 : 2}
+              md={compact ? 4 : 2}
+              sm={compact ? 4 : 2}
+              xs={compact ? 4 : 2}
+            >
+              <div style={{ color: 'lightgrey', cursor: 'pointer', float: 'right' }}>
+                {file.comments && file.comments.length > 0 &&
+                  <span style={{ color: 'lightblue' }}>
+                    <span style={{ marginRight: '5px' }}>
+                      <i className="fa fa-comment" />
+                    </span>
+                    {file.comments.length}</span>
+                }
 
-                    <span className="file-review-icon">
-                      {reviews ? renderFileReview(reviews[file.id]) : null}</span>
-                    <span className="file-review-icon">
-                      {reviews ? renderFileBookmark(reviews[file.id]) : null}</span>
-                  </div>
-                </Col>
-              </Row>
-            </ListGroupItem>
-          ))}
-        </ListGroup>
-      </Col>
-    </Row>
-  </div>)
+                <span className="file-review-icon">
+                  {reviews ? renderFileReview(reviews[file.id]) : null}</span>
+                <span className="file-review-icon">
+                  {reviews ? renderFileBookmark(reviews[file.id]) : null}</span>
+              </div>
+            </Col>
+          </Row>
+        </ListGroupItem>
+      ))}
+    </ListGroup>
+  )
 
 export default pureComponent(FilesList)
