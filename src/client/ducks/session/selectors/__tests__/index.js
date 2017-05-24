@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 
 import { DEVELOPER_PERSONA } from 'universal/constants'
+import { types } from 'ducks/session/actions'
 import {
   getPullRequestsOwned,
   getPullRequestsAssigned,
@@ -13,8 +14,6 @@ import {
   getLoggedUserAvatar,
   getPullRequestsAssignedTotal,
 } from '../index'
-
-import { types } from 'ducks/session/actions'
 
 const expect = require('chai').expect
 
@@ -152,14 +151,14 @@ pullRequests[pr3.id] = pr3
 pullRequests[pr4.id] = pr4
 pullRequests[pr5.id] = pr5
 
-const users = [
+const users = {
   16: {
     id: 16,
     username: 'test2',
     email: 'test1@test.tt',
     fullName: 'test test11',
   },
-  12:{
+  12: {
     id: 12,
     username: 'test5',
     email: 'test5@test.tt',
@@ -177,13 +176,13 @@ const users = [
     email: 'test3@test.tt',
     fullName: 'test test44',
   },
-  15:{
+  15: {
     id: 15,
     username: 'test2',
     email: 'test2@test.tt',
     fullName: 'test test2',
   },
-]
+}
 
 const state = {
   session: sessionState,
@@ -223,7 +222,7 @@ describe('session selectors', () => {
         pullRequests,
       },
     }
-    expect(getPullRequestsOwned(emptyState)).to.eql([])
+    expect(getPullRequestsOwned(emptyState)).to.eql(null)
   })
 
   it('get user assigned pull requests - empty pull requests list', () => {
@@ -249,17 +248,54 @@ describe('session selectors', () => {
         pullRequests,
       },
     }
-    expect(getPullRequestsAssigned(emptyState)).to.eql([])
+    expect(getPullRequestsAssigned(emptyState)).to.eql(null)
   })
 
   it('get user pull assigned requests', () => {
-    const denormalized = [{ ...pr1, owner: users[pr1.owner] }, { ...pr3, owner: users[pr3.owner] }]
+    const denormalized = [
+      {
+        ...pr1,
+        owner: {
+          id: 16,
+          username: 'test2',
+          email: 'test1@test.tt',
+          fullName: 'test test11',
+        },
+      },
+      {
+        ...pr3,
+        owner: {
+          id: 14,
+          username: 'test3',
+          email: 'test3@test.tt',
+          fullName: 'test test44',
+        },
+      }]
+
     expect(getPullRequestsAssigned(state)).to.eql(denormalized)
   })
 
   it('get user pull watching requests', () => {
-    const denormalized = [{ ...pr2, owner: users[pr2.owner] }, { ...pr1, owner: users[pr1.owner] }]
-    expect(getPullRequestsWatching(state)).to.eql(denormalized)
+    const denormalized = [{
+      ...pr2,
+      owner: {
+        id: 15,
+        username: 'test2',
+        email: 'test2@test.tt',
+        fullName: 'test test2',
+      },
+    }, {
+      ...pr1,
+      owner: {
+        id: 16,
+        username: 'test2',
+        email: 'test1@test.tt',
+        fullName: 'test test11',
+      },
+    }]
+    const p = getPullRequestsWatching(state)
+
+    expect(p).to.eql(denormalized)
   })
 
   it('get user watching pull requests - empty pull requests list', () => {
@@ -285,7 +321,7 @@ describe('session selectors', () => {
         pullRequests,
       },
     }
-    expect(getPullRequestsWatching(emptyState)).to.eql([])
+    expect(getPullRequestsWatching(emptyState)).to.eql(null)
   })
 
   it('getPersona', () => {

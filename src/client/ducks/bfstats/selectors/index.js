@@ -2,6 +2,7 @@
 
 import { createSelector } from 'reselect'
 import _ from 'lodash'
+
 export type { StatusType } from 'ducks/fetch/selectors'
 
 export const getBuildsEntities = (state: Object) =>
@@ -16,8 +17,8 @@ export const getRevision = (state: Object, props: Object) =>
 export const getSourceStamp = createSelector(
   getSourceStampsEntities, getRevision,
   (sourceStamps, revision) => (
-    sourceStamps && revision && sourceStamps.hasOwnProperty(revision)
-      ? sourceStamps[revision] : null)
+    sourceStamps && revision && revision in sourceStamps
+      ? sourceStamps[revision] : null),
 )
 
 export const getBuilds = createSelector(
@@ -28,13 +29,13 @@ export const getBuilds = createSelector(
     }
 
     return sourceStamp.builds.nodes.map(id => builds[id])
-  }
+  },
 )
 
 export const getABVBuild = createSelector(
   getBuilds,
-  builds => {
+  (builds) => {
     const index = _.findIndex(builds, build => build.builder.name === 'proj0-ABuildVerification')
     return index > -1 ? builds[index] : null
-  }
+  },
 )

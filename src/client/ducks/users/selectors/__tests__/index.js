@@ -21,7 +21,7 @@ describe('userEntitiesSelector', () => {
 
   it('empty entities state', () => {
     const state = { entities: {} }
-    expect(userEntitiesSelector(state)).to.eql({})
+    expect(userEntitiesSelector(state)).to.eql(null)
   })
 
   it('empty users state', () => {

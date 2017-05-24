@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import PanelGroup from 'react-bootstrap/lib/PanelGroup'
@@ -22,7 +23,7 @@ export type Props = {
   accordion: boolean,
 }
 
-class ChangesetGroupedList extends Component {
+class ChangesetGroupedList extends PureComponent {
   /* eslint-disable react/sort-comp */
   constructor(props: Props) {
     super(props)
@@ -36,14 +37,16 @@ class ChangesetGroupedList extends Component {
     activeKey: number,
   }
 
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return nextProps.groups && nextProps.groups.length &&
+      super.shouldComponentUpdate(nextProps, nextState)
+  }
+
   handleSelect = (activeKey: number) => {
     this.setState({ activeKey })
   }
 
   render() {
-    if (!this.props.groups || !this.props.groups.length) {
-      return null
-    }
     const { groups } = this.props
     return (
       <div>
@@ -61,7 +64,7 @@ class ChangesetGroupedList extends Component {
               <span
                 style={{ pagging: '10px', color: 'grey' }}
               >
-                <i className="fa fa-search" aria-hidden="true" />
+                <i className="fa fa-search" />
               </span>
               <input
                 type="text"
@@ -76,7 +79,7 @@ class ChangesetGroupedList extends Component {
               <i
                 className="fa fa-sort-amount-asc"
                 style={{ color: 'lightgrey', margin: '1px 10px', fontSize: '16px' }}
-                aria-hidden="true"
+
               />
             </div>
             <div

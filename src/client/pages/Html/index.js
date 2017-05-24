@@ -2,14 +2,15 @@
 
 import React from 'react'
 import Helmet from 'react-helmet'
+import _ from 'lodash'
 
 export type Props = {
-  assets: {
+  assets: $Subtype<{
     styles: Object,
     javascript: {
       main: string,
     },
-  },
+  }>,
 }
 
 function Html({ assets }: Props) {
@@ -57,14 +58,14 @@ function Html({ assets }: Props) {
       <body style={bodyStyle}>
         <div id="root" />
         {Object.keys(assets.styles).map((style, key) =>
-          <link
+          (<link
             href={assets.styles[style]}
-            key={key}
+            key={_.uniqueId()}
             media="screen, projection"
             rel="stylesheet"
             type="text/css"
             charSet="UTF-8"
-          />
+          />),
         )}
         <script src={assets.javascript.main} charSet="UTF-8" />
       </body>

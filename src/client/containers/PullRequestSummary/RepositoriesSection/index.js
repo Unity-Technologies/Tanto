@@ -10,6 +10,7 @@ import _ from 'lodash'
 import { createSelector } from 'reselect'
 import { buildProjectLink } from 'routes/helpers'
 import { Link } from 'react-router'
+import { pureComponent } from 'components/PureComponent'
 
 const info = {
   borderLeft: '5px solid rgba(226, 231, 245, 0.62)',
@@ -36,21 +37,19 @@ type TargetType = {
   }
 }
 
-
 export type RepositoriesPropsType = {
-  id: string,
-  origin: OriginType,
-  target: TargetType
+  origin: $Subtype<OriginType>,
+  target: $Subtype<TargetType>
 }
 
 export const getRepositoriesData = (state: Object, props: Object): RepositoriesPropsType =>
   createSelector(
     getPullRequest,
-    (pr) => _.pick(pr, ['origin', 'target'])
+    pr => _.pick(pr, ['origin', 'target']),
   )
 
 export const OriginLink = (props: OriginType) =>
-  <div>Origin:
+  (<div>Origin:
     {!props.origin && <span> undefined...</span>}
     {props.origin &&
       <Link
@@ -64,24 +63,24 @@ export const OriginLink = (props: OriginType) =>
         <span style={{ color: '#8ea7b6' }}>#</span>{props.origin.name}
       </Link>
     }
-  </div >
+  </div >)
 
 export const TargetLink = (props: TargetType) =>
-  <div> Target:
+  (<div> Target:
   {!props.target && <span> {noTargetMessage}</span>}
-  {props.target &&
-    <Link
-      style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
-      to={buildProjectLink(props.target.repository.name)}
-    >
-      <span> {props.target.repository.name}</span>
-    </Link>
-  }
-  </div>
+    {props.target &&
+      <Link
+        style={{ textDecoration: 'none', color: 'rgb(59, 120, 155)' }}
+        to={buildProjectLink(props.target.repository.name)}
+      >
+        <span> {props.target.repository.name}</span>
+      </Link>
+    }
+  </div>)
 
 
 export const RepositoriesSection = (props: RepositoriesPropsType) =>
-  <ListGroupItem style={info}>
+  (<ListGroupItem style={info}>
     <Row>
       <Col md={5}>
         <div style={headerColumnStyle}>
@@ -93,7 +92,7 @@ export const RepositoriesSection = (props: RepositoriesPropsType) =>
         <TargetLink target={props.target} />
       </Col>
     </Row>
-  </ListGroupItem>
+  </ListGroupItem>)
 
-export default connect(getRepositoriesData)(RepositoriesSection)
+export default connect(getRepositoriesData)(pureComponent(RepositoriesSection))
 

@@ -13,15 +13,18 @@ import type {
     PullRequestReviewerType,
 } from 'universal/types'
 import { default as Select } from 'components/VirtualizedSelect'
+import { createStructuredSelector } from 'reselect'
+import { ChangesetStatus } from 'universal/constants'
+import { addPullRequestReviewers, removePullRequestReviewers } from 'ducks/pullrequests/actions'
+import { getUsers } from 'ducks/users/selectors'
+import ReviewerList from './ReviewerList'
 import MissingReviewerList from './MissingReviewerList'
 import {
   getPullRequestReviewStatus,
   getPullRequestReviews,
-  getMissingReviewers } from './selectors'
-import { getUsers } from 'ducks/users/selectors'
-import ReviewerList from './ReviewerList'
-import { ChangesetStatus } from 'universal/constants'
-import { addPullRequestReviewers, removePullRequestReviewers } from 'ducks/pullrequests/actions'
+  getMissingReviewers,
+} from './selectors'
+
 
 type MissingReviewerType = {
   area: string,
@@ -55,6 +58,9 @@ const subHeader = text => (
 )
 
 const getStatus = (status: string, reviews: Array<Object>) => {
+  if (!reviews) {
+    return null
+  }
   let color
   let statusText = ''
   let statusTitle = status
@@ -188,7 +194,7 @@ class ReviewSection extends Component {
   render() {
     const { users, status, reviews } = this.props
 
-    if (!users) {
+    if (!users || !reviews) {
       return null
     }
 
@@ -272,15 +278,12 @@ class ReviewSection extends Component {
   }
 }
 
-const mapStateToProps = (state, props: ReviewsSectionProps): ReviewsSectionProps => (
-  {
-    ...props,
-    status: getPullRequestReviewStatus(state, props),
-    reviews: getPullRequestReviews(state, props),
-    users: getUsers(state, props),
-    missingReviewers: getMissingReviewers(state, props),
-  }
-)
+export const data = createStructuredSelector({
+  status: getPullRequestReviewStatus,
+  reviews: getPullRequestReviews,
+  users: getUsers,
+  missingReviewers: getMissingReviewers,
+})
 
-export default connect(mapStateToProps)(ReviewSection)
+export default connect(data)(ReviewSection)
 

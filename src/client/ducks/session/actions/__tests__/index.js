@@ -6,6 +6,10 @@ import { normalize } from 'normalizr'
 import { SET_QUERIED_ENTITIES } from 'ducks/entities'
 import { DIRECTION } from 'ducks/order'
 import { RECEIVE_PAGE } from 'ducks/pagination'
+import { types as fetchTypes } from 'ducks/fetch'
+import userProfileQuery from 'ducks/session/queries/me.graphql'
+
+import storeMock from 'tests/mocks/storeMock'
 import pullRequestList from 'ducks/session/queries/userPullRequestList.graphql'
 import {
   types,
@@ -17,13 +21,11 @@ import {
   fetchUserAssignedPullRequests,
 
 } from '../index'
-const expect = chai.expect
-import { types as fetchTypes } from 'ducks/fetch'
-import userProfileQuery from 'ducks/session/queries/me.graphql'
 
-import storeMock from 'tests/mocks/storeMock'
+const expect = chai.expect
 
 const chaiSubset = require('chai-subset')
+
 chai.use(chaiSubset)
 
 
@@ -36,7 +38,8 @@ describe('session fetch actions', () => {
     const expected = normalize(response.data, schema).entities
     expected.me = expected.me.undefined
     const actionsList = [{
-      type: fetchTypes.FETCH_ONO_DATA, query: userProfileQuery,
+      type: fetchTypes.FETCH_ONO_DATA,
+      query: userProfileQuery,
       name: types.FETCH_USER_PROFILE,
     }, {
       type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PROFILE,
@@ -114,12 +117,12 @@ describe('session fetch actions', () => {
             title: 'test pr title1',
             description: 'test pr description1',
           },
-            {
-              id: 2,
-              name: 'testpr2',
-              title: 'test pr title2',
-              description: 'test pr description2',
-            }],
+          {
+            id: 2,
+            name: 'testpr2',
+            title: 'test pr title2',
+            description: 'test pr description2',
+          }],
         },
       },
     }
@@ -189,12 +192,12 @@ describe('session fetch actions', () => {
             title: 'test pr title1',
             description: 'test pr description1',
           },
-            {
-              id: 2,
-              name: 'testpr2',
-              title: 'test pr title2',
-              description: 'test pr description2',
-            }],
+          {
+            id: 2,
+            name: 'testpr2',
+            title: 'test pr title2',
+            description: 'test pr description2',
+          }],
         },
       },
     }

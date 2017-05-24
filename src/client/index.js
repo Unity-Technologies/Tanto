@@ -30,5 +30,5 @@ injectTapEventPlugin()
 ReactDOM.render(
   <Provider store={store} key="provider">
     <Router routes={routes(store)} history={history} />
-  </Provider>, document.getElementById('root')
+  </Provider>, document.getElementById('root'),
 )

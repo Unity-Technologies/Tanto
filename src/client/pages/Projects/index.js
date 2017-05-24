@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import { fetchRepositories } from 'ducks/repositories/actions'
@@ -17,13 +18,10 @@ export type Props = {
   repositories: Array<RepositoryType>,
   groups: Array<GroupType>,
   dispatch: Function,
-  theme: Object,
-  style: Object,
   pathname: string,
-  breadcrumbItems: Array<Object>
 }
 
-export class Projects extends Component {
+export class Projects extends PureComponent {
   componentWillMount() {
     const { dispatch, pathname } = this.props
     dispatch(fetchRepositories(groupPathFromPath(pathname)))

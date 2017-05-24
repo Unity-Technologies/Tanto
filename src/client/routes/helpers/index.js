@@ -8,7 +8,7 @@ type LinkType = {
 export const breadcrumbItems = (pathname: string): Array<LinkType> => {
   const items = pathname.split('/').filter(entry => entry.trim() !== '')
   let path = ''
-  return items.map(x => {
+  return items.map((x) => {
     path = path.concat('/', x)
     return { link: path, label: x }
   })

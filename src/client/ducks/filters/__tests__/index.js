@@ -1,6 +1,8 @@
-import { target } from '../index'
+/* flow */
 
 import { PullRequestSource } from 'universal/constants'
+import { target } from '../index'
+
 const expect = require('chai').expect
 
 

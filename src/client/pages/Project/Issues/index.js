@@ -1,14 +1,14 @@
 /* @flow */
 
 import React from 'react'
-
+import { pureComponent } from 'components/PureComponent'
 import Helmet from 'react-helmet'
 
 export type Props = {
-  params: {
+  params: $Subtype<{
     prid: string
-  }
-};
+  }>
+}
 
 function Issues({ params: { prid } }: Props) {
   return (
@@ -19,4 +19,4 @@ function Issues({ params: { prid } }: Props) {
   )
 }
 
-export default Issues
+export default pureComponent(Issues)

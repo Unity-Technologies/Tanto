@@ -2,6 +2,7 @@
 
 import { createSelector } from 'reselect'
 import { getPullRequestId } from 'ducks/pullrequests/selectors'
+import { getEntityById } from 'ducks/selectors'
 
 export const getFileId = (state: Object, props: Object) =>
   (props && props.id ? props.id : null)
@@ -12,12 +13,12 @@ export const getReviewFiles = createSelector(
   getPullRequestId, getReviewPullrequests,
   (prId, pullrequests) => {
     if (!prId || !pullrequests) {
-      return {}
+      return null
     }
 
-    const pr = pullrequests[prId]
-    return pr && pr.files ? pr.files : {}
-  }
+    const pr = getEntityById(pullrequests, prId)
+    return pr && pr.files ? pr.files : null
+  },
 )
 
 
@@ -25,9 +26,9 @@ export const getReviewFile = createSelector(
   getFileId, getReviewFiles,
   (fileId, files) => {
     if (!fileId || !files) {
-      return {}
+      return null
     }
 
-    return fileId in files ? files[fileId] : {}
-  }
+    return fileId in files ? files[fileId] : null
+  },
 )

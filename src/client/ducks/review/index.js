@@ -1,6 +1,6 @@
 /* @flow */
-import { types } from './actions'
 import { combineReducers } from 'redux'
+import { types } from './actions'
 
 const initialState = {}
 

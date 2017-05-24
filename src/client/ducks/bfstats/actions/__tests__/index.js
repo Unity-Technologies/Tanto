@@ -49,7 +49,9 @@ describe('bfstats actions', () => {
 
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_BFSTATS_DATA, name: types.FETCH_LATEST_BUILDS, variables: { repository, revision },
+        type: fetchTypes.FETCH_BFSTATS_DATA,
+        name: types.FETCH_LATEST_BUILDS,
+        variables: { repository, revision },
         query: latestRepositoryBuilds,
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_LATEST_BUILDS },
@@ -74,7 +76,9 @@ describe('bfstats actions', () => {
 
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_BFSTATS_DATA, name: types.FETCH_LATEST_BUILDS, variables: { repository, revision },
+        type: fetchTypes.FETCH_BFSTATS_DATA,
+        name: types.FETCH_LATEST_BUILDS,
+        variables: { repository, revision },
         query: latestRepositoryBuilds,
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_LATEST_BUILDS },
@@ -121,7 +125,9 @@ describe('bfstats actions', () => {
 
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_BFSTATS_DATA, name: types.FETCH_LATEST_BUILDS, variables: { repository, branch },
+        type: fetchTypes.FETCH_BFSTATS_DATA,
+        name: types.FETCH_LATEST_BUILDS,
+        variables: { repository, branch },
         query: latestRepositoryBuilds,
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_LATEST_BUILDS },
@@ -146,7 +152,9 @@ describe('bfstats actions', () => {
 
     const expectedActions = [
       {
-        type: fetchTypes.FETCH_BFSTATS_DATA, name: types.FETCH_LATEST_BUILDS, variables: { repository, branch },
+        type: fetchTypes.FETCH_BFSTATS_DATA,
+        name: types.FETCH_LATEST_BUILDS,
+        variables: { repository, branch },
         query: latestRepositoryBuilds,
       },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_LATEST_BUILDS },

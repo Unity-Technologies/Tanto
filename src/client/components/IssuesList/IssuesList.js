@@ -2,7 +2,8 @@
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import type { IssueType } from 'universal/types'
@@ -85,7 +86,7 @@ const getStatus = (status: string): IssueStatusType => {
 const calculateStatuses = (issues: Array<IssueType>): statusCountType => issues.reduce(
   (statuses, issue) => {
     if (issue.status in statuses) {
-      statuses[issue.status]++
+      statuses[issue.status] += 1
     } else {
       statuses[issue.status] = 1
     }
@@ -94,7 +95,7 @@ const calculateStatuses = (issues: Array<IssueType>): statusCountType => issues.
   {},
 )
 
-class IssuesList extends Component {
+class IssuesList extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = { search: null }
@@ -106,10 +107,12 @@ class IssuesList extends Component {
 
   props: Props
 
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return nextProps.issues && nextProps.issues.length &&
+      super.shouldComponentUpdate(nextProps, nextState)
+  }
+
   render() {
-    if (!this.props.issues) {
-      return null
-    }
     const statuses = calculateStatuses(this.props.issues)
     const newTotal = IssueStatus.FIX_NOW in statuses ? statuses[IssueStatus.FIX_NOW] : 0
     const nextTotal = IssueStatus.FIX_NEXT_PR in statuses ? statuses[IssueStatus.FIX_NEXT_PR] : 0
@@ -130,7 +133,7 @@ class IssuesList extends Component {
               }}
             >
               <span style={{ pagging: '10px', color: 'grey' }}>
-                <i className="fa fa-search" aria-hidden="true" />
+                <i className="fa fa-search" />
               </span>
               <input
                 type="text"
@@ -145,7 +148,7 @@ class IssuesList extends Component {
               <i
                 className="fa fa-sort-amount-asc"
                 style={{ color: 'lightgrey', margin: '1px 10px', fontSize: '16px' }}
-                aria-hidden="true"
+
               />
             </div>
             <div style={{ color: 'rgb(122, 123, 123)', fontSize: '12px', padding: '10px' }}>
@@ -194,7 +197,7 @@ class IssuesList extends Component {
                         {subHeader('Location:')}
                         {issue.location && issue.location.filePath && issue.location.lineNumber
                           ? <a href="diff#">
-                              {issue.location.filePath}@{issue.location.lineNumber}
+                            {issue.location.filePath}@{issue.location.lineNumber}
                           </a>
                           : 'generic'}
                       </Col>

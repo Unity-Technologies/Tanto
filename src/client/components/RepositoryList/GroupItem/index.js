@@ -3,6 +3,7 @@
 import React from 'react'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { Link } from 'react-router'
+import { pureComponent } from 'components/PureComponent'
 
 export type GroupType = {
   name: string,
@@ -10,7 +11,7 @@ export type GroupType = {
 }
 
 type Props = {
-  group: GroupType,
+  group: $Subtype<GroupType>,
   path: string,
 }
 
@@ -20,7 +21,7 @@ function GroupItem(props: Props) {
   return (
     <ListGroupItem style={{ display: 'flex' }}>
       <div style={{ fontSize: '16px', color: '#95b3ea' }}>
-        <i className="fa fa-folder" aria-hidden="true"></i>
+        <i className="fa fa-folder" />
       </div>
       <div style={{ display: 'table' }}>
         <div style={{ paddingLeft: '10px', display: 'table' }}>
@@ -34,4 +35,4 @@ function GroupItem(props: Props) {
   )
 }
 
-export default GroupItem
+export default pureComponent(GroupItem)

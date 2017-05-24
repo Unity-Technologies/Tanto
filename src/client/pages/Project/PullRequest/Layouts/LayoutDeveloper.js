@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react'
 import { Link } from 'react-router'
-
+import { pureComponent } from 'components/PureComponent'
 import CategoryModule from './common'
 
 
@@ -13,26 +13,26 @@ const CATEGORIES = [
 ]
 
 const TabTitle = ({ text, badge }) =>
-  <div style={{ display: 'inline-flex' }}>
+  (<div style={{ display: 'inline-flex' }}>
     <div style={{ float: 'left', marginRight: '5px' }}>
       {text}
     </div>
-  </div>
+  </div>)
 
 // FIXME: badge for changesets
-const downloadIcon = <i className="fa fa-download" aria-hidden="true" />
+const downloadIcon = <i className="fa fa-download" />
 
 // FIXME: badge for categories
 const Header = ({ currentCategory, rootPath }) =>
-  <ul className="nav nav-tabs" style={{ marginBottom: '24px' }}>
+  (<ul className="nav nav-tabs" style={{ marginBottom: '24px' }}>
     {CATEGORIES.map(c =>
-      <li className={c.url === currentCategory ? 'active' : ''} key={c.url}>
+      (<li className={c.url === currentCategory ? 'active' : ''} key={c.url}>
         <Link to={`${rootPath}/${c.url}`}>
           <TabTitle text={c.name} badge={c.url === 'changesets' ? downloadIcon : 1} />
         </Link>
-      </li>
+      </li>),
     )}
-  </ul>
+  </ul>)
 
 export type Props = {
   currentCategory: string,
@@ -41,10 +41,10 @@ export type Props = {
   rootPath: string,
 }
 
-const LayoutDeveloper = ({ repoName, currentCategory, pullRequestId, rootPath } : Props) =>
-  <div style={{ padding: '0 20px' }}>
+const LayoutDeveloper = ({ repoName, currentCategory, pullRequestId, rootPath }: Props) =>
+  (<div style={{ padding: '0 20px' }}>
     <Header currentCategory={currentCategory} rootPath={rootPath} />
     <CategoryModule repoName={repoName} pullRequestId={pullRequestId} type={currentCategory} />
-  </div>
+  </div>)
 
-export default LayoutDeveloper
+export default pureComponent(LayoutDeveloper)

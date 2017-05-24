@@ -1,6 +1,7 @@
 /* flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import _ from 'lodash'
 import 'prismjs/themes/prism.css'
 import UnifiedRow from './UnifiedRow/UnifiedRow'
@@ -21,22 +22,33 @@ export type Props = {
   onDeleteInlineComment: (commentId: string, text: string) => void,
 }
 
+const defaultEmptyList = []
+
 class CodeDiffView extends PureComponent {
+  static defaultProps = {
+    viewType: '0',
+  }
+
   props: Props
+
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return (nextProps.rawDiff || nextProps.unifiedDiff || nextProps.sideBySideDiff) &&
+      super.shouldComponentUpdate(nextProps, nextState)
+  }
 
   selectUnifiedComments = (oldLine: number, newLine: number) => {
     if (!this.props.comments) {
       return []
     }
     if (oldLine && !newLine) {
-      return this.props.comments[`o${oldLine}`] || []
+      return this.props.comments[`o${oldLine}`] || defaultEmptyList
     }
     if (newLine && !oldLine) {
-      return this.props.comments[`n${newLine}`] || []
+      return this.props.comments[`n${newLine}`] || defaultEmptyList
     }
 
     return oldLine === newLine ?
-      this.props.comments[`n${oldLine}`] || this.props.comments[`o${oldLine}`] : []
+      this.props.comments[`n${oldLine}`] || this.props.comments[`o${oldLine}`] : defaultEmptyList
   }
 
   renderDiff = () => {
@@ -79,21 +91,17 @@ class CodeDiffView extends PureComponent {
         </table>
       )
     }
-    const content = this.props.rawDiff
+
     return (
       <div className="diff-raw">
-        <span dangerouslySetInnerHTML={{ __html: content }} />
+        <span>{this.props.rawDiff} </span>
       </div>
     )
   }
 
   render() {
-    if (!this.props.rawDiff && !this.props.unifiedDiff && !this.props.sideBySideDiff) {
-      return null
-    }
     return (
       <pre
-        ref="contentContainer"
         key={_.uniqueId('_code_')}
         className="diff-view"
       >

@@ -1,7 +1,7 @@
 /* @flow */
 
-import React, { Component } from 'react'
-
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import './Checkbox.css'
 
 export type Props = {
@@ -13,7 +13,12 @@ export type Props = {
   style?: any,
 }
 
-class Checkbox extends Component {
+export class Checkbox extends PureComponent {
+  static defaultProps = {
+    onChange: null,
+    disabled: false,
+    style: null,
+  }
   constructor(props: Props) {
     super(props)
     this.state = {

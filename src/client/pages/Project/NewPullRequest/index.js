@@ -1,8 +1,6 @@
-// TODO: add flow annotations
-
-import React, { Component } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
-
+import PureComponent from 'components/PureComponent'
 // import TextEditorBox from 'components/TextEditorBox'
 import BranchSelect from 'containers/BranchSelect'
 // import CodeDiffView from 'components/CodeDiffView'
@@ -20,12 +18,9 @@ import { connect } from 'react-redux'
 
 
 export type Props = {
-  params?: Object,
-  theme?: // reviewers: PropTypes.array,
-  Object,
-};
+}
 
-class NewPullRequest extends Component {
+class NewPullRequest extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -68,7 +63,7 @@ class NewPullRequest extends Component {
           <Nav>
             <NavItem>
               <span style={{ position: 'absolute', marginLeft: '-30px', paddingTop: '5px' }}>
-                <i className="fa fa-code-fork fa-2x" aria-hidden="true" />
+                <i className="fa fa-code-fork fa-2x" />
               </span>
               <BranchSelect
                 prefix="base:"

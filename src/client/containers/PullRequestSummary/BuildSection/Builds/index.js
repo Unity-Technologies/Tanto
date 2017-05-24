@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
 import { getBuilds, getABVBuild } from 'ducks/bfstats/selectors'
@@ -9,7 +10,9 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import moment from 'moment'
 import { BuildsResult } from 'universal/constants'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 import './Builds.css'
+
 
 export type BuildType = {
   builder: {
@@ -25,8 +28,6 @@ export type BuildType = {
 }
 
 type PropsType = {
-  repository: string,
-  revision: string,
   builds: Array<BuildType>,
 }
 
@@ -60,9 +61,9 @@ const renderBuildTime = (build: BuildType) => {
 const getBuildColor = (result: number) => (katanaBuildsColors[result] || '#989498')
 
 const renderBuildStatus = (build: BuildType) =>
-  <div style={{ color: getBuildColor(build.result), textTransform: 'uppercase' }}>
+  (<div style={{ color: getBuildColor(build.result), textTransform: 'uppercase' }}>
     {BuildsResult[build.result]}
-  </div>
+  </div>)
 
 const renderBuild = (build: BuildType, renderHeader: boolean) => (
   <ListGroupItem className={'first-item'} style={{ borderLeft: `5px solid ${getBuildColor(build.result)}` }}>
@@ -87,7 +88,11 @@ const renderBuild = (build: BuildType, renderHeader: boolean) => (
             <div>
               <div>
                 {subHeader('Build name:')}
-                <a target="_blank" href={buildKatanaBuildLink(build.builder.project, build.builder.name, build.number)}>
+                <a
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  href={buildKatanaBuildLink(build.builder.project, build.builder.name, build.number)}
+                >
                   <span>{build.builder.friendlyName}</span>
                 </a>
                 <div className="sub-info">{`(build number #${build.number})`}</div>
@@ -125,7 +130,9 @@ class Builds extends PureComponent {
   }
 }
 
-export default connect((state: Object, props: Object) => ({
-  builds: getBuilds(state, props),
-  abvBuild: getABVBuild(state, props),
-}))(Builds)
+export const structuredSelector = createStructuredSelector({
+  builds: getBuilds,
+  abvBuild: getABVBuild,
+})
+
+export default connect(structuredSelector)(Builds)

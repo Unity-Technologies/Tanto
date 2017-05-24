@@ -4,6 +4,8 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import Tabs from 'react-bootstrap/lib/Tabs'
+import { pureComponent } from 'components/PureComponent'
+import { createStructuredSelector } from 'reselect'
 import Tab from 'react-bootstrap/lib/Tab'
 import PullRequestsPaginated from 'containers/PullRequestsPaginated'
 import { fetchUserPullRequests, fetchUserAssignedPullRequests } from 'ducks/session/actions'
@@ -32,7 +34,7 @@ const mapStateToPropsOwned = (state, props) => ({
   activePage: state.session.pullRequestsOwned.pagination.currentPage,
   total: state.session.pullRequestsOwned.pagination.total,
   status: getOwnedFetchStatus(state),
-  items: getPullRequestsOwned(state) || [],
+  items: getPullRequestsOwned(state),
   orderBy: state.session.pullRequestsOwned.orderBy,
 })
 
@@ -43,7 +45,7 @@ const mapStateToPropsAssigned = (state, props) => ({
   activePage: state.session.pullRequestsAssigned.pagination.currentPage,
   total: state.session.pullRequestsAssigned.pagination.total,
   status: getAssignedFetchStatus(state),
-  items: getPullRequestsAssigned(state) || [],
+  items: getPullRequestsAssigned(state),
   orderBy: state.session.pullRequestsAssigned.orderBy,
 })
 
@@ -59,7 +61,7 @@ function Home(props: Props) {
     <div>
       <Helmet title="Pull Requests" />
       <div >
-        <Tabs animation={false} defaultActiveKey={1}>
+        <Tabs id="homeTabs" animation={false} defaultActiveKey={1}>
           <Tab
             key="tab1"
             eventKey={1}
@@ -88,10 +90,10 @@ function Home(props: Props) {
   )
 }
 
-export default connect(
-  state => ({
-    totalOwned: getPullRequestsOwnedTotal(state),
-    totalAssigned: getPullRequestsAssignedTotal(state),
-  })
-)(Home)
+export const data = createStructuredSelector({
+  totalOwned: getPullRequestsOwnedTotal,
+  totalAssigned: getPullRequestsAssignedTotal,
+})
+
+export default connect(data)(pureComponent(Home))
 

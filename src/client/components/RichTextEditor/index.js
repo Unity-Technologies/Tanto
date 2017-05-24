@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { default as RichTextEditorArea } from 'react-rte'
+import PureComponent from 'components/PureComponent'
 import Button from 'react-bootstrap/lib/Button'
 import './styles.css'
 
@@ -13,7 +14,7 @@ type Props = {
   saveButtonTitle: string,
 }
 
-class RichTextEditor extends Component {
+class RichTextEditor extends PureComponent {
   constructor(props: Props) {
     super(props)
 
@@ -30,7 +31,7 @@ class RichTextEditor extends Component {
     }
   }
 
-  getEditorInitialText = (props) => (props.text ?
+  getEditorInitialText = props => (props.text ?
     RichTextEditorArea.createValueFromString(this.props.text, 'markdown') :
     RichTextEditorArea.createEmptyValue())
 

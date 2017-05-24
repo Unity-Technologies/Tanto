@@ -5,7 +5,8 @@ import { call } from 'redux-saga/effects'
 import fetchSaga, { normalizeSaga } from 'sagas/fetch'
 
 import query from 'ducks/repositories/queries/search.graphql'
-export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export function* searchRepository(action: Object): Generator<any, any, any> {
   yield call(delay, 300)

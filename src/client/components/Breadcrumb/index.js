@@ -1,6 +1,7 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import { Link } from 'react-router'
 import { default as BootstrapBreadcrumb } from 'react-bootstrap/lib/Breadcrumb'
 import _ from 'lodash'
@@ -17,7 +18,7 @@ export const breadcrumbItems = (pathname: string, skip: number = 0): Array<LinkT
   const items = pathname.split('/').filter(entry => entry.trim() !== '')
   let path = ''
 
-  const routes = items.map(x => {
+  const routes = items.map((x) => {
     path = path.concat('/', x)
     return { link: path, label: x, active: false }
   })
@@ -37,14 +38,20 @@ export type Props = {
   skip?: number,
 }
 
-export class Breadcrumb extends Component {
-  constructor(props: Props) {
-    super(props)
-    this.state = { items: breadcrumbItems(props.path, props.skip) }
+export class Breadcrumb extends PureComponent {
+  static defaultProps = {
+    skip: 0,
   }
+
+  props: Props
 
   state: {
     items: Array<LinkType>,
+  }
+
+  constructor(props: Props) {
+    super(props)
+    this.state = { items: breadcrumbItems(props.path, props.skip) }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -54,8 +61,6 @@ export class Breadcrumb extends Component {
   shouldComponentUpdate(nextProps: Props) {
     return this.props.path !== nextProps.path
   }
-
-  props: Props
 
   render() {
     const { items } = this.state
@@ -69,9 +74,9 @@ export class Breadcrumb extends Component {
                 className={item.active ? 'active' : ''}
                 key={_.uniqueId('breadcrumb_item')}
               >
-              {!item.active ?
-                <Link to={item.link}>{item.label}</Link> :
-                <span>{item.label}</span>}
+                {!item.active ?
+                  <Link to={item.link}>{item.label}</Link> :
+                  <span>{item.label}</span>}
               </BootstrapBreadcrumb.Item>
             ))}
           </BootstrapBreadcrumb>

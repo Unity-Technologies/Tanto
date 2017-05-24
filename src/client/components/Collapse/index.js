@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react'
-import pureComponent from 'universal/react-pure-render'
+import { pureComponent } from 'components/PureComponent'
 
 
 type Props = {

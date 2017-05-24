@@ -18,7 +18,7 @@ export const storeMock =
     let errorCatched = false
     let i = 0
 
-    const actionLogger = st => next => action => {
+    const actionLogger = st => next => (action) => {
       actions.push(action)
 
       if (expectedActions && expectedActions.length && done) {
@@ -35,7 +35,7 @@ export const storeMock =
         if (!errorCatched && i === expectedActions.length - 1) {
           done()
         }
-        i++
+        i += 1
       }
       return next(action)
     }

@@ -1,7 +1,8 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { push } from 'react-router-redux'
+import PureComponent from 'components/PureComponent'
 import Modal from 'react-bootstrap/lib/Modal'
 import Button from 'react-bootstrap/lib/Button'
 import { connect } from 'react-redux'
@@ -20,11 +21,9 @@ import {
   getPullRequestDescription,
   getPullRequestNormalized,
 } from 'ducks/pullrequests/selectors'
-import { createSelector } from 'reselect'
+import { createSelector, createStructuredSelector } from 'reselect'
 
 export type Props = {
-  createComment: Function,
-  editComment: Function,
   description: CommentType,
   pullRequestId: number,
   repoName: string,
@@ -44,10 +43,10 @@ export const isCurrentUserOwner = createSelector(
       return null
     }
     return id === pr.owner
-  }
+  },
 )
 
-class PullRequestDiscussion extends Component {
+class PullRequestDiscussion extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -119,13 +118,12 @@ class PullRequestDiscussion extends Component {
 }
 
 
-const mapStateToProps = (state: Object, props: Props): Props => ({
-  ...props,
-  description: getPullRequestDescription(state, props),
-  comments: getPullRequestGeneralComments(state, props),
-  status: getFetchStatus(state, props),
-  loggedUser: getLoggedUser(state, props),
-  isCurrentUserOwner: isCurrentUserOwner(state, props),
+const structuredSelector = createStructuredSelector({
+  description: getPullRequestDescription,
+  comments: getPullRequestGeneralComments,
+  status: getFetchStatus,
+  loggedUser: getLoggedUser,
+  isCurrentUserOwner,
 })
 
-export default connect(mapStateToProps)(PullRequestDiscussion)
+export default connect(structuredSelector)(PullRequestDiscussion)

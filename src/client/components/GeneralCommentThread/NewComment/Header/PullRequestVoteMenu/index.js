@@ -13,12 +13,12 @@ const VoteStatus = ({ status, showTitle, title }: Object) => {
   }
   switch (status) {
     case ChangesetStatus.APPROVED:
-      return <span><i className="fa fa-circle approved" aria- hidden="true" ></i> Approved</span>
+      return <span><i className="fa fa-circle approved" /> Approved</span>
     case ChangesetStatus.REJECTED:
-      return <span><i className="fa fa-circle rejected" aria- hidden="true" ></i> Request changes</span>
+      return <span><i className="fa fa-circle rejected" /> Request changes</span>
     case ChangesetStatus.NONE:
     default:
-      return <span> <i className="fa fa-times" aria- hidden="true" ></i> Clear vote</span>
+      return <span> <i className="fa fa-times" /> Clear vote</span>
   }
 }
 
@@ -27,21 +27,25 @@ type Props = {
   onStatusSelect: (action: string) => void,
 }
 
-export const PullRequestVoteMenu = (props: Props) => (
+export const PullRequestVoteMenu = ({ reviewStatus, onStatusSelect }: Props) => (
   <Dropdown id="dropdown-create-issue" pullRight>
     <Dropdown.Toggle className="action-button" noCaret>
-      <VoteStatus status={props.reviewStatus} title={'Vote for pull request'} showTitle />
+      <VoteStatus status={reviewStatus} title={'Vote for pull request'} showTitle />
     </Dropdown.Toggle>
     <Dropdown.Menu>
-      <MenuItem eventKey={1} onClick={() => props.onStatusSelect(ChangesetStatus.APPROVED)}>
+      <MenuItem eventKey={1} onClick={() => onStatusSelect(ChangesetStatus.APPROVED)}>
         <VoteStatus status={ChangesetStatus.APPROVED} /></MenuItem>
-      <MenuItem eventKey={2} onClick={() => props.onStatusSelect(ChangesetStatus.REJECTED)}>
+      <MenuItem eventKey={2} onClick={() => onStatusSelect(ChangesetStatus.REJECTED)}>
         <VoteStatus status={ChangesetStatus.REJECTED} /></MenuItem>
-      <MenuItem eventKey={3} onClick={() => props.onStatusSelect(ChangesetStatus.NONE)}>
+      <MenuItem eventKey={3} onClick={() => onStatusSelect(ChangesetStatus.NONE)}>
         <VoteStatus status={ChangesetStatus.NONE} />
       </MenuItem>
     </Dropdown.Menu>
   </Dropdown>
 )
+
+PullRequestVoteMenu.defaultProps = {
+  reviewStatus: null,
+}
 
 export default PullRequestVoteMenu

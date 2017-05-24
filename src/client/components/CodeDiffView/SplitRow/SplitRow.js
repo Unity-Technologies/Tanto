@@ -1,21 +1,23 @@
 /* flow */
 
-import React, { Component } from 'react'
+/* eslint-disable  */
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import InlineCommentThread from 'components/CodeDiffView/InlineCommentThread'
 import NewComment from 'components/CodeDiffView/InlineCommentThread/NewComment'
 
 export type Props = {
   leftLine: string,
   rightLine: string,
-  isBreak?: boolean,
-  leftLineNumber?: any,
-  rightLineNumber?: any,
-  leftOperation?: string,
-  rightOperation?: string,
+  isBreak: boolean,
+  leftLineNumber: any,
+  rightLineNumber: any,
+  leftOperation: string,
+  rightOperation: string,
   leftCssClass: string,
   rightCssClass: string,
-  leftComments?: Array<any>,
-  rightComments?: Array<any>,
+  leftComments: Array<any>,
+  rightComments: Array<any>,
   loggedUser: Object,
 
   onCreateInlineComment: (lineNumber: string, text: string) => void,
@@ -23,7 +25,7 @@ export type Props = {
   onDeleteInlineComment: (commentId: string, text: string) => void,
 }
 
-class SplitRow extends Component {
+class SplitRow extends PureComponent {
   /* eslint-disable react/sort-comp */
   constructor(props: Props) {
     super(props)
@@ -116,7 +118,8 @@ class SplitRow extends Component {
             <i
               onClick={this.handleAddLeftComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-left"
-              aria-hidden="true"
+              role="button"
+              tabIndex={0}
               style={leftIconStyle}
             />
           }
@@ -164,7 +167,8 @@ class SplitRow extends Component {
             <i
               onClick={this.handleAddRightComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-right"
-              aria-hidden="true"
+              role="button"
+              tabIndex={-1}
               style={rightIconStyle}
             />
           }

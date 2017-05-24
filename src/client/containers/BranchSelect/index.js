@@ -1,10 +1,11 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import { default as Select } from 'components/VirtualizedSelect'
 import { connect } from 'react-redux'
 import { fetchRepositoryBranches } from 'ducks/repositories/actions'
-import { getRepositoryBranches } from 'ducks/repositories/selectors'
+import { getData } from './selectors'
 
 type SelectItemType = {
   label: string,
@@ -19,7 +20,7 @@ type BranchProps = {
   dispatch: Function,
 }
 
-class BranchSelect extends Component {
+class BranchSelect extends PureComponent {
   constructor(props: BranchProps) {
     super(props)
     this.state = { branch: null }
@@ -66,8 +67,4 @@ class BranchSelect extends Component {
   }
 }
 
-export default connect(
-  (state, props) => ({
-    options: getRepositoryBranches(state, props),
-  })
-)(BranchSelect)
+export default connect(getData)(BranchSelect)

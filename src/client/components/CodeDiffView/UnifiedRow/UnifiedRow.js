@@ -1,6 +1,8 @@
 /* flow */
+/* eslint-disable  */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import InlineCommentThread from 'components/CodeDiffView/InlineCommentThread'
 import NewComment from 'components/CodeDiffView/InlineCommentThread/NewComment'
 
@@ -11,7 +13,7 @@ export type Props = {
   newLineNumber: any,
   operation: string,
   cssClass: string,
-  comments?: Array<any>,
+  comments: Array<any>,
   loggedUser: Object,
 
   onCreateInlineComment: (lineNumber: string, text: string, issue: any) => void,
@@ -85,7 +87,7 @@ class UnifiedRow extends PureComponent {
             <i
               onClick={this.addComment}
               className="fa fa-plus-square code-comment-icon code-comment-icon-hover"
-              aria-hidden="true"
+
             />
           }
         </td>

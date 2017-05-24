@@ -6,6 +6,7 @@ import { createSelector } from 'reselect'
 import _ from 'lodash'
 import { getPullRequest } from 'ducks/pullrequests/selectors'
 import { connect } from 'react-redux'
+import { pureComponent } from 'components/PureComponent'
 
 export type HeaderPropsType = {
   id: string,
@@ -23,8 +24,7 @@ export type HeaderPropsType = {
 export const getHeaderData = (state: Object, props: Object): HeaderPropsType =>
   createSelector(
     getPullRequest,
-    (pr) =>
-      _.pick(pr, ['title', 'created', 'owner']),
+    pr => _.pick(pr, ['title', 'created', 'owner']),
   )
 
 const renderTitle = ({ title, owner, created }) => {
@@ -54,4 +54,4 @@ const Header = (props: HeaderPropsType) => (
   </div >
 )
 
-export default connect(getHeaderData)(Header)
+export default connect(getHeaderData)(pureComponent(Header))

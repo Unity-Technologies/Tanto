@@ -2,7 +2,8 @@
 /* eslint-disable react/jsx-indent */
 
 import moment from 'moment'
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import RichTextEditor from 'components/RichTextEditor'
 import Avatar from 'components/Avatar'
 import Button from 'react-bootstrap/lib/Button'
@@ -11,25 +12,26 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import { IssueStatus } from 'universal/constants'
 import './Comment.css'
 
-
+/* eslint-disable */
 export type CommentType = {
   id?: any,
   created: string,
   modified?: string,
   text?: string,
   status?: string,
-  author: {
+  author: $Subtype<{
     username: string,
     slack?: {
       avatar: string,
     },
-  },
-  issue?: {
+  }>,
+  issue?: $Subtype<{
     status: string,
-  },
+  }>,
   showArrow?: boolean,
   headerStyle?: Object,
 }
+/* eslint-enable */
 
 export type CommentProps = {
   comment: CommentType,
@@ -166,14 +168,14 @@ const renderReadMode =
                   className="comment-action-button"
                   onClick={handleOnEdit}
                 >
-                  <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+                  <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} />
                 </Button>
                 {!disableDelete &&
                   <Button
                     onClick={handleOnDelete}
                     className="comment-action-button"
                   >
-                    <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+                    <i className="fa fa-trash" style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} />
                   </Button>
                 }
               </div>
@@ -209,7 +211,7 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
               className="comment-action-button"
               onClick={handleOnEdit}
             >
-              <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} aria-hidden="true"></i>
+              <i className="fa fa-pencil " style={{ fontSize: '17px', color: 'rgba(87, 89, 90, 0.69)' }} />
             </Button>
           </div>
         }
@@ -221,7 +223,7 @@ const renderStatusMode = (comment: GeneralCommentType, canEdit: boolean, handleO
   </div>
 )
 
-class Comment extends Component {
+class Comment extends PureComponent {
   constructor(props: CommentProps) {
     super(props)
 

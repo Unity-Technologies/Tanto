@@ -9,19 +9,26 @@ export type Props = {
   propertyName?: string
 }
 
-function ErrorMessage(props: Props) {
-  const propertyName = props.propertyName || 'message'
+export const ErrorMessage = ({ text, error, propertyName }: Props) => {
+  const propName = propertyName || 'message'
   let message = 'Error'
-  if (props.text) {
-    message = props.text
-  } else if (props.error && props.error.hasOwnProperty(propertyName)) {
-    message = props.error[propertyName]
+  if (text) {
+    message = text
+  } else if (error && propName in error) {
+    message = error[propName]
   }
   return (
     <Alert bsStyle="danger" style={{ fontSize: '13px' }}>
-      <strong><i className="fa fa-exclamation-circle" aria-hidden="true"></i> </strong> {message}
+      <strong><i className="fa fa-exclamation-circle" /> </strong> {message}
     </Alert>
   )
 }
+
+ErrorMessage.defaultProps = {
+  text: null,
+  error: null,
+  propertyName: null,
+}
+
 
 export default ErrorMessage

@@ -1,13 +1,13 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import Drawer from 'material-ui/Drawer'
 import _ from 'lodash'
 import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
 import { ListItem } from 'material-ui/List'
 import Avatar from 'components/Avatar'
-
+import PureComponent from 'components/PureComponent'
 import { getLoggedUserAvatar, getLoggedUsername } from 'ducks/session/selectors'
 
 
@@ -19,7 +19,7 @@ const textColor = 'rgb(88, 89, 89)'
 const listItem = (title, icon, badge, open) => (
   <div style={{ color: '#4574b5', fontSize: '20px' }}>
     <div style={{ display: 'inline-table', width: '40px', color: textColor, marginLeft: '5px' }}>
-      <i className={`fa fa-${icon}`} aria-hidden="true" />
+      <i className={`fa fa-${icon}`} />
     </div>
     {open &&
       <span
@@ -46,18 +46,14 @@ export type Props = {
   width: number,
   hiddenWidth: number,
   items: Array<any>,
-  subitems: Array<any>,
   open: boolean,
-  sideBarMenuItemStyle?: Object,
-  sideBarMenuItemSelectedStyle?: Object,
   dispatch: Function,
   defaultValue: number,
-  title: string,
   avatar: string,
   username: string,
 }
 
-class SideBar extends Component {
+class SideBar extends PureComponent {
   props: Props
   redirect(to) {
     this.props.dispatch(push(to))
@@ -111,7 +107,7 @@ class SideBar extends Component {
 
           <SelectableList defaultValue={defaultValue}>
             {items.map((item, index) =>
-              <ListItem
+              (<ListItem
                 key={_.uniqueId('_sidebar_item')}
                 value={index + 1}
                 style={{ color: 'white' }}
@@ -119,8 +115,8 @@ class SideBar extends Component {
                 onClick={() => this.redirect(item.route)}
               >
                 {listItem(item.title, item.icon, item.badge, open)}
-              </ListItem>
-          )}
+              </ListItem>),
+            )}
           </SelectableList>
         </div>
       </Drawer>
@@ -131,7 +127,7 @@ class SideBar extends Component {
 
 export default connect(state => ({
   open: state.sidebar.open,
-  items: state.sidebar.items || [],
+  items: state.sidebar.items,
   defaultValue: state.sidebar.selected,
   username: getLoggedUsername(state),
   avatar: getLoggedUserAvatar(state),

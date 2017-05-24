@@ -5,7 +5,7 @@ import { muiTheme } from 'storybook-addon-material-ui'
 
 import ChangesetFileList from './ChangesetFileList'
 
-const randInt = (max) => Math.floor((Math.random() * max))
+const randInt = max => Math.floor((Math.random() * max))
 
 const fixtureComment = () => (
   {
@@ -21,7 +21,7 @@ const fixtureComment = () => (
   }
 )
 
-const fixtureFile = (name) => (
+const fixtureFile = name => (
   {
     name,
     comments: Array(randInt(100)).map(fixtureComment),

@@ -42,7 +42,7 @@ describe('PullRequestSummary/Header selectors', () => {
       created: '2017-02-27',
       owner: 1,
     }
-    const expectedData = { ...pullRequestHeaderData, owner: undefined }
+    const expectedData = { ...pullRequestHeaderData, owner: null }
     const pullRequests = {
       12: pullRequestHeaderData,
     }

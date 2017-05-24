@@ -1,6 +1,7 @@
 // TODO: finish flow annotations
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Nav from 'react-bootstrap/lib/Nav'
 import NavItem from 'react-bootstrap/lib/NavItem'
 import Navbar from 'react-bootstrap/lib/Navbar'
@@ -21,28 +22,25 @@ const navbarStyle = {
 
 export type Props = {
   title: string,
-  stats: {
+  stats: $Subtype<{
     added: number,
     deleted: number
-  },
-  fileReview: {
+  }>,
+  fileReview: $Subtype<{
     reviewed: boolean,
     bookmarked: boolean
-  },
+  }>,
   collapsed: boolean,
-  collapsedComments: boolean,
-  onCollapse?: Function,
-  onCollapseComments?: Function,
 }
 
 export const getData = createSelector(
   getReviewFile,
-  (fileReview) => ({
+  fileReview => ({
     fileReview,
-  })
+  }),
 )
 
-class DiffHeader extends Component {
+class DiffHeader extends PureComponent {
   props: Props
 
   handleDiffCollapseClick = (value: boolean) => {
@@ -68,13 +66,14 @@ class DiffHeader extends Component {
         <Nav>
           <NavItem>
             <div>
-              <div onClick={this.handleDiffCollapseClick}>
-                {!this.props.collapsed && <div onMouseDown={() => this.handleDiffCollapseClick(true)}>
-                  <i className="fa fa-minus" aria-hidden="true"></i>
+              <div role="link" tabIndex={0} onClick={this.handleDiffCollapseClick}>
+                {!this.props.collapsed &&
+                <div role="link" tabIndex={0} onMouseDown={() => this.handleDiffCollapseClick(true)}>
+                  <i className="fa fa-minus" />
                 </div>}
                 {this.props.collapsed &&
-                  <div onMouseDown={() => this.handleDiffCollapseClick(false)}>
-                    <i className="fa fa-plus" aria-hidden="true"></i>
+                  <div role="link" tabIndex={0} onMouseDown={() => this.handleDiffCollapseClick(false)}>
+                    <i className="fa fa-plus" />
                   </div>}
               </div>
 
@@ -90,16 +89,17 @@ class DiffHeader extends Component {
             </div>
           </NavItem>
         </Nav>
+        {fileReview &&
+          <Nav pullRight style={{ fontSize: '16px' }}>
 
-        <Nav pullRight style={{ fontSize: '16px' }}>
-          <NavItem onClick={() => this.handleFileReviewed(!fileReview.reviewed)}>
-            <i className={`fa fa-check-square-o ${fileReview.reviewed ? 'reviewed' : ''}`} aria-hidden="true"></i>
-          </NavItem>
+            <NavItem onClick={() => this.handleFileReviewed(!fileReview.reviewed)}>
+              <i className={`fa fa-check-square-o ${fileReview.reviewed ? 'reviewed' : ''}`} />
+            </NavItem>
 
-          <NavItem onClick={() => this.handleFileBookmarked(!fileReview.bookmarked)}>
-            <i className={`fa fa-tag ${fileReview.bookmarked ? 'bookmarked' : ''}`} aria-hidden="true"></i>
-          </NavItem>
-        </Nav>
+            <NavItem onClick={() => this.handleFileBookmarked(!fileReview.bookmarked)}>
+              <i className={`fa fa-tag ${fileReview.bookmarked ? 'bookmarked' : ''}`} />
+            </NavItem>
+          </Nav>}
 
       </Navbar>
     )

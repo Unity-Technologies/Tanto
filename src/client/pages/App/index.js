@@ -1,6 +1,7 @@
 // TODO: add flow annotations
 
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import { connect } from 'react-redux'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -11,8 +12,9 @@ import SideBar from 'containers/SideBar'
 const APP_NAME = 'Tanto'
 const APP_THEME = 'cyan'
 
+// FIXME
+const theme = require(`../../theme/ui/${APP_THEME}`) //eslint-disable-line
 
-const theme = require(`../../theme/ui/${APP_THEME}`)
 const muiTheme = getMuiTheme(theme)
 
 export type Props = {
@@ -20,7 +22,7 @@ export type Props = {
   open: boolean,
 };
 
-class App extends Component {
+class App extends PureComponent {
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -35,7 +37,7 @@ class App extends Component {
     const childrenWithProps = React.Children.map(this.props.children,
       child => React.cloneElement(child, {
         theme,
-      })
+      }),
     )
     const { open } = this.props
 

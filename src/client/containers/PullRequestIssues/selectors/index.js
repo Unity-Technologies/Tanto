@@ -13,9 +13,9 @@ export const getData = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequestIssues, fetchStatus,
     (issues, status, user) => ({
-      issues: issues || [],
+      issues,
       status,
-    })
+    }),
   )
 
 

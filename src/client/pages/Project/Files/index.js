@@ -1,152 +1,26 @@
-// TODO: enable flow
+/* @flow */
 
-import React, { Component } from 'react'
-import urljoin from 'url-join'
-import _ from 'lodash'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import Helmet from 'react-helmet'
-import { push } from 'react-router-redux'
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
 import { connect } from 'react-redux'
-import FileList from 'components/FileList'
-import BranchSelect from 'containers/BranchSelect'
-import Filter from 'components/Filter'
-import Breadcrumb from 'components/Breadcrumb'
-
 
 export type Props = {
-  pathname: string,
   data: Array<any>,
-  dispatch: Function,
-  location: Object,
-  params: Object,
-  breadcrumbItems: Array<Object>,
-};
+}
 
-class Files extends Component {
+class Files extends PureComponent {
   constructor(props: Props) {
     super(props)
-    this.state = { currentNode: this.props.data || {} }
+    this.state = { currentNode: this.props.data || null }
   }
 
-  componentDidMount() {
-    this.updateCurrentNode(this.props)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.pathname.endsWith('/files')) {
-      if (this.state) {
-        this.setState({ currentNode: nextProps.data })
-      } else {
-        this.state = { currentNode: nextProps.data }
-      }
-    } else {
-      this.updateCurrentNode(nextProps)
-    }
-  }
-
-  updateCurrentNode = (nextProps) => {
-    const { params: { splat } } = nextProps
-    if (splat) {
-      const nestedItem = this.findChild(nextProps.data, splat[0].split('/'))
-      if (nestedItem) {
-        this.setState({ currentNode: nestedItem.children })
-      }
-    }
-  }
-
-  props: Props
-
-  findChild = (nodes, path) => {
-    if (!nodes.length || !path.length) {
-      return parent
-    }
-
-    const name = path[0]
-    path.shift()
-
-    const item = _.find(nodes, { name })
-    if (path.length > 0) {
-      return this.findChild(item.children, path)
-    }
-    return item
-  }
-
-  clickHandler = (item) => {
-    const { location: { pathname }, dispatch } = this.props
-
-    const nestedItem = _.find(this.state.currentNode, { id: item.id })
-    if (nestedItem && nestedItem.children) {
-      this.setState({ currentNode: nestedItem.children })
-    }
-    const link = urljoin(pathname, item.name)
-
-    dispatch(push(link))
-  }
 
   render() {
-    const { params: { id }, pathname } = this.props
     return (
       <div>
         <Helmet title="Files" />
-        <div style={{ padding: '10px' }}>
-          <Row>
-            <Col md={4}>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  border: '1px solid lightgrey',
-                  borderRadius: '5px',
-                  padding: '7px',
-                  width: '100%',
-                  backgroundColor: 'white' }}
-              >
-                <span
-                  style={{ pagging: '10px', color: 'grey' }}
-                >
-                  <i className="fa fa-search" aria-hidden="true" />
-                </span>
-                <input
-                  type="text"
-                  style={{
-                    outline: 'none',
-                    border: 'none',
-                    marginLeft: '10px',
-                    fontSize: '14px',
-                    width: '100%' }}
-                />
-
-              </div>
-            </Col>
-
-
-            <Col md={7}>
-              <div style={{ display: 'inline-flex' }}>
-                <div style={{ width: '270px', marginRight: '5px' }}>
-                  <BranchSelect project={id} placeholder="Select branch ..." />
-                </div>
-                <Filter data={this.props.changesets} placeholder="Select changeset..." />
-              </div>
-            </Col>
-            <Col md={1}>
-              <div style={{ float: 'right' }}><a
-                className="btn"
-                style={{
-                  color: 'white',
-                  backgroundColor: '#3dc5a0' }} aria-label="Download"
-              >
-                <i className="fa fa-download" aria-hidden="true" />
-              </a>
-              </div>
-            </Col>
-          </Row>
-        </div>
-        <Breadcrumb path={pathname} skip={2} />
-
-        <FileList
-          data={this.state.currentNode}
-          onFileClick={this.clickHandler}
-        />
+        <h2> This page is still under construction </h2>
       </div>
     )
   }

@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-
+import { DEVELOPER_PERSONA } from 'universal/constants'
 import { profile } from '../index'
 import { types } from '../actions'
+
 const expect = require('chai').expect
-import { DEVELOPER_PERSONA } from 'universal/constants'
 
 
 describe('session profile reducer', () => {

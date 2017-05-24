@@ -5,6 +5,7 @@ require('./server.babel')
 require('dotenv').config()
 
 const path = require('path')
+
 const rootDir = path.resolve(__dirname, '.')
 
 global.__CLIENT__ = false

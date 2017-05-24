@@ -4,7 +4,7 @@ import env from '../config'
 
 let client
 
-export const handleError = (error) => console.error(error)
+export const handleError = error => console.error(error)
 
 const redisOptions = {
   host: env.REDIS_HOST,

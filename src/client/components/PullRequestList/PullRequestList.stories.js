@@ -4,9 +4,8 @@ import React from 'react'
 import { storiesOf } from '@kadira/storybook'
 import { muiTheme } from 'storybook-addon-material-ui'
 
-import PullRequestList from './index.js'
 import { ChangesetStatus } from 'universal/constants'
-
+import PullRequestList from './index.js'
 
 const repository1 = {
   name: 'repo1',

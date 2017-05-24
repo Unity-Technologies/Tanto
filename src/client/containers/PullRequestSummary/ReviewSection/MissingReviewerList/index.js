@@ -2,18 +2,11 @@
 
 import React from 'react'
 import type {
-  PullRequestMissingReviewerType,
     UserType,
 } from 'universal/types'
 
 import { CONFLUENCE_REVIEW_PAGE } from 'universal/constants'
 import './MissingReviewerList.css'
-
-export type MissingReviewerListType = {
-  missingReviewers: PullRequestMissingReviewerType,
-  addReviewer: Function,
-  id: string,
-}
 
 // TODO: copied from ReviewSection - should probably be abstracted out somewhere
 const subHeader = text => (
@@ -26,15 +19,16 @@ const areaHeader = text => (
   <div style={{ fontWeight: 'bold' }}>{text}</div>
 )
 
-const reviewerItem = (props: MissingReviewerListType, reviewer: UserType) => {
-  const clickFunction = () => props.addReviewer(props.id, reviewer)
-  return (<a className="missing-reviewer" onClick={clickFunction}>
-    {reviewer.fullName || reviewer.username}
-  </a>)
+const reviewerItem = (id: string, addReviewer: Function, reviewer: UserType) => {
+  const clickFunction = () => addReviewer(id, reviewer)
+  return (
+    <a role="link" tabIndex={0} className="missing-reviewer" onClick={clickFunction}>
+      {reviewer.fullName || reviewer.username}
+    </a>)
 }
 
-const MissingReviewers = (props: MissingReviewerListType) => {
-  const missing = props.missingReviewers.filter(r => r.reviewers && r.reviewers.length)
+const MissingReviewers = ({ id, missingReviewers, addReviewer }) => {
+  const missing = missingReviewers.filter(r => r.reviewers && r.reviewers.length)
 
   if (!missing.length) {
     return null
@@ -44,17 +38,17 @@ const MissingReviewers = (props: MissingReviewerListType) => {
       <div>
         <div>{subHeader('Potential additional reviewers:')}</div>
         {missing.map(missingReviewer =>
-          <div key={missingReviewer.area}>
+          (<div key={missingReviewer.area}>
             {areaHeader(missingReviewer.area)}
-            {missingReviewer.reviewers.map(reviewer => reviewerItem(props, reviewer))}
-          </div>
+            {missingReviewer.reviewers.map(reviewer => reviewerItem(id, reviewer, addReviewer))}
+          </div>),
         )}
       </div>
     </div>
   )
 }
 
-const UnclaimedAreas = (props: MissingReviewerListType) => {
+const UnclaimedAreas = (props: Object) => {
   const unclaimed = props.missingReviewers.filter(r => !r.reviewers || !r.reviewers.length)
   const reviewPage = CONFLUENCE_REVIEW_PAGE
   if (!unclaimed.length) {
@@ -71,7 +65,7 @@ const UnclaimedAreas = (props: MissingReviewerListType) => {
   )
 }
 
-const missingReviewerList = (props: MissingReviewerListType) => (
+const missingReviewerList = (props: Object) => (
   <div>
     <MissingReviewers {...props} />
     <UnclaimedAreas {...props} />

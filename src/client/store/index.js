@@ -29,7 +29,7 @@ const configureStore = (initialState: Object, history: Object): Object => {
 
   if (global.__DEVELOPMENT__ && module.hot) { // eslint-disable-line no-underscore-dangle
     module.hot.accept('../ducks', () =>
-      store.replaceReducer(require('../ducks')) // eslint-disable-line global-require
+      store.replaceReducer(require('../ducks')), // eslint-disable-line global-require
     )
   }
 

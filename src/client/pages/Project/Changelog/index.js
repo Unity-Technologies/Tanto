@@ -1,7 +1,8 @@
 /* flow */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
 import BranchSelect from 'containers/BranchSelect'
+import PureComponent from 'components/PureComponent'
 import { connect } from 'react-redux'
 import Col from 'react-bootstrap/lib/Col'
 import Row from 'react-bootstrap/lib/Row'
@@ -14,9 +15,8 @@ import LoadingComponent from 'components/LoadingComponent'
 import './Changelog.css'
 
 export type Props = {
-  params: Object,
   repoName: string,
-};
+}
 
 class Changelog extends PureComponent {
   constructor(props: Props) {
@@ -45,7 +45,7 @@ class Changelog extends PureComponent {
     }
   }
 
-  props : Props
+  props: Props
 
   render() {
     const { repoName, status } = this.props
@@ -57,7 +57,8 @@ class Changelog extends PureComponent {
             <Col md={4}>
               <BranchSelect
                 repoName={repoName}
-                onSelect={this.handleBranchSelect} placeholder="Select branch ..."
+                onSelect={this.handleBranchSelect}
+                placeholder="Select branch ..."
               />
             </Col>
 

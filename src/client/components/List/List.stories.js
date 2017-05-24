@@ -19,7 +19,7 @@ storiesOf('List', module)
       activePage={1}
       total={10}
     >
-    {items.map(x => x)}
+      {items.map(x => x)}
     </List>
   ))
   .add('visible pagination component', () => (
@@ -28,7 +28,7 @@ storiesOf('List', module)
       activePage={1}
       total={10}
     >
-    {items.map(x => x)}
+      {items.map(x => x)}
     </List>
   ))
   .add('next page', () => (
@@ -38,6 +38,6 @@ storiesOf('List', module)
       total={10}
       onPageSelect={action('onSelect')}
     >
-    {items.map(x => x)}
+      {items.map(x => x)}
     </List>
   ))

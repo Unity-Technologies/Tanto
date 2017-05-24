@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Helmet from 'react-helmet'
+import { pureComponent } from 'components/PureComponent'
 // import Button from 'react-bootstrap/lib/Button'
 // import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 // import Scroll from 'react-scroll'
@@ -15,10 +16,8 @@ import Helmet from 'react-helmet'
 // const Element = Scroll.Element
 
 export type Props = {
-  params: {
-    hash: string,
-  }
-};
+
+}
 
 function Changeset({ params: { hash } }: Props) {
   // const openPrButtonStyle = {
@@ -59,4 +58,4 @@ function Changeset({ params: { hash } }: Props) {
   )
 }
 
-export default Changeset
+export default pureComponent(Changeset)

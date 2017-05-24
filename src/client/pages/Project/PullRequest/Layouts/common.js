@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react'
+import { pureComponent } from 'components/PureComponent'
 import PullRequestCommits from 'containers/PullRequestCommits'
 import PullRequestDiff from 'containers/PullRequestDiff'
 import PullRequestIssues from 'containers/PullRequestIssues'
@@ -25,5 +26,5 @@ const CategoryModule = ({ type, pullRequestId, repoName }: Props) =>
     }
   </div>)
 
-export default CategoryModule
+export default pureComponent(CategoryModule)
 

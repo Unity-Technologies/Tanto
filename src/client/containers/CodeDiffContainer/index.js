@@ -1,7 +1,8 @@
 /* @flow */
 /* eslint-disable no-console */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import { connect } from 'react-redux'
 import CodeDiffView from 'components/CodeDiffView'
 import _ from 'lodash'
@@ -9,11 +10,11 @@ import { createSelector } from 'reselect'
 import { getLoggedUser } from 'ducks/session/selectors'
 import { getFile, getFileComments } from 'ducks/pullrequests/selectors'
 import { processDiff } from 'ducks/diff'
-import DiffHeader from './DiffHeader'
 import Scroll from 'react-scroll'
 import Collapse from 'components/Collapse'
 import LinearProgress from 'material-ui/LinearProgress'
 import { DiffTypes } from 'universal/constants'
+import DiffHeader from './DiffHeader'
 
 const Element = Scroll.Element
 
@@ -55,7 +56,7 @@ export const getData =
       sideBySideDiff,
       loggedUser: user,
       comments,
-    })
+    }),
   )
 
 class CodeDiffContainer extends PureComponent {
@@ -127,9 +128,9 @@ class CodeDiffContainer extends PureComponent {
     } = this.props
 
     const { collapsed } = this.state
-    const anyDiff = unifiedDiff && viewType === DiffTypes.UNIFIED ||
-      sideBySideDiff && viewType === DiffTypes.SIDE_BY_SIDE ||
-      viewType === DiffTypes.RAW && diff
+    const anyDiff = (unifiedDiff && viewType === DiffTypes.UNIFIED) ||
+      (sideBySideDiff && viewType === DiffTypes.SIDE_BY_SIDE) ||
+      (viewType === DiffTypes.RAW && diff)
     return (
       <div>
         <Element

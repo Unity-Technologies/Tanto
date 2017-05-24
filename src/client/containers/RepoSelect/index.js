@@ -1,12 +1,13 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { createStructuredSelector } from 'reselect'
 import { default as Select } from 'components/VirtualizedSelect'
 import { connect } from 'react-redux'
 import { searchRepository } from 'ducks/repositories/actions'
 import { getSearchRepoFetchStatus, getRepositoriesNames } from 'ducks/repositories/selectors'
 import type { StatusType } from 'ducks/fetch/selectors'
+import PureComponent from 'components/PureComponent'
 
 type SelectItemType = {
   label: string,
@@ -26,7 +27,7 @@ export const getData = createStructuredSelector({
   options: getRepositoriesNames,
 })
 
-class RepoSelect extends Component {
+class RepoSelect extends PureComponent {
   constructor(props: RepoProps) {
     super(props)
     this.state = { repo: null }

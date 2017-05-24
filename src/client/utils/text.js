@@ -22,11 +22,11 @@ export function escapeHTML(text: string): string {
     '"': '&quot;',
     '\'': '&apos;',
   }
-  return text.replace(/[&<>"'\\]/g, (char) => escape[char])
+  return text.replace(/[&<>"'\\]/g, char => escape[char])
 }
 
 export function linkifyRevisionHashes(text: string): string {
-  return text.replace(/([a-f0-9]{40}|[a-f0-9]{12})/, (hash) => (
+  return text.replace(/([a-f0-9]{40}|[a-f0-9]{12})/, hash => (
     `<a href="${hash}">${hash}</a>`
   ))
 }

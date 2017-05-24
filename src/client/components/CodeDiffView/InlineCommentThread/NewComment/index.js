@@ -1,10 +1,11 @@
 /* @flow */
-import React, { Component } from 'react'
+import React from 'react'
 import RichTextEditor from 'components/RichTextEditor'
 import Avatar from 'components/Avatar'
-import type { UserType } from '../index.js'
 import IssueMenu from 'components/IssueMenu'
 import { IssueStatus } from 'universal/constants'
+import PureComponent from 'components/PureComponent'
+import type { UserType } from '../index.js'
 
 export type Props = {
   loggedUser: UserType,
@@ -12,7 +13,7 @@ export type Props = {
   onClose: Function
 }
 
-class NewComment extends Component {
+export class NewComment extends PureComponent {
   constructor(props: Props) {
     super(props)
 

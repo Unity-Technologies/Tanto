@@ -7,6 +7,7 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 import { getPullRequestIssues } from 'ducks/pullrequests/selectors'
 import { createSelector } from 'reselect'
 import type { IssueType } from 'universal/types'
+import { pureComponent } from 'components/PureComponent'
 import { IssueStatus } from 'universal/constants'
 
 const subHeader = text => (
@@ -28,55 +29,54 @@ const headerColumnStyle = {
 
 type IssuesSectionProps = {
   issues: Array<IssueType>,
-  id: string,
 }
 
 export const getIssues = (state: Object, props: Object): Object =>
   createSelector(
     getPullRequestIssues,
     issues => ({
-      issues: issues ? issues.filter(x => x.status !== IssueStatus.OBSOLETE) : [],
-    })
+      issues: issues ? issues.filter(x => x.status !== IssueStatus.OBSOLETE) : null,
+    }),
   )
 
 //  TODO: complete this component, now it's mockeed since no ono API available for it
-export const IssuesSection = (props: IssuesSectionProps) => {
-  if (!props.issues || !props.issues.length) {
+export const IssuesSection = ({ issues }: IssuesSectionProps) => {
+  if (!issues || !issues.length) {
     return null
   }
   return (
     <div>
-      {props.issues &&
-        <ListGroupItem style={danger}>
-          <Row>
-            <Col md={2}>
-              <div style={headerColumnStyle}>
-                PR Issues
-              </div>
-            </Col>
-            <Col md={3}>
-              {subHeader('Status:')}
-              <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
-                UNRESOLVED
-              </div>
-              <div style={{ fontSize: '12px' }}>({props.issues.length} issues)</div>
-            </Col>
-            <Col md={7}>
+      <ListGroupItem style={danger}>
+        <Row>
+          <Col md={2}>
+            <div style={headerColumnStyle}>
+              PR Issues
+            </div>
+          </Col>
+          <Col md={3}>
+            {subHeader('Status:')}
+            <div style={{ color: dangerColor, textTransform: 'uppercase' }}>
+              UNRESOLVED
+            </div>
+            <div style={{ fontSize: '12px' }}>({issues.length} issues)</div>
+          </Col>
+          <Col md={7}>
+            <div>
               <div>
-                <div>
-                  {subHeader('Unresolved:')}
-                  {
-                    props.issues.map(issue =>
-                      (<div><a href="#">{issue.title}</a></div>))
-                  }
-                </div>
+                {subHeader('Unresolved:')}
+                {
+                  issues.map(issue =>
+                    (<div>
+                      <a href="someissuelink#">{issue.title}</a>
+                    </div>))
+                }
               </div>
-            </Col>
-          </Row>
-        </ListGroupItem>
-      }
+            </div>
+          </Col>
+        </Row>
+      </ListGroupItem>
     </div>)
 }
 
 
-export default connect(getIssues)(IssuesSection)
+export default connect(getIssues)(pureComponent(IssuesSection))

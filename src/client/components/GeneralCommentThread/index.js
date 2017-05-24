@@ -1,17 +1,16 @@
 /* @flow */
-import React, { Component } from 'react'
+import React from 'react'
+import PureComponent from 'components/PureComponent'
 import type { GeneralCommentType } from 'universal/types'
-import NewComment from './NewComment'
 import Comment from 'components/Comment'
 import type { CommentType } from 'components/Comment'
-export type { CommentType } from 'components/Comment'
+import NewComment from './NewComment'
 import './GeneralCommentThread.css'
+
+export type { CommentType } from 'components/Comment'
 
 export type UserType = {
   username: string,
-  slack: {
-    avatar: string
-  }
 }
 
 type Props = {
@@ -38,13 +37,18 @@ const renderDescriptionComment =
     />
   )
 
-class GeneralCommentThread extends Component {
+export class GeneralCommentThread extends PureComponent {
   constructor(props: Props) {
     super(props)
 
     this.state = {
       editMode: false,
     }
+  }
+
+  shouldComponentUpdate(nextProps: Object, nextState: Object) {
+    return nextProps.comments && nextProps.comments.length &&
+      super.shouldComponentUpdate(nextProps, nextState)
   }
 
   state: {
@@ -91,7 +95,7 @@ class GeneralCommentThread extends Component {
             {this.props.description &&
               renderDescriptionComment(this.props.description, this.props.loggedUser, this.handleOnDescriptionUpdate)}
             {this.props.comments.map(c =>
-              <div key={c.id} className="comments-thread-timeline-item">
+              (<div key={c.id} className="comments-thread-timeline-item">
                 <Comment
                   showArrow
                   comment={c}
@@ -99,7 +103,7 @@ class GeneralCommentThread extends Component {
                   onDelete={this.handleOnDelete(c.id)}
                   onUpdate={this.handleOnUpdate(c.id)}
                 />
-              </div>
+              </div>),
             )}
           </div>
         </div>

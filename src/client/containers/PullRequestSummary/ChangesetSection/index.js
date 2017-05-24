@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/lib/Row'
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 
 import { pluralizedText } from 'utils/text'
-import pureComponent from 'universal/react-pure-render'
+import { pureComponent } from 'components/PureComponent'
 
 
 /*
@@ -19,7 +19,6 @@ on this little chunk
 */
 
 type ChangesSectionProps = {
-  id: string,
   added: number,
   deleted: number,
   filesCount: number,
@@ -35,8 +34,8 @@ const headerColumnStyle = {
 }
 
 // TODO: Added stub data for PR changes delta until API ready
-const ChangesSection = (props: ChangesSectionProps) =>
-  <ListGroupItem style={info}>
+const ChangesSection = ({ added, deleted, filesCount }: ChangesSectionProps) =>
+  (<ListGroupItem style={info}>
     <Row>
       <Col md={5}>
         <div style={headerColumnStyle}>
@@ -46,17 +45,17 @@ const ChangesSection = (props: ChangesSectionProps) =>
       <Col md={7}>
         <div>
           {/* TODO: additions/deletions could be moved to backend */}
-          <span>{pluralizedText('file', 'files', props.filesCount)} changed</span><br />
+          <span>{pluralizedText('file', 'files', filesCount)} changed</span><br />
           <span style={{ color: '#55a532' }}>
-            + {props.added}
+            + {added}
           </span>
           <span style={{ color: '#bd2c00' }}>
-            {' '}− {props.deleted}
+            {' '}− {deleted}
           </span>
         </div>
       </Col>
     </Row>
-  </ListGroupItem>
+  </ListGroupItem>)
 
 
 export default pureComponent(ChangesSection)

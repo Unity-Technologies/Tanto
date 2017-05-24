@@ -12,3 +12,7 @@ export const target =
   (state: PullRequestSourceReference = initialState, action: Object = {}):
     PullRequestSourceReference =>
     (action && action.target ? action.target : state)
+
+
+export default target
+

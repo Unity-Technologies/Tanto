@@ -1,6 +1,7 @@
 /* @flow */
 import React from 'react'
 import PieChart from 'react-simple-pie-chart'
+import { pureComponent } from 'components/PureComponent'
 import './ChangesetDelta.css'
 
 type ChangesetDeltaProps = {
@@ -14,7 +15,7 @@ function getPercent(sum: number, value: number) {
   return sum > 0 ? Math.round((100 * value) / sum) : 0
 }
 
-const ChangesetDelta = ({ added, deleted, showDetails, pie }: ChangesetDeltaProps) => {
+export const ChangesetDelta = ({ added, deleted, showDetails, pie }: ChangesetDeltaProps) => {
   const sum = deleted + added
   const deletedPercent = getPercent(sum, deleted)
   const addedPercent = getPercent(sum, added)
@@ -57,5 +58,10 @@ const ChangesetDelta = ({ added, deleted, showDetails, pie }: ChangesetDeltaProp
   )
 }
 
+ChangesetDelta.defaultProps = {
+  showDetails: false,
+  pie: false,
+}
 
-export default ChangesetDelta
+
+export default pureComponent(ChangesetDelta)

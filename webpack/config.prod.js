@@ -14,8 +14,8 @@ const baseConfig = require('./config.base')
 module.exports = Object.assign({}, baseConfig.config, {
   entry: {
     main: [
-      'bootstrap-sass-loader!./src/client/theme/bootstrap.config.prod.js',
-      'font-awesome-webpack!./src/client/theme/font-awesome.config.prod.js',
+      'bootstrap-sass-loader!./src/client/theme/bootstrap.config.js',
+      'font-awesome-webpack!./src/client/theme/font-awesome.config.js',
       './src/client/index.js',
     ],
   },
@@ -30,8 +30,8 @@ module.exports = Object.assign({}, baseConfig.config, {
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: [
+          fallback: 'style-loader',
+          use: [
             {
               loader: 'css-loader',
               query: {
@@ -48,11 +48,8 @@ module.exports = Object.assign({}, baseConfig.config, {
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: [
-            { loader: 'css-loader' },
-            { loader: 'postcss-loader' },
-          ],
+          fallback: 'style-loader',
+          use: ['css-loader', 'postcss-loader'],
         }),
       },
     ]),

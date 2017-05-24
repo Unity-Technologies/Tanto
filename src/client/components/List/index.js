@@ -1,7 +1,8 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React from 'react'
 import Pagination from 'react-bootstrap/lib/Pagination'
+import PureComponent from 'components/PureComponent'
 import ListGroup from 'react-bootstrap/lib/ListGroup'
 
 import './styles.css'
@@ -10,11 +11,15 @@ export type Props = {
   pageSize: number,
   total: number,
   activePage: number,
-  children?: number | string | React.Element <*> | Array < any >,
-  onPageSelect?: Function,
+  children?: number | string | React.Element<*> | Array < any >,
+  onPageSelect ?: Function,
 }
 
-class List extends Component {
+class List extends PureComponent {
+  static defaultProps = {
+    children: null,
+    onPageSelect: null,
+  }
   props: Props
 
   handleSelect = (eventKey: number) => {
