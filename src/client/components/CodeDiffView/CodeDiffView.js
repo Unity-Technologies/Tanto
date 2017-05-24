@@ -32,7 +32,7 @@ class CodeDiffView extends PureComponent {
   props: Props
 
   shouldComponentUpdate(nextProps: Object, nextState: Object) {
-    return (this.props.rawDiff || this.props.unifiedDiff || this.props.sideBySideDiff) &&
+    return (nextProps.rawDiff || nextProps.unifiedDiff || nextProps.sideBySideDiff) &&
       super.shouldComponentUpdate(nextProps, nextState)
   }
 
