@@ -6,8 +6,7 @@ import type { FileType } from 'universal/types'
 import { connect } from 'react-redux'
 import ChangesetFileList from 'components/ChangesetFileList'
 import _ from 'lodash'
-import Col from 'react-bootstrap/lib/Col'
-import Row from 'react-bootstrap/lib/Row'
+import SplitPane from 'react-split-pane-style-fix'
 import { StickyContainer, Sticky } from 'react-sticky'
 import { DiffTypes, PullRequestSettings } from 'universal/constants'
 import IconMenu from 'material-ui/IconMenu'
@@ -20,6 +19,8 @@ import Navbar from 'react-bootstrap/lib/Navbar'
 import Page from './Page'
 import { getData } from './selectors'
 
+import './PullRequestDiff.css'
+
 type Props = {
   files: Array<FileType>,
   pullRequestId: string,
@@ -27,6 +28,10 @@ type Props = {
   dispatch: Function,
   reviews: Object,
 }
+
+const splitStyle = { position: 'relative' }
+const leftPaneStyle = { marginRight: '10px' }
+const rightPaneStyle = { marginLeft: '10px' }
 
 export class PullRequestDiff extends PureComponent {
   constructor(props: Props) {
@@ -76,8 +81,8 @@ export class PullRequestDiff extends PureComponent {
     const containerId = 'diffContainer'
     return (
       <StickyContainer>
-        <Row>
-          <Col md={4}>
+        <SplitPane split="vertical" minSize={100} defaultSize={440} style={splitStyle}>
+          <div style={leftPaneStyle}>
             <Sticky>
               <ChangesetFileList
                 files={this.props.files}
@@ -86,8 +91,8 @@ export class PullRequestDiff extends PureComponent {
                 containerElementName={containerId}
               />
             </Sticky>
-          </Col>
-          <Col md={8} id="containerElementName">
+          </div>
+          <div id="containerElementName" style={rightPaneStyle}>
             <Navbar fluid>
               <Nav pullRight>
                 <IconMenu
@@ -125,8 +130,8 @@ export class PullRequestDiff extends PureComponent {
                 onUpdateInlineComment={this.handleUpdateInlineComment}
               />),
             )}
-          </Col>
-        </Row>
+          </div>
+        </SplitPane>
       </StickyContainer>
     )
   }
