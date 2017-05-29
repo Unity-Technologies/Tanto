@@ -32,6 +32,7 @@ export type Props = {
   }>,
   collapsed: boolean,
 }
+const defaultFileReview = {}
 
 export const getData = createSelector(
   getReviewFile,
@@ -59,7 +60,8 @@ class DiffHeader extends PureComponent {
 
 
   render() {
-    const { title, stats, fileReview } = this.props
+    const { title, stats } = this.props
+    const review = this.props.fileReview || defaultFileReview
 
     return (
       <Navbar style={navbarStyle} fluid>
@@ -68,9 +70,9 @@ class DiffHeader extends PureComponent {
             <div>
               <div role="link" tabIndex={0} onClick={this.handleDiffCollapseClick}>
                 {!this.props.collapsed &&
-                <div role="link" tabIndex={0} onMouseDown={() => this.handleDiffCollapseClick(true)}>
-                  <i className="fa fa-minus" />
-                </div>}
+                  <div role="link" tabIndex={0} onMouseDown={() => this.handleDiffCollapseClick(true)}>
+                    <i className="fa fa-minus" />
+                  </div>}
                 {this.props.collapsed &&
                   <div role="link" tabIndex={0} onMouseDown={() => this.handleDiffCollapseClick(false)}>
                     <i className="fa fa-plus" />
@@ -89,17 +91,16 @@ class DiffHeader extends PureComponent {
             </div>
           </NavItem>
         </Nav>
-        {fileReview &&
-          <Nav pullRight style={{ fontSize: '16px' }}>
+        <Nav pullRight style={{ fontSize: '16px' }}>
 
-            <NavItem onClick={() => this.handleFileReviewed(!fileReview.reviewed)}>
-              <i className={`fa fa-check-square-o ${fileReview.reviewed ? 'reviewed' : ''}`} />
-            </NavItem>
+          <NavItem onClick={() => this.handleFileReviewed(!review.reviewed)}>
+            <i className={`fa fa-check-square-o ${review.reviewed ? 'reviewed' : ''}`} />
+          </NavItem>
 
-            <NavItem onClick={() => this.handleFileBookmarked(!fileReview.bookmarked)}>
-              <i className={`fa fa-tag ${fileReview.bookmarked ? 'bookmarked' : ''}`} />
-            </NavItem>
-          </Nav>}
+          <NavItem onClick={() => this.handleFileBookmarked(!review.bookmarked)}>
+            <i className={`fa fa-tag ${review.bookmarked ? 'bookmarked' : ''}`} />
+          </NavItem>
+        </Nav>
 
       </Navbar>
     )
