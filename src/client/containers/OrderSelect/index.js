@@ -76,6 +76,7 @@ class OrderSelect extends PureComponent {
     return (
       <div style={{ display: 'flex' }}>
         <Select
+          clearable={false}
           value={this.state.field}
           name="branch"
           style={{ float: 'left', minWidth: '180px', width: '70%', marginRight: '3px' }}
