@@ -16,7 +16,7 @@ const getStatusClass = (status?: string) => {
     case IssueStatus.FIX_NOW:
       return '#F44336'
     default:
-      return 'action-icon'
+      return 'rgba(87, 89, 90, 0.69)'
   }
 }
 
@@ -29,23 +29,23 @@ type Props = {
   onStatusSelect: (issue: string) => void,
 }
 
-export const IssueMenu = (props: Props) => (
+export const IssueMenu = ({ issueStatus, onStatusSelect }: Props) => (
   <Dropdown id="dropdown-create-issue" pullRight>
     <Dropdown.Toggle className="action-button" noCaret>
-      <IssueIcon color={getStatusClass(props.issueStatus)} />
+      <IssueIcon color={getStatusClass(issueStatus)} />
     </Dropdown.Toggle>
     <Dropdown.Menu>
-      <MenuItem eventKey="1" onClick={e => props.onStatusSelect(IssueStatus.FIX_NOW)}>
+      <MenuItem eventKey="1" onClick={e => onStatusSelect(IssueStatus.FIX_NOW)}>
         <span><IssueIcon color={getStatusClass(IssueStatus.FIX_NOW)} /> {IssueStatusText.FIX_NOW}</span>
       </MenuItem>
-      <MenuItem eventKey="2" onClick={e => props.onStatusSelect(IssueStatus.FIX_NEXT_PR)}>
+      <MenuItem eventKey="2" onClick={e => onStatusSelect(IssueStatus.FIX_NEXT_PR)}>
         <span><IssueIcon color={getStatusClass(IssueStatus.FIX_NEXT_PR)} /> {IssueStatusText.FIX_NEXT_PR}</span>
       </MenuItem>
-      <MenuItem eventKey="3" onClick={e => props.onStatusSelect(IssueStatus.FIX_LATER)}>
+      <MenuItem eventKey="3" onClick={e => onStatusSelect(IssueStatus.FIX_LATER)}>
         <span><IssueIcon color={getStatusClass(IssueStatus.FIX_LATER)} /> {IssueStatusText.FIX_LATER}</span>
       </MenuItem>
       <MenuItem divider />
-      <MenuItem eventKey="4" onClick={e => props.onStatusSelect(IssueStatus.NONE)}>
+      <MenuItem eventKey="4" onClick={e => onStatusSelect(IssueStatus.NONE)}>
         <span>Revert</span>
       </MenuItem>
     </Dropdown.Menu>
