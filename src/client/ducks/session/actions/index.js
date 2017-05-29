@@ -1,8 +1,9 @@
 /* @flow */
 import userProfileQuery from 'ducks/session/queries/me.graphql'
 import { fetchOnoActionCreator, fetchOnoAction } from 'ducks/fetch'
-import type { PullRequestSource } from 'universal/types'
-import type { FetchAction } from 'ducks/fetch'
+import type { PullRequestSourceReference } from 'universal/types'
+import { PullRequestSource } from 'universal/constants'
+import type { FetchAction, FetchPullRequestVariablesType } from 'ducks/fetch'
 import type { OrderByType } from 'ducks/order'
 import _ from 'lodash'
 import { RECEIVE_PAGE } from 'ducks/pagination'
@@ -25,12 +26,41 @@ export const operationNames = {
   pullRequestsAssigned: 'pullRequestsAssigned',
 }
 
-export type FetchPullRequestVariables = {
+type RepositorySelector = {
+  id?: number,
+  name?: string,
+}
+
+type PullRequestTargetRepoArgument = {
+  repository: RepositorySelector,
+  source: PullRequestSourceReference,
+}
+
+export type FetchPullRequestArguments = {
   page: number,
   pageSize: number,
-  target: PullRequestSource,
-  repo: string,
+  target: PullRequestTargetRepoArgument,
   orderBy: OrderByType,
+}
+
+const formatArguments = (variables: Object): FetchPullRequestArguments => {
+  const { repo, branch, ...args } = variables
+
+  if (repo || branch) {
+    args.target = {}
+    if (repo) {
+      args.target.repository = { name: repo }
+    }
+
+    if (branch) {
+      args.target.source = {
+        name: branch,
+        type: PullRequestSource.BRANCH,
+      }
+    }
+  }
+
+  return args
 }
 
 export const parseCurrentUserPullRequests = (response: Object) => (
@@ -53,9 +83,9 @@ export const setPersona = (persona: string): Object => ({ type: types.SET_USER_P
 
 
 // TODO:  move RECEIVE_PAGE into middleware or remove at leat callback
-export const fetchUserPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
+export const fetchUserPullRequests = (variables: FetchPullRequestVariablesType): FetchAction =>
   fetchOnoActionCreator(
-    types.FETCH_USER_PULL_REQUESTS, pullRequestList, variables,
+    types.FETCH_USER_PULL_REQUESTS, pullRequestList, formatArguments(variables),
     operationNames.pullRequestsOwned,
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parseCurrentUserPullRequests(data)
@@ -71,9 +101,9 @@ export const fetchUserPullRequests = (variables: FetchPullRequestVariables): Fet
     })
 
 // TODO:  move RECEIVE_PAGE into middleware or remove at leat callback
-export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
+export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariablesType): FetchAction =>
   fetchOnoActionCreator(
-    types.FETCH_USER_ASSIGNED_PULL_REQUESTS, pullRequestList, variables,
+    types.FETCH_USER_ASSIGNED_PULL_REQUESTS, pullRequestList, formatArguments(variables),
     operationNames.pullRequestsAssigned,
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parseCurrentUserAssignedPullRequests(data)

@@ -1,4 +1,5 @@
 /* @flow */
+import type { OrderByType } from 'ducks/order'
 
 export const types = {
   SENDING_REQUEST: 'FETCH/SENDING_REQUEST',
@@ -107,3 +108,12 @@ export const fetchOnoAction =
 
 export const fetchBfStatsAction =
   (action: ActionType): FetchAction => fetchAction(types.FETCH_BFSTATS_DATA, action)
+
+
+export type FetchPullRequestVariablesType = {
+  page: number,
+  pageSize: number,
+  branch: string,
+  repo: string,
+  orderBy: OrderByType,
+}

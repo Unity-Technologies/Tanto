@@ -1,10 +1,11 @@
 /* @flow */
 
 import _ from 'lodash'
-import type { PullRequestSource } from 'universal/types'
+import type { PullRequestSourceType } from 'universal/types'
+import { PullRequestSource } from 'universal/constants'
 import type { OrderByType } from 'ducks/order'
 import { fetchOnoActionCreator, fetchOnoAction } from 'ducks/fetch'
-import type { FetchAction } from 'ducks/fetch'
+import type { FetchAction, FetchPullRequestVariablesType } from 'ducks/fetch'
 import { RECEIVE_PAGE } from 'ducks/pagination'
 
 import pullRequestList from 'ducks/pullrequests/queries/pullRequestList.graphql'
@@ -41,12 +42,29 @@ export const types = {
 
 export const operationName = 'pullRequests'
 
-export type FetchPullRequestVariables = {
+export type FetchPullRequestArguments = {
   page: number,
   pageSize: number,
-  target: PullRequestSource,
+  target: PullRequestSourceType,
   repo: string,
   orderBy: OrderByType,
+}
+
+const formatArguments = (variables: Object): FetchPullRequestArguments => {
+  const { repo, branch, ...args } = variables
+
+  if (repo) {
+    args.repo = repo
+  }
+
+  if (branch) {
+    args.target = {
+      name: branch,
+      type: PullRequestSource.BRANCH,
+    }
+  }
+
+  return args
 }
 
 /** Response parsers */
@@ -85,9 +103,9 @@ export const fetchPullRequestChangeset = (id: string): FetchAction =>
   fetchPullRequestData(types.FETCH_PULL_REQUEST_CHANGESET, pullRequestChangeset, { id })
 
 const defaultEmptyPullRequests = {}
-export const fetchPullRequests = (variables: FetchPullRequestVariables): FetchAction =>
+export const fetchPullRequests = (variables: FetchPullRequestVariablesType): FetchAction =>
   fetchOnoActionCreator(
-    types.FETCH_PULL_REQUESTS, pullRequestList, variables, operationName,
+    types.FETCH_PULL_REQUESTS, pullRequestList, formatArguments(variables), operationName,
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parsePullRequests(data) || defaultEmptyPullRequests
       return [
