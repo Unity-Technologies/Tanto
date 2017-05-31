@@ -145,7 +145,7 @@ describe('session fetch actions', () => {
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: expected },
-      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, ...args },
+      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, ...variables },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: false },
     ]
 
@@ -201,7 +201,7 @@ describe('session fetch actions', () => {
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: expected },
-      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, ...args },
+      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, ...variables },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: false },
     ]
 
@@ -254,7 +254,7 @@ describe('session fetch actions', () => {
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: expected },
-      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, ...args },
+      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, ...variables },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: false },
     ]
 
@@ -349,7 +349,7 @@ describe('session fetch actions', () => {
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: expected },
-      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsAssigned, nodes: data.me.pullRequestsAssigned.nodes, total, ...args },
+      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsAssigned, nodes: data.me.pullRequestsAssigned.nodes, total, ...variables },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: false },
     ]
 

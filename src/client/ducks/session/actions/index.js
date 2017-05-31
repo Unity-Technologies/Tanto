@@ -36,14 +36,14 @@ type PullRequestTargetRepoArgument = {
   source: PullRequestSourceReference,
 }
 
-export type FetchPullRequestArguments = {
+export type FetchPullRequestVariables = {
   page: number,
   pageSize: number,
   target: PullRequestTargetRepoArgument,
   orderBy: OrderByType,
 }
 
-const formatArguments = (variables: Object): FetchPullRequestArguments => {
+const formatVariables = (variables: Object): FetchPullRequestVariables => {
   const { repo, branch, ...args } = variables
 
   if (repo || branch) {
@@ -61,6 +61,18 @@ const formatArguments = (variables: Object): FetchPullRequestArguments => {
   }
 
   return args
+}
+
+const formatArguments = (args: Object): Object => {
+  const { target, ...variables } = args
+  const branch = target && target.source ? target.source.name : ''
+  const repo = target && target.repository ? target.repository.name : ''
+  const cbArgs = {
+    ...variables,
+    branch,
+    repo,
+  }
+  return cbArgs
 }
 
 export const parseCurrentUserPullRequests = (response: Object) => (
@@ -85,7 +97,7 @@ export const setPersona = (persona: string): Object => ({ type: types.SET_USER_P
 // TODO:  move RECEIVE_PAGE into middleware or remove at leat callback
 export const fetchUserPullRequests = (variables: FetchPullRequestVariablesType): FetchAction =>
   fetchOnoActionCreator(
-    types.FETCH_USER_PULL_REQUESTS, pullRequestList, formatArguments(variables),
+    types.FETCH_USER_PULL_REQUESTS, pullRequestList, formatVariables(variables),
     operationNames.pullRequestsOwned,
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parseCurrentUserPullRequests(data)
@@ -95,7 +107,7 @@ export const fetchUserPullRequests = (variables: FetchPullRequestVariablesType):
           namespace: operationNames.pullRequestsOwned,
           nodes,
           total,
-          ...cbArgs,
+          ...formatArguments(cbArgs),
         },
       ]
     })
@@ -103,7 +115,7 @@ export const fetchUserPullRequests = (variables: FetchPullRequestVariablesType):
 // TODO:  move RECEIVE_PAGE into middleware or remove at leat callback
 export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariablesType): FetchAction =>
   fetchOnoActionCreator(
-    types.FETCH_USER_ASSIGNED_PULL_REQUESTS, pullRequestList, formatArguments(variables),
+    types.FETCH_USER_ASSIGNED_PULL_REQUESTS, pullRequestList, formatVariables(variables),
     operationNames.pullRequestsAssigned,
     (data: Object, cbArgs: Object): Array<Object> => {
       const { nodes, total } = parseCurrentUserAssignedPullRequests(data)
@@ -113,7 +125,7 @@ export const fetchUserAssignedPullRequests = (variables: FetchPullRequestVariabl
           namespace: operationNames.pullRequestsAssigned,
           nodes,
           total,
-          ...cbArgs,
+          ...formatArguments(cbArgs),
         },
       ]
     })
