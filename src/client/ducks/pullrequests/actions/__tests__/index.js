@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import chai from 'chai'
 
+import { PullRequestSource } from 'universal/constants'
 import { types as fetchTypes } from 'ducks/fetch'
 import { transformMutationResponse } from 'sagas/fetch'
 import { RECEIVE_PAGE } from 'ducks/pagination'
@@ -160,12 +161,131 @@ describe('pullrequests actions', () => {
     }
 
     const variables = { page, orderBy, branch, repo, pageSize }
+    const args = {
+      target: { name: branch, type: PullRequestSource.BRANCH },
+      page,
+      orderBy,
+      repo,
+      pageSize,
+    }
+
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUESTS, variables: args, query: pullRequestList, operationName },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: normalize(data, schema).entities },
-      { type: RECEIVE_PAGE, namespace: operationName, nodes: data.repository.pullRequests.nodes, total, ...variables },
+      { type: RECEIVE_PAGE, namespace: operationName, nodes: data.repository.pullRequests.nodes, total, ...args },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: false },
+    ]
+
+    fetchMock.mock('*', { data })
+
+    const store = storeMock({}, expectedActions, done)
+
+    store.dispatch(fetchPullRequests(variables))
+  })
+
+
+  it('fetchPullRequests success(with empty branch)', (done) => {
+    const page = 1
+    const pageSize = 10
+    const repo = 'testrepo'
+    const branch = ''
+    const orderBy = {
+      direction: DIRECTION.DESC,
+      field: 'name',
+    }
+    const total = 123
+    const data = {
+      repository: {
+        pullRequests: {
+          total,
+          nodes: [{
+            id: 1,
+            name: 'testpr1',
+            title: 'test pr title1',
+            description: 'test pr description1',
+          },
+          {
+            id: 2,
+            name: 'testpr2',
+            title: 'test pr title2',
+            description: 'test pr description2',
+          }],
+        },
+      },
+
+    }
+
+    const variables = { page, orderBy, branch, repo, pageSize }
+    const args = {
+      page,
+      orderBy,
+      repo,
+      pageSize,
+    }
+
+    const expectedActions = [
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUESTS, variables: args, query: pullRequestList, operationName },
+      { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
+      { type: SET_QUERIED_ENTITIES, entities: normalize(data, schema).entities },
+      { type: RECEIVE_PAGE, namespace: operationName, nodes: data.repository.pullRequests.nodes, total, ...args },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: false },
+    ]
+
+    fetchMock.mock('*', { data })
+
+    const store = storeMock({}, expectedActions, done)
+
+    store.dispatch(fetchPullRequests(variables))
+  })
+
+
+  it('fetchPullRequests success(with empty repo) ', (done) => {
+    const page = 1
+    const pageSize = 10
+    const repo = ''
+    const branch = ''
+    const orderBy = {
+      direction: DIRECTION.DESC,
+      field: 'name',
+    }
+    const total = 123
+    const data = {
+      repository: {
+        pullRequests: {
+          total,
+          nodes: [{
+            id: 1,
+            name: 'testpr1',
+            title: 'test pr title1',
+            description: 'test pr description1',
+          },
+          {
+            id: 2,
+            name: 'testpr2',
+            title: 'test pr title2',
+            description: 'test pr description2',
+          }],
+        },
+      },
+
+    }
+
+    const variables = { page, orderBy, branch, repo, pageSize }
+    const args = {
+      page,
+      orderBy,
+      pageSize,
+    }
+
+    const expectedActions = [
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUESTS, variables: args, query: pullRequestList, operationName },
+      { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
+      { type: SET_QUERIED_ENTITIES, entities: normalize(data, schema).entities },
+      { type: RECEIVE_PAGE, namespace: operationName, nodes: data.repository.pullRequests.nodes, total, ...args },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: false },
     ]
 
@@ -188,8 +308,16 @@ describe('pullrequests actions', () => {
     }
 
     const variables = { page, orderBy, branch, repo, pageSize }
+    const args = {
+      target: { name: branch, type: PullRequestSource.BRANCH },
+      page,
+      orderBy,
+      repo,
+      pageSize,
+    }
+
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUESTS, variables, query: pullRequestList, operationName },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_PULL_REQUESTS, variables: args, query: pullRequestList, operationName },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_PULL_REQUESTS, error },

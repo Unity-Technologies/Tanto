@@ -12,7 +12,7 @@ import Alert from 'react-bootstrap/lib/Alert'
 import type { StatusType } from 'ducks/pullrequests/selectors'
 import PureComponent from 'components/PureComponent'
 import type { OrderByType, DirectionType } from 'ducks/order'
-import { PullRequestSource, PullRequestOrderFields } from 'universal/constants'
+import { PullRequestOrderFields } from 'universal/constants'
 
 export type Props = {
   dispatch: Function,
@@ -77,10 +77,7 @@ class PullRequestsPaginated extends PureComponent {
 
   handleBranchSelect = (branch: string): void => {
     const args = this.getArguments()
-    args.target = {
-      name: branch,
-      type: PullRequestSource.BRANCH,
-    }
+    args.branch = branch
     this.props.dispatch(this.props.fetchData(args))
   }
 

@@ -1,6 +1,6 @@
-query pullRequestsOwned($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: PullRequestOrdering) {
+query pullRequestsOwned($limit: Int, $offset: Int, $target: PullRequestTargetRepoArgument, $orderBy: PullRequestOrdering) {
   me {
-    pullRequestsOwned(limit: $limit, offset: $offset, repo: $repo, target: $target, orderBy: $orderBy) {
+    pullRequestsOwned(limit: $limit, offset: $offset, target: $target, orderBy: $orderBy) {
       total
       nodes {
         ...pullRequestMetadata
@@ -9,9 +9,9 @@ query pullRequestsOwned($limit: Int, $offset: Int, $target: PullRequestTargetArg
   }
 }
 
-query pullRequestsAssigned($limit: Int, $offset: Int, $target: PullRequestTargetArgument, $repo: String, $orderBy: PullRequestOrdering) {
+query pullRequestsAssigned($limit: Int, $offset: Int, $target: PullRequestTargetRepoArgument, $orderBy: PullRequestOrdering) {
   me {
-    pullRequestsAssigned(limit: $limit, offset: $offset, repo: $repo, target: $target, orderBy: $orderBy) {
+    pullRequestsAssigned(limit: $limit, offset: $offset, target: $target, orderBy: $orderBy) {
       total
       nodes {
         ...pullRequestMetadata

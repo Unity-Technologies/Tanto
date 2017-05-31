@@ -8,6 +8,7 @@ import { DIRECTION } from 'ducks/order'
 import { RECEIVE_PAGE } from 'ducks/pagination'
 import { types as fetchTypes } from 'ducks/fetch'
 import userProfileQuery from 'ducks/session/queries/me.graphql'
+import { PullRequestSource } from 'universal/constants'
 
 import storeMock from 'tests/mocks/storeMock'
 import pullRequestList from 'ducks/session/queries/userPullRequestList.graphql'
@@ -128,14 +129,132 @@ describe('session fetch actions', () => {
     }
 
     const variables = { page, orderBy, branch, repo }
+    const args = {
+      target: {
+        source: { name: branch, type: PullRequestSource.BRANCH },
+        repository: { name: repo },
+      },
+      page,
+      orderBy,
+    }
+
     const expected = normalize(data, schema).entities
     expected.me = expected.me.undefined
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_PULL_REQUESTS, variables: args, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: expected },
-      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, page, repo, branch, orderBy },
+      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, ...variables },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: false },
+    ]
+
+    fetchMock.mock('*', { data })
+
+    const store = storeMock({}, expectedActions, done)
+
+    store.dispatch(fetchUserPullRequests(variables))
+  })
+
+  it('fetchUserPullRequests success(with empty branch)', (done) => {
+    const page = 1
+    const repo = 'testrepo'
+    const branch = ''
+    const orderBy = {
+      direction: DIRECTION.DESC,
+      field: 'name',
+    }
+    const total = 123
+    const data = {
+      me: {
+        pullRequestsOwned: {
+          total,
+          nodes: [{
+            id: 1,
+            name: 'testpr1',
+            title: 'test pr title1',
+            description: 'test pr description1',
+          },
+          {
+            id: 2,
+            name: 'testpr2',
+            title: 'test pr title2',
+            description: 'test pr description2',
+          }],
+        },
+      },
+    }
+
+    const variables = { page, orderBy, branch, repo }
+    const args = {
+      target: {
+        repository: { name: repo },
+      },
+      page,
+      orderBy,
+    }
+
+    const expected = normalize(data, schema).entities
+    expected.me = expected.me.undefined
+    const expectedActions = [
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_PULL_REQUESTS, variables: args, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
+      { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
+      { type: SET_QUERIED_ENTITIES, entities: expected },
+      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, ...variables },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: false },
+    ]
+
+    fetchMock.mock('*', { data })
+
+    const store = storeMock({}, expectedActions, done)
+
+    store.dispatch(fetchUserPullRequests(variables))
+  })
+
+  it('fetchUserPullRequests success(with empty repo) ', (done) => {
+    const page = 1
+    const repo = ''
+    const branch = ''
+    const orderBy = {
+      direction: DIRECTION.DESC,
+      field: 'name',
+    }
+    const total = 123
+    const data = {
+      me: {
+        pullRequestsOwned: {
+          total,
+          nodes: [{
+            id: 1,
+            name: 'testpr1',
+            title: 'test pr title1',
+            description: 'test pr description1',
+          },
+          {
+            id: 2,
+            name: 'testpr2',
+            title: 'test pr title2',
+            description: 'test pr description2',
+          }],
+        },
+      },
+    }
+
+    const variables = { page, orderBy, branch, repo }
+    const args = {
+      page,
+      orderBy,
+    }
+
+    const expected = normalize(data, schema).entities
+    expected.me = expected.me.undefined
+    const expectedActions = [
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_PULL_REQUESTS, variables: args, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
+      { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
+      { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
+      { type: SET_QUERIED_ENTITIES, entities: expected },
+      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsOwned, nodes: data.me.pullRequestsOwned.nodes, total, ...variables },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: false },
     ]
 
@@ -158,8 +277,18 @@ describe('session fetch actions', () => {
     }
 
     const variables = { page, orderBy, branch, repo, pageSize }
+    const args = {
+      target: {
+        source: { name: branch, type: PullRequestSource.BRANCH },
+        repository: { name: repo },
+      },
+      page,
+      orderBy,
+      pageSize,
+    }
+
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_PULL_REQUESTS, variables: args, query: pullRequestList, operationName: operationNames.pullRequestsOwned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_USER_PULL_REQUESTS, error },
@@ -203,14 +332,24 @@ describe('session fetch actions', () => {
     }
 
     const variables = { page, orderBy, branch, repo }
+    const args = {
+      target: {
+        source: { name: branch, type: PullRequestSource.BRANCH },
+        repository: { name: repo },
+      },
+      page,
+      orderBy,
+    }
+
+
     const expected = normalize(data, schema).entities
     expected.me = expected.me.undefined
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, variables: args, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: true },
       { type: SET_QUERIED_ENTITIES, entities: expected },
-      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsAssigned, nodes: data.me.pullRequestsAssigned.nodes, total, page, repo, branch, orderBy },
+      { type: RECEIVE_PAGE, namespace: operationNames.pullRequestsAssigned, nodes: data.me.pullRequestsAssigned.nodes, total, ...variables },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: false },
     ]
 
@@ -232,8 +371,17 @@ describe('session fetch actions', () => {
     }
 
     const variables = { page, orderBy, branch, repo }
+    const args = {
+      target: {
+        source: { name: branch, type: PullRequestSource.BRANCH },
+        repository: { name: repo },
+      },
+      page,
+      orderBy,
+    }
+
     const expectedActions = [
-      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, variables, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
+      { type: fetchTypes.FETCH_ONO_DATA, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, variables: args, query: pullRequestList, operationName: operationNames.pullRequestsAssigned },
       { type: fetchTypes.CLEAR_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS },
       { type: fetchTypes.SENDING_REQUEST, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, sending: true },
       { type: fetchTypes.REQUEST_ERROR, name: types.FETCH_USER_ASSIGNED_PULL_REQUESTS, error },
