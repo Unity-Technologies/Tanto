@@ -3,8 +3,7 @@
 import { pagination } from 'ducks/pagination'
 import { orderBy, DIRECTION } from 'ducks/order'
 import { combineReducers } from 'redux'
-import { target } from 'ducks/filters'
-import { PullRequestSource, DEVELOPER_PERSONA, PullRequestOrderFields } from 'universal/constants'
+import { DEVELOPER_PERSONA, PullRequestOrderFields } from 'universal/constants'
 import { types, operationNames } from 'ducks/session/actions'
 import { createReducer } from '../createReducer'
 
@@ -17,10 +16,7 @@ const prState = {
     field: PullRequestOrderFields.UPDATED,
   },
   filters: {
-    target: {
-      name: '',
-      type: PullRequestSource.BRANCH,
-    },
+    branch: '',
     repo: '',
   },
   pagination: {
@@ -38,8 +34,11 @@ const initialState = {
 export const repo = (state: string = '', action: Object = {}): string =>
   (action.repo ? action.repo : state)
 
+export const branch = (state: string = '', action: Object = {}): string =>
+  (action.branch ? action.branch : state)
+
 export const filters = combineReducers({
-  target,
+  branch,
   repo,
 })
 
